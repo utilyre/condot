@@ -1,4 +1,4 @@
-.PHONY := all clean
+.PHONY: all clean
 
 CC := g++
 CFLAGS := -std=c++20 -g -Wall -Wextra
