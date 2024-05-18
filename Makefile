@@ -1,7 +1,7 @@
 .PHONY := all clean
 
 CC := g++
-CFLAGS := -std=c++23 -g -Wall -Wextra
+CFLAGS := -std=c++20 -g -Wall -Wextra
 LDFLAGS :=
 LDLIBS :=
 
