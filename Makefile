@@ -1,8 +1,9 @@
-.PHONY = all clean
+.PHONY := all clean
 
 CC := g++
 CFLAGS := -std=c++23 -g -Wall -Wextra
-LFLAGS :=
+LDFLAGS :=
+LDLIBS :=
 
 INCDIR := ./include
 SRCDIR := ./src
@@ -18,7 +19,7 @@ all: $(BIN)
 
 $(BIN): $(OBJ)
 	@mkdir -p $(BINDIR)
-	$(CC) $(CFLAGS) -o $@ $^ $(LFLAGS)
+	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(LDLIBS)
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.cpp $(INC)
 	@mkdir -p $(OBJDIR)
