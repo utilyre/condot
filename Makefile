@@ -26,4 +26,4 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.cpp $(INC)
 	$(CC) $(CFLAGS) -I $(INCDIR) -o $@ -c $<
 
 clean:
-	rm -rf $(OBJ) $(BIN)
+	rm -f $(OBJ) $(BIN)
