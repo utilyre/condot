@@ -2,8 +2,8 @@
 
 CC := g++
 CFLAGS := -std=c++20 -g -Wall -Wextra
-LDFLAGS :=
-LDLIBS :=
+LDFLAGS := -L./lib
+LDLIBS := -lraylib
 
 INCDIR := ./include
 SRCDIR := ./src
