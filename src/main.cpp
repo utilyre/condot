@@ -67,7 +67,7 @@ int chooseWarStarter(const std::vector<Player>& players){
      }
      
    }
-   int randNum = rand() % warStarterIndex.size();
+   size_t randNum = rand() % warStarterIndex.size();
    return warStarterIndex[randNum];
 }
 int main() {
