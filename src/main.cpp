@@ -40,7 +40,9 @@ const bool MAP[14][14] = {
   /* 12: lia     */ {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0},
   /* 13: elinia  */ {0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0},
 };
-
+struct Game{
+  std::string warPosition{};
+};
 struct Player {
   Player(std::string name, int age, std::string color)
       : name(name), age(age), color(color) {}
@@ -69,6 +71,14 @@ int chooseWarStarter(const std::vector<Player>& players){
    }
    size_t randNum = rand() % warStarterIndex.size();
    return warStarterIndex[randNum];
+}
+bool chooseWarPosition(std::string choice){
+  for(auto city : INDEX_TO_CITY){
+    if(choice == city){
+      return false;
+    }
+  }
+  return true;
 }
 int main() {
   srand(time(0));
@@ -104,6 +114,7 @@ int main() {
     players.emplace_back(name, age, color);
   }
   players[chooseWarStarter(players)].warStarter = true;
+  /*
   std::random_device rd;
   std::mt19937 g(rd());
   std::vector<std::string> cards{"1","1","1","1","1","1","1","1","1","1","2","2","2","2","2","2","2","2","3","3","3","3","3","3","3","3","4","4","4","4","4","4","4","4",
@@ -120,7 +131,27 @@ int main() {
       cards.pop_back();
      }
    }
-   
+   */
+   system("clear");
+   Game game;
+   for(auto player : players){
+     bool result;
+     std::string choice;
+     if(player.warStarter == true){
+       do{
+        std::cout <<"@player " << player.name << " choose a city to start the war\n\n";
+        for(auto city : INDEX_TO_CITY){
+          std::cout << city << std::endl;
+          }
+        std::cin >> choice;
+        result =  chooseWarPosition(choice);
+        system("clear");
+       }
+       while(result == true);  
+     }
+     game.warPosition = choice;
+   }
+   /*
     getchar();
     
     for (auto p : players) {
@@ -138,4 +169,6 @@ int main() {
       std::cout << "\n\npress any key to continue" ;
       getchar();    
   }
+  */
+  std::cout << "war position is at " << game.warPosition << " city!";
 }
