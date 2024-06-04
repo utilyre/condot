@@ -48,13 +48,31 @@ struct Player {
   std::string              name;
   int                      age;
   std::string              color;
-  std::vector<std::string> cards_available;
-  std::vector<std::string> cards_played;
+  std::vector<std::string> cardsAvailable;
+  std::vector<std::string> cardsPlayed;
+  bool                     warStarter = false;
 };
-
+int chooseWarStarter(const std::vector<Player>& players){
+   int min   = players[0].age;
+   std::vector<int> warStarterIndex;
+   for(size_t player{} ; player < players.size() ; player++){
+     
+     if(players[player].age < min){
+       min = players[player].age;
+       warStarterIndex.clear();
+     }
+     
+     if(players[player].age == min){
+       warStarterIndex.push_back(player);
+     }
+     
+   }
+   int randNum = rand() % warStarterIndex.size();
+   return warStarterIndex[randNum];
+}
 int main() {
+  srand(time(0));
   std::cout << "Welcome to Condottiere\n\n";
-
   int numPlayers;
   std::cout << "How many players are you? ";
   std::cin >> numPlayers;
@@ -85,6 +103,7 @@ int main() {
 
     players.emplace_back(name, age, color);
   }
+  players[chooseWarStarter(players)].warStarter = true;
   std::random_device rd;
   std::mt19937 g(rd());
   std::vector<std::string> cards{"1","1","1","1","1","1","1","1","1","1","2","2","2","2","2","2","2","2","3","3","3","3","3","3","3","3","4","4","4","4","4","4","4","4",
@@ -97,7 +116,7 @@ int main() {
    
    for(int i{}; i < numPlayers;i++){
      for(int j{}; j < 10 ; j++){  
-      players[i].cards_available.push_back(cards.back());
+      players[i].cardsAvailable.push_back(cards.back());
       cards.pop_back();
      }
    }
@@ -107,11 +126,12 @@ int main() {
     for (auto p : players) {
       system("clear");
       std::cout << "-----------------\n";
+      if(p.warStarter == true) std::cout << "you can choose a city to start the war\n";
       std::cout << p.name << " in the age of " << p.age << " has color " << p.color
                 << "\npress enter to show cards!";
       getchar();
       system("clear");
-      for(auto c : p.cards_available){
+      for(auto c : p.cardsAvailable){
         std::cout <<  c << "  "; 
       }
     
