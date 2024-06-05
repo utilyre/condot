@@ -141,7 +141,7 @@ int main() {
      std::string choice;
      if(player.warStarter == true){
        do{
-        std::cout <<"@player " << player.name << " choose a city to start the war\n\n";
+        std::cout << "@" << player.name << " choose a city to start the war\n\n";
         for(auto city : INDEX_TO_CITY){
           std::cout << city << std::endl;
           }
