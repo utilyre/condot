@@ -59,7 +59,7 @@ struct Player {
   bool                     warStarter = false;
 };
 
-int chooseWarStarter(const std::vector<Player>& players){
+int findWarInstigator(const std::vector<Player>& players){
   int min = players[0].age;
   std::vector<int> warStarterIndex;
   for(size_t player{} ; player < players.size() ; player++){
@@ -127,7 +127,7 @@ int main() {
   srand(time(0));
 
   auto players = inputPlayers();
-  players[chooseWarStarter(players)].warStarter = true;
+  players[findWarInstigator(players)].warStarter = true;
   /*
   std::random_device rd;
   std::mt19937 g(rd());
