@@ -138,7 +138,7 @@ int main() {
     std::cout << '@' << game.GetCurrentPlayer().name << ": ";
     std::cin >> battleMarker;
   } while (!isCityValid(battleMarker));
-
+  game.setBattleMarker(battleMarker);
   std::system("clear");
-  std::cout << "War position is at " << battleMarker << " city!";
+  std::cout << "War position is at " << game.getBattleMarker() << " city!";
 }
