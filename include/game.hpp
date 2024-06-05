@@ -4,6 +4,7 @@
 #include <string>
 
 #include <player.hpp>
+#include <city.hpp>
 
 class Game {
 public:
@@ -12,6 +13,7 @@ public:
   const Player& GetCurrentPlayer() const;
   void setBattleMarker(std::string battleMarkerValue);
   const std::string getBattleMarker() const;
+  City getCity() const;
 private:
   size_t FindWarInstigator() const;
 
@@ -19,4 +21,5 @@ private:
   size_t m_Turn = 0;
   std::vector<Player> m_Players;
   std::string battleMarker; // TODO: set this field after determining the city
+  City city;
 };

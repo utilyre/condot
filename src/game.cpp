@@ -1,5 +1,6 @@
 #include <game.hpp>
 #include <player.hpp>
+#include <city.hpp>
 
 Game::Game(const std::vector<Player> players) : m_Players(players) {
   m_Turn = FindWarInstigator();
@@ -16,7 +17,9 @@ void Game::setBattleMarker(std::string battleMarkerValue){
 const std::string Game::getBattleMarker() const{
   return battleMarker;
 }
-
+City Game::getCity() const{
+  return city;
+}
 size_t Game::FindWarInstigator() const {
   int min = m_Players[0].age;
   std::vector<int> potentialInstigators;
