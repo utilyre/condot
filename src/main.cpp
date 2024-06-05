@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 
+#define DEBUG
+
 const std::string INDEX_TO_CITY[] = {
   /*  0: */ "bella",
   /*  1: */ "caline",
@@ -39,10 +41,6 @@ const bool MAP[14][14] = {
   /* 13: elinia  */ {0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0},
 };
 
-struct Game{
-  std::string warPosition{};
-};
-
 struct Player {
   Player(std::string name, int age, std::string color)
       : name(name), age(age), color(color) {}
@@ -54,34 +52,51 @@ struct Player {
   std::vector<std::string> capturedCity;                      /*if the player wins the city add the city to the vector
                                                                 and delete it from the playable cities.*/
   std::vector<std::string> cardsPlayed;
-  bool                     warStarter = false;
 };
 
-int findWarInstigator(const std::vector<Player>& players){
-  int min = players[0].age;
-  std::vector<int> warStarterIndex;
-  for(size_t player{} ; player < players.size() ; player++){
-    if(players[player].age < min){
-      min = players[player].age;
-      warStarterIndex.clear();
+class Game{
+public:
+  Game(const std::vector<Player> players) : m_Players(players) {
+    m_Turn = FindWarInstigator();
+  }
+
+  const Player& GetCurrentPlayer() const {
+    return m_Players[m_Turn];
+  }
+
+private:
+  size_t FindWarInstigator() const {
+    int min = m_Players[0].age;
+    std::vector<int> potentialInstigators;
+    for(size_t i = 0; i < m_Players.size() ; i++){
+      if(m_Players[i].age < min){
+        min = m_Players[i].age;
+        potentialInstigators.clear();
+      }
+
+      if(m_Players[i].age == min){
+        potentialInstigators.push_back(i);
+      }
     }
 
-    if(players[player].age == min){
-      warStarterIndex.push_back(player);
+    size_t randNum = rand() % potentialInstigators.size();
+    return potentialInstigators[randNum];
+  }
+
+private:
+  size_t m_Turn = 0;
+  std::vector<Player> m_Players;
+  std::string battleMarker; // TODO: set this field after determining the city
+};
+
+bool isCityValid(std::string choice){
+  for(auto city : INDEX_TO_CITY) {
+    if (choice == city) {
+      return true;
     }
   }
 
-  size_t randNum = rand() % warStarterIndex.size();
-  return warStarterIndex[randNum];
-}
-bool chooseWarPosition(std::string choice){
-  for(auto city : INDEX_TO_CITY){
-    if(choice == city){
-      return false;
-    }
-  }
-
-  return true;
+  return false;
 }
 
 std::vector<Player> inputPlayers() {
@@ -124,9 +139,19 @@ std::vector<Player> inputPlayers() {
 int main() {
   srand(time(0));
 
+#ifdef DEBUG
+  std::vector<Player> players{
+    Player("John", 17, "red"),
+    Player("Jane", 18, "blue"),
+    Player("Rick", 17, "yellow"),
+  };
+#else
   auto players = inputPlayers();
-  players[findWarInstigator(players)].warStarter = true;
+#endif
+
   /*
+  NOTE: shuffle logic
+
   std::random_device rd;
   std::mt19937 g(rd());
   std::vector<std::string> cards{"1","1","1","1","1","1","1","1","1","1","2","2","2","2","2","2","2","2","3","3","3","3","3","3","3","3","4","4","4","4","4","4","4","4",
@@ -143,44 +168,24 @@ int main() {
       cards.pop_back();
      }
    }
-   */
-  system("clear");
-  Game game;
-  for(auto player : players){
-    bool result;
-    std::string choice;
-    if (player.warStarter == true) {
-      do {
-        std::cout << "@" << player.name << " choose a city to start the war\n\n";
-        for(auto city : INDEX_TO_CITY){
-          std::cout << city << std::endl;
-        }
-        std::cin >> choice;
-        result =  chooseWarPosition(choice);
-        system("clear");
-      }
-      while(result == true);  
-    }
-    game.warPosition = choice;
-  }
-   /*
-    getchar();
-    
-    for (auto p : players) {
-      system("clear");
-      std::cout << "-----------------\n";
-      if(p.warStarter == true) std::cout << "you can choose a city to start the war\n";
-      std::cout << p.name << " in the age of " << p.age << " has color " << p.color
-                << "\npress enter to show cards!";
-      getchar();
-      system("clear");
-      for(auto c : p.cardsAvailable){
-        std::cout <<  c << "  "; 
-      }
-    
-      std::cout << "\n\npress any key to continue" ;
-      getchar();    
-  }
   */
-  std::cout << "war position is at " << game.warPosition << " city!";
+
+  Game game(players);
+
+  std::string battleMarker;
+  do {
+    std::system("clear");
+
+    std::cout << "Cities:\n";
+    for (auto city : INDEX_TO_CITY) {
+      std::cout << city << ' ';
+    }
+
+    std::cout << "\n\nChoose a city to start the war in.\n";
+    std::cout << '@' << game.GetCurrentPlayer().name << ": ";
+    std::cin >> battleMarker;
+  } while (!isCityValid(battleMarker));
+
+  std::system("clear");
+  std::cout << "War position is at " << battleMarker << " city!";
 }
