@@ -82,9 +82,10 @@ bool chooseWarPosition(std::string choice){
   }
   return true;
 }
-int main() {
-  srand(time(0));
+
+std::vector<Player> inputPlayers() {
   std::cout << "Welcome to Condottiere\n\n";
+
   int numPlayers;
   std::cout << "How many players are you? ";
   std::cin >> numPlayers;
@@ -115,6 +116,14 @@ int main() {
 
     players.emplace_back(name, age, color);
   }
+
+  return players;
+}
+
+int main() {
+  srand(time(0));
+
+  auto players = inputPlayers();
   players[chooseWarStarter(players)].warStarter = true;
   /*
   std::random_device rd;
