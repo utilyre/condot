@@ -1,8 +1,9 @@
-#include <cstdio>
-#include <cstdlib>
 #include <iostream>
 #include <string>
 #include <vector>
+
+#include <game.hpp>
+#include <player.hpp>
 
 #define DEBUG
 
@@ -39,54 +40,6 @@ const bool MAP[14][14] = {
   /* 11: armento */ {0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0},
   /* 12: lia     */ {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0},
   /* 13: elinia  */ {0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0},
-};
-
-struct Player {
-  Player(std::string name, int age, std::string color)
-      : name(name), age(age), color(color) {}
-
-  std::string              name;
-  int                      age;
-  std::string              color;
-  std::vector<std::string> cardsAvailable;
-  std::vector<std::string> capturedCity;                      /*if the player wins the city add the city to the vector
-                                                                and delete it from the playable cities.*/
-  std::vector<std::string> cardsPlayed;
-};
-
-class Game{
-public:
-  Game(const std::vector<Player> players) : m_Players(players) {
-    m_Turn = FindWarInstigator();
-  }
-
-  const Player& GetCurrentPlayer() const {
-    return m_Players[m_Turn];
-  }
-
-private:
-  size_t FindWarInstigator() const {
-    int min = m_Players[0].age;
-    std::vector<int> potentialInstigators;
-    for(size_t i = 0; i < m_Players.size() ; i++){
-      if(m_Players[i].age < min){
-        min = m_Players[i].age;
-        potentialInstigators.clear();
-      }
-
-      if(m_Players[i].age == min){
-        potentialInstigators.push_back(i);
-      }
-    }
-
-    size_t randNum = rand() % potentialInstigators.size();
-    return potentialInstigators[randNum];
-  }
-
-private:
-  size_t m_Turn = 0;
-  std::vector<Player> m_Players;
-  std::string battleMarker; // TODO: set this field after determining the city
 };
 
 bool isCityValid(std::string choice){
