@@ -40,9 +40,11 @@ const bool MAP[14][14] = {
   /* 12: lia     */ {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0},
   /* 13: elinia  */ {0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0},
 };
+
 struct Game{
   std::string warPosition{};
 };
+
 struct Player {
   Player(std::string name, int age, std::string color)
       : name(name), age(age), color(color) {}
@@ -56,23 +58,23 @@ struct Player {
   std::vector<std::string> cardsPlayed;
   bool                     warStarter = false;
 };
+
 int chooseWarStarter(const std::vector<Player>& players){
-   int min   = players[0].age;
-   std::vector<int> warStarterIndex;
-   for(size_t player{} ; player < players.size() ; player++){
-     
-     if(players[player].age < min){
-       min = players[player].age;
-       warStarterIndex.clear();
-     }
-     
-     if(players[player].age == min){
-       warStarterIndex.push_back(player);
-     }
-     
-   }
-   size_t randNum = rand() % warStarterIndex.size();
-   return warStarterIndex[randNum];
+  int min = players[0].age;
+  std::vector<int> warStarterIndex;
+  for(size_t player{} ; player < players.size() ; player++){
+    if(players[player].age < min){
+      min = players[player].age;
+      warStarterIndex.clear();
+    }
+
+    if(players[player].age == min){
+      warStarterIndex.push_back(player);
+    }
+  }
+
+  size_t randNum = rand() % warStarterIndex.size();
+  return warStarterIndex[randNum];
 }
 bool chooseWarPosition(std::string choice){
   for(auto city : INDEX_TO_CITY){
@@ -80,6 +82,7 @@ bool chooseWarPosition(std::string choice){
       return false;
     }
   }
+
   return true;
 }
 
@@ -143,25 +146,25 @@ int main() {
      }
    }
    */
-   system("clear");
-   Game game;
-   for(auto player : players){
-     bool result;
-     std::string choice;
-     if(player.warStarter == true){
-       do{
+  system("clear");
+  Game game;
+  for(auto player : players){
+    bool result;
+    std::string choice;
+    if (player.warStarter == true) {
+      do {
         std::cout << "@" << player.name << " choose a city to start the war\n\n";
         for(auto city : INDEX_TO_CITY){
           std::cout << city << std::endl;
-          }
+        }
         std::cin >> choice;
         result =  chooseWarPosition(choice);
         system("clear");
-       }
-       while(result == true);  
-     }
-     game.warPosition = choice;
-   }
+      }
+      while(result == true);  
+    }
+    game.warPosition = choice;
+  }
    /*
     getchar();
     
