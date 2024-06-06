@@ -10,7 +10,7 @@ SRCDIR := ./src
 OBJDIR := ./obj
 BINDIR := .
 
-INC := $(wildcard $(INCDIR)/*.h)
+INC := $(wildcard $(INCDIR)/*.hpp) $(wildcard $(INCDIR)/*.h)
 SRC := $(wildcard $(SRCDIR)/*.cpp)
 OBJ := $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(SRC))
 BIN := $(BINDIR)/condot
