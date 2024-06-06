@@ -8,20 +8,20 @@
 #define DEBUG
 
 static Region g_Regions[14] = {
-  Region("bella"),
-  Region("caline"),
-  Region("enna"),
-  Region("atela"),
-  Region("pladaci"),
-  Region("borge"),
-  Region("dimase"),
-  Region("rollo"),
-  Region("mornia"),
-  Region("olivadi"),
-  Region("talmone"),
-  Region("armento"),
-  Region("lia"),
-  Region("elinia"),
+  Region("Bella"),
+  Region("Caline"),
+  Region("Enna"),
+  Region("Atela"),
+  Region("Pladaci"),
+  Region("Borge"),
+  Region("Dimase"),
+  Region("Rollo"),
+  Region("Mornia"),
+  Region("Olivadi"),
+  Region("Talmone"),
+  Region("Armento"),
+  Region("Lia"),
+  Region("Elinia"),
 };
 
 static const bool MAP_ADJACENCY[14][14] = {
@@ -94,16 +94,5 @@ int main() {
 
   Map map(14, g_Regions, &MAP_ADJACENCY[0][0]);
   Game game(players, map);
-
-  std::string battleMarker;
-  do {
-    std::system("clear");
-    game.getCity().printCity();
-    std::cout << "\n\nChoose a city to start the war in.\n";
-    std::cout << '@' << game.GetCurrentPlayer().name << ": ";
-    std::cin >> battleMarker;
-  } while (!game.getCity().isCityValid(battleMarker));
-  game.setBattleMarker(battleMarker);
-  std::system("clear");
-  std::cout << "War position is at " << game.getBattleMarker() << " city!";
+  game.Start();
 }

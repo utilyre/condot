@@ -4,16 +4,15 @@
 
 class Map {
 public:
-  /**
-   * Map constructor takes ownership of regions but not adjacency.
-   */
-  Map(size_t numRegions, Region* regions, const bool* adjacency);
-
+  Map(size_t numRegions, const Region* regions, const bool* adjacency);
   Map(const Map& map);
   ~Map();
+
+  Region* GetRegions() const;
+  size_t GetNumRegions() const;
 
 private:
   size_t m_NumRegions;
   Region* m_Regions;
-  const bool* m_Adjacency;
+  bool* m_Adjacency;
 };

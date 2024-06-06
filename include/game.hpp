@@ -1,25 +1,29 @@
 #pragma once
 
 #include <vector>
-#include <string>
 
 #include <player.hpp>
 #include <map.hpp>
+#include <region.hpp>
+
+struct Battle {
+  Battle(Region* region) : m_Region(region) {}
+  Region* m_Region;
+};
 
 class Game {
 public:
   Game(const std::vector<Player>& players, const Map& map);
 
-  const Player& GetCurrentPlayer() const;
-  void setBattleMarker(std::string battleMarkerValue);
-  const std::string getBattleMarker() const;
+  void Start();
 
 private:
   size_t FindWarInstigator() const;
+  const Player& GetCurrentPlayer() const;
+  Battle InitiateBattle() const;
 
 private:
-  size_t m_Turn = 0;
+  size_t m_Turn;
   std::vector<Player> m_Players;
   Map m_Map;
-  std::string battleMarker; // TODO: set this field after determining the city
 };

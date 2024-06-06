@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include <game.hpp>
 #include <player.hpp>
 #include <region.hpp>
@@ -13,16 +15,35 @@ Game::Game(
   m_Turn = FindWarInstigator();
 }
 
+void Game::Start() {
+  Battle battle = InitiateBattle();
+  std::cout << "Starting at " << battle.m_Region->GetName() << '\n';
+}
+
+Battle Game::InitiateBattle() const {
+  auto regions = m_Map.GetRegions();
+  size_t numRegions = m_Map.GetNumRegions();
+  size_t regionIdx;
+
+  do {
+    std::system("clear");
+
+    std::cout << "Choose a region to start the war in:\n";
+    for (size_t i = 0; i < numRegions; i++) {
+      std::cout << "  " << i + 1 << ". " << regions[i].GetName() << '\n';
+    }
+
+    std::cout << "\n@" << GetCurrentPlayer().name
+      << " [1-" << numRegions << "]: ";
+
+    std::cin >> regionIdx;
+  } while (regionIdx > m_Map.GetNumRegions());
+
+  return Battle(&regions[regionIdx - 1]);
+}
+
 const Player& Game::GetCurrentPlayer() const {
   return m_Players[m_Turn];
-}
-
-void Game::setBattleMarker(std::string battleMarkerValue){
-  battleMarker = battleMarkerValue;
-}
-
-const std::string Game::getBattleMarker() const{
-  return battleMarker;
 }
 
 size_t Game::FindWarInstigator() const {
