@@ -13,7 +13,7 @@ struct Battle {
 
 class Game {
 public:
-  Game(const std::vector<Player>& players, const Map& map);
+  Game(std::vector<Player>&& players, Map&& map);
 
   void Start();
 

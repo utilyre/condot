@@ -5,12 +5,9 @@
 #include <region.hpp>
 #include <map.hpp>
 
-Game::Game(
-  const std::vector<Player>& players,
-  const Map& map
-)
-: m_Players(players),
-  m_Map(map)
+Game::Game(std::vector<Player>&& players, Map&& map)
+: m_Players(std::move(players)),
+  m_Map(std::move(map))
 {
   m_Turn = FindWarInstigator();
 }

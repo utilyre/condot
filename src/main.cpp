@@ -56,7 +56,7 @@ int main() {
     /* 13: Elinia  */ 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0,
   };
 
-  Game game(players, Map(regions, adjacency));
+  Game game(std::move(players), Map(regions, adjacency));
   game.Start();
 }
 
