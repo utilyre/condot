@@ -36,7 +36,7 @@ Battle Game::InitiateBattle() const {
       << " [1-" << regions.size() << "]: ";
 
     std::cin >> regionIdx;
-  } while (regionIdx > regions.size());
+  } while (regionIdx == 0 || regionIdx > regions.size());
 
   return Battle(&regions[regionIdx - 1]);
 }
