@@ -22,22 +22,21 @@ void Game::Start() {
 
 Battle Game::InitiateBattle() const {
   auto regions = m_Map.GetRegions();
-  size_t numRegions = m_Map.GetNumRegions();
   size_t regionIdx;
 
   do {
     std::system("clear");
 
     std::cout << "Choose a region to start the war in:\n";
-    for (size_t i = 0; i < numRegions; i++) {
+    for (size_t i = 0; i < regions.size(); i++) {
       std::cout << "  " << i + 1 << ". " << regions[i].GetName() << '\n';
     }
 
     std::cout << "\n@" << GetCurrentPlayer().name
-      << " [1-" << numRegions << "]: ";
+      << " [1-" << regions.size() << "]: ";
 
     std::cin >> regionIdx;
-  } while (regionIdx > m_Map.GetNumRegions());
+  } while (regionIdx > regions.size());
 
   return Battle(&regions[regionIdx - 1]);
 }

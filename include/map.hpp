@@ -1,18 +1,16 @@
 #pragma once
 
+#include <vector>
+
 #include <region.hpp>
 
 class Map {
 public:
-  Map(size_t numRegions, const Region* regions, const bool* adjacency);
-  Map(const Map& map);
-  ~Map();
+  Map(const std::vector<Region> regions, const std::vector<bool> adjacency);
 
-  Region* GetRegions() const;
-  size_t GetNumRegions() const;
+  const std::vector<Region>& GetRegions() const;
 
 private:
-  size_t m_NumRegions;
-  Region* m_Regions;
-  bool* m_Adjacency;
+  std::vector<Region> m_Regions;
+  std::vector<bool> m_Adjacency;
 };
