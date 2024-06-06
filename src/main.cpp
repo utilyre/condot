@@ -7,40 +7,59 @@
 
 #define DEBUG
 
-static Region g_Regions[14] = {
-  Region("Bella"),
-  Region("Caline"),
-  Region("Enna"),
-  Region("Atela"),
-  Region("Pladaci"),
-  Region("Borge"),
-  Region("Dimase"),
-  Region("Rollo"),
-  Region("Mornia"),
-  Region("Olivadi"),
-  Region("Talmone"),
-  Region("Armento"),
-  Region("Lia"),
-  Region("Elinia"),
-};
+std::vector<Player> inputPlayers();
 
-static const bool MAP_ADJACENCY[14][14] = {
-  /*                 0  1  2  3  4  5  6  7  8  9 10 11 12 13 */
-  /*  0: bella   */ {0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-  /*  1: caline  */ {1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
-  /*  2: enna    */ {0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0},
-  /*  3: altela  */ {0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0},
-  /*  4: pladaci */ {1, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0},
-  /*  5: borge   */ {0, 1, 0, 0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0},
-  /*  6: dimase  */ {0, 0, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0},
-  /*  7: rollo   */ {0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1},
-  /*  8: mornia  */ {0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 0, 0},
-  /*  9: olivadi */ {0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0},
-  /* 10: talmone */ {0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1},
-  /* 11: armento */ {0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0},
-  /* 12: lia     */ {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0},
-  /* 13: elinia  */ {0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0},
-};
+int main() {
+  srand(time(0));
+
+#ifdef DEBUG
+  std::vector<Player> players{
+    Player("John", 17, "red"),
+    Player("Jane", 18, "blue"),
+    Player("Rick", 17, "yellow"),
+  };
+#else
+  auto players = inputPlayers();
+#endif
+
+  constexpr size_t numRegions = 14;
+  Region regions[numRegions] = {
+    Region("Bella"),
+    Region("Caline"),
+    Region("Enna"),
+    Region("Atela"),
+    Region("Pladaci"),
+    Region("Borge"),
+    Region("Dimase"),
+    Region("Rollo"),
+    Region("Mornia"),
+    Region("Olivadi"),
+    Region("Talmone"),
+    Region("Armento"),
+    Region("Lia"),
+    Region("Elinia"),
+  };
+  bool adjacency[numRegions][numRegions] = {
+    /*                 0  1  2  3  4  5  6  7  8  9 10 11 12 13 */
+    /*  0: Bella   */ {0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    /*  1: Caline  */ {1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+    /*  2: Enna    */ {0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0},
+    /*  3: Altela  */ {0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0},
+    /*  4: Pladaci */ {1, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0},
+    /*  5: Borge   */ {0, 1, 0, 0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0},
+    /*  6: Dimase  */ {0, 0, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0},
+    /*  7: Rollo   */ {0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1},
+    /*  8: Mornia  */ {0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 0, 0},
+    /*  9: Olivadi */ {0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0},
+    /* 10: Talmone */ {0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1},
+    /* 11: Armento */ {0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0},
+    /* 12: Lia     */ {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0},
+    /* 13: Elinia  */ {0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0},
+  };
+
+  Game game(players, Map(numRegions, regions, &adjacency[0][0]));
+  game.Start();
+}
 
 std::vector<Player> inputPlayers() {
   std::cout << "Welcome to Condottiere\n\n";
@@ -77,22 +96,4 @@ std::vector<Player> inputPlayers() {
   }
 
   return players;
-}
-
-int main() {
-  srand(time(0));
-
-#ifdef DEBUG
-  std::vector<Player> players{
-    Player("John", 17, "red"),
-    Player("Jane", 18, "blue"),
-    Player("Rick", 17, "yellow"),
-  };
-#else
-  auto players = inputPlayers();
-#endif
-
-  Map map(14, g_Regions, &MAP_ADJACENCY[0][0]);
-  Game game(players, map);
-  game.Start();
 }
