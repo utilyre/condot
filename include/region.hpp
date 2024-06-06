@@ -6,7 +6,6 @@
 
 class Region {
 public:
-  Region() {}
   explicit Region(const std::string& name);
 
   void SetRuler(const Player* ruler);
