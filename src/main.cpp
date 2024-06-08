@@ -1,7 +1,11 @@
 #include <iostream>
+#include <memory>
 #include <string>
 #include <vector>
 
+#include<cards.hpp>
+#include<normalcards.hpp>
+#include<specialcards.hpp>
 #include <game.hpp>
 #include <player.hpp>
 
@@ -23,7 +27,12 @@ int main() {
 #endif
 
   Game game(std::move(players));
-  game.Start();
+  //game.Start();
+  for(auto& card : game.GetCards()){
+   if(auto* ptr = dynamic_cast<NormalCards*>(card.get())){
+    std:: cout << ptr->GetName()<< " -> " << ptr->getPower() << '\n';
+   }
+  }
 }
 
 std::vector<Player> inputPlayers() {
@@ -58,7 +67,6 @@ std::vector<Player> inputPlayers() {
     std::cin >> color;
 
     players.emplace_back(name, age, color);
-  }
-
-  return players;
+  }  
+   return players;
 }

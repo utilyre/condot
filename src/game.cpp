@@ -1,6 +1,12 @@
 #include <iostream>
+#include <string>
+#include <algorithm>
+#include <random>
 
+#include <cards.hpp>
+#include <normalcards.hpp>
 #include <game.hpp>
+#include <memory>
 #include <player.hpp>
 #include <region.hpp>
 #include <map.hpp>
@@ -42,6 +48,7 @@ Game::Game(std::vector<Player>&& players)
   })
 {
   m_Turn = FindWarInstigator();
+  InsertCards();
 }
 
 void Game::Start() {
@@ -76,6 +83,7 @@ const Player& Game::GetCurrentPlayer() const {
 
 size_t Game::FindWarInstigator() const {
   int min = m_Players[0].age;
+  //void Start();
   std::vector<int> potentialInstigators;
   for(size_t i = 0; i < m_Players.size() ; i++){
     if(m_Players[i].age < min){
@@ -90,4 +98,30 @@ size_t Game::FindWarInstigator() const {
 
   size_t randNum = rand() % potentialInstigators.size();
   return potentialInstigators[randNum];
+}
+
+std::vector<std::unique_ptr<Cards>>& Game::InsertCards(){
+  for(size_t i{1}; i < 11; i++){
+    for(size_t j{}; j < 10; j++){
+      if( i == 7 || i == 8 || i == 9){
+        break;
+      }
+      else if( i != 1 && j > 7){
+        break;
+      }  
+      m_Cards.push_back(std::make_unique<NormalCards>(std::to_string(i),i));
+    }
+      }
+  ShuffleCards();
+  return m_Cards;
+}
+
+const std::vector<std::unique_ptr<Cards>>& Game::GetCards(){
+  return m_Cards;
+}
+
+std::vector<std::unique_ptr<Cards>>& Game::ShuffleCards(){
+  int seed = rand();
+  std::shuffle(m_Cards.begin(), m_Cards.end(), std::default_random_engine(seed));
+  return m_Cards;  
 }
