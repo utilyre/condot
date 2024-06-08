@@ -2,11 +2,9 @@
 #include <string>
 class Cards{
   public:
-    Cards(std::string NameValue) : name(NameValue){}
+    Cards(std::string name);
+    const std::string GetName() const;
     virtual ~Cards(){} //polymorphic
-    const std::string GetName() const{
-      return name;
-    }
   private:
   std::string name;
 };
