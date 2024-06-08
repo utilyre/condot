@@ -61,7 +61,7 @@ Battle Game::InitiateBattle() const {
       std::cout << "  " << i + 1 << ". " << regions[i].GetName() << '\n';
     }
 
-    std::cout << "\n@" << GetCurrentPlayer().name
+    std::cout << "\n@" << GetCurrentPlayer().GetName()
       << " [1-" << regions.size() << "]: ";
 
     std::cin >> regionIdx;
@@ -75,15 +75,15 @@ const Player& Game::GetCurrentPlayer() const {
 }
 
 size_t Game::FindWarInstigator() const {
-  int min = m_Players[0].age;
+  int min = m_Players[0].GetAge();
   std::vector<int> potentialInstigators;
   for(size_t i = 0; i < m_Players.size() ; i++){
-    if(m_Players[i].age < min){
-      min = m_Players[i].age;
+    if(m_Players[i].GetAge() < min){
+      min = m_Players[i].GetAge();
       potentialInstigators.clear();
     }
 
-    if(m_Players[i].age == min){
+    if(m_Players[i].GetAge() == min){
       potentialInstigators.push_back(i);
     }
   }
