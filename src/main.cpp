@@ -27,7 +27,7 @@ int main() {
 #endif
 
   Game game(std::move(players));
-  //game.Start();
+  game.Start();
   for(auto& card : game.GetCards()){
    if(auto* ptr = dynamic_cast<NormalCards*>(card.get())){
     std:: cout << ptr->GetName()<< " -> " << ptr->getPower() << '\n';

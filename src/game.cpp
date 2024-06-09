@@ -1,3 +1,4 @@
+#include <cstdio>
 #include <iostream>
 #include <string>
 #include <algorithm>
@@ -58,7 +59,7 @@ void Game::Start() {
 
 Battle Game::InitiateBattle() const {
   auto regions = m_Map.GetRegions();
-  size_t regionIdx;
+  size_t regionIdx{};
 
   do {
     std::system("clear");
@@ -73,7 +74,6 @@ Battle Game::InitiateBattle() const {
 
     std::cin >> regionIdx;
   } while (regionIdx == 0 || regionIdx > regions.size());
-
   return Battle(&regions[regionIdx - 1]);
 }
 
