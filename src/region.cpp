@@ -1,6 +1,6 @@
 #include <region.hpp>
 
-Region::Region(const std::string& name) : m_Name(name) {}
+Region::Region(const std::string& name) : m_Name(name), m_Ruler(nullptr) {}
 
 void Region::SetRuler(const Player* ruler) {
   m_Ruler = ruler;
