@@ -18,9 +18,9 @@ int main() {
 
 #ifdef DEBUG
   std::vector<Player> players{
-    Player("John", 17, "red"),
-    Player("Jane", 18, "blue"),
-    Player("Rick", 17, "yellow"),
+    Player("John", "red", 17),
+    Player("Jane", "blue", 18),
+    Player("Rick", "yellow", 17),
   };
 #else
   auto players = inputPlayers();
@@ -65,8 +65,7 @@ std::vector<Player> inputPlayers() {
     std::string color;
     std::cout << "Color: ";
     std::cin >> color;
-
-    players.emplace_back(name, age, color);
-  }  
-   return players;
+    players.emplace_back(name, color, age);
+  }
+  return players;
 }

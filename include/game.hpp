@@ -17,7 +17,7 @@ struct Battle {
 class Game {
 public:
   Game(std::vector<Player>&& players);
-  void Start();
+  void  Start();
   const std::vector<std::unique_ptr<Cards>>& GetCards();
 private:
   size_t FindWarInstigator() const;
@@ -25,6 +25,7 @@ private:
   Battle InitiateBattle() const;
   std::vector<std::unique_ptr<Cards>>& InsertCards() ;
   std::vector<std::unique_ptr<Cards>>& ShuffleCards();
+  void DealTheCards();
 private:
   size_t m_Turn;
   std::vector<Player> m_Players;

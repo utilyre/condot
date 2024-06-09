@@ -1,17 +1,25 @@
 #pragma once
 
+#include <memory>
 #include <string>
+
 #include <vector>
+#include <memory.h>
+#include <cards.hpp>
 
-struct Player {
-  Player(std::string name, int age, std::string color)
-      : name(name), age(age), color(color) {}
+class Player {
+public:
+  Player();
+  Player(std::string name, std::string color, int age);
 
-  std::string              name;
-  int                      age;
-  std::string              color;
-  std::vector<std::string> cardsAvailable;
-  std::vector<std::string> capturedCity;                      /*if the player wins the city add the city to the vector
-                                                                and delete it from the playable cities.*/
-  std::vector<std::string> cardsPlayed;
+  std::string                         name;
+  int                                 age;
+  std::string                         color;
+  const std::string& GetName() const;
+  int GetAge() const;
+
+private:
+  std::string m_Name;
+  std::string m_Color;
+  int m_Age;
 };
