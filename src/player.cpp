@@ -1,3 +1,4 @@
+#include <memory>
 #include <stdexcept>
 #include <iostream>
 
@@ -35,4 +36,27 @@ void Player::PrintCards(){
       std::cout << CardPtr->getPower() << ' ';
     }
   }
+}
+
+void Player::PlayCard(std::string cardname){
+  for(size_t i{}; i < AvailableCards.size(); i++){
+    if(auto* cptr = dynamic_cast<NormalCards*>(AvailableCards[i].get())){
+      if(cardname == cptr->GetName()){
+        PlayedCards.push_back(std::move(AvailableCards[i]));
+        AvailableCards.erase(AvailableCards.begin() + i);
+        //std::cout << "size: " << PlayedCards.size() << '\n' << PlayedCards[0]->GetName();
+        break;
+      }
+      else{
+        std::cout << cptr->GetName() << " cant delete\n";
+      }
+    }
+    else{
+      std::cout << "cant convert\n";
+    }
+  }
+ }
+
+std::vector<std::shared_ptr<Cards>>& Player::GetPlayedCards(){
+  return PlayedCards;
 }

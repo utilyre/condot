@@ -25,14 +25,16 @@ int main() {
 #else
   auto players = inputPlayers();
 #endif
-
+  std::string cardname{};
   Game game(std::move(players));
   game.Start();
-  for(auto player : game.GetPlayer()){
-    std::cout << player.GetName() << '\n';
-    player.PrintCards();
-  }
-}
+  game.GetPlayer()[0].PrintCards();
+  std::cout << '\n' << game.GetPlayer()[0].GetAvailableCards().size() 
+            << '\n' << game.GetPlayer()[0].GetPlayedCards().size();
+  std::cin >> cardname;
+  game.GetPlayer()[0].PlayCard(cardname);
+  std::cout << '\n' << game.GetPlayer()[0].GetAvailableCards().size() 
+            << '\n' << game.GetPlayer()[0].GetPlayedCards().size();}
 std::vector<Player> inputPlayers() {
   std::cout << "Welcome to Condottiere\n\n";
 
