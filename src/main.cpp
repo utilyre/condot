@@ -28,6 +28,10 @@ int main() {
 
   Game game(std::move(players));
   game.Start();
+  for(auto player : game.GetPlayer()){
+    std::cout << player.GetName() << '\n';
+    player.PrintCards();
+  }
 }
 std::vector<Player> inputPlayers() {
   std::cout << "Welcome to Condottiere\n\n";

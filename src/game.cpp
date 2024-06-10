@@ -128,7 +128,7 @@ std::vector<std::unique_ptr<Cards>>& Game::ShuffleCards(){
 }
 
 void Game::DealTheCards(){
-  for(auto player : m_Players){
+  for(auto& player : m_Players){
     for(size_t i{}; i < 10; i++){
       player.GetAvailableCards().push_back(std::move(m_Cards.back()));
       m_Cards.pop_back();

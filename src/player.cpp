@@ -34,8 +34,5 @@ void Player::PrintCards(){
     if(auto* CardPtr = dynamic_cast<NormalCards*>(card.get())){
       std::cout << CardPtr->getPower() << ' ';
     }
-    else{
-      std::cout << "cant";
-    }
   }
 }
