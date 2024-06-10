@@ -3,9 +3,9 @@
 #include <string>
 #include <vector>
 
-#include<cards.hpp>
-#include<normalcards.hpp>
-#include<specialcards.hpp>
+#include <cards.hpp>
+#include <normalcards.hpp>
+#include <specialcards.hpp>
 #include <game.hpp>
 #include <player.hpp>
 
@@ -28,13 +28,7 @@ int main() {
 
   Game game(std::move(players));
   game.Start();
-  for(auto& card : game.GetCards()){
-   if(auto* ptr = dynamic_cast<NormalCards*>(card.get())){
-    std:: cout << ptr->GetName()<< " -> " << ptr->getPower() << '\n';
-   }
-  }
 }
-
 std::vector<Player> inputPlayers() {
   std::cout << "Welcome to Condottiere\n\n";
 

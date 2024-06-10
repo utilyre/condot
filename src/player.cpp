@@ -1,6 +1,8 @@
 #include <stdexcept>
+#include <iostream>
 
 #include <player.hpp>
+#include <normalcards.hpp>
 
 Player::Player() : m_Age(0) {}
 
@@ -20,4 +22,20 @@ const std::string& Player::GetName() const {
 
 int Player::GetAge() const {
   return m_Age;
+}
+
+std::vector<std::shared_ptr<Cards>>& Player::GetAvailableCards() /* cant bind const to address*/
+{
+  return AvailableCards;
+}
+
+void Player::PrintCards(){
+  for(auto& card : AvailableCards){
+    if(auto* CardPtr = dynamic_cast<NormalCards*>(card.get())){
+      std::cout << CardPtr->getPower() << ' ';
+    }
+    else{
+      std::cout << "cant";
+    }
+  }
 }

@@ -55,6 +55,7 @@ Game::Game(std::vector<Player>&& players)
 void Game::Start() {
   Battle battle = InitiateBattle();
   std::cout << "Starting at " << battle.m_Region->GetName() << '\n';
+  DealTheCards();
 }
 
 Battle Game::InitiateBattle() const {
@@ -124,4 +125,17 @@ std::vector<std::unique_ptr<Cards>>& Game::ShuffleCards(){
   int seed = rand();
   std::shuffle(m_Cards.begin(), m_Cards.end(), std::default_random_engine(seed));
   return m_Cards;  
+}
+
+void Game::DealTheCards(){
+  for(auto player : m_Players){
+    for(size_t i{}; i < 10; i++){
+      player.GetAvailableCards().push_back(std::move(m_Cards.back()));
+      m_Cards.pop_back();
+    }
+  }
+}
+
+std::vector<Player> Game::GetPlayer() const{
+  return m_Players;
 }

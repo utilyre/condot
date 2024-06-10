@@ -1,5 +1,6 @@
 #pragma once
 
+#include <future>
 #include <memory>
 #include <string>
 
@@ -13,9 +14,12 @@ public:
   Player(std::string name, std::string color, int age);
   const std::string& GetName() const;
   int GetAge() const;
-
+  std::vector<std::shared_ptr<Cards>>& GetAvailableCards();
+  void PrintCards();
 private:
-  std::string m_Name;
-  std::string m_Color;
-  int m_Age;
+  
+  std::vector<std::shared_ptr<Cards>> AvailableCards;  
+  std::string                         m_Name;
+  std::string                         m_Color;
+  int                                 m_Age;
 };

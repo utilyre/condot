@@ -13,6 +13,6 @@ public:
   const std::string& GetName() const;
 
 private:
-  std::string m_Name;
+  std::string   m_Name;
   const Player* m_Ruler;
 };
