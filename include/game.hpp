@@ -2,14 +2,11 @@
 
 #include <vector>
 
+#include <turn.hpp>
 #include <player.hpp>
 #include <map.hpp>
 #include <region.hpp>
-
-struct Battle {
-  Battle(Region* region) : m_Region(region) {}
-  Region* m_Region;
-};
+#include <battle.hpp>
 
 class Game {
 public:
@@ -18,12 +15,7 @@ public:
   void Start();
 
 private:
-  size_t FindWarInstigator() const;
-  const Player& GetCurrentPlayer() const;
-  Battle InitiateBattle();
-
-private:
-  size_t m_Turn;
   std::vector<Player> m_Players;
-  Map m_Map;
+  Turn m_Turn;
+  const Map m_Map;
 };

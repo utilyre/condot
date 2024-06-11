@@ -9,7 +9,7 @@ public:
   Map(const std::vector<Region> regions, const std::vector<bool> adjacency);
 
   const std::vector<Region>& GetRegions() const;
-  Region* GetRegion(size_t idx);
+  const Region* GetRegion(size_t idx) const;
 
 private:
   std::vector<Region> m_Regions;
