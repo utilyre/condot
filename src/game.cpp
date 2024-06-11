@@ -52,7 +52,7 @@ void Game::Start() {
 }
 
 Battle Game::InitiateBattle() {
-  std::vector<Region>& regions = m_Map.GetRegions();
+  const auto& regions = m_Map.GetRegions();
   size_t regionIdx;
 
   do {
@@ -69,7 +69,7 @@ Battle Game::InitiateBattle() {
     std::cin >> regionIdx;
   } while (regionIdx == 0 || regionIdx > regions.size());
 
-  return Battle(&regions[regionIdx - 1]);
+  return Battle(m_Map.GetRegion(regionIdx - 1));
 }
 
 const Player& Game::GetCurrentPlayer() const {
