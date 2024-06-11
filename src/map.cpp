@@ -15,6 +15,6 @@ Map::Map(
   }
 }
 
-const std::vector<Region>& Map::GetRegions() const {
+std::vector<Region>& Map::GetRegions() {
   return m_Regions;
 }

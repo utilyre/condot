@@ -20,7 +20,7 @@ public:
 private:
   size_t FindWarInstigator() const;
   const Player& GetCurrentPlayer() const;
-  Battle InitiateBattle() const;
+  Battle InitiateBattle();
 
 private:
   size_t m_Turn;
