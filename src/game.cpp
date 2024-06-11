@@ -46,11 +46,13 @@ Game::Game(std::vector<Player>&& players)
 
 void Game::Start() {
   Battle battle = InitiateBattle();
-  std::cout << "Starting at " << battle.m_Region->GetName() << '\n';
+  std::cout << "Starting at ";
+  std::cout << battle.m_Region->GetName();
+  std::cout << '\n';
 }
 
-Battle Game::InitiateBattle() const {
-  auto regions = m_Map.GetRegions();
+Battle Game::InitiateBattle() {
+  std::vector<Region>& regions = m_Map.GetRegions();
   size_t regionIdx;
 
   do {
