@@ -2,7 +2,7 @@
 #include <iostream>
 
 #include <player.hpp>
-#include <normalcards.hpp>
+#include <normalcard.hpp>
 
 Player::Player() : m_Age(0) {}
 Player::Player(std::string name, std::string color, int age)

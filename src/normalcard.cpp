@@ -1,5 +1,5 @@
-#include <cards.hpp>
-#include <normalcards.hpp>
+#include <card.hpp>
+#include <normalcard.hpp>
 
 NormalCard::NormalCard(int power) : m_Power(power) {}
 

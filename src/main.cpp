@@ -2,9 +2,9 @@
 #include <string>
 #include <vector>
 
-#include <cards.hpp>
-#include <normalcards.hpp>
-#include <specialcards.hpp>
+#include <card.hpp>
+#include <normalcard.hpp>
+#include <specialcard.hpp>
 #include <game.hpp>
 #include <player.hpp>
 

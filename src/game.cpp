@@ -4,8 +4,8 @@
 #include <algorithm>
 #include <random>
 
-#include <cards.hpp>
-#include <normalcards.hpp>
+#include <card.hpp>
+#include <normalcard.hpp>
 #include <game.hpp>
 #include <player.hpp>
 #include <region.hpp>

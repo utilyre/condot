@@ -4,7 +4,7 @@
 #include <vector>
 
 #include <memory.h>
-#include <cards.hpp>
+#include <card.hpp>
 
 class Player {
 public:

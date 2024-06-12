@@ -1,5 +1,5 @@
 #pragma once
 
-#include <cards.hpp>
+#include <card.hpp>
 
 class SpecialCard : public Card {};

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <cards.hpp>
+#include <card.hpp>
 
 class NormalCard : public Card {
 public:

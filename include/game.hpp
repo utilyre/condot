@@ -5,7 +5,7 @@
 #include <player.hpp>
 #include <map.hpp>
 #include <region.hpp>
-#include <cards.hpp>
+#include <card.hpp>
 
 struct Battle {
   Battle(Region* region) : m_Region(region) {}
