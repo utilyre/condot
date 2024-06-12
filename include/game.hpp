@@ -17,19 +17,21 @@ struct Battle {
 class Game {
 public:
   Game(std::vector<Player>&& players);
+  ~Game();
   void  Start();    
-  std::vector<Player> GetPlayer() const;
+  std::vector<Player>& GetPlayer() ;
+  void PlayCard();
 private:
   size_t FindWarInstigator() const;
   const Player& GetCurrentPlayer() const;
   Battle InitiateBattle() const;
-  const std::vector<std::unique_ptr<Cards>>& GetCards();
-  std::vector<std::unique_ptr<Cards>>& InsertCards() ;
-  std::vector<std::unique_ptr<Cards>>& ShuffleCards();
+  const std::vector<Cards*>& GetCards();
+  std::vector<Cards*>& InsertCards() ;
+  std::vector<Cards*>& ShuffleCards();
   void DealTheCards();
 private:
-  size_t                              m_Turn;
-  std::vector<Player>                 m_Players;
-  std::vector<std::unique_ptr<Cards>> m_Cards;
-  Map                                 m_Map;
+  size_t              m_Turn;
+  std::vector<Player> m_Players;
+  std::vector<Cards*> m_Cards;
+  Map                 m_Map;
 };

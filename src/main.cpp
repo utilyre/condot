@@ -28,14 +28,9 @@ int main() {
   std::string cardname{};
   Game game(std::move(players));
   game.Start();
-  game.GetPlayer()[0].PrintCards();
-  std::cout << '\n' << game.GetPlayer()[0].GetAvailableCards().size() 
-            << '\n' << game.GetPlayer()[0].GetPlayedCards().size();
-  std::cin >> cardname;
-  game.GetPlayer()[0].PlayCard(cardname);
-  std::cout << '\n' << game.GetPlayer()[0].GetAvailableCards().size() 
-            << '\n' << game.GetPlayer()[0].GetPlayedCards().size();}
-std::vector<Player> inputPlayers() {
+  game.PlayCard();
+}
+  std::vector<Player> inputPlayers() {
   std::cout << "Welcome to Condottiere\n\n";
 
   int numPlayers;

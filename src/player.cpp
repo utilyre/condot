@@ -6,7 +6,6 @@
 #include <normalcards.hpp>
 
 Player::Player() : m_Age(0) {}
-
 Player::Player(std::string name, std::string color, int age)
 : m_Name(name),
   m_Color(color),
@@ -25,38 +24,27 @@ int Player::GetAge() const {
   return m_Age;
 }
 
-std::vector<std::shared_ptr<Cards>>& Player::GetAvailableCards() /* cant bind const to address*/
+Player::~Player(){
+  for(auto* card : AvailableCards){
+    delete card;
+    AvailableCards.clear();
+    //std::cout << " x: card\n";
+  }
+}
+
+std::vector<Cards*>& Player::GetAvailableCards() /* cant bind const to address*/
 {
   return AvailableCards;
 }
 
 void Player::PrintCards(){
   for(auto& card : AvailableCards){
-    if(auto* CardPtr = dynamic_cast<NormalCards*>(card.get())){
+    if(auto* CardPtr = dynamic_cast<NormalCards*>(card)){
       std::cout << CardPtr->getPower() << ' ';
     }
   }
 }
 
-void Player::PlayCard(std::string cardname){
-  for(size_t i{}; i < AvailableCards.size(); i++){
-    if(auto* cptr = dynamic_cast<NormalCards*>(AvailableCards[i].get())){
-      if(cardname == cptr->GetName()){
-        PlayedCards.push_back(std::move(AvailableCards[i]));
-        AvailableCards.erase(AvailableCards.begin() + i);
-        //std::cout << "size: " << PlayedCards.size() << '\n' << PlayedCards[0]->GetName();
-        break;
-      }
-      else{
-        std::cout << cptr->GetName() << " cant delete\n";
-      }
-    }
-    else{
-      std::cout << "cant convert\n";
-    }
-  }
- }
-
-std::vector<std::shared_ptr<Cards>>& Player::GetPlayedCards(){
+std::vector<Cards*>& Player::GetPlayedCards(){
   return PlayedCards;
 }

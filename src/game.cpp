@@ -52,6 +52,14 @@ Game::Game(std::vector<Player>&& players)
   InsertCards();
 }
 
+Game::~Game(){
+  for(auto& card : m_Cards){
+    delete card;
+    m_Cards.clear();
+    //std::cout << "card deleted\n";
+   }
+ }
+
 void Game::Start() {
   Battle battle = InitiateBattle();
   std::cout << "Starting at " << battle.m_Region->GetName() << '\n';
@@ -101,7 +109,7 @@ size_t Game::FindWarInstigator() const {
   return potentialInstigators[randNum];
 }
 
-std::vector<std::unique_ptr<Cards>>& Game::InsertCards(){
+std::vector<Cards*>& Game::InsertCards(){
   for(size_t i{1}; i < 11; i++){
     for(size_t j{}; j < 10; j++){
       if( i == 7 || i == 8 || i == 9){
@@ -109,19 +117,20 @@ std::vector<std::unique_ptr<Cards>>& Game::InsertCards(){
       }
       else if( i != 1 && j > 7){
         break;
-      }  
-      m_Cards.push_back(std::make_unique<NormalCards>(std::to_string(i),i));
+      }
+      NormalCards* card = new NormalCards(std::to_string(i),i);
+      m_Cards.push_back(card);
     }
       }
   ShuffleCards();
   return m_Cards;
 }
 
-const std::vector<std::unique_ptr<Cards>>& Game::GetCards(){
+const std::vector<Cards*>& Game::GetCards(){
   return m_Cards;
 }
 
-std::vector<std::unique_ptr<Cards>>& Game::ShuffleCards(){
+std::vector<Cards*>& Game::ShuffleCards(){
   int seed = rand();
   std::shuffle(m_Cards.begin(), m_Cards.end(), std::default_random_engine(seed));
   return m_Cards;  
@@ -130,12 +139,32 @@ std::vector<std::unique_ptr<Cards>>& Game::ShuffleCards(){
 void Game::DealTheCards(){
   for(auto& player : m_Players){
     for(size_t i{}; i < 10; i++){
-      player.GetAvailableCards().push_back(std::move(m_Cards.back()));
+      player.GetAvailableCards().push_back(m_Cards.back());
       m_Cards.pop_back();
     }
   }
 }
 
-std::vector<Player> Game::GetPlayer() const{
+std::vector<Player>& Game::GetPlayer() {
   return m_Players;
+}
+
+void Game::PlayCard(){
+  for(auto& player : m_Players){
+    system("clear");
+    for(auto& card : player.GetAvailableCards()){
+      std::cout << card->GetName() << " ";
+    }
+    std::string cardname{};
+    std::cin >> cardname;
+    for(size_t i{}; i < player.GetAvailableCards().size(); i++){
+      if(auto* cptr = dynamic_cast<NormalCards*>(player.GetAvailableCards()[i])){
+        if(cardname == cptr->GetName()){
+          player.GetPlayedCards().push_back(std::move(player.GetAvailableCards()[i]));
+          player.GetAvailableCards().erase(player.GetAvailableCards().begin() + i);
+          break;
+        }
+      }
+    }
+  }  
 }
