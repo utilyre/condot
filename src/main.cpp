@@ -27,7 +27,6 @@ int main() {
   std::string cardname{};
   Game game(std::move(players));
   game.Start();
-  game.PlayCard();
 }
 
 std::vector<Player> inputPlayers() {

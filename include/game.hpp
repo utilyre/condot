@@ -22,8 +22,8 @@ public:
 
 private:
   size_t FindWarInstigator() const;
-  const Player& GetCurrentPlayer() const;
-  Battle InitiateBattle() const;
+  Player& GetCurrentPlayer();
+  Battle InitiateBattle();
   const std::vector<Card*>& GetCards();
   std::vector<Card*>& InsertCards() ;
   std::vector<Card*>& ShuffleCards();

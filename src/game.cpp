@@ -60,12 +60,24 @@ Game::~Game(){
  }
 
 void Game::Start() {
-  Battle battle = InitiateBattle();
-  std::cout << "Starting at " << battle.m_Region->GetName() << '\n';
-  DealTheCards();
+  std::system("clear");
+
+  while (true /* TODO: !IsGameOver() */) {
+    std::system("clear");
+
+    Battle battle = InitiateBattle();
+    std::cout << "Starting at " << battle.m_Region->GetName() << '\n';
+    DealTheCards();
+
+    while (true /* TODO: !battle.IsOver() */) {
+      std::system("clear");
+      PlayCard();
+      m_Turn = (m_Turn + 1) % m_Players.size();
+    }
+  }
 }
 
-Battle Game::InitiateBattle() const {
+Battle Game::InitiateBattle() {
   auto regions = m_Map.GetRegions();
   size_t regionIdx{};
 
@@ -85,7 +97,7 @@ Battle Game::InitiateBattle() const {
   return Battle(&regions[regionIdx - 1]);
 }
 
-const Player& Game::GetCurrentPlayer() const {
+Player& Game::GetCurrentPlayer() {
   return m_Players[m_Turn];
 }
 
@@ -149,23 +161,21 @@ std::vector<Player>& Game::GetPlayer() {
 }
 
 void Game::PlayCard(){
-  for(auto& player : m_Players){
-    system("clear");
+  Player& player = GetCurrentPlayer();
 
-    std::cout << "Available Cards:\n";
-    player.PrintCards();
+  std::cout << "Available Cards:\n";
+  player.PrintCards();
 
-    std::cout << "\n\n@" << player.GetName() << ": ";
-    std::string cardname;
-    std::cin >> cardname;
+  std::cout << "\n\n@" << player.GetName() << ": ";
+  std::string cardname;
+  std::cin >> cardname;
 
-    for(size_t i{}; i < player.GetAvailableCards().size(); i++){
-      Card* card = player.GetAvailableCards()[i];
-      if (card->GetName() == cardname) {
-        player.GetPlayedCards().push_back(player.GetAvailableCards()[i]);
-        player.GetAvailableCards().erase(player.GetAvailableCards().begin() + i);
-        break;
-      }
+  for(size_t i{}; i < player.GetAvailableCards().size(); i++){
+    Card* card = player.GetAvailableCards()[i];
+    if (card->GetName() == cardname) {
+      player.GetPlayedCards().push_back(player.GetAvailableCards()[i]);
+      player.GetAvailableCards().erase(player.GetAvailableCards().begin() + i);
+      break;
     }
-  }  
+  }
 }
