@@ -12,5 +12,5 @@ public:
 
 private:
   std::vector<Region> m_Regions;
-  std::vector<bool>   m_Adjacency;
+  std::vector<bool> m_Adjacency;
 };

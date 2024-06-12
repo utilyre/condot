@@ -29,7 +29,8 @@ int main() {
   game.Start();
   game.PlayCard();
 }
-  std::vector<Player> inputPlayers() {
+
+std::vector<Player> inputPlayers() {
   std::cout << "Welcome to Condottiere\n\n";
 
   int numPlayers;

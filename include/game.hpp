@@ -18,7 +18,7 @@ public:
   ~Game();
   void Start();
   std::vector<Player>& GetPlayer() ;
-  void   PlayCard();
+  void PlayCard();
 
 private:
   size_t FindWarInstigator() const;
@@ -27,7 +27,7 @@ private:
   const std::vector<Card*>& GetCards();
   std::vector<Card*>& InsertCards() ;
   std::vector<Card*>& ShuffleCards();
-  void   DealTheCards();
+  void DealTheCards();
 
 private:
   size_t m_Turn;
