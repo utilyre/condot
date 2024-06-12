@@ -18,17 +18,17 @@ class Game {
 public:
   Game(std::vector<Player>&& players);
   ~Game();
-  void  Start();    
-  std::vector<Player>& GetPlayer() ;
-  void PlayCard();
+  void                       Start();    
+  std::vector<Player>&       GetPlayer() ;
+  void                       PlayCard();
 private:
-  size_t FindWarInstigator() const;
-  const Player& GetCurrentPlayer() const;
-  Battle InitiateBattle() const;
+  size_t                     FindWarInstigator() const;
+  const Player&              GetCurrentPlayer() const;
+  Battle                     InitiateBattle() const;
   const std::vector<Cards*>& GetCards();
-  std::vector<Cards*>& InsertCards() ;
-  std::vector<Cards*>& ShuffleCards();
-  void DealTheCards();
+  std::vector<Cards*>&       InsertCards() ;
+  std::vector<Cards*>&       ShuffleCards();
+  void                       DealTheCards();
 private:
   size_t              m_Turn;
   std::vector<Player> m_Players;

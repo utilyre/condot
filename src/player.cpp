@@ -28,7 +28,6 @@ Player::~Player(){
   for(auto* card : AvailableCards){
     delete card;
     AvailableCards.clear();
-    //std::cout << " x: card\n";
   }
 }
 
