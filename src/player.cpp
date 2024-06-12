@@ -1,4 +1,3 @@
-#include <memory>
 #include <stdexcept>
 #include <iostream>
 
@@ -25,25 +24,25 @@ int Player::GetAge() const {
 }
 
 Player::~Player(){
-  for(auto* card : AvailableCards){
+  for(auto* card : m_AvailableCards){
     delete card;
-    AvailableCards.clear();
+    m_AvailableCards.clear();
   }
 }
 
-std::vector<Cards*>& Player::GetAvailableCards() /* cant bind const to address*/
+std::vector<Card*>& Player::GetAvailableCards() /* cant bind const to address*/
 {
-  return AvailableCards;
+  return m_AvailableCards;
 }
 
 void Player::PrintCards(){
-  for(auto& card : AvailableCards){
-    if(auto* CardPtr = dynamic_cast<NormalCards*>(card)){
-      std::cout << CardPtr->getPower() << ' ';
+  for(auto& card : m_AvailableCards){
+    if(auto* CardPtr = dynamic_cast<NormalCard*>(card)){
+      std::cout << CardPtr->GetPower() << ' ';
     }
   }
 }
 
-std::vector<Cards*>& Player::GetPlayedCards(){
-  return PlayedCards;
+std::vector<Card*>& Player::GetPlayedCards(){
+  return m_PlayedCards;
 }

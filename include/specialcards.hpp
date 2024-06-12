@@ -1,10 +1,5 @@
 #pragma once
+
 #include <cards.hpp>
-class SpecialCards: public Cards{
-  public:
-    
-  private:
-    
-    
-    
-};
+
+class SpecialCard : public Card {};

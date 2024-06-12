@@ -1,10 +1,12 @@
 #include <cards.hpp>
 #include <normalcards.hpp>
 
-NormalCards::NormalCards(std::string NameValue,int PowerValue)
- : Cards(NameValue),power(PowerValue)
- {}
+NormalCard::NormalCard(int power) : m_Power(power) {}
+
+std::string NormalCard::GetName() const {
+  return std::to_string(m_Power);
+}
  
-int NormalCards::getPower() const{
-  return power;
+int NormalCard::GetPower() const {
+  return m_Power;
 }

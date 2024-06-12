@@ -7,7 +7,6 @@
 #include <cards.hpp>
 #include <normalcards.hpp>
 #include <game.hpp>
-#include <memory>
 #include <player.hpp>
 #include <region.hpp>
 #include <map.hpp>
@@ -109,7 +108,7 @@ size_t Game::FindWarInstigator() const {
   return potentialInstigators[randNum];
 }
 
-std::vector<Cards*>& Game::InsertCards(){
+std::vector<Card*>& Game::InsertCards(){
   for(size_t i{1}; i < 11; i++){
     for(size_t j{}; j < 10; j++){
       if( i == 7 || i == 8 || i == 9){
@@ -118,19 +117,19 @@ std::vector<Cards*>& Game::InsertCards(){
       else if( i != 1 && j > 7){
         break;
       }
-      NormalCards* card = new NormalCards(std::to_string(i),i);
+      NormalCard* card = new NormalCard(i);
       m_Cards.push_back(card);
     }
-      }
+  }
   ShuffleCards();
   return m_Cards;
 }
 
-const std::vector<Cards*>& Game::GetCards(){
+const std::vector<Card*>& Game::GetCards(){
   return m_Cards;
 }
 
-std::vector<Cards*>& Game::ShuffleCards(){
+std::vector<Card*>& Game::ShuffleCards(){
   int seed = rand();
   std::shuffle(m_Cards.begin(), m_Cards.end(), std::default_random_engine(seed));
   return m_Cards;  
@@ -158,7 +157,7 @@ void Game::PlayCard(){
     std::string cardname{};
     std::cin >> cardname;
     for(size_t i{}; i < player.GetAvailableCards().size(); i++){
-      if(auto* cptr = dynamic_cast<NormalCards*>(player.GetAvailableCards()[i])){
+      if(auto* cptr = dynamic_cast<NormalCard*>(player.GetAvailableCards()[i])){
         if(cardname == cptr->GetName()){
           player.GetPlayedCards().push_back(std::move(player.GetAvailableCards()[i]));
           player.GetAvailableCards().erase(player.GetAvailableCards().begin() + i);
