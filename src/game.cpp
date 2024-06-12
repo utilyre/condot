@@ -151,18 +151,20 @@ std::vector<Player>& Game::GetPlayer() {
 void Game::PlayCard(){
   for(auto& player : m_Players){
     system("clear");
-    for(auto& card : player.GetAvailableCards()){
-      std::cout << card->GetName() << " ";
-    }
-    std::string cardname{};
+
+    std::cout << "Available Cards:\n";
+    player.PrintCards();
+
+    std::cout << "\n\n@" << player.GetName() << ": ";
+    std::string cardname;
     std::cin >> cardname;
+
     for(size_t i{}; i < player.GetAvailableCards().size(); i++){
-      if(auto* cptr = dynamic_cast<NormalCard*>(player.GetAvailableCards()[i])){
-        if(cardname == cptr->GetName()){
-          player.GetPlayedCards().push_back(std::move(player.GetAvailableCards()[i]));
-          player.GetAvailableCards().erase(player.GetAvailableCards().begin() + i);
-          break;
-        }
+      Card* card = player.GetAvailableCards()[i];
+      if (card->GetName() == cardname) {
+        player.GetPlayedCards().push_back(player.GetAvailableCards()[i]);
+        player.GetAvailableCards().erase(player.GetAvailableCards().begin() + i);
+        break;
       }
     }
   }  
