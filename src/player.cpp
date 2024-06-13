@@ -34,8 +34,9 @@ std::unique_ptr<Card> Player::TakeCard(const std::string& name)
   for (auto it = m_Cards.begin(); it != m_Cards.end(); ++it) {
     std::unique_ptr<Card>& card = *it;
     if (card->GetName() == name) {
+      std::unique_ptr<Card> c = std::move(*it);
       it = m_Cards.erase(it);
-      return std::move(card);
+      return c;
     }
   }
 
