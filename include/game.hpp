@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <random>
 
 #include <player.hpp>
 #include <map.hpp>
@@ -31,4 +32,6 @@ private:
   std::vector<Card*> m_Cards;
   Map m_Map;
   Region* m_BattleMarker;
+
+  std::random_device m_RandDev;
 };

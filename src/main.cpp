@@ -9,8 +9,6 @@
 std::vector<Player> inputPlayers();
 
 int main() {
-  srand(time(0));
-
 #ifdef DEBUG
   std::vector<Player> players{
     Player("John", "red", 17),

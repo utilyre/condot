@@ -144,8 +144,8 @@ const std::vector<Card*>& Game::GetCards(){
 }
 
 std::vector<Card*>& Game::ShuffleCards(){
-  int seed = rand();
-  std::shuffle(m_Cards.begin(), m_Cards.end(), std::default_random_engine(seed));
+  std::default_random_engine rng(m_RandDev());
+  std::shuffle(m_Cards.begin(), m_Cards.end(), rng);
   return m_Cards;  
 }
 
