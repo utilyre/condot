@@ -1,10 +1,6 @@
 #include <iostream>
-#include <string>
 #include <vector>
 
-#include <card.hpp>
-#include <normalcard.hpp>
-#include <specialcard.hpp>
 #include <game.hpp>
 #include <player.hpp>
 
@@ -24,7 +20,7 @@ int main() {
 #else
   auto players = inputPlayers();
 #endif
-  std::string cardname{};
+
   Game game(std::move(players));
   game.Start();
 }
