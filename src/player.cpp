@@ -48,3 +48,7 @@ void Player::PrintCards(){
     std::cout << card->GetName() << ' ';
   }
 }
+
+void Player::AddDrawnNormalCard(std::unique_ptr<NormalCard>&& card) {
+  m_DrawnNormalCards.push_back(std::move(card));
+}
