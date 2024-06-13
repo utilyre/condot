@@ -1,5 +1,11 @@
+#include <cstdio>
 #include <iostream>
+#include <string>
+#include <algorithm>
+#include <random>
 
+#include <card.hpp>
+#include <normalcard.hpp>
 #include <game.hpp>
 #include <player.hpp>
 #include <region.hpp>
@@ -42,22 +48,38 @@ Game::Game(std::vector<Player>&& players)
   })
 {
   m_Turn = FindWarInstigator();
+  InsertCards();
+}
+
+Game::~Game(){
+  for(auto& card : m_Cards){
+    delete card;
+  }
 }
 
 void Game::Start() {
-  Battle battle = InitiateBattle();
-  std::cout << "Starting at ";
-  std::cout << battle.m_Region->GetName();
-  std::cout << '\n';
-}
+  std::system("clear");
 
-Battle Game::InitiateBattle() {
-  const auto& regions = m_Map.GetRegions();
-  size_t regionIdx;
+  DealTheCards();
 
-  do {
+  while (true /* TODO: !IsOver() */) {
     std::system("clear");
 
+    PlaceBattleMarker();
+
+    while (true /* TODO: !IsBattleOver() */) {
+      std::system("clear");
+      PlayCard();
+      NextTurn();
+    }
+  }
+}
+
+void Game::PlaceBattleMarker() {
+  auto regions = m_Map.GetRegions();
+  size_t regionIdx{};
+
+  do {
     std::cout << "Choose a region to start the war in:\n";
     for (size_t i = 0; i < regions.size(); i++) {
       std::cout << "  " << i + 1 << ". " << regions[i].GetName() << '\n';
@@ -69,10 +91,10 @@ Battle Game::InitiateBattle() {
     std::cin >> regionIdx;
   } while (regionIdx == 0 || regionIdx > regions.size());
 
-  return Battle(m_Map.GetRegion(regionIdx - 1));
+  m_BattleMarker = &regions[regionIdx - 1];
 }
 
-const Player& Game::GetCurrentPlayer() const {
+Player& Game::GetCurrentPlayer() {
   return m_Players[m_Turn];
 }
 
@@ -92,4 +114,67 @@ size_t Game::FindWarInstigator() const {
 
   size_t randNum = rand() % potentialInstigators.size();
   return potentialInstigators[randNum];
+}
+
+std::vector<Card*>& Game::InsertCards(){
+  for(size_t i{1}; i < 11; i++){
+    for(size_t j{}; j < 10; j++){
+      if( i == 7 || i == 8 || i == 9){
+        break;
+      }
+      else if( i != 1 && j > 7){
+        break;
+      }
+      NormalCard* card = new NormalCard(i);
+      m_Cards.push_back(card);
+    }
+  }
+  ShuffleCards();
+  return m_Cards;
+}
+
+const std::vector<Card*>& Game::GetCards(){
+  return m_Cards;
+}
+
+std::vector<Card*>& Game::ShuffleCards(){
+  int seed = rand();
+  std::shuffle(m_Cards.begin(), m_Cards.end(), std::default_random_engine(seed));
+  return m_Cards;  
+}
+
+void Game::DealTheCards(){
+  for(auto& player : m_Players){
+    for(size_t i{}; i < 10; i++){
+      player.AddCard(m_Cards.back());
+      m_Cards.pop_back();
+    }
+  }
+}
+
+std::vector<Player>& Game::GetPlayer() {
+  return m_Players;
+}
+
+void Game::PlayCard(){
+  Player& player = GetCurrentPlayer();
+
+  while (true) {
+    std::cout << "Available Cards:\n";
+    player.PrintCards();
+
+    std::cout << "\n\n@" << player.GetName() << ": ";
+    std::string cardname;
+    std::cin >> cardname;
+
+    Card* card = player.TakeCard(cardname);
+    if (card) {
+      // player.GetPlayedCards().push_back(card);
+      break;
+    }
+  };
+}
+
+void Game::NextTurn() {
+  m_Turn = (m_Turn + 1) % m_Players.size();
 }
