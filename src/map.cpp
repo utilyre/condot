@@ -19,6 +19,6 @@ const std::vector<Region>& Map::GetRegions() const {
   return m_Regions;
 }
 
-const Region* Map::GetRegion(size_t idx) const {
+Region* Map::GetRegion(size_t idx) {
   return &m_Regions.at(idx);
 }
