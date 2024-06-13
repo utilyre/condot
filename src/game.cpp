@@ -62,14 +62,14 @@ Game::~Game(){
 void Game::Start() {
   std::system("clear");
 
-  while (true /* TODO: !IsGameOver() */) {
+  DealTheCards();
+
+  while (true /* TODO: !IsOver() */) {
     std::system("clear");
 
-    Battle battle = InitiateBattle();
-    std::cout << "Starting at " << battle.m_Region->GetName() << '\n';
-    DealTheCards();
+    PlaceBattleMarker();
 
-    while (true /* TODO: !battle.IsOver() */) {
+    while (true /* TODO: !IsBattleOver() */) {
       std::system("clear");
       PlayCard();
       m_Turn = (m_Turn + 1) % m_Players.size();
@@ -77,13 +77,11 @@ void Game::Start() {
   }
 }
 
-Battle Game::InitiateBattle() {
+void Game::PlaceBattleMarker() {
   auto regions = m_Map.GetRegions();
   size_t regionIdx{};
 
   do {
-    std::system("clear");
-
     std::cout << "Choose a region to start the war in:\n";
     for (size_t i = 0; i < regions.size(); i++) {
       std::cout << "  " << i + 1 << ". " << regions[i].GetName() << '\n';
@@ -94,7 +92,8 @@ Battle Game::InitiateBattle() {
 
     std::cin >> regionIdx;
   } while (regionIdx == 0 || regionIdx > regions.size());
-  return Battle(&regions[regionIdx - 1]);
+
+  m_BattleMarker = &regions[regionIdx - 1];
 }
 
 Player& Game::GetCurrentPlayer() {
