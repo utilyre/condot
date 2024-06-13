@@ -51,12 +51,6 @@ Game::Game(std::vector<Player>&& players)
   InsertCards();
 }
 
-Game::~Game(){
-  for(auto& card : m_Cards){
-    delete card;
-  }
-}
-
 void Game::Start() {
   std::system("clear");
 
@@ -122,7 +116,7 @@ size_t Game::FindWarInstigator() const {
   return potentialInstigators[randNum];
 }
 
-std::vector<Card*>& Game::InsertCards(){
+std::vector<std::unique_ptr<Card>>& Game::InsertCards(){
   for(size_t i{1}; i < 11; i++){
     for(size_t j{}; j < 10; j++){
       if( i == 7 || i == 8 || i == 9){
@@ -131,19 +125,19 @@ std::vector<Card*>& Game::InsertCards(){
       else if( i != 1 && j > 7){
         break;
       }
-      NormalCard* card = new NormalCard(i);
-      m_Cards.push_back(card);
+      std::unique_ptr<Card> card = std::make_unique<NormalCard>(i);
+      m_Cards.push_back(std::move(card));
     }
   }
   ShuffleCards();
   return m_Cards;
 }
 
-const std::vector<Card*>& Game::GetCards(){
+const std::vector<std::unique_ptr<Card>>& Game::GetCards(){
   return m_Cards;
 }
 
-std::vector<Card*>& Game::ShuffleCards(){
+std::vector<std::unique_ptr<Card>>& Game::ShuffleCards(){
   std::default_random_engine rng(m_RandDev());
   std::shuffle(m_Cards.begin(), m_Cards.end(), rng);
   return m_Cards;  
@@ -152,7 +146,7 @@ std::vector<Card*>& Game::ShuffleCards(){
 void Game::DealTheCards(){
   for(auto& player : m_Players){
     for(size_t i{}; i < 10; i++){
-      player.AddCard(m_Cards.back());
+      player.AddCard(std::move(m_Cards.back()));
       m_Cards.pop_back();
     }
   }
@@ -173,7 +167,7 @@ void Game::PlayCard(){
     std::string cardname;
     std::cin >> cardname;
 
-    Card* card = player.TakeCard(cardname);
+    std::unique_ptr<Card> card = player.TakeCard(cardname);
     if (!card) {
       std::cout << "Error: invalid region name\n\n";
       continue;

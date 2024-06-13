@@ -24,24 +24,18 @@ int Player::GetAge() const {
   return m_Age;
 }
 
-Player::~Player(){
-  for(auto* card : m_Cards){
-    delete card;
-  }
-}
-
-void Player::AddCard(Card* card)
+void Player::AddCard(std::unique_ptr<Card>&& card)
 {
-  m_Cards.push_back(card);
+  m_Cards.push_back(std::move(card));
 }
 
-Card* Player::TakeCard(const std::string& name)
+std::unique_ptr<Card> Player::TakeCard(const std::string& name)
 {
   for (auto it = m_Cards.begin(); it != m_Cards.end(); ++it) {
-    Card* card = *it;
+    std::unique_ptr<Card>& card = *it;
     if (card->GetName() == name) {
       it = m_Cards.erase(it);
-      return card;
+      return std::move(card);
     }
   }
 
@@ -49,9 +43,7 @@ Card* Player::TakeCard(const std::string& name)
 }
 
 void Player::PrintCards(){
-  for(auto& card : m_Cards){
-    if(auto* CardPtr = dynamic_cast<NormalCard*>(card)){
-      std::cout << CardPtr->GetPower() << ' ';
-    }
+  for(const auto& card : m_Cards){
+    std::cout << card->GetName() << ' ';
   }
 }
