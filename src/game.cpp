@@ -167,8 +167,13 @@ void Game::PlayCard(){
       continue;
     }
 
-    // TODO: place card on the table
-    // player.GetPlayedCards().push_back(card);
+    std::unique_ptr<NormalCard> ncard(dynamic_cast<NormalCard*>(card.release()));
+    if (ncard) {
+      player.AddDrawnNormalCard(std::move(ncard));
+    }
+
+    // TODO: do something with special cards
+
     break;
   };
 }
