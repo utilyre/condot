@@ -14,14 +14,12 @@ public:
 
   const std::string& GetName() const;
   int GetAge() const;
-  std::vector<Card*>& GetAvailableCards();
-  std::vector<Card*>& GetPlayedCards();
-  Card* TakeAvailableCard(const std::string& name);
+  void AddCard(Card* card);
+  Card* TakeCard(const std::string& name);
   void PrintCards();
 
 private:
-  std::vector<Card*> m_AvailableCards;
-  std::vector<Card*> m_PlayedCards;  
+  std::vector<Card*> m_Cards;
   std::string m_Name;
   std::string m_Color;
   int m_Age;

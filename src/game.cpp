@@ -149,7 +149,7 @@ std::vector<Card*>& Game::ShuffleCards(){
 void Game::DealTheCards(){
   for(auto& player : m_Players){
     for(size_t i{}; i < 10; i++){
-      player.GetAvailableCards().push_back(m_Cards.back());
+      player.AddCard(m_Cards.back());
       m_Cards.pop_back();
     }
   }
@@ -170,9 +170,9 @@ void Game::PlayCard(){
     std::string cardname;
     std::cin >> cardname;
 
-    Card* card = player.TakeAvailableCard(cardname);
+    Card* card = player.TakeCard(cardname);
     if (card) {
-      player.GetPlayedCards().push_back(card);
+      // player.GetPlayedCards().push_back(card);
       break;
     }
   };

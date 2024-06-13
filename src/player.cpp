@@ -24,23 +24,23 @@ int Player::GetAge() const {
 }
 
 Player::~Player(){
-  for(auto* card : m_AvailableCards){
+  for(auto* card : m_Cards){
     delete card;
-    m_AvailableCards.clear();
+    m_Cards.clear();
   }
 }
 
-std::vector<Card*>& Player::GetAvailableCards() /* cant bind const to address*/
+void Player::AddCard(Card* card)
 {
-  return m_AvailableCards;
+  m_Cards.push_back(card);
 }
 
-Card* Player::TakeAvailableCard(const std::string& name)
+Card* Player::TakeCard(const std::string& name)
 {
-  for (auto it = m_AvailableCards.begin(); it != m_AvailableCards.end(); ++it) {
+  for (auto it = m_Cards.begin(); it != m_Cards.end(); ++it) {
     Card* card = *it;
     if (card->GetName() == name) {
-      it = m_AvailableCards.erase(it);
+      it = m_Cards.erase(it);
       return card;
     }
   }
@@ -49,13 +49,9 @@ Card* Player::TakeAvailableCard(const std::string& name)
 }
 
 void Player::PrintCards(){
-  for(auto& card : m_AvailableCards){
+  for(auto& card : m_Cards){
     if(auto* CardPtr = dynamic_cast<NormalCard*>(card)){
       std::cout << CardPtr->GetPower() << ' ';
     }
   }
-}
-
-std::vector<Card*>& Player::GetPlayedCards(){
-  return m_PlayedCards;
 }
