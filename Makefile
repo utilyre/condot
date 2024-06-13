@@ -1,4 +1,5 @@
 .PHONY: all clean
+MAKEFLAGS+=-j
 
 CC := g++
 CFLAGS := -std=c++20 -g -Wall -Wextra
