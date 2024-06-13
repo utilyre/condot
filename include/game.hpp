@@ -23,7 +23,7 @@ private:
   void PlaceBattleMarker();
   void InsertCards() ;
   void ShuffleCards();
-  void DealTheCards();
+  void DealCards();
   void NextTurn();
 
 private:

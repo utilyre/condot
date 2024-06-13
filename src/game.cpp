@@ -55,7 +55,7 @@ Game::Game(std::vector<Player>&& players)
 void Game::Start() {
   std::system("clear");
 
-  DealTheCards();
+  DealCards();
 
   while (true /* TODO: !IsOver() */) {
     std::system("clear");
@@ -137,7 +137,7 @@ void Game::ShuffleCards(){
   std::shuffle(m_Cards.begin(), m_Cards.end(), rng);
 }
 
-void Game::DealTheCards(){
+void Game::DealCards(){
   for(auto& player : m_Players){
     for(size_t i{}; i < 10; i++){
       player.AddCard(std::move(m_Cards.back()));
