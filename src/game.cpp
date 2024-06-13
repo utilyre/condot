@@ -54,10 +54,8 @@ Game::Game(std::vector<Player>&& players)
 Game::~Game(){
   for(auto& card : m_Cards){
     delete card;
-    m_Cards.clear();
-    //std::cout << "card deleted\n";
-   }
- }
+  }
+}
 
 void Game::Start() {
   std::system("clear");

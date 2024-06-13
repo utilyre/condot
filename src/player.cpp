@@ -26,7 +26,6 @@ int Player::GetAge() const {
 Player::~Player(){
   for(auto* card : m_Cards){
     delete card;
-    m_Cards.clear();
   }
 }
 
