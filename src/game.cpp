@@ -116,7 +116,7 @@ size_t Game::FindWarInstigator() const {
   return potentialInstigators[randNum];
 }
 
-std::vector<std::unique_ptr<Card>>& Game::InsertCards(){
+void Game::InsertCards(){
   for(size_t i{1}; i < 11; i++){
     for(size_t j{}; j < 10; j++){
       if( i == 7 || i == 8 || i == 9){
@@ -130,17 +130,11 @@ std::vector<std::unique_ptr<Card>>& Game::InsertCards(){
     }
   }
   ShuffleCards();
-  return m_Cards;
 }
 
-const std::vector<std::unique_ptr<Card>>& Game::GetCards(){
-  return m_Cards;
-}
-
-std::vector<std::unique_ptr<Card>>& Game::ShuffleCards(){
+void Game::ShuffleCards(){
   std::default_random_engine rng(m_RandDev());
   std::shuffle(m_Cards.begin(), m_Cards.end(), rng);
-  return m_Cards;  
 }
 
 void Game::DealTheCards(){

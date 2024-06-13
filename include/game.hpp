@@ -21,9 +21,8 @@ private:
   size_t FindWarInstigator() const;
   Player& GetCurrentPlayer();
   void PlaceBattleMarker();
-  const std::vector<std::unique_ptr<Card>>& GetCards();
-  std::vector<std::unique_ptr<Card>>& InsertCards() ;
-  std::vector<std::unique_ptr<Card>>& ShuffleCards();
+  void InsertCards() ;
+  void ShuffleCards();
   void DealTheCards();
   void NextTurn();
 
