@@ -79,7 +79,7 @@ void Game::PlaceBattleMarker() {
   auto regions = m_Map.GetRegions();
   size_t regionIdx{};
 
-  do {
+  while (true) {
     std::cout << "Choose a region to start the war in:\n";
     for (size_t i = 0; i < regions.size(); i++) {
       std::cout << "  " << i + 1 << ". " << regions[i].GetName() << '\n';
@@ -89,7 +89,13 @@ void Game::PlaceBattleMarker() {
       << " [1-" << regions.size() << "]: ";
 
     std::cin >> regionIdx;
-  } while (regionIdx == 0 || regionIdx > regions.size());
+    if (regionIdx == 0 || regionIdx > regions.size()) {
+      std::cout << "Error: input out of range\n\n";
+      continue;
+    }
+
+    break;
+  }
 
   m_BattleMarker = &regions[regionIdx - 1];
 }
@@ -168,10 +174,14 @@ void Game::PlayCard(){
     std::cin >> cardname;
 
     Card* card = player.TakeCard(cardname);
-    if (card) {
-      // player.GetPlayedCards().push_back(card);
-      break;
+    if (!card) {
+      std::cout << "Error: invalid region name\n\n";
+      continue;
     }
+
+    // TODO: place card on the table
+    // player.GetPlayedCards().push_back(card);
+    break;
   };
 }
 

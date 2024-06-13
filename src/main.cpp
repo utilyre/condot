@@ -33,15 +33,19 @@ std::vector<Player> inputPlayers() {
   std::cout << "Welcome to Condottiere\n\n";
 
   int numPlayers;
-  std::cout << "How many players are you? ";
-  std::cin >> numPlayers;
-  if (numPlayers < 3) {
-    std::cout << "You need to be at least 3 to play this game\n";
-    std::exit(EXIT_FAILURE);
-  }
-  if (numPlayers > 6) {
-    std::cout << "You can be at most 6 to play this game\n";
-    std::exit(EXIT_FAILURE);
+  while (true) {
+    std::cout << "How many players are you? ";
+    std::cin >> numPlayers;
+    if (numPlayers < 3) {
+      std::cout << "Error: too few players (minimum is 3)\n\n";
+      continue;
+    }
+    if (numPlayers > 6) {
+      std::cout << "Error: too many players (maximum is 6)\n\n";
+      continue;
+    }
+
+    break;
   }
 
   std::vector<Player> players;
