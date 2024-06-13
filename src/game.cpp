@@ -49,6 +49,7 @@ Game::Game(std::vector<Player>&& players)
 {
   m_Turn = FindWarInstigator();
   InsertCards();
+  ShuffleCards();
 }
 
 void Game::Start() {
@@ -129,7 +130,6 @@ void Game::InsertCards(){
       m_Cards.push_back(std::move(card));
     }
   }
-  ShuffleCards();
 }
 
 void Game::ShuffleCards(){
