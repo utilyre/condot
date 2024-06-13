@@ -35,6 +35,19 @@ std::vector<Card*>& Player::GetAvailableCards() /* cant bind const to address*/
   return m_AvailableCards;
 }
 
+Card* Player::TakeAvailableCard(const std::string& name)
+{
+  for (auto it = m_AvailableCards.begin(); it != m_AvailableCards.end(); ++it) {
+    Card* card = *it;
+    if (card->GetName() == name) {
+      it = m_AvailableCards.erase(it);
+      return card;
+    }
+  }
+
+  return nullptr;
+}
+
 void Player::PrintCards(){
   for(auto& card : m_AvailableCards){
     if(auto* CardPtr = dynamic_cast<NormalCard*>(card)){

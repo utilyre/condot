@@ -162,21 +162,20 @@ std::vector<Player>& Game::GetPlayer() {
 void Game::PlayCard(){
   Player& player = GetCurrentPlayer();
 
-  std::cout << "Available Cards:\n";
-  player.PrintCards();
+  while (true) {
+    std::cout << "Available Cards:\n";
+    player.PrintCards();
 
-  std::cout << "\n\n@" << player.GetName() << ": ";
-  std::string cardname;
-  std::cin >> cardname;
+    std::cout << "\n\n@" << player.GetName() << ": ";
+    std::string cardname;
+    std::cin >> cardname;
 
-  for(size_t i{}; i < player.GetAvailableCards().size(); i++){
-    Card* card = player.GetAvailableCards()[i];
-    if (card->GetName() == cardname) {
-      player.GetPlayedCards().push_back(player.GetAvailableCards()[i]);
-      player.GetAvailableCards().erase(player.GetAvailableCards().begin() + i);
+    Card* card = player.TakeAvailableCard(cardname);
+    if (card) {
+      player.GetPlayedCards().push_back(card);
       break;
     }
-  }
+  };
 }
 
 void Game::NextTurn() {

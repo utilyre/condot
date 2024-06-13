@@ -16,6 +16,7 @@ public:
   int GetAge() const;
   std::vector<Card*>& GetAvailableCards();
   std::vector<Card*>& GetPlayedCards();
+  Card* TakeAvailableCard(const std::string& name);
   void PrintCards();
 
 private:
