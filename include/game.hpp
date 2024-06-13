@@ -23,6 +23,7 @@ private:
   std::vector<Card*>& InsertCards() ;
   std::vector<Card*>& ShuffleCards();
   void DealTheCards();
+  void NextTurn();
 
 private:
   size_t m_Turn;

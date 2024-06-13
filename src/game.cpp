@@ -72,7 +72,7 @@ void Game::Start() {
     while (true /* TODO: !IsBattleOver() */) {
       std::system("clear");
       PlayCard();
-      m_Turn = (m_Turn + 1) % m_Players.size();
+      NextTurn();
     }
   }
 }
@@ -177,4 +177,8 @@ void Game::PlayCard(){
       break;
     }
   }
+}
+
+void Game::NextTurn() {
+  m_Turn = (m_Turn + 1) % m_Players.size();
 }
