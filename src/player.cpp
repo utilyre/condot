@@ -4,8 +4,6 @@
 #include <player.hpp>
 #include <normalcard.hpp>
 
-Player::Player() : m_Age(0) {}
-
 Player::Player(std::string name, std::string color, int age)
 : m_Name(name),
   m_Color(color),

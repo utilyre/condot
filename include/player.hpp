@@ -9,7 +9,6 @@
 
 class Player {
 public:
-  Player();
   Player(std::string name, std::string color, int age);
 
   const std::string& GetName() const;
