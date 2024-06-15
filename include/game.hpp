@@ -26,7 +26,7 @@ private:
   void DealCards();
   void NextTurn();
   void PrintStatus() const;
-
+  bool IsBattleOver();
 private:
   Map m_Map;
   Region* m_BattleMarker;

@@ -64,7 +64,7 @@ void Game::Start() {
 
     PlaceBattleMarker();
 
-    while (true /* TODO: !IsBattleOver() */) {
+    while (!IsBattleOver()) {
       std::system("clear");
 
       PrintStatus();
@@ -113,9 +113,9 @@ void Game::PrintStatus() const {
 
   std::cout << "Place: " << m_BattleMarker->GetName() << '\n';
   std::cout << "Cards: ";
-  for (const auto& card : GetCurrentPlayer().GetCards()) {
-    std::cout << card->GetName() << ' ';
-  }
+    for (const auto& card : GetCurrentPlayer().GetCards()) {
+      std::cout << card->GetName() << ' ';
+    }
   std::cout << '\n';
 }
 
@@ -201,7 +201,7 @@ std::vector<Player>& Game::GetPlayer() {
 
 void Game::PlayCard(){
   Player& player = m_Players[m_Turn];
-
+  if(player.GetCards().size() == 0) player.Pass(); 
   while (!player.IsPassed()) {
     std::cout << "@" << player.GetName() << ": ";
     std::string cardname;
@@ -209,7 +209,6 @@ void Game::PlayCard(){
     if(cardname == "pass"){
       player.Pass();
       break;
-      
     }
     else{
       std::unique_ptr<Card> card = player.TakeCard(cardname);
@@ -233,3 +232,16 @@ void Game::PlayCard(){
 void Game::NextTurn() {
   m_Turn = (m_Turn + 1) % m_Players.size();
 }
+
+bool Game::IsBattleOver(){
+  for(auto& p : m_Players){
+    if(!p.IsPassed()){
+      return false;
+    }
+  }
+  return true;
+}
+
+
+
+
