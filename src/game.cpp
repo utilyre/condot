@@ -12,8 +12,7 @@
 #include <map.hpp>
 
 Game::Game(std::vector<Player>&& players)
-: m_Players(std::move(players)),
-  m_Map({
+: m_Map({
     Region("Bella"),
     Region("Caline"),
     Region("Enna"),
@@ -45,7 +44,9 @@ Game::Game(std::vector<Player>&& players)
     /* 11: Armento */ 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0,
     /* 12: Lia     */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0,
     /* 13: Elinia  */ 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0,
-  })
+  }),
+  m_BattleMarker(nullptr),
+  m_Players(std::move(players))
 {
   m_Turn = FindWarInstigator();
   InsertCards();

@@ -27,11 +27,11 @@ private:
   void NextTurn();
 
 private:
+  Map m_Map;
+  Region* m_BattleMarker;
   size_t m_Turn;
   std::vector<Player> m_Players;
   std::vector<std::unique_ptr<Card>> m_Cards;
-  Map m_Map;
-  Region* m_BattleMarker;
 
   std::random_device m_RandDev;
 };
