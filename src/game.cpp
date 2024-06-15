@@ -80,7 +80,7 @@ void Game::PrintStatus() const {
   for (const Player& p : m_Players) {
     std::cout << "> " << p.GetName() << ": ";
     for (const auto& card : p.GetDrawnNormalCards()) {
-      std::cout << card->GetName() << ", ";
+      std::cout << card->GetName() << ' ';
     }
     std::cout << '\n';
   }
@@ -103,7 +103,7 @@ void Game::PrintStatus() const {
   for (const auto& [p, regions] : playerToRegions) {
     std::cout << "> " << p->GetName() << ": ";
     for (const Region* r : regions) {
-      std::cout << r->GetName() << ", ";
+      std::cout << r->GetName() << ' ';
     }
     std::cout << '\n';
   }
@@ -113,7 +113,7 @@ void Game::PrintStatus() const {
   std::cout << "Place: " << m_BattleMarker->GetName() << '\n';
   std::cout << "Cards: ";
   for (const auto& card : GetCurrentPlayer().GetCards()) {
-    std::cout << card->GetName() << ", ";
+    std::cout << card->GetName() << ' ';
   }
   std::cout << '\n';
 }
