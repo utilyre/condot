@@ -24,6 +24,7 @@ private:
   std::string m_Color;
   int m_Age;
 
+  // TODO: bool m_Passsed;
   std::vector<std::unique_ptr<Card>> m_Cards;
   std::vector<std::unique_ptr<NormalCard>> m_DrawnNormalCards;
 };
