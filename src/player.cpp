@@ -1,5 +1,4 @@
 #include <stdexcept>
-#include <iostream>
 
 #include <player.hpp>
 #include <normalcard.hpp>
@@ -41,12 +40,16 @@ std::unique_ptr<Card> Player::TakeCard(const std::string& name)
   return nullptr;
 }
 
-void Player::PrintCards(){
-  for(const auto& card : m_Cards){
-    std::cout << card->GetName() << ' ';
-  }
-}
-
 void Player::AddDrawnNormalCard(std::unique_ptr<NormalCard>&& card) {
   m_DrawnNormalCards.push_back(std::move(card));
+}
+
+const std::vector<std::unique_ptr<Card>>& Player::GetCards() const
+{
+  return m_Cards;
+}
+
+const std::vector<std::unique_ptr<NormalCard>>& Player::GetDrawnNormalCards() const
+{
+  return m_DrawnNormalCards;
 }

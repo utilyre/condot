@@ -10,14 +10,10 @@ std::vector<Player> inputPlayers();
 
 int main() {
 #ifdef DEBUG
-  Player p1("John", "red", 17);
-  Player p2("Jane", "blue", 18);
-  Player p3("Rick", "yellow", 17);
-
   std::vector<Player> players;
-  players.push_back(std::move(p1));
-  players.push_back(std::move(p2));
-  players.push_back(std::move(p3));
+  players.emplace_back("John", "red", 17);
+  players.emplace_back("Jane", "blue", 18);
+  players.emplace_back("Rick", "yellow", 17);
 #else
   auto players = inputPlayers();
 #endif
