@@ -202,25 +202,31 @@ std::vector<Player>& Game::GetPlayer() {
 void Game::PlayCard(){
   Player& player = m_Players[m_Turn];
 
-  while (true) {
+  while (!player.IsPassed()) {
     std::cout << "@" << player.GetName() << ": ";
     std::string cardname;
     std::cin >> cardname;
-
-    std::unique_ptr<Card> card = player.TakeCard(cardname);
-    if (!card) {
-      std::cout << "Error: invalid card name\n\n";
-      continue;
+    if(cardname == "pass"){
+      player.Pass();
+      break;
+      
     }
+    else{
+      std::unique_ptr<Card> card = player.TakeCard(cardname);
+      if (!card) {
+        std::cout << "Error: invalid card name\n\n";
+        continue;
+      }
 
-    std::unique_ptr<NormalCard> ncard(dynamic_cast<NormalCard*>(card.release()));
-    if (ncard) {
-      player.AddDrawnNormalCard(std::move(ncard));
-    }
+      std::unique_ptr<NormalCard> ncard(dynamic_cast<NormalCard*>(card.release()));
+      if (ncard) {
+        player.AddDrawnNormalCard(std::move(ncard));
+      }
 
     // TODO: do something with special cards
 
-    break;
+      break;
+    }
   };
 }
 

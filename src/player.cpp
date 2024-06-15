@@ -53,3 +53,11 @@ const std::vector<std::unique_ptr<NormalCard>>& Player::GetDrawnNormalCards() co
 {
   return m_DrawnNormalCards;
 }
+
+void Player::Pass(){
+  m_Passed = true;
+}
+
+bool Player::IsPassed(){
+  return m_Passed;
+}

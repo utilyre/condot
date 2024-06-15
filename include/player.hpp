@@ -18,13 +18,14 @@ public:
   void AddDrawnNormalCard(std::unique_ptr<NormalCard>&& card);
   const std::vector<std::unique_ptr<Card>>& GetCards() const;
   const std::vector<std::unique_ptr<NormalCard>>& GetDrawnNormalCards() const;
-
+  void Pass();
+  bool IsPassed();
 private:
   std::string m_Name;
   std::string m_Color;
   int m_Age;
 
-  // TODO: bool m_Passsed;
+  bool m_Passed;
   std::vector<std::unique_ptr<Card>> m_Cards;
   std::vector<std::unique_ptr<NormalCard>> m_DrawnNormalCards;
 };
