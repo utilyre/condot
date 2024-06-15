@@ -67,6 +67,8 @@ void Game::Start() {
       std::system("clear");
 
       PrintStatus();
+      std::cout << '\n';
+
       PlayCard();
       NextTurn();
     }
@@ -108,7 +110,8 @@ void Game::PrintStatus() const {
 
   std::cout << '\n';
 
-  std::cout << "[" << m_BattleMarker->GetName() << "] ";
+  std::cout << "Place: " << m_BattleMarker->GetName() << '\n';
+  std::cout << "Cards: ";
   for (const auto& card : GetCurrentPlayer().GetCards()) {
     std::cout << card->GetName() << ", ";
   }
