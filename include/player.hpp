@@ -17,7 +17,8 @@ public:
   void AddCard(std::unique_ptr<Card>&& card);
   std::unique_ptr<Card> TakeCard(const std::string& name);
   void AddDrawnNormalCard(std::unique_ptr<NormalCard>&& card);
-  void PrintCards();
+  void PrintCards() const;
+  void PrintDrawnNormalCards() const;
 
 private:
   std::vector<std::unique_ptr<Card>> m_Cards;

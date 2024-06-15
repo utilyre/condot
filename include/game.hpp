@@ -19,12 +19,13 @@ public:
 
 private:
   size_t FindWarInstigator() const;
-  Player& GetCurrentPlayer();
+  const Player& GetCurrentPlayer() const;
   void PlaceBattleMarker();
   void InsertCards() ;
   void ShuffleCards();
   void DealCards();
   void NextTurn();
+  void PrintStatus() const;
 
 private:
   size_t m_Turn;

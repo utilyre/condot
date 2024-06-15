@@ -3,6 +3,7 @@
 #include <string>
 #include <algorithm>
 #include <random>
+#include <unordered_map>
 
 #include <card.hpp>
 #include <normalcard.hpp>
@@ -64,10 +65,48 @@ void Game::Start() {
 
     while (true /* TODO: !IsBattleOver() */) {
       std::system("clear");
+
+      PrintStatus();
       PlayCard();
       NextTurn();
     }
   }
+}
+
+void Game::PrintStatus() const {
+  std::cout << "Table:\n";
+  for (const Player& p : m_Players) {
+    std::cout << "> " << p.GetName() << ": ";
+    p.PrintDrawnNormalCards();
+  }
+
+  std::cout << '\n';
+
+  using Regions = std::vector<const Region*>;
+  std::unordered_map<const Player*, Regions> playerToRegions(m_Players.size());
+  for (const Player& p : m_Players) {
+    playerToRegions[&p] = Regions();
+  }
+  for (const Region& r : m_Map.GetRegions()) {
+    const Player* ruler = r.GetRuler();
+    if (ruler) {
+      playerToRegions[ruler].push_back(&r);
+    }
+  }
+
+  std::cout << "Regions:\n";
+  for (const auto& [p, regions] : playerToRegions) {
+    std::cout << "> " << p->GetName() << ": ";
+    for (const Region* r : regions) {
+      std::cout << r->GetName() << ", ";
+    }
+    std::cout << '\n';
+  }
+
+  std::cout << '\n';
+
+  std::cout << "[" << m_BattleMarker->GetName() << "] ";
+  GetCurrentPlayer().PrintCards();
 }
 
 void Game::PlaceBattleMarker() {
@@ -95,7 +134,7 @@ void Game::PlaceBattleMarker() {
   m_BattleMarker = &regions[regionIdx - 1];
 }
 
-Player& Game::GetCurrentPlayer() {
+const Player& Game::GetCurrentPlayer() const {
   return m_Players[m_Turn];
 }
 
@@ -151,13 +190,10 @@ std::vector<Player>& Game::GetPlayer() {
 }
 
 void Game::PlayCard(){
-  Player& player = GetCurrentPlayer();
+  Player& player = m_Players[m_Turn];
 
   while (true) {
-    std::cout << "Available Cards:\n";
-    player.PrintCards();
-
-    std::cout << "\n\n@" << player.GetName() << ": ";
+    std::cout << "@" << player.GetName() << ": ";
     std::string cardname;
     std::cin >> cardname;
 
