@@ -19,9 +19,10 @@ public:
   void PrintCards();
 
 private:
-  std::vector<std::unique_ptr<Card>> m_Cards;
-  std::vector<std::unique_ptr<NormalCard>> m_DrawnNormalCards;
   std::string m_Name;
   std::string m_Color;
   int m_Age;
+
+  std::vector<std::unique_ptr<Card>> m_Cards;
+  std::vector<std::unique_ptr<NormalCard>> m_DrawnNormalCards;
 };

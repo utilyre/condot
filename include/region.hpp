@@ -14,5 +14,6 @@ public:
 
 private:
   std::string m_Name;
+
   const Player* m_Ruler;
 };
