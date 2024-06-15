@@ -119,7 +119,7 @@ void Game::PrintStatus() const {
 }
 
 void Game::PlaceBattleMarker() {
-  auto regions = m_Map.GetRegions();
+  const auto& regions = m_Map.GetRegions();
   size_t regionIdx{};
 
   while (true) {
@@ -140,7 +140,7 @@ void Game::PlaceBattleMarker() {
     break;
   }
 
-  m_BattleMarker = &regions[regionIdx - 1];
+  m_BattleMarker = m_Map.GetRegion(regionIdx - 1);
 }
 
 const Player& Game::GetCurrentPlayer() const {
