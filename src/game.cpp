@@ -77,7 +77,10 @@ void Game::PrintStatus() const {
   std::cout << "Table:\n";
   for (const Player& p : m_Players) {
     std::cout << "> " << p.GetName() << ": ";
-    p.PrintDrawnNormalCards();
+    for (const auto& card : p.GetDrawnNormalCards()) {
+      std::cout << card->GetName() << ", ";
+    }
+    std::cout << '\n';
   }
 
   std::cout << '\n';
@@ -94,7 +97,7 @@ void Game::PrintStatus() const {
     }
   }
 
-  std::cout << "Regions:\n";
+  std::cout << "Map:\n";
   for (const auto& [p, regions] : playerToRegions) {
     std::cout << "> " << p->GetName() << ": ";
     for (const Region* r : regions) {
@@ -106,7 +109,10 @@ void Game::PrintStatus() const {
   std::cout << '\n';
 
   std::cout << "[" << m_BattleMarker->GetName() << "] ";
-  GetCurrentPlayer().PrintCards();
+  for (const auto& card : GetCurrentPlayer().GetCards()) {
+    std::cout << card->GetName() << ", ";
+  }
+  std::cout << '\n';
 }
 
 void Game::PlaceBattleMarker() {
