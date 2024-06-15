@@ -209,7 +209,7 @@ void Game::PlayCard(){
 
     std::unique_ptr<Card> card = player.TakeCard(cardname);
     if (!card) {
-      std::cout << "Error: invalid region name\n\n";
+      std::cout << "Error: invalid card name\n\n";
       continue;
     }
 
