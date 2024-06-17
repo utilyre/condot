@@ -203,10 +203,6 @@ std::vector<Player>& Game::GetPlayer() {
 
 void Game::PlayCard(){
   Player& player = m_Players[m_Turn];
-  if (player.GetCards().size() == 0) {
-    player.Pass();
-  }
-
   while (true) {
     std::cout << "@" << player.GetName() << ": ";
     std::string cardname;
@@ -232,6 +228,10 @@ void Game::PlayCard(){
 
     break;
   };
+
+  if (player.GetCards().empty() == 0) {
+    player.Pass();
+  }
 }
 
 bool Game::NextTurn() {
