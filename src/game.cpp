@@ -82,6 +82,9 @@ void Game::PrintStatus() const {
     for (const auto& card : p.GetDrawnNormalCards()) {
       std::cout << card->GetName() << ' ';
     }
+    if (p.IsPassed()) {
+      std::cout << "(passed)";
+    }
     std::cout << '\n';
   }
 
