@@ -62,3 +62,12 @@ bool Player::IsPassed() const
 {
   return m_Passed;
 }
+
+int Player::GetStrength() const
+{
+  int sum = 0;
+  for (const auto& card : m_DrawnNormalCards) {
+    sum += card->GetPower();
+  }
+  return sum;
+}

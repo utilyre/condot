@@ -20,6 +20,7 @@ public:
   const std::vector<std::unique_ptr<NormalCard>>& GetDrawnNormalCards() const;
   void Pass();
   bool IsPassed() const;
+  int GetStrength() const;
 private:
   std::string m_Name;
   std::string m_Color;

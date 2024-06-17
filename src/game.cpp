@@ -72,7 +72,25 @@ void Game::Start() {
 
       PlayCard();
     } while (NextTurn());
+
+    DetermineBattleWinner();
   }
+}
+
+void Game::DetermineBattleWinner()
+{
+  // TODO: two or more players may win?
+  const Player* winner;
+  int max_strength = 0;
+  for (const Player& p : m_Players) {
+    int s = p.GetStrength();
+    if (s > max_strength) {
+      winner = &p;
+      max_strength = s;
+    }
+  }
+
+  m_BattleMarker->SetRuler(winner);
 }
 
 void Game::PrintStatus() const {

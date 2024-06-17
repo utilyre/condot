@@ -26,6 +26,7 @@ private:
   void DealCards();
   bool NextTurn();
   void PrintStatus() const;
+  void DetermineBattleWinner();
 
 private:
   Map m_Map;
