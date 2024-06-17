@@ -74,6 +74,7 @@ void Game::Start() {
     } while (NextTurn());
 
     DetermineBattleWinner();
+    // TODO: ResetBattle();
   }
 }
 
