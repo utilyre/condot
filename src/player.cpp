@@ -58,6 +58,7 @@ void Player::Pass(){
   m_Passed = true;
 }
 
-bool Player::IsPassed(){
+bool Player::IsPassed() const
+{
   return m_Passed;
 }
