@@ -235,7 +235,7 @@ void Game::PlayCard(){
     break;
   };
 
-  if (player.GetCards().empty() == 0) {
+  if (player.GetCards().empty()) {
     player.Pass();
   }
 }
