@@ -173,7 +173,7 @@ const Player& Game::GetCurrentPlayer() const {
 }
 
 size_t Game::FindWarInstigator() const {
-  int min = m_Players[0].GetAge();
+  int min = INT_MAX;
   std::vector<int> potentialInstigators;
   for(size_t i = 0; i < m_Players.size() ; i++){
     if(m_Players[i].GetAge() < min){
