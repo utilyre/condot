@@ -176,22 +176,22 @@ const Player& Game::GetCurrentPlayer() const {
   return m_Players[m_Turn];
 }
 
-size_t Game::FindWarInstigator() const {
+size_t Game::FindWarInstigator() {
   int min = INT_MAX;
-  std::vector<int> potentialInstigators;
+  std::vector<size_t> potentialInstigators;
   for(size_t i = 0; i < m_Players.size() ; i++){
-    if(m_Players[i].GetAge() < min){
-      min = m_Players[i].GetAge();
+    int age = m_Players[i].GetAge();
+    if (age < min) {
+      min = age;
       potentialInstigators.clear();
-    }
-
-    if(m_Players[i].GetAge() == min){
+    } else if (age == min) {
       potentialInstigators.push_back(i);
     }
   }
 
-  size_t randNum = rand() % potentialInstigators.size();
-  return potentialInstigators[randNum];
+  std::mt19937 mt(m_RandDev());
+  std::uniform_int_distribution<size_t> dist(0, potentialInstigators.size());
+  return potentialInstigators[dist(mt)];
 }
 
 void Game::InsertCards(){

@@ -18,7 +18,7 @@ public:
   void PlayCard();
 
 private:
-  size_t FindWarInstigator() const;
+  size_t FindWarInstigator();
   const Player& GetCurrentPlayer() const;
   void PlaceBattleMarker();
   void InsertCards() ;
