@@ -64,15 +64,14 @@ void Game::Start() {
 
     PlaceBattleMarker();
 
-    while (!IsBattleOver()) {
+    do {
       std::system("clear");
 
       PrintStatus();
       std::cout << '\n';
 
       PlayCard();
-      NextTurn();
-    }
+    } while (NextTurn());
   }
 }
 
@@ -201,47 +200,46 @@ std::vector<Player>& Game::GetPlayer() {
 
 void Game::PlayCard(){
   Player& player = m_Players[m_Turn];
-  if(player.GetCards().size() == 0) player.Pass(); 
-  while (!player.IsPassed()) {
+  if (player.GetCards().size() == 0) {
+    player.Pass();
+  }
+
+  while (true) {
     std::cout << "@" << player.GetName() << ": ";
     std::string cardname;
     std::cin >> cardname;
-    if(cardname == "pass"){
+    if (cardname == "pass") {
       player.Pass();
       break;
     }
-    else{
-      std::unique_ptr<Card> card = player.TakeCard(cardname);
-      if (!card) {
-        std::cout << "Error: invalid card name\n\n";
-        continue;
-      }
 
-      std::unique_ptr<NormalCard> ncard(dynamic_cast<NormalCard*>(card.release()));
-      if (ncard) {
-        player.AddDrawnNormalCard(std::move(ncard));
-      }
+    std::unique_ptr<Card> card = player.TakeCard(cardname);
+    if (!card) {
+      std::cout << "Error: invalid card name\n\n";
+      continue;
+    }
+
+    // TODO: prevent memory leak if dynamic_cast fails
+    std::unique_ptr<NormalCard> ncard(dynamic_cast<NormalCard*>(card.release()));
+    if (ncard) {
+      player.AddDrawnNormalCard(std::move(ncard));
+    }
 
     // TODO: do something with special cards
 
-      break;
-    }
+    break;
   };
 }
 
-void Game::NextTurn() {
-  m_Turn = (m_Turn + 1) % m_Players.size();
-}
+bool Game::NextTurn() {
+  size_t initialTurn = m_Turn;
 
-bool Game::IsBattleOver(){
-  for(auto& p : m_Players){
-    if(!p.IsPassed()){
+  do {
+    m_Turn = (m_Turn + 1) % m_Players.size();
+    if (GetCurrentPlayer().IsPassed() && initialTurn == m_Turn) {
       return false;
     }
-  }
+  } while (GetCurrentPlayer().IsPassed());
+
   return true;
 }
-
-
-
-

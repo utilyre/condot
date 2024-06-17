@@ -24,9 +24,9 @@ private:
   void InsertCards() ;
   void ShuffleCards();
   void DealCards();
-  void NextTurn();
+  bool NextTurn();
   void PrintStatus() const;
-  bool IsBattleOver();
+
 private:
   Map m_Map;
   Region* m_BattleMarker;
