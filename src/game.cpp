@@ -81,17 +81,20 @@ void Game::Start() {
 void Game::DetermineBattleWinner()
 {
   // TODO: two or more players may win?
-  const Player* winner;
+  ssize_t winnerIdx = -1;
   int max_strength = 0;
-  for (const Player& p : m_Players) {
-    int s = p.GetStrength();
+  for (size_t i = 0; i < m_Players.size(); i++) {
+    int s = m_Players[i].GetStrength();
     if (s > max_strength) {
-      winner = &p;
+      winnerIdx = i;
       max_strength = s;
     }
   }
 
-  m_BattleMarker->SetRuler(winner);
+  if (winnerIdx != -1) {
+    m_BattleMarker->SetRuler(&m_Players[winnerIdx]);
+    m_Turn = winnerIdx;
+  }
 }
 
 void Game::PrintStatus() const {
