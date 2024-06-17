@@ -80,21 +80,25 @@ void Game::Start() {
 
 void Game::DetermineBattleWinner()
 {
-  // TODO: two or more players may win?
-  ssize_t winnerIdx = -1;
   int max_strength = 0;
+  std::vector<size_t> potentialWinners;
   for (size_t i = 0; i < m_Players.size(); i++) {
-    int s = m_Players[i].GetStrength();
-    if (s > max_strength) {
-      winnerIdx = i;
-      max_strength = s;
+    int strength = m_Players[i].GetStrength();
+    if (strength > max_strength) {
+      max_strength = strength;
+      potentialWinners.clear();
+    } else if (strength == max_strength) {
+      potentialWinners.push_back(i);
     }
   }
 
-  if (winnerIdx != -1) {
-    m_BattleMarker->SetRuler(&m_Players[winnerIdx]);
-    m_Turn = winnerIdx;
+  if (potentialWinners.size() == 1) {
+    m_BattleMarker->SetRuler(&m_Players[potentialWinners[0]]);
   }
+
+  std::mt19937 mt(m_RandDev());
+  std::uniform_int_distribution<size_t> dist(0, potentialWinners.size());
+  m_Turn = potentialWinners[dist(mt)];
 }
 
 void Game::PrintStatus() const {
