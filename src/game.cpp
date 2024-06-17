@@ -218,10 +218,16 @@ void Game::PlayCard(){
       continue;
     }
 
-    // TODO: prevent memory leak if dynamic_cast fails
-    std::unique_ptr<NormalCard> ncard(dynamic_cast<NormalCard*>(card.release()));
+    Card* cardPtr = card.release();
+
+    std::unique_ptr<NormalCard> ncard(dynamic_cast<NormalCard*>(cardPtr));
+    // TODO: std::unique_ptr<SpecialCard> scard(dynamic_cast<SpecialCard*>(cardPtr));
     if (ncard) {
       player.AddDrawnNormalCard(std::move(ncard));
+    // TODO: } else if (scard) {
+    } else {
+      // in case both casts fail
+      delete cardPtr;
     }
 
     // TODO: do something with special cards
