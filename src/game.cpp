@@ -235,14 +235,15 @@ void Game::PlayCard(){
   Player& player = m_Players[m_Turn];
   while (true) {
     std::cout << "@" << player.GetName() << ": ";
-    std::string cardname;
-    std::cin >> cardname;
-    if (cardname == "pass") {
+
+    std::string input;
+    std::getline(std::cin, input);
+    if (input == "pass") {
       player.Pass();
       break;
     }
 
-    std::unique_ptr<Card> card = player.TakeCard(cardname);
+    std::unique_ptr<Card> card = player.TakeCard(input);
     if (!card) {
       std::cout << "Error: invalid card name\n\n";
       continue;
