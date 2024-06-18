@@ -74,7 +74,7 @@ void Game::Start() {
     } while (NextTurn());
 
     DetermineBattleWinner();
-    // TODO: ResetBattle();
+    ResetBattle();
   }
 }
 
@@ -279,7 +279,7 @@ bool Game::NextTurn() {
   return true;
 }
 
-void Game::Reset(){
+void Game::ResetBattle(){
   for(auto& p : m_Players){
     p.ResetPassed();
   }
