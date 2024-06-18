@@ -1,5 +1,6 @@
 #include <cstdio>
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <algorithm>
 #include <random>
@@ -229,6 +230,16 @@ void Game::DealCards(){
 
 std::vector<Player>& Game::GetPlayer() {
   return m_Players;
+}
+
+static std::vector<std::string> strsplit(const std::string& str, char delim) {
+  std::string s;
+  std::stringstream ss(str);
+  std::vector<std::string> v;
+   while (getline(ss, s, delim)) {
+    v.push_back(s);
+  }
+  return v;
 }
 
 void Game::PlayCard(){
