@@ -97,7 +97,7 @@ void Game::DetermineBattleWinner()
   }
 
   std::mt19937 mt(m_RandDev());
-  std::uniform_int_distribution<size_t> dist(0, potentialWinners.size());
+  std::uniform_int_distribution<size_t> dist(0, potentialWinners.size() - 1);
   m_Turn = potentialWinners[dist(mt)];
 }
 
@@ -190,7 +190,7 @@ size_t Game::FindWarInstigator() {
   }
 
   std::mt19937 mt(m_RandDev());
-  std::uniform_int_distribution<size_t> dist(0, potentialInstigators.size());
+  std::uniform_int_distribution<size_t> dist(0, potentialInstigators.size() - 1);
   return potentialInstigators[dist(mt)];
 }
 
