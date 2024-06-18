@@ -140,6 +140,9 @@ void Game::PrintStatus() const {
   std::cout << '\n';
 
   std::cout << "Place: " << m_BattleMarker->GetName() << '\n';
+  std::cout << '@' << GetCurrentPlayer().GetName() << ": press enter to reveal your cards";
+  getchar();
+  getchar();
   std::cout << "Cards: ";
     for (const auto& card : GetCurrentPlayer().GetCards()) {
       std::cout << card->GetName() << ' ';
