@@ -88,6 +88,7 @@ void Game::DetermineBattleWinner()
     if (strength > max_strength) {
       max_strength = strength;
       potentialWinners.clear();
+      potentialWinners.push_back(i);
     } else if (strength == max_strength) {
       potentialWinners.push_back(i);
     }
