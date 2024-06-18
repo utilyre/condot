@@ -242,6 +242,17 @@ static std::vector<std::string> strsplit(const std::string& str, char delim) {
   return v;
 }
 
+static std::unordered_map<std::string, std::string> CardHelpMenu{
+  {"bishop", "Discard all copies of the highest-value mercenary in play. Place the favor marker in an empty region."},
+  {"scarecrow", "Take 1 mercenary from your row back to your hand."},
+  {"turncoat", "The battle ends immediately with the winner determined as normal."},
+  {"winter", "The value of each mercenary in play is “1.” This card replaces the current season."},
+  {"spring", "Add “3” to all copies of the highest value mercenary in play. This card replaces the current season."},
+  {"drummer", "Double the value of each mercenary in your row."},
+  {"spy", "Add 1 to your strength. At the end of the battle, the player with the most Spies takes the battle marker."},
+  {"heroine", "Add 10 to your strength."},
+};
+
 void Game::PlayCard(){
   Player& player = m_Players[m_Turn];
   while (true) {
@@ -252,6 +263,26 @@ void Game::PlayCard(){
     if (input == "pass") {
       player.Pass();
       break;
+    }
+
+    if (input == "help") {
+      for (const auto& [card, desc] : CardHelpMenu) {
+        std::cout << card << ": " << desc << '\n';
+      }
+      std::cout << '\n';
+
+      continue;
+    }
+
+    auto words = strsplit(input, ' ');
+    if (words.size() == 2 && words[0] == "help") {
+      if (CardHelpMenu.count(words[1])) {
+        std::cout << CardHelpMenu[words[1]] << "\n\n";
+      } else {
+        std::cout << "Error: card not found\n\n";
+      }
+
+      continue;
     }
 
     std::unique_ptr<Card> card = player.TakeCard(input);
