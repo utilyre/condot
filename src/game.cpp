@@ -87,7 +87,6 @@ void Game::DetermineBattleWinner()
     if (strength > max_strength) {
       max_strength = strength;
       potentialWinners.clear();
-      potentialWinners.push_back(i);
     } else if (strength == max_strength) {
       potentialWinners.push_back(i);
     }
@@ -111,6 +110,9 @@ void Game::PrintStatus() const {
     }
     if (p.IsPassed()) {
       std::cout << "(passed)";
+    }
+    else if(p.GetCards().size() == 0){
+      std::cout << "(No card to play)\n";
     }
     std::cout << '\n';
   }
