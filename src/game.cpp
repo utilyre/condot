@@ -1,5 +1,6 @@
 #include <cstdio>
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <algorithm>
 #include <random>
@@ -233,18 +234,60 @@ std::vector<Player>& Game::GetPlayer() {
   return m_Players;
 }
 
+static std::vector<std::string> strsplit(const std::string& str, char delim) {
+  std::string s;
+  std::stringstream ss(str);
+  std::vector<std::string> v;
+   while (getline(ss, s, delim)) {
+    v.push_back(s);
+  }
+  return v;
+}
+
+static std::unordered_map<std::string, std::string> CardHelpMenu{
+  {"bishop", "Discard all copies of the highest-value mercenary in play. Place the favor marker in an empty region."},
+  {"scarecrow", "Take 1 mercenary from your row back to your hand."},
+  {"turncoat", "The battle ends immediately with the winner determined as normal."},
+  {"winter", "The value of each mercenary in play is “1.” This card replaces the current season."},
+  {"spring", "Add “3” to all copies of the highest value mercenary in play. This card replaces the current season."},
+  {"drummer", "Double the value of each mercenary in your row."},
+  {"spy", "Add 1 to your strength. At the end of the battle, the player with the most Spies takes the battle marker."},
+  {"heroine", "Add 10 to your strength."},
+};
+
 void Game::PlayCard(){
   Player& player = m_Players[m_Turn];
   while (true) {
     std::cout << "@" << player.GetName() << ": ";
-    std::string cardname;
-    std::cin >> cardname;
-    if (cardname == "pass") {
+
+    std::string input;
+    std::getline(std::cin, input);
+    if (input == "pass") {
       player.Pass();
       break;
     }
 
-    std::unique_ptr<Card> card = player.TakeCard(cardname);
+    if (input == "help") {
+      for (const auto& [card, desc] : CardHelpMenu) {
+        std::cout << card << ": " << desc << '\n';
+      }
+      std::cout << '\n';
+
+      continue;
+    }
+
+    auto words = strsplit(input, ' ');
+    if (words.size() == 2 && words[0] == "help") {
+      if (CardHelpMenu.count(words[1])) {
+        std::cout << CardHelpMenu[words[1]] << "\n\n";
+      } else {
+        std::cout << "Error: card not found\n\n";
+      }
+
+      continue;
+    }
+
+    std::unique_ptr<Card> card = player.TakeCard(input);
     if (!card) {
       std::cout << "Error: invalid card name\n\n";
       continue;
