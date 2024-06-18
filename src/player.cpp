@@ -71,3 +71,7 @@ int Player::GetStrength() const
   }
   return sum;
 }
+
+void Player::ResetPassed(){
+  m_Passed = false;
+}

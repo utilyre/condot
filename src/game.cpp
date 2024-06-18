@@ -278,3 +278,9 @@ bool Game::NextTurn() {
 
   return true;
 }
+
+void Game::Reset(){
+  for(auto& p : m_Players){
+    p.ResetPassed();
+  }
+}

@@ -27,6 +27,7 @@ private:
   bool NextTurn();
   void PrintStatus() const;
   void DetermineBattleWinner();
+  void Reset();
 
 private:
   Map m_Map;
