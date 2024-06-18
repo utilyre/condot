@@ -25,7 +25,7 @@ private:
   void ShuffleCards();
   void DealCards();
   bool NextTurn();
-  void PrintStatus() const;
+  void PrintStatus();
   void DetermineBattleWinner();
   void ResetBattle();
 

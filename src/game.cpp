@@ -57,8 +57,8 @@ Game::Game(std::vector<Player>&& players)
 
 void Game::Start() {
   std::system("clear");
-
   DealCards();
+  ResetBattle();
 
   while (true /* TODO: !IsOver() */) {
     std::system("clear");
@@ -73,10 +73,11 @@ void Game::Start() {
 
       PlayCard();
     } while (NextTurn());
-
+    
     DetermineBattleWinner();
     ResetBattle();
   }
+  
 }
 
 void Game::DetermineBattleWinner()
@@ -103,20 +104,20 @@ void Game::DetermineBattleWinner()
   m_Turn = potentialWinners[dist(mt)];
 }
 
-void Game::PrintStatus() const {
+void Game::PrintStatus() {
   std::cout << "Table:\n";
   for (const Player& p : m_Players) {
     std::cout << "> " << p.GetName() << ": ";
     for (const auto& card : p.GetDrawnNormalCards()) {
       std::cout << card->GetName() << ' ';
     }
-    if (p.IsPassed()) {
+     if(p.GetCards().size() == 0){
+      std::cout << "(No card to play)"; 
+    }
+     else if (p.IsPassed()) {
       std::cout << "(passed)";
     }
-    else if(p.GetCards().size() == 0){
-      std::cout << "(No card to play)\n";
-    }
-    std::cout << '\n';
+       std::cout << '\n';
   }
 
   std::cout << '\n';
@@ -146,8 +147,7 @@ void Game::PrintStatus() const {
 
   std::cout << "Place: " << m_BattleMarker->GetName() << '\n';
   std::cout << '@' << GetCurrentPlayer().GetName() << ": press enter to reveal your cards";
-  getchar();
-  getchar();
+  std::getchar();
   std::cout << "Cards: ";
     for (const auto& card : GetCurrentPlayer().GetCards()) {
       std::cout << card->GetName() << ' ';
@@ -169,6 +169,7 @@ void Game::PlaceBattleMarker() {
       << " [1-" << regions.size() << "]: ";
 
     std::cin >> regionIdx;
+    std::getchar();
     if (regionIdx == 0 || regionIdx > regions.size()) {
       std::cout << "Error: input out of range\n\n";
       continue;
@@ -267,6 +268,11 @@ void Game::PlayCard(){
       player.Pass();
       break;
     }
+    
+    if (GetCurrentPlayer().GetCards().size() == 0){
+      player.Pass();
+      break;
+    }
 
     if (input == "help") {
       for (const auto& [card, desc] : CardHelpMenu) {
@@ -331,7 +337,12 @@ bool Game::NextTurn() {
 
 void Game::ResetBattle(){
   for(auto& p : m_Players){
-    p.ResetPassed();
-    p.ResetDrawnCards();
+    if(p.GetCards().size() == 0){
+      p.ResetDrawnCards();  
+    }
+    else{
+      p.ResetPassed();
+      p.ResetDrawnCards();
+    }
   }
 }
