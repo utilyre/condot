@@ -286,5 +286,6 @@ bool Game::NextTurn() {
 void Game::ResetBattle(){
   for(auto& p : m_Players){
     p.ResetPassed();
+    p.ResetDrawnCards();
   }
 }

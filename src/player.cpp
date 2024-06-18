@@ -75,3 +75,7 @@ int Player::GetStrength() const
 void Player::ResetPassed(){
   m_Passed = false;
 }
+
+void Player::ResetDrawnCards(){
+  m_DrawnNormalCards.clear(); 
+}
