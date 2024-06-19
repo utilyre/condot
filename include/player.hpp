@@ -21,13 +21,13 @@ public:
   void Pass();
   bool IsPassed() const;
   int GetStrength() const;
-  void ResetPassed();
-  void ResetDrawnCards();
+  void Reset();
 
 private:
   std::string m_Name;
   std::string m_Color;
   int m_Age;
+
   bool m_Passed;
   std::vector<std::unique_ptr<Card>> m_Cards;
   std::vector<std::unique_ptr<NormalCard>> m_DrawnNormalCards;

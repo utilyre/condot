@@ -72,10 +72,7 @@ int Player::GetStrength() const
   return sum;
 }
 
-void Player::ResetPassed(){
+void Player::Reset(){
   m_Passed = false;
-}
-
-void Player::ResetDrawnCards(){
   m_DrawnNormalCards.clear(); 
 }

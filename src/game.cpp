@@ -112,9 +112,7 @@ void Game::PrintStatus() const {
       std::cout << card->GetName() << ' ';
     }
 
-    if(p.GetCards().size() == 0){
-      std::cout << "(No card to play)"; 
-    } else if (p.IsPassed()) {
+    if (p.IsPassed()) {
       std::cout << "(passed)";
     }
 
@@ -332,14 +330,8 @@ bool Game::NextTurn() {
   return true;
 }
 
-void Game::ResetBattle(){
-  for(auto& p : m_Players){
-    if(p.GetCards().size() == 0){
-      p.ResetDrawnCards();  
-    }
-    else{
-      p.ResetPassed();
-      p.ResetDrawnCards();
-    }
+void Game::ResetBattle() {
+  for (auto& p : m_Players) {
+    p.Reset();
   }
 }
