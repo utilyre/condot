@@ -14,6 +14,9 @@ public:
   std::vector<const Player*> FindWinners() const;
 
 private:
+  bool AreNeighbors(size_t i, size_t j) const;
+
+private:
   std::vector<Region> m_Regions;
   std::vector<bool> m_Adjacency;
 };

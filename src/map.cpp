@@ -43,3 +43,8 @@ std::vector<const Player*> Map::FindWinners() const {
 
   return winners;
 }
+
+bool Map::AreNeighbors(size_t i, size_t j) const
+{
+  return m_Adjacency[m_Regions.size() * i + j];
+}
