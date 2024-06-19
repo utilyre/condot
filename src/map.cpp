@@ -1,7 +1,6 @@
 #include <stdexcept>
 #include <unordered_map>
 #include <vector>
-#include <iostream>
 
 #include <map.hpp>
 #include <region.hpp>
