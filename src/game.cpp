@@ -232,10 +232,6 @@ void Game::DealCards(){
   }
 }
 
-std::vector<Player>& Game::GetPlayer() {
-  return m_Players;
-}
-
 static std::vector<std::string> strsplit(const std::string& str, char delim) {
   std::string s;
   std::stringstream ss(str);

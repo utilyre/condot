@@ -14,7 +14,6 @@ public:
   Game(std::vector<Player>&& players);
 
   void Start();
-  std::vector<Player>& GetPlayer() ;
 
 private:
   size_t FindWarInstigator();
