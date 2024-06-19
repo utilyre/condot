@@ -162,7 +162,11 @@ void Game::PlaceBattleMarker() {
   while (true) {
     std::cout << "Choose a region to start the war in:\n";
     for (size_t i = 0; i < regions.size(); i++) {
-      std::cout << "  " << i + 1 << ". " << regions[i].GetName() << '\n';
+      std::cout << "  " << i + 1 << ". " << regions[i].GetName();
+      if (regions[i].GetRuler()) {
+        std::cout << " (conquered)";
+      }
+      std::cout << '\n';
     }
 
     std::cout << "\n@" << GetCurrentPlayer().GetName()
@@ -172,6 +176,10 @@ void Game::PlaceBattleMarker() {
     std::getchar();
     if (regionIdx == 0 || regionIdx > regions.size()) {
       std::cout << "Error: input out of range\n\n";
+      continue;
+    }
+    if (m_Map.GetRegion(regionIdx - 1)->GetRuler()) {
+      std::cout << "Error: region already conquered\n\n";
       continue;
     }
 
@@ -313,6 +321,7 @@ void Game::PlayCard(){
     break;
   };
 
+  // BUG: still let's the player with no cards to play in the next battle
   if (player.GetCards().empty()) {
     player.Pass();
   }
