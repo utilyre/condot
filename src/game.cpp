@@ -1,4 +1,5 @@
 #include <cstdio>
+#include <stdexcept>
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -50,6 +51,10 @@ Game::Game(std::vector<Player>&& players)
   m_BattleMarker(nullptr),
   m_Players(std::move(players))
 {
+  if (m_Players.empty()) {
+    throw std::invalid_argument("players cannot be empty");
+  }
+
   m_Turn = FindWarInstigator();
   InsertCards();
   ShuffleCards();
