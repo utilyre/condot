@@ -113,7 +113,8 @@ void Game::PrintStatus() const {
     }
 
     if (p.IsPassed()) {
-      std::cout << "(passed)";
+      std::string reason = p.GetCards().empty() ? "out of cards" : "passed";
+      std::cout << "(" << reason << ")";
     }
 
     std::cout << '\n';
