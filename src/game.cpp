@@ -329,7 +329,6 @@ void Game::PlayCard(){
     break;
   };
 
-  // BUG: still let's the player with no cards to play in the next battle
   if (player.GetCards().empty()) {
     player.Pass();
   }
