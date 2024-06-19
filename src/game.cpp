@@ -104,20 +104,21 @@ void Game::DetermineBattleWinner()
   m_Turn = potentialWinners[dist(mt)];
 }
 
-void Game::PrintStatus() {
+void Game::PrintStatus() const {
   std::cout << "Table:\n";
   for (const Player& p : m_Players) {
     std::cout << "> " << p.GetName() << ": ";
     for (const auto& card : p.GetDrawnNormalCards()) {
       std::cout << card->GetName() << ' ';
     }
-     if(p.GetCards().size() == 0){
+
+    if(p.GetCards().size() == 0){
       std::cout << "(No card to play)"; 
-    }
-     else if (p.IsPassed()) {
+    } else if (p.IsPassed()) {
       std::cout << "(passed)";
     }
-       std::cout << '\n';
+
+    std::cout << '\n';
   }
 
   std::cout << '\n';

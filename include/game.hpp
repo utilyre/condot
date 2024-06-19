@@ -23,7 +23,7 @@ private:
   void ShuffleCards();
   void DealCards();
   bool NextTurn();
-  void PrintStatus();
+  void PrintStatus() const;
   void DetermineBattleWinner();
   void ResetBattle();
   void PlayCard();

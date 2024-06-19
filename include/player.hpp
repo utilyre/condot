@@ -23,6 +23,7 @@ public:
   int GetStrength() const;
   void ResetPassed();
   void ResetDrawnCards();
+
 private:
   std::string m_Name;
   std::string m_Color;
