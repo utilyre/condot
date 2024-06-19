@@ -3,6 +3,7 @@
 #include <vector>
 
 #include <region.hpp>
+#include <player.hpp>
 
 class Map {
 public:
@@ -10,6 +11,7 @@ public:
 
   const std::vector<Region>& GetRegions() const;
   Region* GetRegion(size_t idx);
+  std::vector<const Player*> FindWinners() const;
 
 private:
   std::vector<Region> m_Regions;

@@ -60,7 +60,7 @@ void Game::Start() {
   DealCards();
   ResetBattle();
 
-  while (true /* TODO: !IsOver() */) {
+  while (true) {
     std::system("clear");
 
     PlaceBattleMarker();
@@ -78,6 +78,17 @@ void Game::Start() {
     } while (NextTurn());
     
     DetermineBattleWinner();
+
+    auto winners = m_Map.FindWinners();
+    if (!winners.empty()) {
+      std::system("clear");
+      std::cout << "Winner(s):\n";
+      for (const auto* winner : winners) {
+        std::cout << "- " << winner->GetName() << '\n';
+      }
+      return;
+    }
+
     ResetBattle();
   }
 }
