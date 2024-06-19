@@ -335,8 +335,14 @@ bool Game::NextTurn() {
   return true;
 }
 
-void Game::ResetBattle() {
-  for (auto& p : m_Players) {
-    p.Reset();
+void Game::ResetBattle(){
+  for(auto& p : m_Players){
+    if(p.GetCards().size() == 0){
+      p.ResetDrawnCards();  
+    }
+    else{
+      p.ResetPassed();
+      p.ResetDrawnCards();
+    }
   }
 }
