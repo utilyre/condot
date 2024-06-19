@@ -26,17 +26,23 @@ Region* Map::GetRegion(size_t idx) {
 }
 
 std::vector<const Player*> Map::FindWinners() const {
+  std::vector<size_t> Idxs;
   std::unordered_map<const Player*, int> numConquered;  
   for (const auto& region : m_Regions) {
     const Player* ruler = region.GetRuler();
     if (ruler) {
+      Idxs.push_back(GetIdx(region));
       numConquered[ruler]++;
     }
   }
-
+  
   std::vector<const Player*> winners;
   for (const auto& [player, num] : numConquered) {
-    if (num == 5) {
+    if(num == 3 && AreNeighbors(Idxs[0],Idxs[1]) && AreNeighbors(Idxs[1],Idxs[2]) && AreNeighbors( Idxs[2],Idxs[0])){
+      winners.push_back(player);
+      break;
+    }
+    else if (num == 5) {
       winners.push_back(player);
     }
   }
@@ -47,4 +53,13 @@ std::vector<const Player*> Map::FindWinners() const {
 bool Map::AreNeighbors(size_t i, size_t j) const
 {
   return m_Adjacency[m_Regions.size() * i + j];
+}
+
+size_t Map::GetIdx(Region region) const {
+  for(size_t i{} ; i < GetRegions().size(); i++){
+    if(GetRegions()[i].GetName() == region.GetName()){
+      return i;
+    }
+  }
+  return 0;
 }
