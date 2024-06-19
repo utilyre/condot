@@ -64,6 +64,9 @@ void Game::Start() {
     std::system("clear");
 
     PlaceBattleMarker();
+    if (GetCurrentPlayer().GetCards().empty()) {
+      NextTurn();
+    }
 
     do {
       std::system("clear");
