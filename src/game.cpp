@@ -214,6 +214,7 @@ size_t Game::FindWarInstigator() {
     if (age < min) {
       min = age;
       potentialInstigators.clear();
+      potentialInstigators.push_back(i);
     } else if (age == min) {
       potentialInstigators.push_back(i);
     }
