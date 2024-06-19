@@ -15,7 +15,6 @@ public:
 
   void Start();
   std::vector<Player>& GetPlayer() ;
-  void PlayCard();
 
 private:
   size_t FindWarInstigator();
@@ -28,6 +27,7 @@ private:
   void PrintStatus();
   void DetermineBattleWinner();
   void ResetBattle();
+  void PlayCard();
 
 private:
   Map m_Map;
