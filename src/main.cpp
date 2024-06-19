@@ -4,9 +4,9 @@
 #include <game.hpp>
 #include <player.hpp>
 
-#define DEBUG
+// #define DEBUG
 
-std::vector<Player> inputPlayers();
+std::vector<Player> InputPlayers();
 
 int main() {
 #ifdef DEBUG
@@ -15,14 +15,14 @@ int main() {
   players.emplace_back("Jane", "blue", 18);
   players.emplace_back("Rick", "yellow", 17);
 #else
-  auto players = inputPlayers();
+  auto players = InputPlayers();
 #endif
 
   Game game(std::move(players));
   game.Start();
 }
 
-std::vector<Player> inputPlayers() {
+std::vector<Player> InputPlayers() {
   std::cout << "Welcome to Condottiere\n\n";
 
   int numPlayers;
