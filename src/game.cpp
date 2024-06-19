@@ -272,11 +272,6 @@ void Game::PlayCard(){
       player.Pass();
       break;
     }
-    
-    if (GetCurrentPlayer().GetCards().size() == 0){
-      player.Pass();
-      break;
-    }
 
     if (input == "help") {
       for (const auto& [card, desc] : CardHelpMenu) {
