@@ -80,7 +80,6 @@ void Game::Start() {
     DetermineBattleWinner();
     ResetBattle();
   }
-  
 }
 
 void Game::DetermineBattleWinner()
