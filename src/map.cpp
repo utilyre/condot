@@ -6,11 +6,11 @@
 #include <region.hpp>
 
 Map::Map(
-  const std::vector<Region> regions,
-  const std::vector<bool> adjacency
+  std::vector<Region>&& regions,
+  std::vector<bool>&& adjacency
 )
-: m_Regions(regions),
-  m_Adjacency(adjacency)
+: m_Regions(std::move(regions)),
+  m_Adjacency(std::move(adjacency))
 {
   if (regions.size() * regions.size() != adjacency.size()) {
     throw std::invalid_argument("length of adjacency must be equal to length of regions times two");

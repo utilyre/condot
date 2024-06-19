@@ -7,7 +7,7 @@
 
 class Map {
 public:
-  Map(const std::vector<Region> regions, const std::vector<bool> adjacency);
+  Map(std::vector<Region>&& regions, std::vector<bool>&& adjacency);
 
   const std::vector<Region>& GetRegions() const;
   Region* GetRegion(size_t idx);
