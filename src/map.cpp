@@ -1,6 +1,7 @@
 #include <stdexcept>
 #include <unordered_map>
 #include <vector>
+#include <iostream>
 
 #include <map.hpp>
 #include <region.hpp>
@@ -26,23 +27,21 @@ Region* Map::GetRegion(size_t idx) {
 }
 
 std::vector<const Player*> Map::FindWinners() const {
-  std::vector<size_t> Idxs;
-  std::unordered_map<const Player*, int> numConquered;  
+  std::unordered_map<const Player*,std::vector<int>> numConquered;  
   for (const auto& region : m_Regions) {
     const Player* ruler = region.GetRuler();
     if (ruler) {
-      Idxs.push_back(GetIdx(region));
-      numConquered[ruler]++;
+      numConquered[ruler].push_back(GetIdx(region));
     }
   }
   
   std::vector<const Player*> winners;
-  for (const auto& [player, num] : numConquered) {
-    if(num == 3 && AreNeighbors(Idxs[0],Idxs[1]) && AreNeighbors(Idxs[1],Idxs[2]) && AreNeighbors( Idxs[2],Idxs[0])){
+  for (const auto& [player, conquered] : numConquered) {
+    if(conquered.size() == 3 && AreNeighbors(conquered[0],conquered[1]) && AreNeighbors(conquered[1],conquered[2]) && AreNeighbors(conquered[2],conquered[0])){
       winners.push_back(player);
       break;
     }
-    else if (num == 5) {
+    else if (conquered.size() == 5) {
       winners.push_back(player);
     }
   }
