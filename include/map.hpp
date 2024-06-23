@@ -17,6 +17,7 @@ public:
 private:
   bool AreNeighbors(size_t i, size_t j) const;
   size_t GetIdx(Region) const ;
+  bool DetermineAdjacency(std::vector<int>& size) const;
 private:
   std::vector<Region> m_Regions;
   std::vector<bool> m_Adjacency;

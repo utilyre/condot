@@ -26,17 +26,19 @@ Region* Map::GetRegion(size_t idx) {
 }
 
 std::vector<const Player*> Map::FindWinners() const {
+  std::vector<int> conqured;
   std::unordered_map<const Player*,std::vector<int>> numConquered;  
   for (const auto& region : m_Regions) {
     const Player* ruler = region.GetRuler();
     if (ruler) {
       numConquered[ruler].push_back(GetIdx(region));
+      conqured.push_back(GetIdx(region));
     }
   }
   
   std::vector<const Player*> winners;
   for (const auto& [player, conquered] : numConquered) {
-    if(conquered.size() == 3 && AreNeighbors(conquered[0],conquered[1]) && AreNeighbors(conquered[1],conquered[2]) && AreNeighbors(conquered[2],conquered[0])){
+    if((conquered.size() == 3 || conquered.size() == 4) && DetermineAdjacency(conqured)){
       winners.push_back(player);
       break;
     }
@@ -60,4 +62,19 @@ size_t Map::GetIdx(Region region) const {
     }
   }
   return 0;
+}
+
+bool Map::DetermineAdjacency(std::vector<int>& size) const{
+  std::vector<bool> Neighbors;
+  for(size_t i{} ; i < size.size(); i++){
+    for(size_t j{}; j < size.size(); j++){
+      if(AreNeighbors(size[i], size[j])){
+        Neighbors.push_back(1);
+      }
+    }
+  }
+  if(Neighbors.size() == 6){
+    return true;
+  }
+  return false;
 }
