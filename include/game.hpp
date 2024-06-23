@@ -27,6 +27,7 @@ private:
   void DetermineBattleWinner();
   void ResetBattle();
   void PlayCard();
+  void IsHandEmpty();
 
 private:
   Map m_Map;

@@ -354,6 +354,7 @@ bool Game::NextTurn() {
 }
 
 void Game::ResetBattle(){
+  IsHandEmpty();
   for(auto& p : m_Players){
     if(p.GetCards().size() == 0){
       p.ResetDrawnCards();  
@@ -363,4 +364,23 @@ void Game::ResetBattle(){
       p.ResetDrawnCards();
     }
   }
+}
+
+void Game::IsHandEmpty(){
+  std::vector<bool> EmptyHands;
+  for(const auto& p : m_Players){
+    if(p.GetCards().size() == 0){
+      EmptyHands.push_back(1);
+    }
+  }
+  if(EmptyHands.size() == m_Players.size() - 1 || EmptyHands.size() == m_Players.size()){
+    for(auto& p : m_Players){
+      p.ResetCards();
+    }
+    m_Cards.clear();
+    InsertCards();
+    ShuffleCards();
+    DealCards();  
+  }
+  
 }

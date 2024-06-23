@@ -79,3 +79,7 @@ void Player::ResetPassed(){
 void Player::ResetDrawnCards(){
   m_DrawnNormalCards.clear(); 
 }
+
+void Player::ResetCards(){
+  m_Cards.clear();
+}
