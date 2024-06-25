@@ -4,7 +4,7 @@
 #include <game.hpp>
 #include <player.hpp>
 
-// #define DEBUG
+#define DEBUG
 
 std::vector<Player> InputPlayers();
 

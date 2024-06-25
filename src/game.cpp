@@ -1,3 +1,4 @@
+#include "matarsak.hpp"
 #include <cstdio>
 #include <stdexcept>
 #include <iostream>
@@ -243,6 +244,10 @@ void Game::InsertCards(){
       m_Cards.push_back(std::move(card));
     }
   }
+  for(size_t i{}; i < 15; i++){  
+    std::unique_ptr<Card> card = std::make_unique<Matarsak>("matarsak");
+    m_Cards.push_back(std::move(card));
+  }
 }
 
 void Game::ShuffleCards(){
@@ -321,17 +326,19 @@ void Game::PlayCard(){
     Card* cardPtr = card.release();
 
     std::unique_ptr<NormalCard> ncard(dynamic_cast<NormalCard*>(cardPtr));
-    // TODO: std::unique_ptr<SpecialCard> scard(dynamic_cast<SpecialCard*>(cardPtr));
+    std::unique_ptr<SpecialCard> scard(dynamic_cast<SpecialCard*>(cardPtr));
     if (ncard) {
       player.AddDrawnNormalCard(std::move(ncard));
-    // TODO: } else if (scard) {
-    } else {
+    } 
+    else if (scard) {
+      scard->Ability();
+    } 
+    else {
       // in case both casts fail
       delete cardPtr;
     }
 
     // TODO: do something with special cards
-
     break;
   };
 

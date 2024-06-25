@@ -7,6 +7,7 @@ class SpecialCard : public Card {
     SpecialCard(std::string name);
     virtual ~SpecialCard() {}
     std::string GetName() const override;
+    virtual void Ability() = 0;
   private:
     std::string m_Name;
 };
