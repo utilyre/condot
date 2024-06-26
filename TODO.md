@@ -4,3 +4,6 @@
 - [ ] Implement special cards.
 - [ ] Do not use `m_Turn` to determine who places the battle marker.
 - [x] Help command.
+- [ ] Fixing DetermineAdjacency member function.
+- [ ] Movivng input players to the Game class.
+- [ ] Handling the thrown exceptions.
