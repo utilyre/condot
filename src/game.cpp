@@ -2,26 +2,10 @@
 
 #include <game.hpp>
 
-Game::Game()
-{
-  int monitor = GetCurrentMonitor();
-  int width = GetMonitorWidth(monitor);
-  int height = GetMonitorHeight(monitor);
-  InitWindow(width, height, "Condottiere");
-
-  m_Assets.Load();
-
-  SetTargetFPS(60);
-  ToggleFullscreen();
-}
-
-Game::~Game()
-{
-  CloseWindow();
-}
-
 void Game::Start()
 {
+  SetTargetFPS(60);
+
   while (!WindowShouldClose())
   {
     Update();

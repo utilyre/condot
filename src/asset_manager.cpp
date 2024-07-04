@@ -2,7 +2,7 @@
 
 #include <asset_manager.hpp>
 
-void AssetManager::Load()
+AssetManager::AssetManager()
 {
   Map = LoadTexture("assets/map.png");
   Bishop = LoadTexture("assets/special/bishop.png");

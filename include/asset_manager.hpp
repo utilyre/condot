@@ -4,7 +4,7 @@
 
 struct AssetManager
 {
-  void Load();
+  AssetManager();
   ~AssetManager();
 
   Texture2D Map;
