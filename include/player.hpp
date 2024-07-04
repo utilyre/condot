@@ -2,9 +2,11 @@
 
 #include <string>
 #include <raylib.h>
-
+#include <vector>
+ 
 #include <asset_manager.hpp>
 #include <entity.hpp>
+#include <specialcard.hpp>
 
 enum class Position
 {
@@ -26,4 +28,5 @@ private:
   std::string m_Name;
   Color m_Color;
   Position m_Position;
+  std::vector<Card> m_Cards;
 };
