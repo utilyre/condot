@@ -1,6 +1,8 @@
 #pragma once
 
+#include <asset_manager.hpp>
+
 class Drawable
 {
-  virtual void Draw() const = 0;
+  virtual void Draw(AssetManager) const = 0;
 };
