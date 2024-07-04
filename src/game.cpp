@@ -1,3 +1,4 @@
+#include <iostream>
 #include <raylib.h>
 
 #include <game.hpp>
@@ -35,7 +36,7 @@ void Game::Update()
 void Game::Render() const
 {
   ClearBackground(RAYWHITE);
-  DrawTexture(m_Assets.Map, 0, 0, WHITE);
+  DrawTexture(m_Assets.Map, (GetWidth() - m_Assets.Map.width) / 2, (GetHeight() - m_Assets.Map.height) / 2, WHITE);
 }
 
 int Game::GetWidth() const
