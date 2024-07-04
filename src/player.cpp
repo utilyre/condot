@@ -7,10 +7,6 @@ Player::Player(const std::string& name, Color color, Position position)
   m_Position(position)
 {}
 
-Player::~Player()
-{
-}
-
 void Player::Update()
 {
 }

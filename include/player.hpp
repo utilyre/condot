@@ -18,7 +18,6 @@ class Player : public Entity
 {
 public:
   Player(const std::string& name, Color color, Position position);
-  ~Player() override;
 
   void Update() override;
   void Render(const AssetManager& assets) const override;
