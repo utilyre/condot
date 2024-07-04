@@ -34,9 +34,9 @@ void Game::Update()
 void Game::Render() const
 {
   int monitor = GetCurrentMonitor();
-  int width = GetMonitorWidth(monitor);
-  int height = GetMonitorHeight(monitor);
-
+  float width = GetMonitorWidth(monitor);
+  float height = GetMonitorHeight(monitor);
+  
   ClearBackground(RAYWHITE);
 
   for (const Player& p : m_Players)
@@ -44,5 +44,6 @@ void Game::Render() const
     p.Render(m_Assets);
   }
 
-  DrawTexture(m_Assets.Map, (width - m_Assets.Map.width) / 2, (height - m_Assets.Map.height) / 2, WHITE);
+  DrawTextureEx(m_Assets.Map, Vector2{(width - m_Assets.Map.width ) / 2 + 85, (height - m_Assets.Map.height) / 2 + 80}, 0.0, 0.81 , WHITE);
+  
 }
