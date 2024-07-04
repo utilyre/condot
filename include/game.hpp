@@ -1,6 +1,9 @@
 #pragma once
 
+#include <vector>
+
 #include <asset_manager.hpp>
+#include <player.hpp>
 
 class Game
 {
@@ -13,4 +16,5 @@ private:
 
 private:
   AssetManager m_Assets;
+  std::vector<Player> m_Players;
 };
