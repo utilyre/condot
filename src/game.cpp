@@ -6,6 +6,7 @@ Game::Game()
 {
   InitWindow(1600, 900, "Condottiere");
   SetTargetFPS(60);
+  ToggleFullscreen();
 }
 
 Game::~Game()
