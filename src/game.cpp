@@ -1,4 +1,3 @@
-#include <iostream>
 #include <raylib.h>
 
 #include <game.hpp>
@@ -24,7 +23,6 @@ void Game::Start()
 
     BeginDrawing();
     Render();
-
     EndDrawing();
   }
 }
