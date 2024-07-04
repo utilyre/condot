@@ -1,6 +1,7 @@
-#include <iostream>
+#include <game.hpp>
 
 int main()
 {
-  std::cout << "Hello world!\n";
+  Game game;
+  game.Start();
 }
