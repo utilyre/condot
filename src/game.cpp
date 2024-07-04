@@ -25,6 +25,10 @@ void Game::Start()
 
 void Game::Update()
 {
+  for (Player& p : m_Players)
+  {
+    p.Update();
+  }
 }
 
 void Game::Render() const
@@ -37,7 +41,7 @@ void Game::Render() const
 
   for (const Player& p : m_Players)
   {
-    p.Draw(m_Assets);
+    p.Render(m_Assets);
   }
 
   DrawTexture(m_Assets.Map, (width - m_Assets.Map.width) / 2, (height - m_Assets.Map.height) / 2, WHITE);

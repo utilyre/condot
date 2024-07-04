@@ -4,7 +4,7 @@
 #include <raylib.h>
 
 #include <asset_manager.hpp>
-#include <drawable.hpp>
+#include <entity.hpp>
 
 enum class Position
 {
@@ -14,13 +14,14 @@ enum class Position
   LEFT,
 };
 
-class Player : public Drawable
+class Player : public Entity
 {
 public:
   Player(const std::string& name, Color color, Position position);
   ~Player() override;
 
-  void Draw(const AssetManager& assets) const override;
+  void Update() override;
+  void Render(const AssetManager& assets) const override;
 
 private:
   std::string m_Name;

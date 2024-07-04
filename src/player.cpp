@@ -11,7 +11,11 @@ Player::~Player()
 {
 }
 
-void Player::Draw(const AssetManager& assets) const
+void Player::Update()
+{
+}
+
+void Player::Render(const AssetManager& assets) const
 {
   int monitor = GetCurrentMonitor();
   int width = GetMonitorWidth(monitor);
