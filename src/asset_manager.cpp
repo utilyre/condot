@@ -5,15 +5,14 @@
 void AssetManager::Load()
 {
   Map = LoadTexture("assets/map.png");
-
-  Bishop = LoadTexture("assets/bishop.png");
-  Drummer = LoadTexture("assets/drummer.png");
-  Heroine = LoadTexture("assets/heroine.png");
-  Scarecrow = LoadTexture("assets/scarecrow.png");
-  Spring = LoadTexture("assets/spring.png");
-  Spy = LoadTexture("assets/spy.png");
-  Turncoat = LoadTexture("assets/turncoat.png");
-  Winter = LoadTexture("assets/winter.png");
+  Bishop = LoadTexture("assets/special/bishop.png");
+  Drummer = LoadTexture("assets/special/drummer.png");
+  Heroine = LoadTexture("assets/special/heroine.png");
+  Scarecrow = LoadTexture("assets/special/scarecrow.png");
+  Spring = LoadTexture("assets/special/spring.png");
+  Spy = LoadTexture("assets/special/spy.png");
+  Turncoat = LoadTexture("assets/special/turncoat.png");
+  Winter = LoadTexture("assets/special/winter.png");
 }
 
 AssetManager::~AssetManager()
@@ -28,6 +27,5 @@ AssetManager::~AssetManager()
   UnloadTexture(Heroine);
   UnloadTexture(Drummer);
   UnloadTexture(Bishop);
-
   UnloadTexture(Map);
 }

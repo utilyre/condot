@@ -8,7 +8,6 @@ struct AssetManager
   ~AssetManager();
 
   Texture2D Map;
-
   Texture2D Bishop;
   Texture2D Drummer;
   Texture2D Heroine;
