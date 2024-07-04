@@ -4,5 +4,5 @@
 
 class Drawable
 {
-  virtual void Draw(AssetManager) const = 0;
+  virtual void Draw(const AssetManager&) const = 0;
 };
