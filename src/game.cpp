@@ -7,6 +7,7 @@
 #include <bishop.hpp>
 #include <drummer.hpp>
 #include <heroine.hpp>
+#include <spy.hpp>
 
 void Game::Menu(){
   BeginDrawing();
@@ -88,7 +89,11 @@ void Game::InsertCards(){
     std::unique_ptr<Card> card = std::make_unique<Heroine>();
     m_Cards.push_back(std::move(card));
   }
-  
+  for(size_t i{}; i < 12; ++i){
+    std::unique_ptr<Card> card = std::make_unique<Spy>();
+    m_Cards.push_back(std::move(card));
+    
+  }
   
   
 }
