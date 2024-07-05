@@ -29,9 +29,8 @@ void Player::Update()
 
 void Player::Render(const AssetManager& assets) const
 {
-  int monitor = GetCurrentMonitor();
-  float width = GetMonitorWidth(monitor);
-  float height = GetMonitorHeight(monitor);
+  float width = GetScreenWidth();
+  float height = GetScreenHeight();
 
   int length = 3 * height / 4;
   int thickness = 200;
