@@ -10,7 +10,7 @@ int main()
 
   {
     Game game;
-    game.Menu();
+    game.Start();
   }
 
   CloseWindow();
