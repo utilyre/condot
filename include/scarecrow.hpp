@@ -5,7 +5,7 @@
 #include <asset_manager.hpp>
 #include <card.hpp>
 
-class Spy : public Card
+class Scarecrow : public Card
 {
 public:
   Texture2D GetAsset(const AssetManager& assets) const override;
