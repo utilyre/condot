@@ -1,26 +1,27 @@
+#include <memory>
 #include <raylib.h>
 
 #include <asset_manager.hpp>
 #include <player.hpp>
 #include <card.hpp>
+#include <bishop.hpp>
+#include <drummer.hpp>
 
 Player::Player(const std::string& name, Color color, Position position)
 : m_Name(name),
   m_Color(color),
-  m_Position(position),
-  m_Cards({
-            Card("drummer"),
-            Card("drummer"),
-            Card("drummer"),
-            Card("drummer"),
-            Card("drummer"),
-            Card("drummer"),
-            Card("drummer"),
-            Card("drummer"),
-            Card("bishop"),
-            
-          })
-{}
+  m_Position(position)
+{
+  m_Cards.push_back(std::make_unique<Drummer>());
+  m_Cards.push_back(std::make_unique<Drummer>());
+  m_Cards.push_back(std::make_unique<Drummer>());
+  m_Cards.push_back(std::make_unique<Drummer>());
+  m_Cards.push_back(std::make_unique<Drummer>());
+  m_Cards.push_back(std::make_unique<Drummer>());
+  m_Cards.push_back(std::make_unique<Drummer>());
+  m_Cards.push_back(std::make_unique<Drummer>());
+  m_Cards.push_back(std::make_unique<Bishop>());
+}
 
 void Player::Update()
 {
@@ -66,24 +67,12 @@ void Player::RenderCards(const AssetManager& assets, Vector2 cordinate, float ro
 float ratio = 0.75;
 if(m_Position == Position::TOP || m_Position == Position::BOTTOM)
   for(const auto& c : m_Cards){
-    if(c.GetName() == "drummer"){
-        DrawTextureEx(assets.Drummer, cordinate , rotation , ratio , WHITE);
-        cordinate.x += 50;
-    }
-    else if(c.GetName() == "bishop"){
-        DrawTextureEx(assets.Bishop, cordinate , rotation , ratio , WHITE);
-        cordinate.x += 50;
-    }
+    DrawTextureEx(c->GetAsset(assets), cordinate , rotation , ratio , WHITE);
+    cordinate.x += 50;
   }
 if(m_Position == Position::LEFT || m_Position == Position::RIGHT)
   for(const auto& c : m_Cards){
-    if(c.GetName() == "drummer"){
-        DrawTextureEx(assets.Drummer, cordinate , rotation , ratio , WHITE);
-        cordinate.y += 50;
-    }
-    else if(c.GetName() == "bishop"){
-        DrawTextureEx(assets.Bishop, cordinate , rotation , ratio , WHITE);
-        cordinate.y += 50;
-    }
+    DrawTextureEx(c->GetAsset(assets), cordinate , rotation , ratio , WHITE);
+    cordinate.y += 50;
   }  
 }

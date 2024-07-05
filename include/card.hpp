@@ -1,14 +1,12 @@
 #pragma once
 
-#include <string>
+#include <raylib.h>
+
+#include <asset_manager.hpp>
 
 class Card
 {
 public:
-  Card(const std::string& name);
-
-  const std::string& GetName() const;
-
-private:
-  std::string m_Name;
+  virtual ~Card() {}
+  virtual Texture2D GetAsset(const AssetManager&) const = 0;
 };

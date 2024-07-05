@@ -3,6 +3,7 @@
 #include <string>
 #include <raylib.h>
 #include <vector>
+#include <memory>
  
 #include <asset_manager.hpp>
 #include <entity.hpp>
@@ -28,5 +29,5 @@ private:
   std::string m_Name;
   Color m_Color;
   Position m_Position;
-  std::vector<Card> m_Cards;
+  std::vector<std::unique_ptr<Card>> m_Cards;
 };
