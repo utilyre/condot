@@ -83,3 +83,7 @@ void Player::AddCard(std::unique_ptr<Card>&& card)
 void Player::PlayCard(){
   
 }
+
+const size_t& Player::GetAge() const {
+  return m_Age;
+}

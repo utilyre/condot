@@ -27,6 +27,7 @@ public:
   void RenderCards(const AssetManager& assets, Vector2 cordinate, float rotation) const;
   void AddCard(std::unique_ptr<Card>&& card);
   void PlayCard();
+  const size_t& GetAge() const;
 private:
   std::string m_Name;
   Color m_Color;

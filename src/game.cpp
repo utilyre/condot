@@ -28,11 +28,11 @@ void Game::Start()
   SetTargetFPS(60);
 
   // TODO: add/customize players through menu
-  m_Players.emplace_back("John", RED, Position::TOP);
-  m_Players.emplace_back("Jane", GREEN, Position::RIGHT);
-  m_Players.emplace_back("Alex", BLUE, Position::BOTTOM);
-  m_Players.emplace_back("Theo", GRAY, Position::LEFT);
-  // TODO: determine who has to start
+  m_Players.emplace_back("John", RED, 10 , Position::TOP);
+  m_Players.emplace_back("Jane", GREEN, 2 , Position::RIGHT);
+  m_Players.emplace_back("Alex", BLUE, 3 , Position::BOTTOM);
+  m_Players.emplace_back("Theo", GRAY, 4 ,Position::LEFT);
+  FindWarInstigator();
   InsertCards();
   ShuffleCards();
   DealCards();
@@ -126,4 +126,23 @@ void Game::DealCards(){
 
 const Player& Game::GetCurrentPlayer() const{
   return m_Players[m_Turn];
+}
+
+size_t Game::FindWarInstigator() {
+  int min = INT_MAX;
+  std::vector<size_t> potentialInstigators;
+  for(size_t i = 0; i < m_Players.size() ; i++){
+    int age = m_Players[i].GetAge();
+    if (age < min) {
+      min = age;
+      potentialInstigators.clear();
+      potentialInstigators.push_back(i);
+    } else if (age == min) {
+      potentialInstigators.push_back(i);
+    }
+  }
+
+  std::mt19937 mt(m_RandDev());
+  std::uniform_int_distribution<size_t> dist(0, potentialInstigators.size() - 1);
+  return potentialInstigators[dist(mt)];
 }
