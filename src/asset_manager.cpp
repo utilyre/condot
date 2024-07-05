@@ -4,7 +4,11 @@
 
 AssetManager::AssetManager()
 {
-  Map = LoadTexture("assets/map.png");
+  Image map = LoadImage("assets/map.png");
+  ImageResize(&map, 0.81f * map.width, 0.81f * map.height);
+  Map = LoadTextureFromImage(map);
+  UnloadImage(map);
+
   Bishop = LoadTexture("assets/special/bishop.png");
   Drummer = LoadTexture("assets/special/drummer.png");
   Heroine = LoadTexture("assets/special/heroine.png");
