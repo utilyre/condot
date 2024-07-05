@@ -4,6 +4,7 @@
 #include <asset_manager.hpp>
 #include <player.hpp>
 #include <card.hpp>
+#include <mercenary.hpp>
 #include <bishop.hpp>
 #include <drummer.hpp>
 
@@ -12,15 +13,15 @@ Player::Player(const std::string& name, Color color, Position position)
   m_Color(color),
   m_Position(position)
 {
-  m_Cards.push_back(std::make_unique<Drummer>());
-  m_Cards.push_back(std::make_unique<Drummer>());
-  m_Cards.push_back(std::make_unique<Drummer>());
-  m_Cards.push_back(std::make_unique<Drummer>());
-  m_Cards.push_back(std::make_unique<Drummer>());
-  m_Cards.push_back(std::make_unique<Drummer>());
+  m_Cards.push_back(std::make_unique<Mercenary>(10));
   m_Cards.push_back(std::make_unique<Drummer>());
   m_Cards.push_back(std::make_unique<Drummer>());
   m_Cards.push_back(std::make_unique<Bishop>());
+  m_Cards.push_back(std::make_unique<Mercenary>(4));
+  m_Cards.push_back(std::make_unique<Mercenary>(5));
+  m_Cards.push_back(std::make_unique<Bishop>());
+  m_Cards.push_back(std::make_unique<Bishop>());
+  m_Cards.push_back(std::make_unique<Mercenary>(2));
 }
 
 void Player::Update()
