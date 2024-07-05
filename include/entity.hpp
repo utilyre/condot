@@ -5,7 +5,7 @@
 class Entity
 {
 public:
-  virtual ~Entity() {};
+  virtual ~Entity() {}
 
   virtual void Update() = 0;
   virtual void Render(const AssetManager&) const = 0;

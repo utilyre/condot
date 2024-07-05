@@ -36,7 +36,7 @@ void Game::Render() const
   int monitor = GetCurrentMonitor();
   float width = GetMonitorWidth(monitor);
   float height = GetMonitorHeight(monitor);
-  
+
   ClearBackground(RAYWHITE);
 
   for (const Player& p : m_Players)
@@ -45,5 +45,4 @@ void Game::Render() const
   }
 
   DrawTextureEx(m_Assets.Map, Vector2{(width - m_Assets.Map.width ) / 2 + 85, (height - m_Assets.Map.height) / 2 + 80}, 0.0, 0.81 , WHITE);
-  
 }

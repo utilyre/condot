@@ -60,19 +60,26 @@ void Player::Render(const AssetManager& assets) const
     RenderCards(assets, left, 90);
     break;
   }
-
 }
 
-void Player::RenderCards(const AssetManager& assets, Vector2 cordinate, float rotation) const{
-float ratio = 0.75;
-if(m_Position == Position::TOP || m_Position == Position::BOTTOM)
-  for(const auto& c : m_Cards){
-    DrawTextureEx(c->GetAsset(assets), cordinate , rotation , ratio , WHITE);
-    cordinate.x += 50;
+void Player::RenderCards(const AssetManager& assets, Vector2 cordinate, float rotation) const
+{
+  float ratio = 0.75;
+  if (m_Position == Position::TOP || m_Position == Position::BOTTOM)
+  {
+    for (const auto& c : m_Cards)
+    {
+      DrawTextureEx(c->GetAsset(assets), cordinate, rotation, ratio, WHITE);
+      cordinate.x += 50;
+    }
   }
-if(m_Position == Position::LEFT || m_Position == Position::RIGHT)
-  for(const auto& c : m_Cards){
-    DrawTextureEx(c->GetAsset(assets), cordinate , rotation , ratio , WHITE);
-    cordinate.y += 50;
-  }  
+
+  if (m_Position == Position::LEFT || m_Position == Position::RIGHT)
+  {
+    for (const auto& c : m_Cards)
+    {
+      DrawTextureEx(c->GetAsset(assets), cordinate, rotation, ratio, WHITE);
+      cordinate.y += 50;
+    }
+  }
 }
