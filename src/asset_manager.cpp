@@ -9,6 +9,14 @@ AssetManager::AssetManager()
   Map = LoadTextureFromImage(map);
   UnloadImage(map);
 
+  Mercenary01 = LoadTexture("assets/mercenary/01.png");
+  Mercenary02 = LoadTexture("assets/mercenary/02.png");
+  Mercenary03 = LoadTexture("assets/mercenary/03.png");
+  Mercenary04 = LoadTexture("assets/mercenary/04.png");
+  Mercenary05 = LoadTexture("assets/mercenary/05.png");
+  Mercenary06 = LoadTexture("assets/mercenary/06.png");
+  Mercenary10 = LoadTexture("assets/mercenary/10.png");
+
   Bishop = LoadTexture("assets/special/bishop.png");
   Drummer = LoadTexture("assets/special/drummer.png");
   Heroine = LoadTexture("assets/special/heroine.png");
@@ -31,5 +39,14 @@ AssetManager::~AssetManager()
   UnloadTexture(Heroine);
   UnloadTexture(Drummer);
   UnloadTexture(Bishop);
+
+  UnloadTexture(Mercenary10);
+  UnloadTexture(Mercenary06);
+  UnloadTexture(Mercenary05);
+  UnloadTexture(Mercenary04);
+  UnloadTexture(Mercenary03);
+  UnloadTexture(Mercenary02);
+  UnloadTexture(Mercenary01);
+
   UnloadTexture(Map);
 }
