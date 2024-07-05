@@ -1,7 +1,8 @@
-#include "raylib.h"
-#include "specialcard.hpp"
+#include <raylib.h>
+
 #include <asset_manager.hpp>
 #include <player.hpp>
+#include <card.hpp>
 
 Player::Player(const std::string& name, Color color, Position position)
 : m_Name(name),
@@ -65,22 +66,22 @@ void Player::RenderCards(const AssetManager& assets, Vector2 cordinate, float ro
 float ratio = 0.75;
 if(m_Position == Position::TOP || m_Position == Position::BOTTOM)
   for(const auto& c : m_Cards){
-    if(c.m_Name == "drummer"){
+    if(c.GetName() == "drummer"){
         DrawTextureEx(assets.Drummer, cordinate , rotation , ratio , WHITE);
         cordinate.x += 50;
     }
-    else if(c.m_Name == "bishop"){
+    else if(c.GetName() == "bishop"){
         DrawTextureEx(assets.Bishop, cordinate , rotation , ratio , WHITE);
         cordinate.x += 50;
     }
   }
 if(m_Position == Position::LEFT || m_Position == Position::RIGHT)
   for(const auto& c : m_Cards){
-    if(c.m_Name == "drummer"){
+    if(c.GetName() == "drummer"){
         DrawTextureEx(assets.Drummer, cordinate , rotation , ratio , WHITE);
         cordinate.y += 50;
     }
-    else if(c.m_Name == "bishop"){
+    else if(c.GetName() == "bishop"){
         DrawTextureEx(assets.Bishop, cordinate , rotation , ratio , WHITE);
         cordinate.y += 50;
     }

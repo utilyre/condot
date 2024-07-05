@@ -6,7 +6,7 @@
  
 #include <asset_manager.hpp>
 #include <entity.hpp>
-#include <specialcard.hpp>
+#include <card.hpp>
 
 enum class Position
 {
