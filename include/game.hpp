@@ -19,7 +19,9 @@ private:
   void InsertCards();
   void ShuffleCards();
   void DealCards();
+  const Player& GetCurrentPlayer() const;
 private:
+  size_t m_Turn;
   std::random_device m_RandDev;
   AssetManager m_Assets;
   Map m_Map;

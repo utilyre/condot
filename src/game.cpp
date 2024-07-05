@@ -32,6 +32,7 @@ void Game::Start()
   m_Players.emplace_back("Jane", GREEN, Position::RIGHT);
   m_Players.emplace_back("Alex", BLUE, Position::BOTTOM);
   m_Players.emplace_back("Theo", GRAY, Position::LEFT);
+  // TODO: determine who has to start
   InsertCards();
   ShuffleCards();
   DealCards();
@@ -121,4 +122,8 @@ void Game::DealCards(){
       m_Cards.pop_back();
     }
   }
+}
+
+const Player& Game::GetCurrentPlayer() const{
+  return m_Players[m_Turn];
 }
