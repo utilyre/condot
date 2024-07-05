@@ -11,7 +11,7 @@ class Game
 {
 public:
   void Start();
-
+  void Menu();
 private:
   void Update();
   void Render() const;

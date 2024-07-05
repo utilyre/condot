@@ -2,7 +2,18 @@
 
 #include <game.hpp>
 #include <player.hpp>
-
+void Game::Menu(){
+  BeginDrawing();
+  while (!WindowShouldClose()) {
+    ClearBackground(RAYWHITE);
+    DrawText("1. New Game",GetScreenWidth() / 2 - 100, GetScreenHeight() / 2 ,40 , DARKGRAY);
+    DrawText("2. Load Game",GetScreenWidth() / 2 - 100, GetScreenHeight() / 2 + 100 , 40,DARKGRAY );
+    if(IsKeyPressed(KEY_ONE)){
+      Start();
+    }
+    EndDrawing();
+  }
+}
 void Game::Start()
 {
   SetTargetFPS(60);
