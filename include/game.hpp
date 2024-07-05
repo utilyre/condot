@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <vector>
 #include <random>
 
@@ -15,10 +16,13 @@ public:
 private:
   void Update();
   void Render() const;
-
+  void InsertCards();
+  void ShuffleCards();
+  void DealCards();
 private:
   std::random_device m_RandDev;
   AssetManager m_Assets;
   Map m_Map;
   std::vector<Player> m_Players;
+  std::vector<std::unique_ptr<Card>> m_Cards;
 };
