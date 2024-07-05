@@ -40,6 +40,8 @@ void Game::Update()
   {
     p.Update();
   }
+
+  m_Map.Update();
 }
 
 void Game::Render() const
