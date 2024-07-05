@@ -4,6 +4,9 @@
 #include <game.hpp>
 #include <player.hpp>
 #include <mercenary.hpp>
+#include <bishop.hpp>
+#include <drummer.hpp>
+#include <heroine.hpp>
 
 void Game::Menu(){
   BeginDrawing();
@@ -74,6 +77,20 @@ void Game::InsertCards(){
       m_Cards.push_back(std::move(card));
     }
   }
+  for(size_t i{} ; i < 6; ++i){
+    std::unique_ptr<Card> card = std::make_unique<Bishop>();
+    m_Cards.push_back(std::move(card));
+    card = nullptr;
+    card = std::make_unique<Drummer>();
+    m_Cards.push_back(std::move(card));
+  }
+  for(size_t i{}; i < 3; ++i){
+    std::unique_ptr<Card> card = std::make_unique<Heroine>();
+    m_Cards.push_back(std::move(card));
+  }
+  
+  
+  
 }
 
 void Game::ShuffleCards(){

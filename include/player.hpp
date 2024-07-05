@@ -26,6 +26,7 @@ public:
   void Render(const AssetManager& assets) const override;
   void RenderCards(const AssetManager& assets, Vector2 cordinate, float rotation) const;
   void AddCard(std::unique_ptr<Card>&& card);
+  void PlayCard();
 private:
   std::string m_Name;
   Color m_Color;

@@ -78,3 +78,7 @@ void Player::AddCard(std::unique_ptr<Card>&& card)
 {
   m_Cards.push_back(std::move(card));
 }
+
+void Player::PlayCard(){
+  
+}
