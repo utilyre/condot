@@ -20,7 +20,7 @@ enum class Position
 class Player : public Entity
 {
 public:
-  Player(const std::string& name, Color color, Position position);
+  Player(const std::string& name, Color color, size_t age, Position position);
 
   void Update() override;
   void Render(const AssetManager& assets) const override;
@@ -31,5 +31,6 @@ private:
   std::string m_Name;
   Color m_Color;
   Position m_Position;
+  size_t m_Age;
   std::vector<std::unique_ptr<Card>> m_Cards;
 };

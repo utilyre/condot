@@ -8,10 +8,11 @@
 #include <bishop.hpp>
 #include <drummer.hpp>
 
-Player::Player(const std::string& name, Color color, Position position)
+Player::Player(const std::string& name, Color color,size_t age, Position position)
 : m_Name(name),
   m_Color(color),
-  m_Position(position)
+  m_Position(position),
+  m_Age(age)
 {}
 
 void Player::Update()
