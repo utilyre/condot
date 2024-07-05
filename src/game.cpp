@@ -1,4 +1,3 @@
-#include "scarecrow.hpp"
 #include <raylib.h>
 #include <algorithm>
 
@@ -9,6 +8,8 @@
 #include <drummer.hpp>
 #include <heroine.hpp>
 #include <spy.hpp>
+#include <turncoat.hpp>
+#include <scarecrow.hpp>
 
 void Game::Menu(){
   BeginDrawing();
@@ -89,6 +90,9 @@ void Game::InsertCards(){
   for(size_t i{}; i < 3; ++i){
     std::unique_ptr<Card> card = std::make_unique<Heroine>();
     m_Cards.push_back(std::move(card));
+    card = nullptr;
+    card = std::make_unique<Turncoat>();
+    m_Cards.push_back(std::move(card));
   }
   for(size_t i{}; i < 12; ++i){
     std::unique_ptr<Card> card = std::make_unique<Spy>();
@@ -99,6 +103,7 @@ void Game::InsertCards(){
     std::unique_ptr<Card> card = std::make_unique<Scarecrow>();
     m_Cards.push_back(std::move(card));
   }
+  
   
   
 }
