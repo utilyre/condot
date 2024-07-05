@@ -1,3 +1,4 @@
+#include "scarecrow.hpp"
 #include <raylib.h>
 #include <algorithm>
 
@@ -93,6 +94,10 @@ void Game::InsertCards(){
     std::unique_ptr<Card> card = std::make_unique<Spy>();
     m_Cards.push_back(std::move(card));
     
+  }
+  for(size_t i{}; i < 16; ++i){
+    std::unique_ptr<Card> card = std::make_unique<Scarecrow>();
+    m_Cards.push_back(std::move(card));
   }
   
   
