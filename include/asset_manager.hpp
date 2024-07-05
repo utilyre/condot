@@ -8,12 +8,12 @@ struct AssetManager
   ~AssetManager();
 
   Texture2D Map;
-  Texture2D Bishop;
-  Texture2D Drummer;
-  Texture2D Heroine;
-  Texture2D Scarecrow;
-  Texture2D Spring;
-  Texture2D Spy;
-  Texture2D Turncoat;
-  Texture2D Winter;
+  Texture2D Bishop; // Rish Sefid
+  Texture2D Drummer; // Tabl Zan
+  Texture2D Heroine; // Shah Dokht
+  Texture2D Scarecrow; // Matarsak
+  Texture2D Spring; // Bahar
+  Texture2D Spy; // Shirzan
+  Texture2D Turncoat; // Parchamdar
+  Texture2D Winter; // Zemestan
 };
