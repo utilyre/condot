@@ -20,4 +20,5 @@ private:
   State* m_State;
   std::vector<Region> m_Regions;
   Region* m_BattleMarker;
+  Region* m_FavorMarker;
 };

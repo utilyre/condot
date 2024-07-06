@@ -26,7 +26,8 @@ Map::Map(State* state)
     Region("Antela", Rectangle{652, 443, 168, 194}),
     Region("Lia", Rectangle{262, 557, 152, 80}),
   }),
-  m_BattleMarker(nullptr)
+  m_BattleMarker(nullptr),
+  m_FavorMarker(nullptr)
 {
 }
 
@@ -35,7 +36,13 @@ void Map::Update()
   int width = GetScreenWidth();
   int height = GetScreenHeight();
 
-  if (m_State->IsRegionPick() && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+  if (
+    IsMouseButtonPressed(MOUSE_BUTTON_LEFT)
+    && (
+      m_State->IsPlacingBattleMarker()
+      || m_State->IsPlacingFavorMarker()
+    )
+  )
   {
     Vector2 mouse = GetMousePosition();
     mouse.x -= (width - MAP_WIDTH) / 2.0f;
@@ -45,7 +52,11 @@ void Map::Update()
     {
       if (r.CollidesWith(mouse))
       {
-        m_BattleMarker = &r;
+        if (m_State->IsPlacingBattleMarker())
+          m_BattleMarker = &r;
+        else if (m_State->IsPlacingFavorMarker())
+          m_FavorMarker = &r;
+
         m_State->SetPlaying();
       }
     }
