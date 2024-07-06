@@ -105,7 +105,12 @@ bool Player::IsCollided(AssetManager& assets){
     size_t i = 0;
     for(auto it = m_Cards.rbegin(); it != m_Cards.rend(); ++it){
       Rectangle LowerLayer = {570 + (float) 50 * i,880, 50 ,(float) (*it)->GetAsset(assets).height};
+      Rectangle UpperLayer = {570 + (float) 50 * i,880, 120 ,(float) (*it)->GetAsset(assets).height};
       if(CheckCollisionPointRec(GetMousePosition(), LowerLayer) && IsMouseButtonDown(MOUSE_LEFT_BUTTON)){
+        std::unique_ptr<Card> card = TakeCard(i);
+        return true;
+      }
+      else if(CheckCollisionPointRec(GetMousePosition(), UpperLayer) && IsMouseButtonDown(MOUSE_LEFT_BUTTON) && m_Cards.size() - 1 == i){
         std::unique_ptr<Card> card = TakeCard(i);
         return true;
       }
