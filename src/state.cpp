@@ -1,7 +1,7 @@
 #include <state.hpp>
 
 State::State()
-: m_Current(REGION_PICK) // TODO: should be MENU
+: m_Current(PLACING_BATTLE_MARKER) // TODO: should be MENU
 {
 }
 
@@ -15,14 +15,24 @@ void State::SetMenu()
   m_Current = MENU;
 }
 
-bool State::IsRegionPick() const
+bool State::IsPlacingBattleMarker() const
 {
-  return m_Current == REGION_PICK;
+  return m_Current == PLACING_BATTLE_MARKER;
 }
 
-void State::SetRegionPick()
+void State::SetPlacingBattleMarker()
 {
-  m_Current = REGION_PICK;
+  m_Current = PLACING_BATTLE_MARKER;
+}
+
+bool State::IsPlacingFavorMarker() const
+{
+  return m_Current == PLACING_FAVOR_MARKER;
+}
+
+void State::SetPlacingFavorMarker()
+{
+  m_Current = PLACING_FAVOR_MARKER;
 }
 
 bool State::IsPlaying() const

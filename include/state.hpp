@@ -8,12 +8,20 @@ public:
   bool IsMenu() const;
   void SetMenu();
 
-  bool IsRegionPick() const;
-  void SetRegionPick();
+  bool IsPlacingBattleMarker() const;
+  void SetPlacingBattleMarker();
+
+  bool IsPlacingFavorMarker() const;
+  void SetPlacingFavorMarker();
 
   bool IsPlaying() const;
   void SetPlaying();
 
 private:
-  enum {MENU, REGION_PICK, PLAYING} m_Current;
+  enum {
+    MENU,
+    PLACING_BATTLE_MARKER,
+    PLACING_FAVOR_MARKER,
+    PLAYING,
+  } m_Current;
 };
