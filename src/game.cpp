@@ -1,4 +1,5 @@
 #include <cstdio>
+#include <memory>
 #include <raylib.h>
 #include <algorithm>
 
@@ -39,9 +40,29 @@ void Game::Start()
   DealCards();
   while (!WindowShouldClose())
   {
+    Rectangle boxB = { GetScreenWidth()/2.0f - 30, GetScreenHeight()/2.0f - 30, 60, 60 };
+    boxB.x = GetMouseX() - boxB.width/2;
+    boxB.y = GetMouseY() - boxB.height/2; 
     Update();
     BeginDrawing();
     Render();
+    size_t i = 0;
+    for(const auto& c : m_Players[2].GetCards()){
+      Rectangle rec = {570 + (float) 50 * i,880, 50 ,(float)c->GetAsset(m_Assets).height};
+      Rectangle rec1 = {570 + (float) 50 * i,880, 120 ,(float)c->GetAsset(m_Assets).height};
+      if(CheckCollisionPointRec(GetMousePosition(), rec) && IsMouseButtonDown(MOUSE_LEFT_BUTTON)){
+        std::unique_ptr<Card> card = m_Players[2].TakeCard(i);
+        Card* c = card.release();
+        DrawRectangle(570 + (float) 50 * i,880, 50 ,(float)c->GetAsset(m_Assets).height, GREEN);
+        break;
+      }
+      else if(CheckCollisionPointRec(GetMousePosition(), rec1) && IsMouseButtonDown(MOUSE_LEFT_BUTTON) && m_Players[2].GetCards().size() - 1 == i){
+        DrawRectangle(570 + (float) 50 * i,880, 120 ,(float)c->GetAsset(m_Assets).height, GREEN);
+        break;
+      }
+      i++;
+    }
+    DrawText(TextFormat("pos x: %i\npos y: %i",(int)GetMouseX(),(int)GetMouseY()),100 ,100 ,20 ,BLACK);
     EndDrawing();
   }
 }

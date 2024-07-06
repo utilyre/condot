@@ -91,3 +91,16 @@ const size_t& Player::GetAge() const {
 const std::string Player::GetName() const{
   return m_Name;
 }
+
+std::unique_ptr<Card> Player::TakeCard(size_t& pos)
+{
+  std::unique_ptr<Card>& card = *(m_Cards.begin() + pos);
+  std::unique_ptr<Card> c =  std::move(card);
+  m_Cards.erase(m_Cards.begin() + pos);
+  return c;
+  
+}
+
+const std::vector<std::unique_ptr<Card>>& Player::GetCards() const{
+  return m_Cards;
+} 
