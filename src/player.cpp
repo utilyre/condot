@@ -100,3 +100,17 @@ std::unique_ptr<Card> Player::TakeCard(size_t& pos)
 const std::vector<std::unique_ptr<Card>>& Player::GetCards() const{
   return m_Cards;
 } 
+
+bool Player::IsCollided(AssetManager& assets){
+    size_t i = 0;
+    for(auto it = m_Cards.rbegin(); it != m_Cards.rend(); ++it){
+      Rectangle LowerLayer = {570 + (float) 50 * i,880, 50 ,(float) (*it)->GetAsset(assets).height};
+      if(CheckCollisionPointRec(GetMousePosition(), LowerLayer) && IsMouseButtonDown(MOUSE_LEFT_BUTTON)){
+        std::unique_ptr<Card> card = TakeCard(i);
+        Card* c  = card.release();
+        return true;
+      }
+      i++;
+    }
+    return false;
+}

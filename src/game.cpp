@@ -2,6 +2,7 @@
 #include <memory>
 #include <raylib.h>
 #include <algorithm>
+#include <iostream>
 
 #include <game.hpp>
 #include <player.hpp>
@@ -12,6 +13,8 @@
 #include <spy.hpp>
 #include <turncoat.hpp>
 #include <scarecrow.hpp>
+
+bool current = true;
 
 void Game::Menu(){
   BeginDrawing();
@@ -40,10 +43,10 @@ void Game::Start()
   DealCards();
   while (!WindowShouldClose())
   {
-    PlayCard();
     Update();
     BeginDrawing();
     Render();
+    if(current) PlayCard();
     EndDrawing();
   }
 }
@@ -150,22 +153,8 @@ size_t Game::FindWarInstigator() {
 }
 
 void Game::PlayCard(){
-  
-    size_t i = 0;
-    for(const auto& c : m_Players[2].GetCards()){
-      Rectangle rec = {570 + (float) 50 * i,880, 50 ,(float)c->GetAsset(m_Assets).height};
-      Rectangle rec1 = {570 + (float) 50 * i,880, 120 ,(float)c->GetAsset(m_Assets).height};
-      if(CheckCollisionPointRec(GetMousePosition(), rec) && IsMouseButtonDown(MOUSE_LEFT_BUTTON)){
-        std::unique_ptr<Card> card = m_Players[2].TakeCard(i);
-        Card* c = card.release();
-        DrawRectangle(570 + (float) 50 * i,880, 50 ,(float)c->GetAsset(m_Assets).height, GREEN);
-        break;
-      }
-      else if(CheckCollisionPointRec(GetMousePosition(), rec1) && IsMouseButtonDown(MOUSE_LEFT_BUTTON) && m_Players[2].GetCards().size() - 1 == i){
-        DrawRectangle(570 + (float) 50 * i,880, 120 ,(float)c->GetAsset(m_Assets).height, GREEN);
-        break;
-      }
-      i++;
-    }
+  //TODO : MAKE IT A LOOP
+    current = !m_Players[2].IsCollided(m_Assets);
+    //std::cout << m_Players[2].GetName(); 
     DrawText(TextFormat("pos x: %i\npos y: %i",(int)GetMouseX(),(int)GetMouseY()),100 ,100 ,20 ,BLACK);
 }
