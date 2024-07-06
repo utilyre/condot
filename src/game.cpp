@@ -2,7 +2,6 @@
 #include <memory>
 #include <raylib.h>
 #include <algorithm>
-#include <iostream>
 
 #include <game.hpp>
 #include <player.hpp>
@@ -155,6 +154,5 @@ size_t Game::FindWarInstigator() {
 void Game::PlayCard(){
   //TODO : MAKE IT A LOOP
     current = !m_Players[2].IsCollided(m_Assets);
-    //std::cout << m_Players[2].GetName(); 
     DrawText(TextFormat("pos x: %i\npos y: %i",(int)GetMouseX(),(int)GetMouseY()),100 ,100 ,20 ,BLACK);
 }
