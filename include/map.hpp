@@ -19,6 +19,7 @@ public:
 private:
   State* m_State;
   std::vector<Region> m_Regions;
+  std::vector<bool> m_Adjacency;
   Region* m_BattleMarker;
   Region* m_FavorMarker;
 };
