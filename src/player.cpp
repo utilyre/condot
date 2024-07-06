@@ -107,7 +107,6 @@ bool Player::IsCollided(AssetManager& assets){
       Rectangle LowerLayer = {570 + (float) 50 * i,880, 50 ,(float) (*it)->GetAsset(assets).height};
       if(CheckCollisionPointRec(GetMousePosition(), LowerLayer) && IsMouseButtonDown(MOUSE_LEFT_BUTTON)){
         std::unique_ptr<Card> card = TakeCard(i);
-        Card* c  = card.release();
         return true;
       }
       i++;
