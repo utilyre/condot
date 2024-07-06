@@ -1,3 +1,4 @@
+#include <cstdio>
 #include <raylib.h>
 #include <algorithm>
 
@@ -39,7 +40,6 @@ void Game::Start()
   while (!WindowShouldClose())
   {
     Update();
-
     BeginDrawing();
     Render();
     EndDrawing();

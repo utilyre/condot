@@ -28,6 +28,7 @@ public:
   void AddCard(std::unique_ptr<Card>&& card);
   void PlayCard();
   const size_t& GetAge() const;
+  const std::string GetName() const;
 private:
   std::string m_Name;
   Color m_Color;

@@ -87,3 +87,7 @@ void Player::PlayCard(){
 const size_t& Player::GetAge() const {
   return m_Age;
 }
+
+const std::string Player::GetName() const{
+  return m_Name;
+}
