@@ -21,6 +21,7 @@ private:
   void DealCards();
   const Player& GetCurrentPlayer() const;
   size_t FindWarInstigator();
+  void PlayCard();
 private:
   size_t m_Turn;
   std::random_device m_RandDev;
