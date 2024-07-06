@@ -1,3 +1,4 @@
+#include <iostream>
 #include <raylib.h>
 
 #include <asset_manager.hpp>
@@ -60,6 +61,11 @@ void Map::Update()
         m_State->SetPlaying();
       }
     }
+
+    if (m_BattleMarker)
+      std::cout << "Set Battle Marker: " << m_BattleMarker->GetName() << '\n';
+    if (m_FavorMarker)
+      std::cout << "Set Favor Marker: " << m_FavorMarker->GetName() << '\n';
   }
 }
 
