@@ -10,7 +10,7 @@ class Region
 public:
   explicit Region(const std::string& name, Rectangle collision);
 
-  Rectangle GetCollision() const;
+  const std::string& GetName() const;
   bool CollidesWith(Vector2 v) const;
 
 private:

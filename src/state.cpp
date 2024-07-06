@@ -1,7 +1,7 @@
 #include <state.hpp>
 
 State::State()
-: m_Current(PLAYING) // TODO: should be MENU
+: m_Current(REGION_PICK) // TODO: should be MENU
 {
 }
 

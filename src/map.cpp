@@ -1,9 +1,13 @@
+#include <iostream>
 #include <raylib.h>
 
 #include <asset_manager.hpp>
 #include <state.hpp>
 #include <map.hpp>
 #include <region.hpp>
+
+static const int MAP_WIDTH = 1057;
+static const int MAP_HEIGHT = 831;
 
 Map::Map(State* state)
 : m_State(state),
@@ -22,12 +26,31 @@ Map::Map(State* state)
     Region("Enna", Rectangle{651, 303, 109, 129}),
     Region("Antela", Rectangle{652, 443, 168, 194}),
     Region("Lia", Rectangle{262, 557, 152, 80}),
-  })
+  }),
+  m_BattleMarker(nullptr)
 {
 }
 
 void Map::Update()
 {
+  int width = GetScreenWidth();
+  int height = GetScreenHeight();
+
+  if (m_State->IsRegionPick() && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+  {
+    Vector2 mouse = GetMousePosition();
+    mouse.x -= (width - MAP_WIDTH) / 2.0f;
+    mouse.y -= (height - MAP_HEIGHT) / 2.0f;
+
+    for (Region& r : m_Regions)
+    {
+      if (r.CollidesWith(mouse))
+      {
+        m_BattleMarker = &r;
+        m_State->SetPlaying();
+      }
+    }
+  }
 }
 
 void Map::Render(const AssetManager& assets) const
@@ -35,27 +58,5 @@ void Map::Render(const AssetManager& assets) const
   int width = GetScreenWidth();
   int height = GetScreenHeight();
 
-  int x = (width - assets.Map.width) / 2;
-  int y = (height - assets.Map.height) / 2;
-
-  DrawTexture(assets.Map, x, y, WHITE);
-
-  if (m_State->IsRegionPick())
-  {
-    Vector2 mouse = GetMousePosition();
-    mouse.x -= x;
-    mouse.y -= y;
-
-    for (const Region& r : m_Regions)
-    {
-      if (r.CollidesWith(mouse))
-      {
-        Rectangle collision = r.GetCollision();
-        collision.x += x;
-        collision.y += y;
-
-        DrawRectangleRec(collision, Color{255, 255, 255, 80});
-      }
-    }
-  }
+  DrawTexture(assets.Map, (width - MAP_WIDTH) / 2, (height - MAP_HEIGHT) / 2, WHITE);
 }

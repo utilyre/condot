@@ -10,9 +10,9 @@ Region::Region(const std::string& name, Rectangle collision)
 {
 }
 
-Rectangle Region::GetCollision() const
+const std::string& Region::GetName() const
 {
-  return m_Collision;
+  return m_Name;
 }
 
 bool Region::CollidesWith(Vector2 v) const

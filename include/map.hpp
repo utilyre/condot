@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <raylib.h>
 
 #include <asset_manager.hpp>
 #include <state.hpp>
@@ -18,4 +19,5 @@ public:
 private:
   State* m_State;
   std::vector<Region> m_Regions;
+  Region* m_BattleMarker;
 };
