@@ -2,6 +2,12 @@
 
 #include <game.hpp>
 #include <player.hpp>
+
+Game::Game()
+: m_Map(&m_State)
+{
+}
+
 void Game::Menu(){
   BeginDrawing();
   while (!WindowShouldClose()) {

@@ -1,11 +1,13 @@
 #include <raylib.h>
 
 #include <asset_manager.hpp>
+#include <state.hpp>
 #include <map.hpp>
 #include <region.hpp>
 
-Map::Map()
-: m_Regions({
+Map::Map(State* state)
+: m_State(state),
+  m_Regions({
     Region("Elinia", Rectangle{28, 20, 103, 210}),
     Region("Rollo", Rectangle{132, 20, 303, 110}),
     Region("Pladaci", Rectangle{438, 22, 190, 143}),
@@ -38,19 +40,22 @@ void Map::Render(const AssetManager& assets) const
 
   DrawTexture(assets.Map, x, y, WHITE);
 
-  Vector2 mouse = GetMousePosition();
-  mouse.x -= x;
-  mouse.y -= y;
-
-  for (const Region& r : m_Regions)
+  if (m_State->IsRegionPick())
   {
-    if (r.CollidesWith(mouse))
-    {
-      Rectangle collision = r.GetCollision();
-      collision.x += x;
-      collision.y += y;
+    Vector2 mouse = GetMousePosition();
+    mouse.x -= x;
+    mouse.y -= y;
 
-      DrawRectangleRec(collision, Color{255, 255, 255, 80});
+    for (const Region& r : m_Regions)
+    {
+      if (r.CollidesWith(mouse))
+      {
+        Rectangle collision = r.GetCollision();
+        collision.x += x;
+        collision.y += y;
+
+        DrawRectangleRec(collision, Color{255, 255, 255, 80});
+      }
     }
   }
 }
