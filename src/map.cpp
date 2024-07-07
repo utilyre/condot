@@ -138,6 +138,10 @@ std::vector<const Player*> Map::FindWinners() const
     if (
       indices.size() == 5
       || (
+        indices.size() == 3
+        && AreNeighbors(indices[0], indices[1], indices[2])
+      )
+      || (
         indices.size() == 4
         && (
           AreNeighbors(indices[0], indices[1], indices[2])
@@ -145,10 +149,6 @@ std::vector<const Player*> Map::FindWinners() const
           || AreNeighbors(indices[0], indices[2], indices[3])
           || AreNeighbors(indices[1], indices[2], indices[3])
         )
-      )
-      || (
-        indices.size() == 3
-        && AreNeighbors(indices[0], indices[1], indices[2])
       )
     )
     {
