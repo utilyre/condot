@@ -97,48 +97,66 @@ void Map::Render(const AssetManager& assets) const
   DrawTexture(assets.Map, (width - MAP_WIDTH) / 2, (height - MAP_HEIGHT) / 2, WHITE);
 }
 
-const Player* Map::FindWinner() const
+std::vector<const Player*> Map::FindWinners() const
 {
+  bool allConquered = true;
   std::unordered_map<const Player*, std::vector<size_t>> regionIndices;
   for (size_t i = 0; i < m_Regions.size(); i++)
   {
     const Player* ruler = m_Regions[i].GetRuler();
+    allConquered = allConquered && ruler;
     if (ruler)
     {
       regionIndices[ruler].push_back(i);
     }
   }
 
+  if (allConquered)
+  {
+    size_t max = 0;
+    std::vector<const Player*> winners;
+    for (const auto& [player, indices] : regionIndices)
+    {
+      size_t numIndices = indices.size();
+      if (numIndices > max)
+      {
+        max = numIndices;
+        winners.clear();
+        winners.push_back(player);
+      }
+      else if (numIndices == max)
+      {
+        winners.push_back(player);
+      }
+    }
+
+    return winners;
+  }
+
   for (const auto& [player, indices] : regionIndices)
   {
-    if (indices.size() == 5)
-    {
-      return player;
-    }
-
     if (
-      indices.size() == 3
-      && AreNeighbors(indices[0], indices[1], indices[2])
-    )
-    {
-      return player;
-    }
-
-    if (
-      indices.size() == 4
-      && (
-        AreNeighbors(indices[0], indices[1], indices[2])
-        || AreNeighbors(indices[0], indices[1], indices[3])
-        || AreNeighbors(indices[0], indices[2], indices[3])
-        || AreNeighbors(indices[1], indices[2], indices[3])
+      indices.size() == 5
+      || (
+        indices.size() == 4
+        && (
+          AreNeighbors(indices[0], indices[1], indices[2])
+          || AreNeighbors(indices[0], indices[1], indices[3])
+          || AreNeighbors(indices[0], indices[2], indices[3])
+          || AreNeighbors(indices[1], indices[2], indices[3])
+        )
+      )
+      || (
+        indices.size() == 3
+        && AreNeighbors(indices[0], indices[1], indices[2])
       )
     )
     {
-      return player;
+      return std::vector{player};
     }
   }
 
-  return nullptr;
+  return std::vector<const Player*>();
 }
 
 bool Map::AreNeighbors(size_t i, size_t j) const

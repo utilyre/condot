@@ -15,7 +15,7 @@ public:
 
   void Update() override;
   void Render(const AssetManager& assets) const override;
-  const Player* FindWinner() const;
+  std::vector<const Player*> FindWinners() const;
 
 private:
   bool AreNeighbors(size_t i, size_t j) const;
