@@ -1,10 +1,13 @@
 #include <iostream>
+#include <vector>
+#include <unordered_map>
 #include <raylib.h>
 
 #include <asset_manager.hpp>
 #include <state.hpp>
 #include <map.hpp>
 #include <region.hpp>
+#include <player.hpp>
 
 static const int MAP_WIDTH = 1057;
 static const int MAP_HEIGHT = 831;
@@ -92,6 +95,50 @@ void Map::Render(const AssetManager& assets) const
   int height = GetScreenHeight();
 
   DrawTexture(assets.Map, (width - MAP_WIDTH) / 2, (height - MAP_HEIGHT) / 2, WHITE);
+}
+
+const Player* Map::FindWinner() const
+{
+  std::unordered_map<const Player*, std::vector<size_t>> regionIndices;
+  for (size_t i = 0; i < m_Regions.size(); i++)
+  {
+    const Player* ruler = m_Regions[i].GetRuler();
+    if (ruler)
+    {
+      regionIndices[ruler].push_back(i);
+    }
+  }
+
+  for (const auto& [player, indices] : regionIndices)
+  {
+    if (indices.size() == 5)
+    {
+      return player;
+    }
+
+    if (
+      indices.size() == 3
+      && AreNeighbors(indices[0], indices[1], indices[2])
+    )
+    {
+      return player;
+    }
+
+    if (
+      indices.size() == 4
+      && (
+        AreNeighbors(indices[0], indices[1], indices[2])
+        || AreNeighbors(indices[0], indices[1], indices[3])
+        || AreNeighbors(indices[0], indices[2], indices[3])
+        || AreNeighbors(indices[1], indices[2], indices[3])
+      )
+    )
+    {
+      return player;
+    }
+  }
+
+  return nullptr;
 }
 
 bool Map::AreNeighbors(size_t i, size_t j) const
