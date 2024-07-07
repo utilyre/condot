@@ -17,6 +17,10 @@ public:
   void Render(const AssetManager& assets) const override;
 
 private:
+  bool AreNeighbors(size_t i, size_t j) const;
+  bool AreNeighbors(size_t i, size_t j, size_t k) const;
+
+private:
   State* m_State;
   std::vector<Region> m_Regions;
   std::vector<bool> m_Adjacency;

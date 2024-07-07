@@ -93,3 +93,17 @@ void Map::Render(const AssetManager& assets) const
 
   DrawTexture(assets.Map, (width - MAP_WIDTH) / 2, (height - MAP_HEIGHT) / 2, WHITE);
 }
+
+bool Map::AreNeighbors(size_t i, size_t j) const
+{
+  return m_Adjacency[m_Regions.size() * i + j];
+}
+
+bool Map::AreNeighbors(size_t i, size_t j, size_t k) const
+{
+  return (
+    AreNeighbors(i, j)
+    || AreNeighbors(i, k)
+    || AreNeighbors(j, k)
+  );
+}
