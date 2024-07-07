@@ -15,9 +15,9 @@ public:
 
   void Update() override;
   void Render(const AssetManager& assets) const override;
+  const Player* FindWinner() const;
 
 private:
-  const Player* FindWinner() const;
   bool AreNeighbors(size_t i, size_t j) const;
   bool AreNeighbors(size_t i, size_t j, size_t k) const;
 
