@@ -30,11 +30,17 @@ public:
   const std::string GetName() const;
   const std::vector<std::unique_ptr<Card>>& GetCards() const; 
   std::unique_ptr<Card> TakeCard(size_t& pos);
-  bool IsCollided(AssetManager& assets);
+  bool IsCollided(AssetManager& assets,const  Position& position);
+  const Position& GetPosition() const;
+  bool IsPassed() const;
+  bool IsPlayed() const;
+  void Played();
 private:
   std::string m_Name;
   Color m_Color;
   Position m_Position;
   size_t m_Age;
   std::vector<std::unique_ptr<Card>> m_Cards;
+  bool m_Passed;
+  bool m_IsPlayed;
 };

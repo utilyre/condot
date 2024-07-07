@@ -2,6 +2,7 @@
 #include <memory>
 #include <raylib.h>
 #include <algorithm>
+#include <iostream>
 
 #include <game.hpp>
 #include <player.hpp>
@@ -12,20 +13,12 @@
 #include <spy.hpp>
 #include <turncoat.hpp>
 #include <scarecrow.hpp>
+#include <variant>
 
 bool current = true;
 
 void Game::Menu(){
-  BeginDrawing();
-  while (!WindowShouldClose()) {
-    ClearBackground(RAYWHITE);
-    DrawText("1. New Game",GetScreenWidth() / 2 - 100, GetScreenHeight() / 2 ,40 , DARKGRAY);
-    DrawText("2. Load Game",GetScreenWidth() / 2 - 100, GetScreenHeight() / 2 + 100 , 40,DARKGRAY );
-    if(IsKeyPressed(KEY_ONE)){
-      Start();
-    }
-    EndDrawing();
-  }
+  Start();
 }
 void Game::Start()
 {
@@ -34,9 +27,9 @@ void Game::Start()
   // TODO: add/customize players through menu
   m_Players.emplace_back("John", RED, 10 , Position::TOP);
   m_Players.emplace_back("Jane", GREEN, 2 , Position::RIGHT);
-  m_Players.emplace_back("Alex", BLUE, 3 , Position::BOTTOM);
+  m_Players.emplace_back("Alex", BLUE, 1 , Position::BOTTOM);
   m_Players.emplace_back("Theo", GRAY, 4 ,Position::LEFT);
-  FindWarInstigator();
+  m_Turn = FindWarInstigator();
   InsertCards();
   ShuffleCards();
   DealCards();
@@ -45,7 +38,7 @@ void Game::Start()
     Update();
     BeginDrawing();
     Render();
-    if(current) PlayCard();
+    if(!GetCurrentPlayer().IsPlayed()) PlayCard();
     EndDrawing();
   }
 }
@@ -152,7 +145,19 @@ size_t Game::FindWarInstigator() {
 }
 
 void Game::PlayCard(){
-  //TODO : MAKE IT A LOOP
-    current = !m_Players[2].IsCollided(m_Assets);
-    DrawText(TextFormat("pos x: %i\npos y: %i",(int)GetMouseX(),(int)GetMouseY()),100 ,100 ,20 ,BLACK);
+  auto& p = m_Players[m_Turn];
+  if(!p.IsPlayed() && p.IsCollided(m_Assets,p.GetPosition()) && 
+    IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){ 
+    p.Played();
+    NextTurn();
+  }
+ // m_Players[1].IsCollided(m_Assets,m_Players[1].GetPosition());
+  //std::cout << m_Players[3].
+  DrawText(TextFormat("pos x: %i\npos y: %i",(int)GetMouseX(),(int)GetMouseY()),100 ,100 ,20 ,BLACK);
+}
+
+bool Game::NextTurn(){
+    m_Turn = (m_Turn + 1) % m_Players.size();
+    current = true;
+    return current;
 }

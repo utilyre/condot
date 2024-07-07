@@ -22,6 +22,7 @@ private:
   const Player& GetCurrentPlayer() const;
   size_t FindWarInstigator();
   void PlayCard();
+  bool NextTurn();
 private:
   size_t m_Turn;
   std::random_device m_RandDev;
