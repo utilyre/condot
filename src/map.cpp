@@ -166,9 +166,5 @@ bool Map::AreNeighbors(size_t i, size_t j) const
 
 bool Map::AreNeighbors(size_t i, size_t j, size_t k) const
 {
-  return (
-    AreNeighbors(i, j)
-    || AreNeighbors(i, k)
-    || AreNeighbors(j, k)
-  );
+  return AreNeighbors(i, j) || AreNeighbors(i, k) || AreNeighbors(j, k);
 }
