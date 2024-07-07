@@ -20,7 +20,7 @@ private:
   void Render() const;
 
 private:
-  std::random_device m_RandDev;
+  mutable std::random_device m_RandDev;
   AssetManager m_Assets;
   State m_State;
   Map m_Map;
