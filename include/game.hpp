@@ -23,7 +23,7 @@ private:
   size_t FindWarInstigator();
 private:
   size_t m_Turn;
-  std::random_device m_RandDev;
+  mutable std::random_device m_RandDev;
   AssetManager m_Assets;
   Map m_Map;
   std::vector<Player> m_Players;
