@@ -99,6 +99,7 @@ void Map::Render(const AssetManager& assets) const
 
 std::vector<const Player*> Map::FindWinners() const
 {
+  // TEST: this method is NOT tested (at all)
   bool allConquered = true;
   std::unordered_map<const Player*, std::vector<size_t>> regionIndices;
   for (size_t i = 0; i < m_Regions.size(); i++)
