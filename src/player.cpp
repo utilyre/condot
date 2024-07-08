@@ -46,6 +46,7 @@ void Player::Render(const AssetManager& assets) const
     break;
   case Position::BOTTOM:
     DrawRectangle((width - length) / 2, height - thickness, length, thickness, BLUE);
+    DrawText("pass", 420, 950, 30, BLACK);
     RenderCards(assets, bottom, 0);
     break;
   case Position::LEFT:
@@ -110,15 +111,18 @@ bool Player::IsCollided(AssetManager& assets, const Position& position){
       
         Rectangle LowerLayer = {570 + (float) 50 * i,880, 50 ,(float) (*it)->GetAsset(assets).height};
         Rectangle UpperLayer = {570 + (float) 50 * i,880, 120 ,(float) (*it)->GetAsset(assets).height};
-      
-        if(CheckCollisionPointRec(GetMousePosition(), LowerLayer) && IsMouseButtonDown(MOUSE_LEFT_BUTTON)){
+        Rectangle PassButton = {420, 950, 70, 50};
+        if(CheckCollisionPointRec(GetMousePosition(), LowerLayer) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
           std::unique_ptr<Card> card = TakeCard(i);
           return true;
         }
       
-        else if(CheckCollisionPointRec(GetMousePosition(), UpperLayer) && IsMouseButtonDown(MOUSE_LEFT_BUTTON) && m_Cards.size() - 1 == i){
+        else if(CheckCollisionPointRec(GetMousePosition(), UpperLayer) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && m_Cards.size() - 1 == i){
           std::unique_ptr<Card> card = TakeCard(i);
           return true;
+        }
+        else if(CheckCollisionPointRec(GetMousePosition(), PassButton) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
+          Pass();
         }
         i++;
       }
@@ -144,4 +148,8 @@ void Player::Played(){
 
 void Player::SetPosition(const Position& positon){
   this->m_Position = positon;
+}
+
+void Player::Pass(){
+  m_Passed = true;
 }

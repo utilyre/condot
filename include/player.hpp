@@ -36,6 +36,7 @@ public:
   bool IsPlayed() const;
   void Played();
   void SetPosition(const Position& position);
+  void Pass();
 private:
   std::string m_Name;
   Color m_Color;
