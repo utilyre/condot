@@ -147,20 +147,33 @@ void Game::PlayCard(){
   auto& p = m_Players[m_Turn];
   if(p.IsCollided(m_Assets,p.GetPosition()) && 
      IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
-    p.Played();
     NextTurn();
+  }
+  else if (CheckCollisionPointRec(GetMousePosition(),(Rectangle){420, 950, 70, 50}) &&
+           IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
+    NextTurn();
+    m_Players[(m_Turn + 1) % m_Players.size()].Pass();
   }
   DrawText(TextFormat("pos x: %i\npos y: %i",(int)GetMouseX(),(int)GetMouseY()),100 ,100 ,20 ,BLACK);
 }
 
 bool Game::NextTurn(){
-  for(size_t i{}; i < m_Players.size(); ++i){
-    
-    m_Players[(m_Turn + i) % m_Players.size()].SetPosition(m_Players[(m_Turn + i + 1) % m_Players.size()].GetPosition());
-    if(i == m_Players.size() - 1){
-      m_Turn = (m_Turn + i) % m_Players.size();
-      m_Players[m_Turn].SetPosition(Position::BOTTOM); 
+  size_t StartPos = (m_Turn);
+  for(size_t i{},passed{1}; i < m_Players.size(); ++i){
+    size_t EndPos = (StartPos + passed) % m_Players.size();
+    while(m_Players[EndPos].IsPassed()){
+      passed++;
+      EndPos = ( StartPos + passed ) % m_Players.size();
+      i++;
     }
+    m_Players[StartPos].SetPosition(m_Players[EndPos].GetPosition());
+    if(i == m_Players.size() - 1){
+      m_Turn = StartPos;
+      m_Players[m_Turn].SetPosition(Position::BOTTOM);
+    }
+    std::cout << StartPos << " " << EndPos << " " << i << std::endl;
+    StartPos = EndPos;
+    passed = 1;
   } 
   return true;
 }

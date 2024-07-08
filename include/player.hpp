@@ -33,8 +33,6 @@ public:
   bool IsCollided(AssetManager& assets,const  Position& position);
   const Position& GetPosition() const;
   bool IsPassed() const;
-  bool IsPlayed() const;
-  void Played();
   void SetPosition(const Position& position);
   void Pass();
 private:

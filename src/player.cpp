@@ -111,7 +111,6 @@ bool Player::IsCollided(AssetManager& assets, const Position& position){
       
         Rectangle LowerLayer = {570 + (float) 50 * i,880, 50 ,(float) (*it)->GetAsset(assets).height};
         Rectangle UpperLayer = {570 + (float) 50 * i,880, 120 ,(float) (*it)->GetAsset(assets).height};
-        Rectangle PassButton = {420, 950, 70, 50};
         if(CheckCollisionPointRec(GetMousePosition(), LowerLayer) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
           std::unique_ptr<Card> card = TakeCard(i);
           return true;
@@ -120,9 +119,6 @@ bool Player::IsCollided(AssetManager& assets, const Position& position){
         else if(CheckCollisionPointRec(GetMousePosition(), UpperLayer) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && m_Cards.size() - 1 == i){
           std::unique_ptr<Card> card = TakeCard(i);
           return true;
-        }
-        else if(CheckCollisionPointRec(GetMousePosition(), PassButton) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
-          Pass();
         }
         i++;
       }
