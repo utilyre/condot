@@ -135,14 +135,6 @@ bool Player::IsPassed() const{
   return m_Passed;
 }
 
-bool Player::IsPlayed() const{
-  return m_IsPlayed;
-}
-
-void Player::Played(){
-  m_IsPlayed = true;
-}
-
 void Player::SetPosition(const Position& positon){
   this->m_Position = positon;
 }
