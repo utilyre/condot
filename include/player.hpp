@@ -45,5 +45,4 @@ private:
   std::vector<std::unique_ptr<Card>> m_Cards;
   std::vector<std::unique_ptr<Card>> m_DrawnCards; 
   bool m_Passed;
-  bool m_IsPlayed;
 };

@@ -1,4 +1,3 @@
-#include <bits/ranges_algo.h>
 #include <memory>
 #include <raylib.h>
 
@@ -14,8 +13,7 @@ Player::Player(const std::string& name, Color color,size_t age, Position positio
   m_Color(color),
   m_Position(position),
   m_Age(age),
-  m_Passed(false),
-  m_IsPlayed(false)
+  m_Passed(false)
 {}
 
 void Player::Update()
