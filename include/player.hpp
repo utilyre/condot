@@ -26,21 +26,24 @@ public:
   void Render(const AssetManager& assets) const override;
   void RenderCards(const AssetManager& assets, Vector2 cordinate, float rotation) const;
   void AddCard(std::unique_ptr<Card>&& card);
-  const size_t& GetAge() const;
-  const std::string GetName() const;
-  const std::vector<std::unique_ptr<Card>>& GetCards() const; 
   std::unique_ptr<Card> TakeCard(size_t& pos);
   bool IsCollided(AssetManager& assets,const  Position& position);
-  const Position& GetPosition() const;
-  bool IsPassed() const;
   void SetPosition(const Position& position);
   void Pass();
+  const size_t&                             GetAge() const;
+  const std::string                         GetName() const;
+  const std::vector<std::unique_ptr<Card>>& GetCards() const; 
+  const std::vector<std::unique_ptr<Card>>& GetDrawnCards() const;
+  const Position&                           GetPosition() const;
+  bool                                      IsPassed() const;
+  
 private:
   std::string m_Name;
   Color m_Color;
   Position m_Position;
   size_t m_Age;
   std::vector<std::unique_ptr<Card>> m_Cards;
+  std::vector<std::unique_ptr<Card>> m_DrawnCards; 
   bool m_Passed;
   bool m_IsPlayed;
 };

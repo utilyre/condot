@@ -1,3 +1,4 @@
+#include <bits/ranges_algo.h>
 #include <memory>
 #include <raylib.h>
 
@@ -148,4 +149,8 @@ void Player::SetPosition(const Position& positon){
 
 void Player::Pass(){
   m_Passed = true;
+}
+
+const std::vector<std::unique_ptr<Card>>& Player::GetDrawnCards() const{
+  return m_DrawnCards;
 }
