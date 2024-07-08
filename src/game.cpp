@@ -11,18 +11,17 @@
 #include <drummer.hpp>
 #include <heroine.hpp>
 #include <spy.hpp>
+#include <string>
 #include <turncoat.hpp>
 #include <scarecrow.hpp>
-#include <variant>
-
-bool current = true;
+#include <type_traits>
 
 void Game::Menu(){
   Start();
 }
 void Game::Start()
 {
-  SetTargetFPS(60);
+  SetTargetFPS(10);
 
   // TODO: add/customize players through menu
   m_Players.emplace_back("John", RED, 10 , Position::TOP);
@@ -38,7 +37,7 @@ void Game::Start()
     Update();
     BeginDrawing();
     Render();
-    if(!GetCurrentPlayer().IsPlayed()) PlayCard();
+    PlayCard();
     EndDrawing();
   }
 }
@@ -146,18 +145,21 @@ size_t Game::FindWarInstigator() {
 
 void Game::PlayCard(){
   auto& p = m_Players[m_Turn];
-  if(!p.IsPlayed() && p.IsCollided(m_Assets,p.GetPosition()) && 
-    IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){ 
+  if(p.IsCollided(m_Assets,p.GetPosition()) && 
+     IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
     p.Played();
     NextTurn();
   }
- // m_Players[1].IsCollided(m_Assets,m_Players[1].GetPosition());
-  //std::cout << m_Players[3].
   DrawText(TextFormat("pos x: %i\npos y: %i",(int)GetMouseX(),(int)GetMouseY()),100 ,100 ,20 ,BLACK);
 }
 
 bool Game::NextTurn(){
-    m_Turn = (m_Turn + 1) % m_Players.size();
-    current = true;
-    return current;
+  for(size_t i{}; i < m_Players.size(); ++i){
+    m_Players[(m_Turn + i) % m_Players.size()].SetPosition(m_Players[(m_Turn + i + 1) % m_Players.size()].GetPosition());
+    if(i == m_Players.size() - 1){
+      m_Turn = (m_Turn + i) % m_Players.size();
+      m_Players[m_Turn].SetPosition(Position::BOTTOM); 
+    }
+  } 
+  return true;
 }

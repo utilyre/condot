@@ -123,67 +123,6 @@ bool Player::IsCollided(AssetManager& assets, const Position& position){
         i++;
       }
     }
-    else if(position == Position::TOP){
-      size_t i = 0;
-      for(auto it = m_Cards.rbegin(); it != m_Cards.rend(); ++it){
-      
-        Rectangle LowerLayer = {570 + (float) 50 * i, 10 , 50 ,(float) (*it)->GetAsset(assets).height};
-        Rectangle UpperLayer = {570 + (float) 50 * i, 10 , 120 ,(float) (*it)->GetAsset(assets).height};
-      
-        if(CheckCollisionPointRec(GetMousePosition(), LowerLayer) && IsMouseButtonDown(MOUSE_LEFT_BUTTON)){
-          std::unique_ptr<Card> card = TakeCard(i);
-          return true;
-        }
-      
-        else if(CheckCollisionPointRec(GetMousePosition(), UpperLayer) && IsMouseButtonDown(MOUSE_LEFT_BUTTON) && m_Cards.size() - 1 == i){
-          std::unique_ptr<Card> card = TakeCard(i);
-          return true;
-        }
-        i++;
-      }
-    }
-    else if(position == Position::LEFT){
-      size_t i = 0;
-      for(auto it = m_Cards.rbegin(); it != m_Cards.rend(); ++it){
-      
-        Rectangle LowerLayer = {10 , 135 + (float) 50 * i , 190 ,50};
-        Rectangle UpperLayer = {10 , 135 + (float) 50 * i, 190, 120};
-      
-        if(CheckCollisionPointRec(GetMousePosition(), LowerLayer) &&
-           IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
-           std::unique_ptr<Card> card = TakeCard(i);
-          
-        DrawRectangle(10, 135 + (float) 50 * i , 190 , 50 ,RED);
-          return true;
-        }
-      
-        else if(CheckCollisionPointRec(GetMousePosition(), UpperLayer) && IsMouseButtonDown(MOUSE_LEFT_BUTTON) && m_Cards.size() - 1 == i){
-          std::unique_ptr<Card> card = TakeCard(i);
-          return true;
-        }
-        i++;
-      }
-    }
-    else if(position == Position::RIGHT){
-      size_t i = 0;
-      for(auto it = m_Cards.rbegin(); it != m_Cards.rend(); ++it){
-      
-        Rectangle LowerLayer = {1720, 135 + (float) 50 * i , 190 , 50  };
-        Rectangle UpperLayer = {1720, 135 + (float) 50 * i , 190 , 120 };
-      
-        if(CheckCollisionPointRec(GetMousePosition(), LowerLayer) && IsMouseButtonDown(MOUSE_LEFT_BUTTON)){
-          std::unique_ptr<Card> card = TakeCard(i);
-          DrawRectangle(1720, 135 + (float) 50 * i , 190 , 50 , RED);
-          return true;
-        }
-      
-        else if(CheckCollisionPointRec(GetMousePosition(), UpperLayer) && IsMouseButtonDown(MOUSE_LEFT_BUTTON) && m_Cards.size() - 1 == i){
-          std::unique_ptr<Card> card = TakeCard(i);
-          return true;
-        }
-        i++;
-      }
-    }
     return false;    
 }
 
@@ -201,4 +140,8 @@ bool Player::IsPlayed() const{
 
 void Player::Played(){
   m_IsPlayed = true;
+}
+
+void Player::SetPosition(const Position& positon){
+  this->m_Position = positon;
 }
