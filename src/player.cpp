@@ -115,14 +115,7 @@ bool Player::IsCollided(AssetManager& assets, const Position& position){
             IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
         {
           std::unique_ptr<Card> card = TakeCard(i);
-          Card* cardptr = card.release();
-          std::unique_ptr<Card> c(dynamic_cast<Mercenary*>(cardptr));
-          if(cardptr){
-            //TODO : add it to the drawn cards
-          }
-          else{
-            delete cardptr;
-          }
+          AddDrawnCard(std::move(card));
           return true;
         }
         i++;
@@ -149,4 +142,8 @@ void Player::Pass(){
 
 const std::vector<std::unique_ptr<Card>>& Player::GetDrawnCards() const{
   return m_DrawnCards;
+}
+
+void Player::AddDrawnCard(std::unique_ptr<Card>&& card){
+  m_DrawnCards.push_back(std::move(card));
 }

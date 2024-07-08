@@ -26,9 +26,9 @@ public:
   void Render(const AssetManager& assets) const override;
   void RenderCards(const AssetManager& assets, Vector2 cordinate, float rotation) const;
   void AddCard(std::unique_ptr<Card>&& card);
+  void AddDrawnCard(std::unique_ptr<Card>&& card);
   void SetPosition(const Position& position);
   void Pass();
-  void AddCard();
   bool IsCollided(AssetManager& assets,const  Position& position);
   std::unique_ptr<Card> TakeCard(size_t& pos);
   const size_t&                             GetAge() const;
