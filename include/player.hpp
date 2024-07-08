@@ -26,10 +26,11 @@ public:
   void Render(const AssetManager& assets) const override;
   void RenderCards(const AssetManager& assets, Vector2 cordinate, float rotation) const;
   void AddCard(std::unique_ptr<Card>&& card);
-  std::unique_ptr<Card> TakeCard(size_t& pos);
-  bool IsCollided(AssetManager& assets,const  Position& position);
   void SetPosition(const Position& position);
   void Pass();
+  void AddCard();
+  bool IsCollided(AssetManager& assets,const  Position& position);
+  std::unique_ptr<Card> TakeCard(size_t& pos);
   const size_t&                             GetAge() const;
   const std::string                         GetName() const;
   const std::vector<std::unique_ptr<Card>>& GetCards() const; 

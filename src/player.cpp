@@ -110,13 +110,19 @@ bool Player::IsCollided(AssetManager& assets, const Position& position){
       
         Rectangle LowerLayer = {570 + (float) 50 * i,880, 50 ,(float) (*it)->GetAsset(assets).height};
         Rectangle UpperLayer = {570 + (float) 50 * i,880, 120 ,(float) (*it)->GetAsset(assets).height};
-        if(CheckCollisionPointRec(GetMousePosition(), LowerLayer) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
+        if((CheckCollisionPointRec(GetMousePosition(), LowerLayer) ||
+            CheckCollisionPointRec(GetMousePosition(), UpperLayer)) && 
+            IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
+        {
           std::unique_ptr<Card> card = TakeCard(i);
-          return true;
-        }
-      
-        else if(CheckCollisionPointRec(GetMousePosition(), UpperLayer) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && m_Cards.size() - 1 == i){
-          std::unique_ptr<Card> card = TakeCard(i);
+          Card* cardptr = card.release();
+          std::unique_ptr<Card> c(dynamic_cast<Mercenary*>(cardptr));
+          if(cardptr){
+            //TODO : add it to the drawn cards
+          }
+          else{
+            delete cardptr;
+          }
           return true;
         }
         i++;
