@@ -21,7 +21,7 @@ void Game::Menu(){
 }
 void Game::Start()
 {
-  SetTargetFPS(10);
+  SetTargetFPS(60);
 
   // TODO: add/customize players through menu
   m_Players.emplace_back("John", RED, 10 , Position::TOP);
@@ -155,6 +155,7 @@ void Game::PlayCard(){
 
 bool Game::NextTurn(){
   for(size_t i{}; i < m_Players.size(); ++i){
+    
     m_Players[(m_Turn + i) % m_Players.size()].SetPosition(m_Players[(m_Turn + i + 1) % m_Players.size()].GetPosition());
     if(i == m_Players.size() - 1){
       m_Turn = (m_Turn + i) % m_Players.size();
