@@ -16,10 +16,8 @@ void Game::Start()
   m_Players.emplace_back("Jane", GREEN, 2 , Position::RIGHT);
   m_Players.emplace_back("Alex", BLUE, 1 , Position::BOTTOM);
   m_Players.emplace_back("Theo", GRAY, 4 ,Position::LEFT);
-  m_Turn = FindWarInstigator();
 
-  ResetCards();
-  DealCards();
+  InitiateBattle();
 
   // NOTE: do NOT modify
   while (!WindowShouldClose())
@@ -95,25 +93,38 @@ void Game::DealCards()
   }
 }
 
-const Player& Game::GetCurrentPlayer() const{
+const Player& Game::GetCurrentPlayer() const
+{
   return m_Players[m_Turn];
 }
 
-size_t Game::FindWarInstigator() {
+size_t Game::FindBattleInstigatorIndex() const
+{
   int min = INT_MAX;
-  std::vector<size_t> potentialInstigators;
-  for(size_t i = 0; i < m_Players.size() ; i++){
+  std::vector<size_t> candidateIndices;
+  for (size_t i = 0; i < m_Players.size(); i++)
+  {
     int age = m_Players[i].GetAge();
-    if (age < min) {
+    if (age < min)
+    {
       min = age;
-      potentialInstigators.clear();
-      potentialInstigators.push_back(i);
-    } else if (age == min) {
-      potentialInstigators.push_back(i);
+      candidateIndices.clear();
+      candidateIndices.push_back(i);
+    }
+    else if (age == min)
+    {
+      candidateIndices.push_back(i);
     }
   }
 
   std::mt19937 mt(m_RandDev());
-  std::uniform_int_distribution<size_t> dist(0, potentialInstigators.size() - 1);
-  return potentialInstigators[dist(mt)];
+  std::uniform_int_distribution<size_t> dist(0, candidateIndices.size() - 1);
+  return candidateIndices[dist(mt)];
+}
+
+void Game::InitiateBattle()
+{
+  m_Turn = FindBattleInstigatorIndex();
+  ResetCards();
+  DealCards();
 }
