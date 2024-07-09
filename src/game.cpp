@@ -16,9 +16,6 @@
 #include <scarecrow.hpp>
 #include <type_traits>
 
-void Game::Menu(){
-  Start();
-}
 void Game::Start()
 {
   SetTargetFPS(60);

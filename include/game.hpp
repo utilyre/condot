@@ -12,10 +12,11 @@ class Game
 {
 public:
   void Start();
-  void Menu();
+
 private:
   void Update();
   void Render() const;
+
   void InsertCards();
   void ShuffleCards();
   void DealCards();
@@ -23,6 +24,7 @@ private:
   size_t FindWarInstigator();
   void PlayCard();
   bool NextTurn();
+
 private:
   size_t m_Turn;
   std::random_device m_RandDev;
