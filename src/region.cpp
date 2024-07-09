@@ -23,10 +23,5 @@ const Player* Region::GetRuler() const
 
 bool Region::CollidesWith(Vector2 v) const
 {
-  return (
-    v.x > m_Collision.x
-    && v.x < m_Collision.x + m_Collision.width
-    && v.y > m_Collision.y
-    && v.y < m_Collision.y + m_Collision.height
-  );
+  return CheckCollisionPointRec(v, m_Collision);
 }
