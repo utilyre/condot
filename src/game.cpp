@@ -59,6 +59,8 @@ void Game::Render() const
   }
 
   m_Map.Render(m_Assets);
+
+  DrawText(TextFormat("(%d, %d)", GetMouseX(), GetMouseY()), 10, 10, 30, BLACK);
 }
 
 void Game::InsertCards(){
@@ -151,7 +153,6 @@ void Game::PlayCard(){
     NextTurn();
     m_Players[(m_Turn + 1) % m_Players.size()].Pass();
   }
-  DrawText(TextFormat("pos x: %i\npos y: %i",(int)GetMouseX(),(int)GetMouseY()),100 ,100 ,20 ,BLACK);
 }
 
 bool Game::NextTurn(){
