@@ -18,7 +18,7 @@ private:
   void Render() const;
 
   void ResetCards();
-  // void DealCards();
+  void DealCards();
   const Player& GetCurrentPlayer() const;
   size_t FindWarInstigator();
   // void PlayCard();

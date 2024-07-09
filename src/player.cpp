@@ -75,10 +75,10 @@ void Player::RenderCards(const AssetManager& assets, Vector2 cordinate, float ro
   }
 }
 
-// void Player::AddCard(std::unique_ptr<Card>&& card)
-// {
-//   m_Cards.push_back(std::move(card));
-// }
+void Player::AddCard(Card card)
+{
+  m_Cards.push_back(card);
+}
 
 const size_t& Player::GetAge() const {
   return m_Age;

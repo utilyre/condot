@@ -19,7 +19,7 @@ void Game::Start()
   m_Turn = FindWarInstigator();
 
   ResetCards();
-  // DealCards();
+  DealCards();
 
   // NOTE: do NOT modify
   while (!WindowShouldClose())
@@ -83,14 +83,17 @@ void Game::ResetCards()
   std::shuffle(m_Cards.begin(), m_Cards.end(), rng);
 }
 
-// void Game::DealCards(){
-//   for(auto& player : m_Players){
-//     for(size_t i{}; i < 10; i++){
-//       player.AddCard(std::move(m_Cards.back()));
-//       m_Cards.pop_back();
-//     }
-//   }
-// }
+void Game::DealCards()
+{
+  for (Player& player : m_Players)
+  {
+    for (int i = 0; i < 10; i++)
+    {
+      player.AddCard(m_Cards.back());
+      m_Cards.pop_back();
+    }
+  }
+}
 
 const Player& Game::GetCurrentPlayer() const{
   return m_Players[m_Turn];
