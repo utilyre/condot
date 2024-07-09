@@ -9,12 +9,12 @@ struct AssetManager
 
   Texture2D Map;
 
-  Texture2D Mercenary01;
-  Texture2D Mercenary02;
-  Texture2D Mercenary03;
-  Texture2D Mercenary04;
-  Texture2D Mercenary05;
-  Texture2D Mercenary06;
+  Texture2D Mercenary1;
+  Texture2D Mercenary2;
+  Texture2D Mercenary3;
+  Texture2D Mercenary4;
+  Texture2D Mercenary5;
+  Texture2D Mercenary6;
   Texture2D Mercenary10;
 
   Texture2D Bishop; // Rish Sefid

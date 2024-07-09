@@ -15,17 +15,17 @@ Texture2D Card::GetAsset(const AssetManager& assets) const
   switch (m_Type)
   {
   case MERCENARY_1:
-    return assets.Mercenary01;
+    return assets.Mercenary1;
   case MERCENARY_2:
-    return assets.Mercenary02;
+    return assets.Mercenary2;
   case MERCENARY_3:
-    return assets.Mercenary03;
+    return assets.Mercenary3;
   case MERCENARY_4:
-    return assets.Mercenary04;
+    return assets.Mercenary4;
   case MERCENARY_5:
-    return assets.Mercenary05;
+    return assets.Mercenary5;
   case MERCENARY_6:
-    return assets.Mercenary06;
+    return assets.Mercenary6;
   case MERCENARY_10:
     return assets.Mercenary10;
 
@@ -47,6 +47,6 @@ Texture2D Card::GetAsset(const AssetManager& assets) const
     return assets.Winter;
 
   default:
-    return assets.Mercenary01;
+    return assets.Mercenary1;
   }
 }
