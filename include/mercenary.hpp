@@ -1,3 +1,5 @@
+#pragma once
+
 #include <raylib.h>
 
 #include <asset_manager.hpp>
