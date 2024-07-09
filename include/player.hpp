@@ -44,6 +44,6 @@ private:
   Position m_Position;
   size_t m_Age;
   std::vector<Card> m_Cards;
-  std::vector<Mercenary> m_DrawnCards; // TODO: rename to m_Army
+  std::vector<Mercenary> m_Row;
   bool m_Passed;
 };
