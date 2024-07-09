@@ -1,14 +1,15 @@
+#pragma once
+
 #include <raylib.h>
 
 #include <asset_manager.hpp>
-#include <card.hpp>
 
-class Mercenary : public Card
+class Mercenary
 {
 public:
   Mercenary(int power);
 
-  Texture2D GetAsset(const AssetManager& assets) const override;
+  Texture2D GetAsset(const AssetManager& assets) const;
   int GetPower() const;
 
 private:

@@ -1,6 +1,5 @@
 #pragma once
 
-#include <memory>
 #include <vector>
 #include <random>
 
@@ -8,6 +7,7 @@
 #include <state.hpp>
 #include <map.hpp>
 #include <player.hpp>
+#include <card.hpp>
 
 class Game
 {
@@ -15,15 +15,17 @@ public:
   Game();
 
   void Start();
-  void Menu();
+
 private:
   void Update();
   void Render() const;
-  void InsertCards();
-  void ShuffleCards();
-  void DealCards();
+
   const Player& GetCurrentPlayer() const;
-  size_t FindWarInstigator();
+  size_t FindBattleInstigatorIndex() const;
+  void ResetCards();
+  void DealCards();
+  void InitiateBattle();
+
 private:
   size_t m_Turn;
   mutable std::random_device m_RandDev;
@@ -31,5 +33,5 @@ private:
   State m_State;
   Map m_Map;
   std::vector<Player> m_Players;
-  std::vector<std::unique_ptr<Card>> m_Cards;
+  std::vector<Card> m_Deck;
 };

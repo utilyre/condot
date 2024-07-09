@@ -1,19 +1,17 @@
-#include <memory>
 #include <raylib.h>
 
 #include <asset_manager.hpp>
 #include <player.hpp>
 #include <card.hpp>
 #include <mercenary.hpp>
-#include <bishop.hpp>
-#include <drummer.hpp>
 
-Player::Player(const std::string& name, Color color,size_t age, Position position)
+Player::Player(const std::string& name, Color color, int age, Position position)
 : m_Name(name),
   m_Color(color),
-  m_Position(position),
-  m_Age(age)
-{}
+  m_Age(age),
+  m_Position(position)
+{
+}
 
 void Player::Update()
 {
@@ -44,6 +42,7 @@ void Player::Render(const AssetManager& assets) const
     break;
   case Position::BOTTOM:
     DrawRectangle((width - length) / 2, height - thickness, length, thickness, BLUE);
+    DrawText("pass", 420, 950, 30, BLACK);
     RenderCards(assets, bottom, 0);
     break;
   case Position::LEFT:
@@ -60,7 +59,7 @@ void Player::RenderCards(const AssetManager& assets, Vector2 cordinate, float ro
   {
     for (const auto& c : m_Cards)
     {
-      DrawTextureEx(c->GetAsset(assets), cordinate, rotation, ratio, WHITE);
+      DrawTextureEx(c.GetAsset(assets), cordinate, rotation, ratio, WHITE);
       cordinate.x += 50;
     }
   }
@@ -69,25 +68,17 @@ void Player::RenderCards(const AssetManager& assets, Vector2 cordinate, float ro
   {
     for (const auto& c : m_Cards)
     {
-      DrawTextureEx(c->GetAsset(assets), cordinate, rotation, ratio, WHITE);
+      DrawTextureEx(c.GetAsset(assets), cordinate, rotation, ratio, WHITE);
       cordinate.y += 50;
     }
   }
 }
 
-void Player::AddCard(std::unique_ptr<Card>&& card)
+void Player::AddCard(Card card)
 {
-  m_Cards.push_back(std::move(card));
+  m_Cards.push_back(card);
 }
 
-void Player::PlayCard(){
-  
-}
-
-const size_t& Player::GetAge() const {
+int Player::GetAge() const {
   return m_Age;
-}
-
-const std::string Player::GetName() const{
-  return m_Name;
 }
