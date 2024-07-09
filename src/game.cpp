@@ -60,27 +60,27 @@ void Game::Render() const
 
 void Game::ResetCards()
 {
-  m_Cards.clear();
+  m_Deck.clear();
 
-  m_Cards.insert(m_Cards.end(), 10, Card::MERCENARY_1);
-  m_Cards.insert(m_Cards.end(), 8, Card::MERCENARY_2);
-  m_Cards.insert(m_Cards.end(), 8, Card::MERCENARY_3);
-  m_Cards.insert(m_Cards.end(), 8, Card::MERCENARY_4);
-  m_Cards.insert(m_Cards.end(), 8, Card::MERCENARY_5);
-  m_Cards.insert(m_Cards.end(), 8, Card::MERCENARY_6);
-  m_Cards.insert(m_Cards.end(), 8, Card::MERCENARY_10);
+  m_Deck.insert(m_Deck.end(), 10, Card::MERCENARY_1);
+  m_Deck.insert(m_Deck.end(), 8, Card::MERCENARY_2);
+  m_Deck.insert(m_Deck.end(), 8, Card::MERCENARY_3);
+  m_Deck.insert(m_Deck.end(), 8, Card::MERCENARY_4);
+  m_Deck.insert(m_Deck.end(), 8, Card::MERCENARY_5);
+  m_Deck.insert(m_Deck.end(), 8, Card::MERCENARY_6);
+  m_Deck.insert(m_Deck.end(), 8, Card::MERCENARY_10);
 
-  m_Cards.insert(m_Cards.end(), 6, Card::BISHOP);
-  m_Cards.insert(m_Cards.end(), 16, Card::SCARECROW);
-  m_Cards.insert(m_Cards.end(), 3, Card::TURNCOAT);
-  m_Cards.insert(m_Cards.end(), 3, Card::WINTER);
-  m_Cards.insert(m_Cards.end(), 3, Card::SPRING);
-  m_Cards.insert(m_Cards.end(), 6, Card::DRUMMER);
-  m_Cards.insert(m_Cards.end(), 12, Card::SPY);
-  m_Cards.insert(m_Cards.end(), 3, Card::HEROINE);
+  m_Deck.insert(m_Deck.end(), 6, Card::BISHOP);
+  m_Deck.insert(m_Deck.end(), 16, Card::SCARECROW);
+  m_Deck.insert(m_Deck.end(), 3, Card::TURNCOAT);
+  m_Deck.insert(m_Deck.end(), 3, Card::WINTER);
+  m_Deck.insert(m_Deck.end(), 3, Card::SPRING);
+  m_Deck.insert(m_Deck.end(), 6, Card::DRUMMER);
+  m_Deck.insert(m_Deck.end(), 12, Card::SPY);
+  m_Deck.insert(m_Deck.end(), 3, Card::HEROINE);
 
   std::default_random_engine rng(m_RandDev());
-  std::shuffle(m_Cards.begin(), m_Cards.end(), rng);
+  std::shuffle(m_Deck.begin(), m_Deck.end(), rng);
 }
 
 void Game::DealCards()
@@ -89,8 +89,8 @@ void Game::DealCards()
   {
     for (int i = 0; i < 10; i++)
     {
-      player.AddCard(m_Cards.back());
-      m_Cards.pop_back();
+      player.AddCard(m_Deck.back());
+      m_Deck.pop_back();
     }
   }
 }

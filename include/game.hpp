@@ -30,5 +30,5 @@ private:
   AssetManager m_Assets;
   Map m_Map;
   std::vector<Player> m_Players;
-  std::vector<Card> m_Cards; // TODO: rename to m_Deck
+  std::vector<Card> m_Deck;
 };
