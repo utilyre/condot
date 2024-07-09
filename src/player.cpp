@@ -5,8 +5,6 @@
 #include <player.hpp>
 #include <card.hpp>
 #include <mercenary.hpp>
-#include <bishop.hpp>
-#include <drummer.hpp>
 
 Player::Player(const std::string& name, Color color,size_t age, Position position)
 : m_Name(name),
@@ -62,7 +60,7 @@ void Player::RenderCards(const AssetManager& assets, Vector2 cordinate, float ro
   {
     for (const auto& c : m_Cards)
     {
-      DrawTextureEx(c->GetAsset(assets), cordinate, rotation, ratio, WHITE);
+      DrawTextureEx(c.GetAsset(assets), cordinate, rotation, ratio, WHITE);
       cordinate.x += 50;
     }
   }
@@ -71,16 +69,16 @@ void Player::RenderCards(const AssetManager& assets, Vector2 cordinate, float ro
   {
     for (const auto& c : m_Cards)
     {
-      DrawTextureEx(c->GetAsset(assets), cordinate, rotation, ratio, WHITE);
+      DrawTextureEx(c.GetAsset(assets), cordinate, rotation, ratio, WHITE);
       cordinate.y += 50;
     }
   }
 }
 
-void Player::AddCard(std::unique_ptr<Card>&& card)
-{
-  m_Cards.push_back(std::move(card));
-}
+// void Player::AddCard(std::unique_ptr<Card>&& card)
+// {
+//   m_Cards.push_back(std::move(card));
+// }
 
 const size_t& Player::GetAge() const {
   return m_Age;
@@ -90,39 +88,39 @@ const std::string Player::GetName() const{
   return m_Name;
 }
 
-std::unique_ptr<Card> Player::TakeCard(size_t& pos)
-{
-  std::unique_ptr<Card>& card = *(m_Cards.begin() + pos);
-  std::unique_ptr<Card> c =  std::move(card);
-  m_Cards.erase(m_Cards.begin() + pos);
-  return c;
+// std::unique_ptr<Card> Player::TakeCard(size_t& pos)
+// {
+//   std::unique_ptr<Card>& card = *(m_Cards.begin() + pos);
+//   std::unique_ptr<Card> c =  std::move(card);
+//   m_Cards.erase(m_Cards.begin() + pos);
+//   return c;
   
-}
+// }
 
-const std::vector<std::unique_ptr<Card>>& Player::GetCards() const{
-  return m_Cards;
-} 
+// const std::vector<std::unique_ptr<Card>>& Player::GetCards() const{
+//   return m_Cards;
+// } 
 
-bool Player::IsCollided(AssetManager& assets, const Position& position){
-    if(position == Position::BOTTOM){  
-      size_t i = 0;
-      for(auto it = m_Cards.rbegin(); it != m_Cards.rend(); ++it){
+// bool Player::IsCollided(AssetManager& assets, const Position& position){
+//     if(position == Position::BOTTOM){  
+//       size_t i = 0;
+//       for(auto it = m_Cards.rbegin(); it != m_Cards.rend(); ++it){
       
-        Rectangle LowerLayer = {570 + (float) 50 * i,880, 50 ,(float) (*it)->GetAsset(assets).height};
-        Rectangle UpperLayer = {570 + (float) 50 * i,880, 120 ,(float) (*it)->GetAsset(assets).height};
-        if((CheckCollisionPointRec(GetMousePosition(), LowerLayer) ||
-            CheckCollisionPointRec(GetMousePosition(), UpperLayer)) && 
-            IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
-        {
-          std::unique_ptr<Card> card = TakeCard(i);
-          AddDrawnCard(std::move(card));
-          return true;
-        }
-        i++;
-      }
-    }
-    return false;    
-}
+//         Rectangle LowerLayer = {570 + (float) 50 * i,880, 50 ,(float) (*it)->GetAsset(assets).height};
+//         Rectangle UpperLayer = {570 + (float) 50 * i,880, 120 ,(float) (*it)->GetAsset(assets).height};
+//         if((CheckCollisionPointRec(GetMousePosition(), LowerLayer) ||
+//             CheckCollisionPointRec(GetMousePosition(), UpperLayer)) && 
+//             IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
+//         {
+//           std::unique_ptr<Card> card = TakeCard(i);
+//           AddDrawnCard(std::move(card));
+//           return true;
+//         }
+//         i++;
+//       }
+//     }
+//     return false;    
+// }
 
 const Position& Player::GetPosition() const{
   return m_Position;
@@ -140,10 +138,10 @@ void Player::Pass(){
   m_Passed = true;
 }
 
-const std::vector<std::unique_ptr<Card>>& Player::GetDrawnCards() const{
-  return m_DrawnCards;
-}
+// const std::vector<std::unique_ptr<Card>>& Player::GetDrawnCards() const{
+//   return m_DrawnCards;
+// }
 
-void Player::AddDrawnCard(std::unique_ptr<Card>&& card){
-  m_DrawnCards.push_back(std::move(card));
-}
+// void Player::AddDrawnCard(std::unique_ptr<Card>&& card){
+//   m_DrawnCards.push_back(std::move(card));
+// }

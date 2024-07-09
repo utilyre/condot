@@ -1,16 +1,10 @@
-#include <memory>
-#include <raylib.h>
 #include <algorithm>
+#include <climits>
+#include <raylib.h>
 
 #include <game.hpp>
 #include <player.hpp>
 #include <mercenary.hpp>
-#include <bishop.hpp>
-#include <drummer.hpp>
-#include <heroine.hpp>
-#include <spy.hpp>
-#include <turncoat.hpp>
-#include <scarecrow.hpp>
 
 void Game::Start()
 {
@@ -22,9 +16,9 @@ void Game::Start()
   m_Players.emplace_back("Alex", BLUE, 1 , Position::BOTTOM);
   m_Players.emplace_back("Theo", GRAY, 4 ,Position::LEFT);
   m_Turn = FindWarInstigator();
-  InsertCards();
+  // InsertCards();
   ShuffleCards();
-  DealCards();
+  // DealCards();
 
   // NOTE: do NOT modify
   while (!WindowShouldClose())
@@ -39,7 +33,7 @@ void Game::Start()
 
 void Game::Update()
 {
-  PlayCard();
+  // PlayCard();
 
   for (Player& p : m_Players)
   {
@@ -63,46 +57,46 @@ void Game::Render() const
   DrawText(TextFormat("(%d, %d)", GetMouseX(), GetMouseY()), 10, 10, 30, BLACK);
 }
 
-void Game::InsertCards(){
-  for(size_t i{1}; i < 11; i++){
-    for(size_t j{}; j < 10; j++){
-      if( i == 7 || i == 8 || i == 9){
-        break;
-      }
-      else if( i != 1 && j > 7){
-        break;
-      }
-      std::unique_ptr<Card> card = std::make_unique<Mercenary>(i);
-      m_Cards.push_back(std::move(card));
-    }
-  }
-  for(size_t i{} ; i < 6; ++i){
-    std::unique_ptr<Card> card = std::make_unique<Bishop>();
-    m_Cards.push_back(std::move(card));
-    card = nullptr;
-    card = std::make_unique<Drummer>();
-    m_Cards.push_back(std::move(card));
-  }
-  for(size_t i{}; i < 3; ++i){
-    std::unique_ptr<Card> card = std::make_unique<Heroine>();
-    m_Cards.push_back(std::move(card));
-    card = nullptr;
-    card = std::make_unique<Turncoat>();
-    m_Cards.push_back(std::move(card));
-  }
-  for(size_t i{}; i < 12; ++i){
-    std::unique_ptr<Card> card = std::make_unique<Spy>();
-    m_Cards.push_back(std::move(card));
+// void Game::InsertCards(){
+//   for(size_t i{1}; i < 11; i++){
+//     for(size_t j{}; j < 10; j++){
+//       if( i == 7 || i == 8 || i == 9){
+//         break;
+//       }
+//       else if( i != 1 && j > 7){
+//         break;
+//       }
+//       std::unique_ptr<Card> card = std::make_unique<Mercenary>(i);
+//       m_Cards.push_back(std::move(card));
+//     }
+//   }
+//   for(size_t i{} ; i < 6; ++i){
+//     std::unique_ptr<Card> card = std::make_unique<Bishop>();
+//     m_Cards.push_back(std::move(card));
+//     card = nullptr;
+//     card = std::make_unique<Drummer>();
+//     m_Cards.push_back(std::move(card));
+//   }
+//   for(size_t i{}; i < 3; ++i){
+//     std::unique_ptr<Card> card = std::make_unique<Heroine>();
+//     m_Cards.push_back(std::move(card));
+//     card = nullptr;
+//     card = std::make_unique<Turncoat>();
+//     m_Cards.push_back(std::move(card));
+//   }
+//   for(size_t i{}; i < 12; ++i){
+//     std::unique_ptr<Card> card = std::make_unique<Spy>();
+//     m_Cards.push_back(std::move(card));
     
-  }
-  for(size_t i{}; i < 16; ++i){
-    std::unique_ptr<Card> card = std::make_unique<Scarecrow>();
-    m_Cards.push_back(std::move(card));
-  }
+//   }
+//   for(size_t i{}; i < 16; ++i){
+//     std::unique_ptr<Card> card = std::make_unique<Scarecrow>();
+//     m_Cards.push_back(std::move(card));
+//   }
   
   
   
-}
+// }
 
 void Game::ShuffleCards(){
   std::default_random_engine rng(m_RandDev());
@@ -110,14 +104,14 @@ void Game::ShuffleCards(){
 }
 
 
-void Game::DealCards(){
-  for(auto& player : m_Players){
-    for(size_t i{}; i < 10; i++){
-      player.AddCard(std::move(m_Cards.back()));
-      m_Cards.pop_back();
-    }
-  }
-}
+// void Game::DealCards(){
+//   for(auto& player : m_Players){
+//     for(size_t i{}; i < 10; i++){
+//       player.AddCard(std::move(m_Cards.back()));
+//       m_Cards.pop_back();
+//     }
+//   }
+// }
 
 const Player& Game::GetCurrentPlayer() const{
   return m_Players[m_Turn];
@@ -142,18 +136,18 @@ size_t Game::FindWarInstigator() {
   return potentialInstigators[dist(mt)];
 }
 
-void Game::PlayCard(){
-  auto& p = m_Players[m_Turn];
-  if(p.IsCollided(m_Assets,p.GetPosition()) && 
-     IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
-    NextTurn();
-  }
-  else if (CheckCollisionPointRec(GetMousePosition(),(Rectangle){420, 950, 70, 50}) &&
-           IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
-    NextTurn();
-    m_Players[(m_Turn + 1) % m_Players.size()].Pass();
-  }
-}
+// void Game::PlayCard(){
+//   auto& p = m_Players[m_Turn];
+//   if(p.IsCollided(m_Assets,p.GetPosition()) && 
+//      IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
+//     NextTurn();
+//   }
+//   else if (CheckCollisionPointRec(GetMousePosition(),(Rectangle){420, 950, 70, 50}) &&
+//            IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
+//     NextTurn();
+//     m_Players[(m_Turn + 1) % m_Players.size()].Pass();
+//   }
+// }
 
 bool Game::NextTurn(){
   size_t StartPos = (m_Turn);

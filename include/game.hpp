@@ -1,12 +1,12 @@
 #pragma once
 
-#include <memory>
 #include <vector>
 #include <random>
 
 #include <asset_manager.hpp>
 #include <map.hpp>
 #include <player.hpp>
+#include <mercenary.hpp>
 
 class Game
 {
@@ -17,12 +17,12 @@ private:
   void Update();
   void Render() const;
 
-  void InsertCards();
+  // void InsertCards();
   void ShuffleCards();
-  void DealCards();
+  // void DealCards();
   const Player& GetCurrentPlayer() const;
   size_t FindWarInstigator();
-  void PlayCard();
+  // void PlayCard();
   bool NextTurn();
 
 private:
@@ -31,5 +31,5 @@ private:
   AssetManager m_Assets;
   Map m_Map;
   std::vector<Player> m_Players;
-  std::vector<std::unique_ptr<Card>> m_Cards;
+  std::vector<Mercenary> m_Cards; // TODO: rename to m_Deck
 };
