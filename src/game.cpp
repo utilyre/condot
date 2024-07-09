@@ -29,18 +29,22 @@ void Game::Start()
   InsertCards();
   ShuffleCards();
   DealCards();
+
+  // NOTE: do NOT modify
   while (!WindowShouldClose())
   {
     Update();
+
     BeginDrawing();
     Render();
-    PlayCard();
     EndDrawing();
   }
 }
 
 void Game::Update()
 {
+  PlayCard();
+
   for (Player& p : m_Players)
   {
     p.Update();
