@@ -7,7 +7,14 @@
 struct Card
 {
   enum Type {
-    MERCENARY,
+    MERCENARY_1,
+    MERCENARY_2,
+    MERCENARY_3,
+    MERCENARY_4,
+    MERCENARY_5,
+    MERCENARY_6,
+    MERCENARY_10,
+
     BISHOP,
     DRUMMER,
     HEROINE,
@@ -17,32 +24,28 @@ struct Card
     TURNCOAT,
     WINTER,
   } type;
-  int power; // used only for mercenary type
+
+  Card(Type type) : type(type) {}
 
   Texture2D GetAsset(const AssetManager& assets) const
   {
     switch (type)
     {
-    case MERCENARY:
-      switch (power)
-      {
-      case 1:
-        return assets.Mercenary01;
-      case 2:
-        return assets.Mercenary02;
-      case 3:
-        return assets.Mercenary03;
-      case 4:
-        return assets.Mercenary04;
-      case 5:
-        return assets.Mercenary05;
-      case 6:
-        return assets.Mercenary06;
-      case 10:
-        return assets.Mercenary10;
-      default:
-        return assets.Mercenary01;
-      }
+    case MERCENARY_1:
+      return assets.Mercenary01;
+    case MERCENARY_2:
+      return assets.Mercenary02;
+    case MERCENARY_3:
+      return assets.Mercenary03;
+    case MERCENARY_4:
+      return assets.Mercenary04;
+    case MERCENARY_5:
+      return assets.Mercenary05;
+    case MERCENARY_6:
+      return assets.Mercenary06;
+    case MERCENARY_10:
+      return assets.Mercenary10;
+
     case BISHOP:
       return assets.Bishop;
     case DRUMMER:
@@ -59,6 +62,7 @@ struct Card
       return assets.Turncoat;
     case WINTER:
       return assets.Winter;
+
     default:
       return assets.Mercenary01;
     }

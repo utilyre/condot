@@ -4,6 +4,7 @@
 
 #include <game.hpp>
 #include <player.hpp>
+#include <card.hpp>
 #include <mercenary.hpp>
 
 void Game::Start()
@@ -16,8 +17,8 @@ void Game::Start()
   m_Players.emplace_back("Alex", BLUE, 1 , Position::BOTTOM);
   m_Players.emplace_back("Theo", GRAY, 4 ,Position::LEFT);
   m_Turn = FindWarInstigator();
-  // InsertCards();
-  ShuffleCards();
+
+  ResetCards();
   // DealCards();
 
   // NOTE: do NOT modify
@@ -57,52 +58,30 @@ void Game::Render() const
   DrawText(TextFormat("(%d, %d)", GetMouseX(), GetMouseY()), 10, 10, 30, BLACK);
 }
 
-// void Game::InsertCards(){
-//   for(size_t i{1}; i < 11; i++){
-//     for(size_t j{}; j < 10; j++){
-//       if( i == 7 || i == 8 || i == 9){
-//         break;
-//       }
-//       else if( i != 1 && j > 7){
-//         break;
-//       }
-//       std::unique_ptr<Card> card = std::make_unique<Mercenary>(i);
-//       m_Cards.push_back(std::move(card));
-//     }
-//   }
-//   for(size_t i{} ; i < 6; ++i){
-//     std::unique_ptr<Card> card = std::make_unique<Bishop>();
-//     m_Cards.push_back(std::move(card));
-//     card = nullptr;
-//     card = std::make_unique<Drummer>();
-//     m_Cards.push_back(std::move(card));
-//   }
-//   for(size_t i{}; i < 3; ++i){
-//     std::unique_ptr<Card> card = std::make_unique<Heroine>();
-//     m_Cards.push_back(std::move(card));
-//     card = nullptr;
-//     card = std::make_unique<Turncoat>();
-//     m_Cards.push_back(std::move(card));
-//   }
-//   for(size_t i{}; i < 12; ++i){
-//     std::unique_ptr<Card> card = std::make_unique<Spy>();
-//     m_Cards.push_back(std::move(card));
-    
-//   }
-//   for(size_t i{}; i < 16; ++i){
-//     std::unique_ptr<Card> card = std::make_unique<Scarecrow>();
-//     m_Cards.push_back(std::move(card));
-//   }
-  
-  
-  
-// }
+void Game::ResetCards()
+{
+  m_Cards.clear();
 
-void Game::ShuffleCards(){
+  m_Cards.insert(m_Cards.end(), 10, Card::MERCENARY_1);
+  m_Cards.insert(m_Cards.end(), 8, Card::MERCENARY_2);
+  m_Cards.insert(m_Cards.end(), 8, Card::MERCENARY_3);
+  m_Cards.insert(m_Cards.end(), 8, Card::MERCENARY_4);
+  m_Cards.insert(m_Cards.end(), 8, Card::MERCENARY_5);
+  m_Cards.insert(m_Cards.end(), 8, Card::MERCENARY_6);
+  m_Cards.insert(m_Cards.end(), 8, Card::MERCENARY_10);
+
+  m_Cards.insert(m_Cards.end(), 6, Card::BISHOP);
+  m_Cards.insert(m_Cards.end(), 16, Card::SCARECROW);
+  m_Cards.insert(m_Cards.end(), 3, Card::TURNCOAT);
+  m_Cards.insert(m_Cards.end(), 3, Card::WINTER);
+  m_Cards.insert(m_Cards.end(), 3, Card::SPRING);
+  m_Cards.insert(m_Cards.end(), 6, Card::DRUMMER);
+  m_Cards.insert(m_Cards.end(), 12, Card::SPY);
+  m_Cards.insert(m_Cards.end(), 3, Card::HEROINE);
+
   std::default_random_engine rng(m_RandDev());
   std::shuffle(m_Cards.begin(), m_Cards.end(), rng);
 }
-
 
 // void Game::DealCards(){
 //   for(auto& player : m_Players){
