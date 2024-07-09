@@ -4,7 +4,7 @@
 
 #include <asset_manager.hpp>
 
-struct Card
+class Card
 {
 public:
   enum Type {
@@ -28,8 +28,10 @@ public:
 
 public:
   Card(Type type);
+
+  Type GetType() const;
   Texture2D GetAsset(const AssetManager& assets) const;
 
-public:
-  Type type;
+private:
+  Type m_Type;
 };

@@ -3,11 +3,16 @@
 #include <asset_manager.hpp>
 #include <card.hpp>
 
-Card::Card(Type type) : type(type) {}
+Card::Card(Type type) : m_Type(type) {}
+
+Card::Type Card::GetType() const
+{
+  return m_Type;
+}
 
 Texture2D Card::GetAsset(const AssetManager& assets) const
 {
-  switch (type)
+  switch (m_Type)
   {
   case MERCENARY_1:
     return assets.Mercenary01;
