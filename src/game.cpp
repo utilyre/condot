@@ -1,8 +1,6 @@
-#include <cstdio>
 #include <memory>
 #include <raylib.h>
 #include <algorithm>
-#include <iostream>
 
 #include <game.hpp>
 #include <player.hpp>
@@ -11,10 +9,8 @@
 #include <drummer.hpp>
 #include <heroine.hpp>
 #include <spy.hpp>
-#include <string>
 #include <turncoat.hpp>
 #include <scarecrow.hpp>
-#include <type_traits>
 
 void Game::Start()
 {
