@@ -1,12 +1,17 @@
 #pragma once
 
-#include <raylib.h>
-
-#include <asset_manager.hpp>
-
-class Card
+struct Card
 {
-public:
-  virtual ~Card() {}
-  virtual Texture2D GetAsset(const AssetManager&) const = 0;
+  enum Type {
+    MERCENARY,
+    BISHOP,
+    DRUMMER,
+    HEROINE,
+    SCARECROW,
+    SPRING,
+    SPY,
+    TURNCOAT,
+    WINTER,
+  } type;
+  int power; // used only for mercenary type
 };
