@@ -1,4 +1,3 @@
-#include <memory>
 #include <raylib.h>
 
 #include <asset_manager.hpp>
@@ -6,13 +5,13 @@
 #include <card.hpp>
 #include <mercenary.hpp>
 
-Player::Player(const std::string& name, Color color,size_t age, Position position)
+Player::Player(const std::string& name, Color color, int age, Position position)
 : m_Name(name),
   m_Color(color),
-  m_Position(position),
   m_Age(age),
-  m_Passed(false)
-{}
+  m_Position(position)
+{
+}
 
 void Player::Update()
 {
@@ -80,68 +79,6 @@ void Player::AddCard(Card card)
   m_Cards.push_back(card);
 }
 
-const size_t& Player::GetAge() const {
+int Player::GetAge() const {
   return m_Age;
 }
-
-const std::string Player::GetName() const{
-  return m_Name;
-}
-
-// std::unique_ptr<Card> Player::TakeCard(size_t& pos)
-// {
-//   std::unique_ptr<Card>& card = *(m_Cards.begin() + pos);
-//   std::unique_ptr<Card> c =  std::move(card);
-//   m_Cards.erase(m_Cards.begin() + pos);
-//   return c;
-  
-// }
-
-// const std::vector<std::unique_ptr<Card>>& Player::GetCards() const{
-//   return m_Cards;
-// } 
-
-// bool Player::IsCollided(AssetManager& assets, const Position& position){
-//     if(position == Position::BOTTOM){  
-//       size_t i = 0;
-//       for(auto it = m_Cards.rbegin(); it != m_Cards.rend(); ++it){
-      
-//         Rectangle LowerLayer = {570 + (float) 50 * i,880, 50 ,(float) (*it)->GetAsset(assets).height};
-//         Rectangle UpperLayer = {570 + (float) 50 * i,880, 120 ,(float) (*it)->GetAsset(assets).height};
-//         if((CheckCollisionPointRec(GetMousePosition(), LowerLayer) ||
-//             CheckCollisionPointRec(GetMousePosition(), UpperLayer)) && 
-//             IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
-//         {
-//           std::unique_ptr<Card> card = TakeCard(i);
-//           AddDrawnCard(std::move(card));
-//           return true;
-//         }
-//         i++;
-//       }
-//     }
-//     return false;    
-// }
-
-const Position& Player::GetPosition() const{
-  return m_Position;
-}
-
-bool Player::IsPassed() const{
-  return m_Passed;
-}
-
-void Player::SetPosition(const Position& positon){
-  this->m_Position = positon;
-}
-
-void Player::Pass(){
-  m_Passed = true;
-}
-
-// const std::vector<std::unique_ptr<Card>>& Player::GetDrawnCards() const{
-//   return m_DrawnCards;
-// }
-
-// void Player::AddDrawnCard(std::unique_ptr<Card>&& card){
-//   m_DrawnCards.push_back(std::move(card));
-// }
