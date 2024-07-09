@@ -12,6 +12,11 @@
 #include <turncoat.hpp>
 #include <scarecrow.hpp>
 
+Game::Game()
+: m_Map(&m_State)
+{
+}
+
 void Game::Menu(){
   BeginDrawing();
   while (!WindowShouldClose()) {
