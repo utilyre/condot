@@ -56,7 +56,7 @@ void Game::Render() const
     p.Render(m_Assets);
   }
 
-  m_Map.Render(m_Assets);
+  //m_Map.Render(m_Assets);
 
   DrawText(TextFormat("(%d, %d)", GetMouseX(), GetMouseY()), 10, 10, 30, BLACK);
 }
@@ -132,4 +132,28 @@ void Game::InitiateBattle()
   m_Turn = FindBattleInstigatorIndex();
   ResetCards();
   DealCards();
+}
+
+bool Game::NextTurn(){
+  size_t StartPos = (m_Turn);
+  for(size_t i{},passed{1}; i < m_Players.size(); ++i){
+    
+    size_t EndPos = (StartPos + passed) % m_Players.size();
+    while(m_Players[EndPos].IsPassed()){
+      passed++;
+      EndPos = ( StartPos + passed ) % m_Players.size();
+      i++;
+    }
+    
+    m_Players[StartPos].SetPosition(m_Players[EndPos].GetPosition());
+    
+    if(i == m_Players.size() - 1){
+      m_Turn = StartPos;
+      m_Players[m_Turn].SetPosition(Position::BOTTOM);
+    }
+  
+    StartPos = EndPos;
+    passed = 1;
+  } 
+  return true;
 }
