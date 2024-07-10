@@ -20,7 +20,11 @@ void Player::Update()
 {
   if (m_State->Get() == State::PLAYING_CARD)
   {
-    // TODO(@hidenvar): PickCard() and then PlayCard() or perhaps merge the two
+    /*
+    TODO(@hidenvar):
+    PickCard() and then PlayCard() or perhaps merge the two
+    Execute m_State->Set(State::ROTATING_TURN) after card was chosen
+    */
   }
 }
 
