@@ -3,25 +3,21 @@
 class State
 {
 public:
-  State();
-
-  bool IsMenu() const;
-  void SetMenu();
-
-  bool IsPlacingBattleMarker() const;
-  void SetPlacingBattleMarker();
-
-  bool IsPlacingFavorMarker() const;
-  void SetPlacingFavorMarker();
-
-  bool IsPlaying() const;
-  void SetPlaying();
-
-private:
-  enum {
+  enum Variant {
     MENU,
     PLACING_BATTLE_MARKER,
     PLACING_FAVOR_MARKER,
     PLAYING,
-  } m_Current;
+  };
+
+public:
+  State();
+
+  Variant GetPrev() const;
+  Variant Get() const;
+  void Set(Variant current);
+
+private:
+  Variant m_Curr;
+  Variant m_Prev;
 };

@@ -1,46 +1,28 @@
 #include <state.hpp>
 
 State::State()
-: m_Current(PLACING_BATTLE_MARKER) // TODO: should be MENU
+: m_Curr(PLACING_BATTLE_MARKER), // TODO: should be MENU
+  m_Prev(m_Curr)
 {
 }
 
-bool State::IsMenu() const
+State::Variant State::GetPrev() const
 {
-  return m_Current == MENU;
+  return m_Prev;
 }
 
-void State::SetMenu()
+State::Variant State::Get() const
 {
-  m_Current = MENU;
+  return m_Curr;
 }
 
-bool State::IsPlacingBattleMarker() const
+void State::Set(State::Variant current)
 {
-  return m_Current == PLACING_BATTLE_MARKER;
-}
+  if (current == m_Curr)
+  {
+    return;
+  }
 
-void State::SetPlacingBattleMarker()
-{
-  m_Current = PLACING_BATTLE_MARKER;
-}
-
-bool State::IsPlacingFavorMarker() const
-{
-  return m_Current == PLACING_FAVOR_MARKER;
-}
-
-void State::SetPlacingFavorMarker()
-{
-  m_Current = PLACING_FAVOR_MARKER;
-}
-
-bool State::IsPlaying() const
-{
-  return m_Current == PLAYING;
-}
-
-void State::SetPlaying()
-{
-  m_Current = PLAYING;
+  m_Prev = m_Curr;
+  m_Curr = current;
 }

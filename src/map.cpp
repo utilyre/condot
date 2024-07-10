@@ -57,11 +57,12 @@ void Map::Update()
   int width = GetScreenWidth();
   int height = GetScreenHeight();
 
+  auto currentState = m_State->Get();
   if (
     IsMouseButtonPressed(MOUSE_BUTTON_LEFT)
     && (
-      m_State->IsPlacingBattleMarker()
-      || m_State->IsPlacingFavorMarker()
+      currentState == State::PLACING_BATTLE_MARKER
+      || currentState == State::PLACING_FAVOR_MARKER
     )
   )
   {
@@ -73,12 +74,19 @@ void Map::Update()
     {
       if (r.CollidesWith(mouse))
       {
-        if (m_State->IsPlacingBattleMarker())
+        switch (currentState)
+        {
+        case State::PLACING_BATTLE_MARKER:
           m_BattleMarker = &r;
-        else if (m_State->IsPlacingFavorMarker())
+          break;
+        case State::PLACING_FAVOR_MARKER:
           m_FavorMarker = &r;
+          break;
+        default:
+          break;
+        }
 
-        m_State->SetPlaying();
+        m_State->Set(State::PLAYING);
       }
     }
 
