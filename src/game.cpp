@@ -22,8 +22,6 @@ void Game::Start()
   m_Players.emplace_back("Alex", BLUE, 1 , Position::BOTTOM);
   m_Players.emplace_back("Theo", GRAY, 4 ,Position::LEFT);
 
-  InitiateBattle();
-
   // NOTE: do NOT modify
   while (!WindowShouldClose())
   {
@@ -37,7 +35,11 @@ void Game::Start()
 
 void Game::Update()
 {
-  // PlayCard();
+  if (m_State.Get() == State::INITIATING_BATTLE)
+  {
+    InitiateBattle();
+    m_State.Set(State::PLACING_BATTLE_MARKER);
+  }
 
   for (Player& p : m_Players)
   {

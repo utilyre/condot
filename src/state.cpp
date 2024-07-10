@@ -1,7 +1,7 @@
 #include <state.hpp>
 
 State::State()
-: m_Curr(PLACING_BATTLE_MARKER), // TODO: should be MENU
+: m_Curr(INITIATING_BATTLE), // TODO: should be MENU
   m_Prev(m_Curr)
 {
 }

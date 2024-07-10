@@ -5,6 +5,7 @@ class State
 public:
   enum Variant {
     MENU,
+    INITIATING_BATTLE,
     PLACING_BATTLE_MARKER,
     PLACING_FAVOR_MARKER,
     PLAYING,
