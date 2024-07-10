@@ -20,7 +20,7 @@ void Player::Update()
 {
   if (m_State->Get() == State::PLAYING_CARD)
   {
-    // TODO: PickCard() and then PlayCard() or perhaps merge the two
+    // TODO(@hidenvar): PickCard() and then PlayCard() or perhaps merge the two
   }
 }
 
