@@ -1,5 +1,7 @@
 #pragma once
 
+#include <iostream>
+
 class State
 {
 public:
@@ -23,3 +25,5 @@ private:
   Variant m_Curr;
   Variant m_Prev;
 };
+
+std::ostream& operator<<(std::ostream& out, State::Variant v);

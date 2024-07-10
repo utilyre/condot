@@ -38,7 +38,6 @@ void Game::Update()
 {
   if (m_State.Get() == State::INITIATING_BATTLE)
   {
-    std::cout << "Initiating Battle\n";
     InitiateBattle();
     m_State.Set(State::PLACING_BATTLE_MARKER);
   }
