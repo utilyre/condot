@@ -91,9 +91,9 @@ void Map::Update()
     }
 
     if (m_BattleMarker)
-      std::cout << "Set Battle Marker: " << m_BattleMarker->GetName() << '\n';
+      std::clog << "INFO: battle marker was set to " << m_BattleMarker->GetName() << '\n';
     if (m_FavorMarker)
-      std::cout << "Set Favor Marker: " << m_FavorMarker->GetName() << '\n';
+      std::clog << "INFO: favor marker was set to " << m_FavorMarker->GetName() << '\n';
   }
 }
 
