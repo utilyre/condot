@@ -9,6 +9,7 @@ public:
     PLACING_BATTLE_MARKER,
     PLACING_FAVOR_MARKER,
     PLAYING_CARD,
+    ROTATING_TURN,
   };
 
 public:
