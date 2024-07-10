@@ -1,12 +1,14 @@
 #include <raylib.h>
 
 #include <asset_manager.hpp>
+#include <state.hpp>
 #include <player.hpp>
 #include <card.hpp>
 #include <mercenary.hpp>
 
-Player::Player(const std::string& name, Color color, int age, Position position)
-: m_Name(name),
+Player::Player(State* state, const std::string& name, Color color, int age, Position position)
+: m_State(state),
+  m_Name(name),
   m_Color(color),
   m_Age(age),
   m_Position(position),
@@ -16,6 +18,10 @@ Player::Player(const std::string& name, Color color, int age, Position position)
 
 void Player::Update()
 {
+  if (m_State->Get() == State::PLAYING_CARD)
+  {
+    // TODO: PickCard() and then PlayCard() or perhaps merge the two
+  }
 }
 
 void Player::AddCard(Card card)

@@ -18,10 +18,10 @@ void Game::Start()
   SetTargetFPS(60);
 
   // TODO: add/customize players through menu
-  m_Players.emplace_back("John", RED, 10 , Position::TOP);
-  m_Players.emplace_back("Jane", GREEN, 2 , Position::RIGHT);
-  m_Players.emplace_back("Alex", BLUE, 1 , Position::BOTTOM);
-  m_Players.emplace_back("Theo", GRAY, 4 ,Position::LEFT);
+  m_Players.emplace_back(&m_State, "John", RED, 10 , Position::TOP);
+  m_Players.emplace_back(&m_State, "Jane", GREEN, 2 , Position::RIGHT);
+  m_Players.emplace_back(&m_State, "Alex", BLUE, 1 , Position::BOTTOM);
+  m_Players.emplace_back(&m_State, "Theo", GRAY, 4 ,Position::LEFT);
 
   // NOTE: do NOT modify
   while (!WindowShouldClose())

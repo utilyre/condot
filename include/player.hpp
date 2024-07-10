@@ -5,6 +5,7 @@
 #include <vector>
  
 #include <asset_manager.hpp>
+#include <state.hpp>
 #include <entity.hpp>
 #include <card.hpp>
 #include <mercenary.hpp>
@@ -20,7 +21,7 @@ enum class Position
 class Player : public Entity
 {
 public:
-  Player(const std::string& name, Color color, int age, Position position);
+  Player(State* state, const std::string& name, Color color, int age, Position position);
 
   void Update() override;
   void Render(const AssetManager& assets) const override;
@@ -38,6 +39,7 @@ private:
   void Pass();
   void AddRowCard(const Card& card);
 private:
+  State* m_State;
   std::string m_Name;
   Color m_Color;
   int m_Age;
