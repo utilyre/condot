@@ -8,7 +8,7 @@ public:
     INITIATING_BATTLE,
     PLACING_BATTLE_MARKER,
     PLACING_FAVOR_MARKER,
-    PLAYING,
+    PLAYING_CARD,
   };
 
 public:

@@ -86,7 +86,7 @@ void Map::Update()
           break;
         }
 
-        m_State->Set(State::PLAYING);
+        m_State->Set(State::PLAYING_CARD);
       }
     }
 
