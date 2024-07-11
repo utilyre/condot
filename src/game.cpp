@@ -52,7 +52,7 @@ void Game::Update()
 
 void Game::Render() const
 {
-  ClearBackground(RAYWHITE);
+  DrawTexture(m_Assets.Background, 0, 0, WHITE);
 
   for (const Player& p : m_Players)
   {

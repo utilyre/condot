@@ -4,6 +4,17 @@
 
 AssetManager::AssetManager()
 {
+  int width = GetScreenWidth();
+  int height = GetScreenHeight();
+
+  Image background = LoadImage("assets/background.png");
+  if ((float)background.height / background.width > (float)height / width)
+    ImageResize(&background, width, ((float)width / background.width) * background.height);
+  else
+    ImageResize(&background, ((float)height / background.height) * background.width, height);
+  Background = LoadTextureFromImage(background);
+  UnloadImage(background);
+
   Image map = LoadImage("assets/map.png");
   ImageResize(&map, 0.81f * map.width, 0.81f * map.height);
   Map = LoadTextureFromImage(map);
@@ -49,4 +60,5 @@ AssetManager::~AssetManager()
   UnloadTexture(Mercenary1);
 
   UnloadTexture(Map);
+  UnloadTexture(Background);
 }
