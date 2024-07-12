@@ -223,34 +223,43 @@ void Player::PickCard(const size_t& index){
           // TODO : does something with gameflow
           else if (card == Card::BISHOP) {
             m_Cards.erase(m_Cards.begin() + index);
+            // TODO : Bishop();
           }
           
           else if (card == Card::DRUMMER) {
             m_Cards.erase(m_Cards.begin() + index);
+            // TODO : bool drummer = true;
           }
           
           else if (card == Card::HEROINE) {
             m_Cards.erase(m_Cards.begin() + index);
+            // TODO : int Heroine++;
           }
           
           else if (card == Card::SCARECROW) {
             m_Cards.erase(m_Cards.begin() + index);
+            //TODO : Scarecrow();
           }
           
           else if (card == Card::SPRING) {
             m_Cards.erase(m_Cards.begin() + index);
+            //TODO : Set(Season::SPRING);
           }
           
           else if (card == Card::SPY) {
             m_Cards.erase(m_Cards.begin() + index);
+            //TODO : int Spy++;
+            
           }
           
           else if (card == Card::TURNCOAT) {
             m_Cards.erase(m_Cards.begin() + index);
+            // TODO : EndGame();
           }
           
           else if (card == Card::WINTER) {
             m_Cards.erase(m_Cards.begin() + index);
+            // TODO : Set(Season::WINTER);
           }
           
 }
