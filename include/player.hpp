@@ -45,6 +45,6 @@ private:
   int m_Age;
   Position m_Position;
   std::vector<Card> m_Cards;
-  std::vector<Card> m_Row;
+  std::vector<Mercenary> m_Row;
   bool m_IsPassed;
 };
