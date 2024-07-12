@@ -1,4 +1,3 @@
-#include <cmath>
 #include <raylib.h>
 
 #include <asset_manager.hpp>
@@ -20,7 +19,6 @@ Player::Player(State* state, const std::string& name, Color color, int age, Posi
 void Player::Update()
 {
     PlayCard();
-   // m_State->Set(State::ROTATING_TURN);
 }
 
 void Player::AddCard(Card card)
@@ -154,21 +152,25 @@ void Player::PlayCard(){
   if (m_Position == Position::BOTTOM)
   {
     size_t index = 0;
-    for(auto it = m_Cards.rbegin(); it != m_Cards.rend(); ++it)
+    for(auto it = m_Cards.end(); it != m_Cards.begin(); --it)
     {
-      Rectangle LowerLayer = {570 + (float) 50 * index , 880 , 50  , 190};
-    //Rectangle UpperLayer = {570 + (float) 50 * index , 880 , 120 , 190};
+      Rectangle LowerLayer = {590 + (float) 50 * index , 880 , 50  , 190};
+      Rectangle UpperLayer = {570 + (float) 50 * index , 880 , 120 , 190};
         
-      if((CheckCollisionPointRec(GetMousePosition(), LowerLayer) &&
-         //(CheckCollisionPointRec(GetMousePosition(), UpperLayer) &&
-         // m_Cards.size() - 1 == i )) && 
-          IsMouseButtonPressed(MOUSE_LEFT_BUTTON)))
+      if((CheckCollisionPointRec(GetMousePosition(), LowerLayer) ||
+         (CheckCollisionPointRec(GetMousePosition(), UpperLayer) &&
+         m_Cards.size() - 1 == index )) && 
+          IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
         {
-          auto card = PickCard(index);
-          AddRowCard(card);
+          PickCard(index);
+          break;
+          //m_State->Set(State::ROTATING_TURN);
         }
       else if (CheckCollisionPointRec(GetMousePosition(),(Rectangle){420, 950, 70, 50}) &&
-           IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){}
+           IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
+      {
+        
+      }
       index++;
     }
   }
@@ -178,10 +180,76 @@ int Player::GetAge() const {
   return m_Age;
 }
 
-const Card& Player::PickCard(const size_t& position){
-  Card& card = *(m_Cards.begin() + position);
-  m_Cards.erase(m_Cards.begin() + position);
-  return card;
+void Player::PickCard(const size_t& index){
+          auto card = m_Cards[index].GetType();
+          if (card == Card::MERCENARY_1) {
+            m_Cards.erase(m_Cards.begin() + index);
+            m_Row.emplace_back(1);
+          }
+          
+          else if (card == Card::MERCENARY_2) {
+            m_Cards.erase(m_Cards.begin() + index);
+            m_Row.emplace_back(2);
+          }
+          
+          else if (card == Card::MERCENARY_3) {
+            m_Cards.erase(m_Cards.begin() + index);
+            m_Row.emplace_back(3);
+          }
+          
+          else if (card == Card::MERCENARY_4) {
+            m_Cards.erase(m_Cards.begin() + index);
+            m_Row.emplace_back(4);
+          }
+          
+          else if (card == Card::MERCENARY_5) {
+            m_Cards.erase(m_Cards.begin() + index);
+            m_Row.emplace_back(5);
+          }
+          
+          else if (card == Card::MERCENARY_6) {
+            m_Cards.erase(m_Cards.begin() + index);
+            m_Row.emplace_back(6);
+          }
+          
+          else if (card == Card::MERCENARY_10) {
+            m_Cards.erase(m_Cards.begin() + index);
+            m_Row.emplace_back(10);
+          }
+          
+          // TODO : does something with gameflow
+          else if (card == Card::BISHOP) {
+            m_Cards.erase(m_Cards.begin() + index);
+          }
+          
+          else if (card == Card::DRUMMER) {
+            m_Cards.erase(m_Cards.begin() + index);
+          }
+          
+          else if (card == Card::HEROINE) {
+            m_Cards.erase(m_Cards.begin() + index);
+          }
+          
+          else if (card == Card::SCARECROW) {
+            m_Cards.erase(m_Cards.begin() + index);
+          }
+          
+          else if (card == Card::SPRING) {
+            m_Cards.erase(m_Cards.begin() + index);
+          }
+          
+          else if (card == Card::SPY) {
+            m_Cards.erase(m_Cards.begin() + index);
+          }
+          
+          else if (card == Card::TURNCOAT) {
+            m_Cards.erase(m_Cards.begin() + index);
+          }
+          
+          else if (card == Card::WINTER) {
+            m_Cards.erase(m_Cards.begin() + index);
+          }
+          
 }
 
 void Player::SetPosition(const Position& position){
@@ -190,10 +258,6 @@ void Player::SetPosition(const Position& position){
 
 void Player::Pass(){
   m_IsPassed = true;
-}
-
-void Player::AddRowCard(const Card& card){
-  m_Row.push_back(card);
 }
 
 bool Player::IsPassed(){

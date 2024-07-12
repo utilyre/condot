@@ -35,9 +35,8 @@ private:
   void PlayCard();
   void RenderCards(const AssetManager& assets, Vector2 cordinate, float rotation) const;
   void RenderRows(const AssetManager& assets, Vector2 cordinate, float rotation) const;
-  const Card& PickCard(const size_t& position);
+  void PickCard(const size_t& index);
   void Pass();
-  void AddRowCard(const Card& card);
 private:
   State* m_State;
   std::string m_Name;
