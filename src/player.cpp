@@ -163,8 +163,8 @@ void Player::PlayCard(){
           IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
         {
           PickCard(index);
+          m_State->Set(State::ROTATING_TURN);
           break;
-          //m_State->Set(State::ROTATING_TURN);
         }
       else if (CheckCollisionPointRec(GetMousePosition(),(Rectangle){420, 950, 70, 50}) &&
            IsMouseButtonPressed(MOUSE_LEFT_BUTTON))

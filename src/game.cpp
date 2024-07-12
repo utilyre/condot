@@ -1,3 +1,4 @@
+#include "state.hpp"
 #include <iostream>
 #include <algorithm>
 #include <climits>
@@ -49,6 +50,7 @@ void Game::Update()
     if (m_State.Get() == State::ROTATING_TURN)
     {
       RotateTurn();
+      m_State.Set(State::PLAYING_CARD);
     }
   }
 
