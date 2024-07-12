@@ -25,7 +25,7 @@ private:
   void ResetCards();
   void DealCards();
   void InitiateBattle();
-  bool NextTurn();
+  bool RotateTurn();
 private:
   size_t m_Turn;
   mutable std::random_device m_RandDev;

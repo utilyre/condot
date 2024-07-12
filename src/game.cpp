@@ -7,6 +7,7 @@
 #include <player.hpp>
 #include <card.hpp>
 #include <mercenary.hpp>
+#include <system_error>
 
 Game::Game()
 : m_Map(&m_State)
@@ -45,6 +46,10 @@ void Game::Update()
   for (Player& p : m_Players)
   {
     p.Update();
+    if (m_State.Get() == State::ROTATING_TURN)
+    {
+      RotateTurn();
+    }
   }
 
   m_Map.Update();
@@ -137,7 +142,7 @@ void Game::InitiateBattle()
   DealCards();
 }
 
-bool Game::NextTurn(){
+bool Game::RotateTurn(){
   size_t StartPos = (m_Turn);
   for(size_t i{},passed{1}; i < m_Players.size(); ++i){
     
