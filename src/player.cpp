@@ -152,10 +152,10 @@ void Player::PlayCard(){
   if (m_Position == Position::BOTTOM)
   {
     size_t index = 0;
-    for(auto it = m_Cards.end(); it != m_Cards.begin(); --it)
+    for(auto it = m_Cards.rbegin(); it != m_Cards.rend(); ++it)
     {
       Rectangle LowerLayer = {590 + (float) 50 * index , 880 , 50  , 190};
-      Rectangle UpperLayer = {570 + (float) 50 * index , 880 , 120 , 190};
+      Rectangle UpperLayer = {590 + (float) 50 * index , 880 , 120 , 190};
         
       if((CheckCollisionPointRec(GetMousePosition(), LowerLayer) ||
          (CheckCollisionPointRec(GetMousePosition(), UpperLayer) &&
