@@ -1,3 +1,4 @@
+#include <cmath>
 #include <raylib.h>
 
 #include <asset_manager.hpp>
@@ -18,14 +19,8 @@ Player::Player(State* state, const std::string& name, Color color, int age, Posi
 
 void Player::Update()
 {
-  if (m_State->Get() == State::PLAYING_CARD)
-  {
-    /*
-    TODO(@hidenvar):
-    PickCard() and then PlayCard() or perhaps merge the two
-    Execute m_State->Set(State::ROTATING_TURN) after card was chosen
-    */
-  }
+    PlayCard();
+   // m_State->Set(State::ROTATING_TURN);
 }
 
 void Player::AddCard(Card card)
@@ -152,35 +147,38 @@ void Player::RenderCards(const AssetManager& assets, Vector2 cordinate, float ro
       cordinate.y -= 50;
       
     }  
-  }}
-
-bool Player::IsCollided(AssetManager& assets, const Position& position){
-  if( position == Position::BOTTOM){
-    size_t i = 0;
-    for(auto it = m_Cards.rbegin(); it != m_Cards.rend(); ++it){
-      Rectangle LowerLayer = {570 + (float) 50 * i,880, 50 ,(float) it->GetAsset(assets).height};
-      Rectangle UpperLayer = {570 + (float) 50 * i,880, 120 ,(float) it->GetAsset(assets).height};
-        
-      if((CheckCollisionPointRec(GetMousePosition(), LowerLayer) ||
-         (CheckCollisionPointRec(GetMousePosition(), UpperLayer) &&
-          m_Cards.size() - 1 == i )) && 
-          IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
-        {
-          auto card = TakeCard(i);
-          AddRowCard(card);
-          return true;
-        }
-        i++;
-      }
-    }
-    return false;    
+  }
 }
 
+void Player::PlayCard(){
+  if (m_Position == Position::BOTTOM)
+  {
+    size_t index = 0;
+    for(auto it = m_Cards.rbegin(); it != m_Cards.rend(); ++it)
+    {
+      Rectangle LowerLayer = {570 + (float) 50 * index , 880 , 50  , 190};
+    //Rectangle UpperLayer = {570 + (float) 50 * index , 880 , 120 , 190};
+        
+      if((CheckCollisionPointRec(GetMousePosition(), LowerLayer) &&
+         //(CheckCollisionPointRec(GetMousePosition(), UpperLayer) &&
+         // m_Cards.size() - 1 == i )) && 
+          IsMouseButtonPressed(MOUSE_LEFT_BUTTON)))
+        {
+          auto card = PickCard(index);
+          AddRowCard(card);
+        }
+      else if (CheckCollisionPointRec(GetMousePosition(),(Rectangle){420, 950, 70, 50}) &&
+           IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){}
+      index++;
+    }
+  }
+    
+}
 int Player::GetAge() const {
   return m_Age;
 }
 
-const Card& Player::TakeCard(const size_t& position){
+const Card& Player::PickCard(const size_t& position){
   Card& card = *(m_Cards.begin() + position);
   m_Cards.erase(m_Cards.begin() + position);
   return card;

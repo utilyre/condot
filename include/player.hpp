@@ -32,10 +32,10 @@ public:
   void SetPosition(const Position& position);
   const Position& GetPosition() const;
 private:
+  void PlayCard();
   void RenderCards(const AssetManager& assets, Vector2 cordinate, float rotation) const;
   void RenderRows(const AssetManager& assets, Vector2 cordinate, float rotation) const;
-  bool IsCollided(AssetManager& assets, const Position& position);
-  const Card& TakeCard(const size_t& position);
+  const Card& PickCard(const size_t& position);
   void Pass();
   void AddRowCard(const Card& card);
 private:
