@@ -29,7 +29,6 @@ void Game::Start()
   while (!WindowShouldClose())
   {
     Update();
-
     BeginDrawing();
     Render();
     EndDrawing();
@@ -42,7 +41,9 @@ void Game::Update()
   {
     InitiateBattle();
     m_State.Set(State::PLACING_BATTLE_MARKER);
-  }
+    // TODO: PLACE BATTLE MARKER
+    m_State.Set(State::PLAYING_CARD);
+    }
 
   for (Player& p : m_Players)
   {
@@ -51,6 +52,7 @@ void Game::Update()
     {
       RotateTurn();
       m_State.Set(State::PLAYING_CARD);
+      break;
     }
   }
 
@@ -161,7 +163,7 @@ bool Game::RotateTurn(){
       m_Turn = StartPos;
       m_Players[m_Turn].SetPosition(Position::BOTTOM);
     }
-  
+    std::cout << StartPos << " " << EndPos << " " << i << std::endl;
     StartPos = EndPos;
     passed = 1;
   } 

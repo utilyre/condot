@@ -32,7 +32,7 @@ public:
   void SetPosition(const Position& position);
   const Position& GetPosition() const;
 private:
-  void PlayCard();
+  bool PlayCard();
   void RenderCards(const AssetManager& assets, Vector2 cordinate, float rotation) const;
   void RenderRows(const AssetManager& assets, Vector2 cordinate, float rotation) const;
   void PickCard(const size_t& index);

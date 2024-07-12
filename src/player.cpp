@@ -18,7 +18,11 @@ Player::Player(State* state, const std::string& name, Color color, int age, Posi
 
 void Player::Update()
 {
-    PlayCard();
+  if (m_State->Get() == State::PLAYING_CARD) {
+    if(PlayCard()){
+      m_State->Set(State::ROTATING_TURN);
+    }
+  }
 }
 
 void Player::AddCard(Card card)
@@ -148,7 +152,7 @@ void Player::RenderCards(const AssetManager& assets, Vector2 cordinate, float ro
   }
 }
 
-void Player::PlayCard(){
+bool Player::PlayCard(){
   if (m_Position == Position::BOTTOM)
   {
     size_t index = 0;
@@ -163,8 +167,7 @@ void Player::PlayCard(){
           IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
         {
           PickCard(index);
-          m_State->Set(State::ROTATING_TURN);
-          break;
+          return true;
         }
       else if (CheckCollisionPointRec(GetMousePosition(),(Rectangle){420, 950, 70, 50}) &&
            IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
@@ -174,7 +177,7 @@ void Player::PlayCard(){
       index++;
     }
   }
-    
+    return false;
 }
 int Player::GetAge() const {
   return m_Age;
