@@ -20,11 +20,11 @@ void PlayerPickMenu::Update()
     return;
   }
 
-  if (IsKeyPressed(KEY_UP))
+  if (IsKeyPressed(KEY_UP) && m_PlayerCount < 4)
   {
     m_PlayerCount++;
   }
-  if (IsKeyPressed(KEY_DOWN))
+  if (IsKeyPressed(KEY_DOWN) && m_PlayerCount > 3)
   {
     m_PlayerCount--;
   }
