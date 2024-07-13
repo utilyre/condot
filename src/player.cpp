@@ -239,8 +239,8 @@ void Player::PickCard(const size_t& index){
           
           else if (card == Card::SCARECROW) {
             m_State->Set(State::SCARECROW);
-            while(m_State->Get() == State::SCARECROW){
             size_t Idx{0};
+            while(m_State->Get() == State::SCARECROW && !m_Row.empty()){
               for(auto it = m_Row.rbegin(); it != m_Row.rend(); ++it)
               {
                 Rectangle LowerLayer = {540 + (float) 50 * Idx , 830 , 50  , 50};
@@ -257,8 +257,12 @@ void Player::PickCard(const size_t& index){
                   m_Cards.erase(m_Cards.begin() + index);
                   m_State->Set(State::ROTATING_TURN);
                 }
-                Idx++;
+                std::cout << Idx << " ";
+                Idx = (Idx + 1) % m_Row.size();
               }
+            }
+            if(m_Row.empty()){
+              m_State->Set(State::PLAYING_CARD);
             }
           }
           else if (card == Card::SPRING) {

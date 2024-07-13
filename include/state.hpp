@@ -1,7 +1,8 @@
 #pragma once
 
-#include "card.hpp"
 #include <iostream>
+
+#include <card.hpp>
 
 class State
 {
