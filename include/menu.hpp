@@ -37,3 +37,16 @@ private:
   MenuButton m_ButtonStart;
   MenuButton m_ButtonExit;
 };
+
+class PlayerPickMenu : public Entity
+{
+public:
+  PlayerPickMenu(State* state);
+
+  void Update() override;
+  void Render(const AssetManager& assets) const override;
+
+private:
+  State* m_State;
+  size_t m_PlayerCount;
+};

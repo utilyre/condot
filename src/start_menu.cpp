@@ -26,14 +26,14 @@ StartMenu::StartMenu(State* state)
 
 void StartMenu::Update()
 {
-  if (m_State->Get() == State::MENU)
+  if (m_State->Get() == State::START_MENU)
   {
     m_ButtonStart.Update();
     m_ButtonExit.Update();
 
     if (m_ButtonStart.Hovered() && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
     {
-      m_State->Set(State::INITIATING_BATTLE);
+      m_State->Set(State::PLAYER_PICK_MENU);
     }
     if (m_ButtonExit.Hovered() && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
     {
@@ -44,7 +44,7 @@ void StartMenu::Update()
 
 void StartMenu::Render(const AssetManager& assets) const
 {
-  if (m_State->Get() == State::MENU)
+  if (m_State->Get() == State::START_MENU)
   {
     m_ButtonStart.Render(assets);
     m_ButtonExit.Render(assets);

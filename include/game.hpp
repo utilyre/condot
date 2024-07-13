@@ -36,6 +36,7 @@ private:
   AssetManager m_Assets;
   State m_State;
   StartMenu m_StartMenu;
+  PlayerPickMenu m_PlayerPickMenu;
   Map m_Map;
   std::vector<Player> m_Players;
   std::vector<Card> m_Deck;
