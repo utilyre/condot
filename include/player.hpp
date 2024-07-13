@@ -3,7 +3,7 @@
 #include <string>
 #include <raylib.h>
 #include <vector>
- 
+
 #include <asset_manager.hpp>
 #include <state.hpp>
 #include <entity.hpp>
@@ -32,10 +32,10 @@ public:
   void SetPosition(const Position& position);
   const Position& GetPosition() const;
 private:
-  bool PlayCard();
+  bool PlayCard(std::vector<Player>& Player);
   void RenderCards(const AssetManager& assets, Vector2 cordinate, float rotation) const;
   void RenderRows(const AssetManager& assets, Vector2 cordinate, float rotation) const;
-  void PickCard(const size_t& index);
+  void PickCard(const size_t& index , std::vector<Player>& player);
   void Pass();
 private:
   State* m_State;

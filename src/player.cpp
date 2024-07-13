@@ -152,7 +152,7 @@ void Player::RenderCards(const AssetManager& assets, Vector2 cordinate, float ro
   }
 }
 
-bool Player::PlayCard(){
+bool Player::PlayCard(std::vector<Player>& player){
   if (m_Position == Position::BOTTOM)
   {
     size_t index = 0;
@@ -166,7 +166,7 @@ bool Player::PlayCard(){
          m_Cards.size() - 1 == index )) && 
           IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
         {
-          PickCard(index);
+          PickCard(index,player);
           return true;
         }
       else if (CheckCollisionPointRec(GetMousePosition(),(Rectangle){420, 950, 70, 50}) &&
@@ -183,7 +183,7 @@ int Player::GetAge() const {
   return m_Age;
 }
 
-void Player::PickCard(const size_t& index){
+void Player::PickCard(const size_t& index , std::vector<Player>& player){
           auto card = m_Cards[index].GetType();
           if (card == Card::MERCENARY_1) {
             m_Cards.erase(m_Cards.begin() + index);
