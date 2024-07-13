@@ -50,11 +50,12 @@ void PlayerPickMenu::Render(const AssetManager& assets) const
 
   DrawRectangleRounded(menuDimensions, 0.1f, 0, WHITE);
 
-  DrawText(
-    TextFormat("Players: %d (use <up> and <down> keys to adjust)", m_PlayerCount),
-    menuDimensions.x + padding,
-    menuDimensions.y + padding,
-    25,
+  DrawTextEx(
+    assets.PrimaryFont,
+    TextFormat("%d players (use <up> and <down> keys to adjust)", m_PlayerCount),
+    Vector2{menuDimensions.x + padding, menuDimensions.y + padding},
+    50,
+    1,
     BLACK
   );
 }

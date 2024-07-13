@@ -21,7 +21,7 @@ void MenuButton::Update()
   m_Hovered = CheckCollisionPointRec(GetMousePosition(), m_Dimensions);
 }
 
-void MenuButton::Render(const AssetManager&) const
+void MenuButton::Render(const AssetManager& assets) const
 {
   Color background = BLACK;
   Color foreground = WHITE;
@@ -32,11 +32,15 @@ void MenuButton::Render(const AssetManager&) const
   }
 
   DrawRectangleRounded(m_Dimensions, 0.5f, 0, background);
-  DrawText(
+  DrawTextEx(
+    assets.PrimaryFont,
     m_Text.c_str(),
-    m_Dimensions.x + 0.5f * m_Dimensions.width - 0.25f * m_FontSize * m_Text.size(),
-    m_Dimensions.y + 0.5f * (m_Dimensions.height - m_FontSize),
+    Vector2{
+      m_Dimensions.x + 0.5f * m_Dimensions.width - 0.25f * m_FontSize * m_Text.size(),
+      m_Dimensions.y + 0.5f * (m_Dimensions.height - m_FontSize),
+    },
     m_FontSize,
+    1,
     foreground
   );
 }
