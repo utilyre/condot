@@ -7,6 +7,8 @@ AssetManager::AssetManager()
   int width = GetScreenWidth();
   int height = GetScreenHeight();
 
+  PrimaryFont = LoadFont("assets/fonts/jupiter_crash.png");
+
   Image background = LoadImage("assets/background.png");
   if ((float)background.height / background.width > (float)height / width)
     ImageResize(&background, width, ((float)width / background.width) * background.height);
@@ -61,4 +63,6 @@ AssetManager::~AssetManager()
 
   UnloadTexture(Map);
   UnloadTexture(Background);
+
+  UnloadFont(PrimaryFont);
 }
