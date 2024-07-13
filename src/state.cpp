@@ -3,7 +3,7 @@
 #include <state.hpp>
 
 State::State()
-: m_Curr(INITIATING_BATTLE), // TODO: should be MENU
+: m_Curr(MENU),
   m_Prev(m_Curr)
 {
 }

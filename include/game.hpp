@@ -8,6 +8,7 @@
 #include <map.hpp>
 #include <player.hpp>
 #include <card.hpp>
+#include <menu.hpp>
 
 class Game
 {
@@ -15,6 +16,7 @@ public:
   Game();
 
   void Start();
+  void Stop();
 
 private:
   void Update();
@@ -26,7 +28,9 @@ private:
   void DealCards();
   void InitiateBattle();
   bool NextTurn();
+
 private:
+  bool m_Stopped;
   size_t m_Turn;
   mutable std::random_device m_RandDev;
   AssetManager m_Assets;
@@ -34,4 +38,6 @@ private:
   Map m_Map;
   std::vector<Player> m_Players;
   std::vector<Card> m_Deck;
+  MenuButton m_ButtonStart;
+  MenuButton m_ButtonExit;
 };

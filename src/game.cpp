@@ -7,9 +7,26 @@
 #include <player.hpp>
 #include <card.hpp>
 #include <mercenary.hpp>
+#include <menu.hpp>
+
+static const int BUTTON_WIDTH = 800;
+static const int BUTTON_HEIGHT = 100;
 
 Game::Game()
-: m_Map(&m_State)
+: m_Stopped(false),
+  m_Map(&m_State),
+  m_ButtonStart("Start", 50, Rectangle{
+    (GetScreenWidth() - BUTTON_WIDTH) / 2.0f,
+    (GetScreenHeight() - BUTTON_HEIGHT) / 2.0f - 60,
+    BUTTON_WIDTH,
+    BUTTON_HEIGHT
+  }),
+  m_ButtonExit("Exit", 50, Rectangle{
+    (GetScreenWidth() - BUTTON_WIDTH) / 2.0f,
+    (GetScreenHeight() - BUTTON_HEIGHT) / 2.0f + 60,
+    BUTTON_WIDTH,
+    BUTTON_HEIGHT
+  })
 {
 }
 
@@ -26,12 +43,22 @@ void Game::Start()
   // NOTE: do NOT modify
   while (!WindowShouldClose())
   {
+    if (m_Stopped)
+    {
+      break;
+    }
+
     Update();
 
     BeginDrawing();
     Render();
     EndDrawing();
   }
+}
+
+void Game::Stop()
+{
+  m_Stopped = true;
 }
 
 void Game::Update()
@@ -48,18 +75,40 @@ void Game::Update()
   }
 
   m_Map.Update();
+
+  m_ButtonStart.Update();
+  m_ButtonExit.Update();
+
+  if (m_ButtonStart.Hovered() && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+  {
+    std::clog << "INFO: clicked start\n";
+  }
+  if (m_ButtonExit.Hovered() && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+  {
+    Stop();
+  }
 }
 
 void Game::Render() const
 {
   DrawTexture(m_Assets.Background, 0, 0, WHITE);
 
-  for (const Player& p : m_Players)
+  switch (m_State.Get())
   {
-    p.Render(m_Assets);
-  }
+  case State::MENU:
+    m_ButtonStart.Render(m_Assets);
+    m_ButtonExit.Render(m_Assets);
+    break;
 
-  //m_Map.Render(m_Assets);
+  default:
+    for (const Player& p : m_Players)
+    {
+      p.Render(m_Assets);
+    }
+
+    //m_Map.Render(m_Assets);
+    break;
+  }
 
   DrawText(TextFormat("(%d, %d)", GetMouseX(), GetMouseY()), 10, 10, 30, BLACK);
 }
