@@ -2,6 +2,7 @@
 
 #include <string>
 #include <raylib.h>
+#include <unordered_map>
 #include <vector>
 
 #include <asset_manager.hpp>
@@ -48,4 +49,5 @@ private:
   std::vector<Card> m_Cards;
   std::vector<Mercenary> m_Row;
   bool m_IsPassed;
+  std::unordered_map<std::string , int> m_s;
 };

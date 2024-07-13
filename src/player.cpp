@@ -21,7 +21,7 @@ void Player::Update()
 {
   if (m_State->Get() == State::PLAYING_CARD) {
     if(PlayCard()){
-     // m_State->Set(State::ROTATING_TURN);
+      m_State->Set(State::ROTATING_TURN);
     }
   }
 }
@@ -229,18 +229,20 @@ void Player::PickCard(const size_t& index){
           
           else if (card == Card::DRUMMER) {
             m_Cards.erase(m_Cards.begin() + index);
-            // TODO : bool drummer = true;
+            if (!m_s.count("DRUMMER")) m_s.insert({"DRUMMER" , 1});
           }
           
           else if (card == Card::HEROINE) {
             m_Cards.erase(m_Cards.begin() + index);
-            // TODO : int Heroine++;
+            if (!m_s.count("HEROINE")) m_s["HEROINE"] = 1;
+            else m_s["HEROINE"]++;
+            std::cout << m_s["HEROINE"];
           }
           
           else if (card == Card::SCARECROW) {
-            m_State->Set(State::SCARECROW);
-            size_t Idx{0};
-            while(m_State->Get() == State::SCARECROW && !m_Row.empty()){
+            if(!m_Row.empty()) m_State->Set(State::SCARECROW);
+            while(m_State->Get() == State::SCARECROW){
+              size_t Idx{0};
               for(auto it = m_Row.rbegin(); it != m_Row.rend(); ++it)
               {
                 Rectangle LowerLayer = {540 + (float) 50 * Idx , 830 , 50  , 50};
@@ -257,12 +259,9 @@ void Player::PickCard(const size_t& index){
                   m_Cards.erase(m_Cards.begin() + index);
                   m_State->Set(State::ROTATING_TURN);
                 }
-                std::cout << Idx << " ";
-                Idx = (Idx + 1) % m_Row.size();
+                std::cout << Idx << " " << m_s["HEROINE"] << '\n';
+                Idx++;
               }
-            }
-            if(m_Row.empty()){
-              m_State->Set(State::PLAYING_CARD);
             }
           }
           else if (card == Card::SPRING) {
