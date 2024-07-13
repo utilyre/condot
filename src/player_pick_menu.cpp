@@ -4,8 +4,8 @@
 #include <state.hpp>
 #include <menu.hpp>
 
-static const int MENU_WIDTH = 1000;
-static const int MENU_HEIGHT = 1000;
+static const int MENU_WIDTH = 1600;
+static const int MENU_HEIGHT = 900;
 
 PlayerPickMenu::PlayerPickMenu(State* state)
 : m_State(state)
@@ -37,5 +37,5 @@ void PlayerPickMenu::Render(const AssetManager& assets) const
     MENU_HEIGHT
   };
 
-  DrawRectangleRounded(menuDimensions, 0.01f, 0, WHITE);
+  DrawRectangleRounded(menuDimensions, 0.1f, 0, WHITE);
 }
