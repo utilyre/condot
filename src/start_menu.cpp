@@ -33,7 +33,7 @@ void StartMenu::Update()
 
     if (m_ButtonStart.Hovered() && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
     {
-      // TODO: signal game to start
+      m_State->Set(State::INITIATING_BATTLE);
     }
     if (m_ButtonExit.Hovered() && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
     {
