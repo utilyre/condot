@@ -1,3 +1,4 @@
+#include <cstddef>
 #include <raylib.h>
 
 #include <asset_manager.hpp>
@@ -20,7 +21,7 @@ void Player::Update()
 {
   if (m_State->Get() == State::PLAYING_CARD) {
     if(PlayCard()){
-      m_State->Set(State::ROTATING_TURN);
+     // m_State->Set(State::ROTATING_TURN);
     }
   }
 }
@@ -152,7 +153,7 @@ void Player::RenderCards(const AssetManager& assets, Vector2 cordinate, float ro
   }
 }
 
-bool Player::PlayCard(std::vector<Player>& player){
+bool Player::PlayCard(){
   if (m_Position == Position::BOTTOM)
   {
     size_t index = 0;
@@ -166,7 +167,7 @@ bool Player::PlayCard(std::vector<Player>& player){
          m_Cards.size() - 1 == index )) && 
           IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
         {
-          PickCard(index,player);
+          PickCard(index);
           return true;
         }
       else if (CheckCollisionPointRec(GetMousePosition(),(Rectangle){420, 950, 70, 50}) &&
@@ -183,7 +184,7 @@ int Player::GetAge() const {
   return m_Age;
 }
 
-void Player::PickCard(const size_t& index , std::vector<Player>& player){
+void Player::PickCard(const size_t& index){
           auto card = m_Cards[index].GetType();
           if (card == Card::MERCENARY_1) {
             m_Cards.erase(m_Cards.begin() + index);
@@ -223,7 +224,7 @@ void Player::PickCard(const size_t& index , std::vector<Player>& player){
           // TODO : does something with gameflow
           else if (card == Card::BISHOP) {
             m_Cards.erase(m_Cards.begin() + index);
-            // TODO : Bishop();
+            m_State->Set(State::BISHOP);
           }
           
           else if (card == Card::DRUMMER) {
@@ -237,10 +238,29 @@ void Player::PickCard(const size_t& index , std::vector<Player>& player){
           }
           
           else if (card == Card::SCARECROW) {
-            m_Cards.erase(m_Cards.begin() + index);
-            //TODO : Scarecrow();
+            m_State->Set(State::SCARECROW);
+            while(m_State->Get() == State::SCARECROW){
+            size_t Idx{0};
+              for(auto it = m_Row.rbegin(); it != m_Row.rend(); ++it)
+              {
+                Rectangle LowerLayer = {540 + (float) 50 * Idx , 830 , 50  , 50};
+                Rectangle UpperLayer = {540 + (float) 50 * Idx , 830 , 120 , 50};
+                BeginDrawing();
+                EndDrawing();
+                if((CheckCollisionPointRec(GetMousePosition(), LowerLayer) ||
+                   (CheckCollisionPointRec(GetMousePosition(), UpperLayer) &&
+                   m_Cards.size() - 1 == Idx )) && 
+                  IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
+                {
+                  m_Row.erase(m_Row.begin() + Idx);
+                  Add(Idx);
+                  m_Cards.erase(m_Cards.begin() + index);
+                  m_State->Set(State::ROTATING_TURN);
+                }
+                Idx++;
+              }
+            }
           }
-          
           else if (card == Card::SPRING) {
             m_Cards.erase(m_Cards.begin() + index);
             //TODO : Set(Season::SPRING);
@@ -279,3 +299,39 @@ bool Player::IsPassed(){
 const Position& Player::GetPosition() const{
   return m_Position;
 }
+
+std::vector<Card>&  Player::GetCards(){
+  return m_Cards;
+}
+
+void Player::Add(const size_t& index){
+  size_t power = m_Row[index].GetPower();
+  if (power == 1) {
+    m_Cards.push_back(Card::MERCENARY_1);
+  }
+
+  else if (power == 2) {
+    m_Cards.push_back(Card::MERCENARY_2);
+  }
+
+  else if (power == 3) {
+    m_Cards.push_back(Card::MERCENARY_3);
+  }
+   
+  else if (power == 4) {
+    m_Cards.push_back(Card::MERCENARY_4);
+  }
+  
+  else if (power == 5) {
+    m_Cards.push_back(Card::MERCENARY_5);
+  }
+  
+  else if (power == 6) {
+    m_Cards.push_back(Card::MERCENARY_6);
+  }
+  
+  else if (power == 10) {
+    m_Cards.push_back(Card::MERCENARY_10);
+ }
+}
+      

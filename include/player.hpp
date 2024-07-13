@@ -31,12 +31,14 @@ public:
   bool IsPassed();
   void SetPosition(const Position& position);
   const Position& GetPosition() const;
+  std::vector<Card>& GetCards();
+  void PickCard(const size_t& index);
 private:
-  bool PlayCard(std::vector<Player>& Player);
+  bool PlayCard();
   void RenderCards(const AssetManager& assets, Vector2 cordinate, float rotation) const;
   void RenderRows(const AssetManager& assets, Vector2 cordinate, float rotation) const;
-  void PickCard(const size_t& index , std::vector<Player>& player);
   void Pass();
+  void Add(const size_t& index);
 private:
   State* m_State;
   std::string m_Name;

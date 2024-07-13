@@ -48,6 +48,7 @@ void Game::Update()
   for (Player& p : m_Players)
   {
     p.Update();
+    
     if (m_State.Get() == State::ROTATING_TURN)
     {
       RotateTurn();

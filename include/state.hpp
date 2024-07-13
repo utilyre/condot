@@ -1,5 +1,6 @@
 #pragma once
 
+#include "card.hpp"
 #include <iostream>
 
 class State
@@ -12,8 +13,9 @@ public:
     PLACING_FAVOR_MARKER,
     PLAYING_CARD,
     ROTATING_TURN,
+    BISHOP,
+    SCARECROW
   };
-
 public:
   State();
 

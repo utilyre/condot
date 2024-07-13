@@ -52,6 +52,8 @@ std::ostream& operator<<(std::ostream& out, State::Variant v)
   case State::ROTATING_TURN:
     out << "Rotating Turn";
     break;
+  case State::BISHOP:
+    out << "Bishop Played";
   }
 
   return out;
