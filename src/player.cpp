@@ -35,6 +35,11 @@ void Player::AddCard(Card card)
 
 void Player::Render(const AssetManager& assets) const
 {
+  if (m_State->Get() == State::MENU)
+  {
+    return;
+  }
+
   float width = GetScreenWidth();
   float height = GetScreenHeight();
 

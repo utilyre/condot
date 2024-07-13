@@ -54,6 +54,11 @@ Map::Map(State* state)
 
 void Map::Update()
 {
+  if (m_State->Get() == State::MENU)
+  {
+    return;
+  }
+
   int width = GetScreenWidth();
   int height = GetScreenHeight();
 
@@ -99,6 +104,11 @@ void Map::Update()
 
 void Map::Render(const AssetManager& assets) const
 {
+  if (m_State->Get() == State::MENU)
+  {
+    return;
+  }
+
   int width = GetScreenWidth();
   int height = GetScreenHeight();
 

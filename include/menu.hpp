@@ -4,6 +4,7 @@
 #include <raylib.h>
 
 #include <asset_manager.hpp>
+#include <state.hpp>
 #include <entity.hpp>
 
 class MenuButton : public Entity
@@ -12,7 +13,7 @@ public:
   MenuButton(const std::string& text, float fontSize, Rectangle dimensions);
 
   void Update() override;
-  void Render(const AssetManager&) const override;
+  void Render(const AssetManager& assets) const override;
 
   bool Hovered() const;
 
@@ -21,4 +22,18 @@ private:
   float m_FontSize;
   Rectangle m_Dimensions;
   bool m_Hovered;
+};
+
+class StartMenu : public Entity
+{
+public:
+  StartMenu(State* state);
+
+  void Update() override;
+  void Render(const AssetManager& assets) const override;
+
+private:
+  State* m_State;
+  MenuButton m_ButtonStart;
+  MenuButton m_ButtonExit;
 };

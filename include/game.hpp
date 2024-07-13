@@ -35,9 +35,8 @@ private:
   mutable std::random_device m_RandDev;
   AssetManager m_Assets;
   State m_State;
+  StartMenu m_StartMenu;
   Map m_Map;
   std::vector<Player> m_Players;
   std::vector<Card> m_Deck;
-  MenuButton m_ButtonStart;
-  MenuButton m_ButtonExit;
 };

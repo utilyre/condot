@@ -1,4 +1,3 @@
-#include <iostream>
 #include <algorithm>
 #include <climits>
 #include <raylib.h>
@@ -9,24 +8,10 @@
 #include <mercenary.hpp>
 #include <menu.hpp>
 
-static const int BUTTON_WIDTH = 800;
-static const int BUTTON_HEIGHT = 100;
-
 Game::Game()
 : m_Stopped(false),
-  m_Map(&m_State),
-  m_ButtonStart("Start", 50, Rectangle{
-    (GetScreenWidth() - BUTTON_WIDTH) / 2.0f,
-    (GetScreenHeight() - BUTTON_HEIGHT) / 2.0f - 60,
-    BUTTON_WIDTH,
-    BUTTON_HEIGHT
-  }),
-  m_ButtonExit("Exit", 50, Rectangle{
-    (GetScreenWidth() - BUTTON_WIDTH) / 2.0f,
-    (GetScreenHeight() - BUTTON_HEIGHT) / 2.0f + 60,
-    BUTTON_WIDTH,
-    BUTTON_HEIGHT
-  })
+  m_StartMenu(&m_State),
+  m_Map(&m_State)
 {
 }
 
@@ -69,53 +54,28 @@ void Game::Update()
     m_State.Set(State::PLACING_BATTLE_MARKER);
   }
 
-  switch (m_State.Get())
+  m_StartMenu.Update();
+
+  for (Player& p : m_Players)
   {
-  case State::MENU:
-    m_ButtonStart.Update();
-    m_ButtonExit.Update();
-
-    if (m_ButtonStart.Hovered() && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
-    {
-      std::clog << "INFO: clicked start\n";
-    }
-    if (m_ButtonExit.Hovered() && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
-    {
-      Stop();
-    }
-
-    break;
-
-  default:
-    for (Player& p : m_Players)
-    {
-      p.Update();
-    }
-    m_Map.Update();
-    break;
+    p.Update();
   }
+
+  m_Map.Update();
 }
 
 void Game::Render() const
 {
   DrawTexture(m_Assets.Background, 0, 0, WHITE);
 
-  switch (m_State.Get())
+  m_StartMenu.Render(m_Assets);
+
+  for (const Player& p : m_Players)
   {
-  case State::MENU:
-    m_ButtonStart.Render(m_Assets);
-    m_ButtonExit.Render(m_Assets);
-    break;
-
-  default:
-    for (const Player& p : m_Players)
-    {
-      p.Render(m_Assets);
-    }
-
-    m_Map.Render(m_Assets);
-    break;
+    p.Render(m_Assets);
   }
+
+  m_Map.Render(m_Assets);
 
   DrawText(TextFormat("(%d, %d)", GetMouseX(), GetMouseY()), 10, 10, 30, BLACK);
 }
