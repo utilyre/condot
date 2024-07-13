@@ -69,23 +69,30 @@ void Game::Update()
     m_State.Set(State::PLACING_BATTLE_MARKER);
   }
 
-  for (Player& p : m_Players)
+  switch (m_State.Get())
   {
-    p.Update();
-  }
+  case State::MENU:
+    m_ButtonStart.Update();
+    m_ButtonExit.Update();
 
-  m_Map.Update();
+    if (m_ButtonStart.Hovered() && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+    {
+      std::clog << "INFO: clicked start\n";
+    }
+    if (m_ButtonExit.Hovered() && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+    {
+      Stop();
+    }
 
-  m_ButtonStart.Update();
-  m_ButtonExit.Update();
+    break;
 
-  if (m_ButtonStart.Hovered() && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
-  {
-    std::clog << "INFO: clicked start\n";
-  }
-  if (m_ButtonExit.Hovered() && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
-  {
-    Stop();
+  default:
+    for (Player& p : m_Players)
+    {
+      p.Update();
+    }
+    m_Map.Update();
+    break;
   }
 }
 
@@ -106,7 +113,7 @@ void Game::Render() const
       p.Render(m_Assets);
     }
 
-    //m_Map.Render(m_Assets);
+    m_Map.Render(m_Assets);
     break;
   }
 
