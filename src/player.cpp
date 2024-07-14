@@ -234,35 +234,12 @@ void Player::PickCard(const size_t& index){
           
           else if (card == Card::HEROINE) {
             m_Cards.erase(m_Cards.begin() + index);
-            if (!m_s.count("HEROINE")) m_s["HEROINE"] = 1;
-            else m_s["HEROINE"]++;
-            std::cout << m_s["HEROINE"];
+            // TODO int Heroine++;
           }
           
           else if (card == Card::SCARECROW) {
-            if(!m_Row.empty()) m_State->Set(State::SCARECROW);
-            while(m_State->Get() == State::SCARECROW){
-              size_t Idx{0};
-              for(auto it = m_Row.rbegin(); it != m_Row.rend(); ++it)
-              {
-                Rectangle LowerLayer = {540 + (float) 50 * Idx , 830 , 50  , 50};
-                Rectangle UpperLayer = {540 + (float) 50 * Idx , 830 , 120 , 50};
-                BeginDrawing();
-                EndDrawing();
-                if((CheckCollisionPointRec(GetMousePosition(), LowerLayer) ||
-                   (CheckCollisionPointRec(GetMousePosition(), UpperLayer) &&
-                   m_Cards.size() - 1 == Idx )) && 
-                  IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
-                {
-                  m_Row.erase(m_Row.begin() + Idx);
-                  Add(Idx);
-                  m_Cards.erase(m_Cards.begin() + index);
-                  m_State->Set(State::ROTATING_TURN);
-                }
-                std::cout << Idx << " " << m_s["HEROINE"] << '\n';
-                Idx++;
-              }
-            }
+            m_Cards.erase((m_Cards.begin() + index));
+            //TODO : SCARECROW();
           }
           else if (card == Card::SPRING) {
             m_Cards.erase(m_Cards.begin() + index);
