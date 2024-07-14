@@ -37,6 +37,8 @@ public:
   void Update() override;
   void Render(const AssetManager& assets) const override;
 
+  bool IsHovered() const;
+  bool IsFocused() const;
   std::string GetText() const;
 
 private:
@@ -45,6 +47,7 @@ private:
   float m_FontSize;
   float m_Padding;
   Rectangle m_Dimensions;
+  bool m_Hovered;
   bool m_Focused;
 };
 

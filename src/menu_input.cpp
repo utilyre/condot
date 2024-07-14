@@ -14,18 +14,35 @@ MenuInput::MenuInput(
   m_FontSize(fontSize),
   m_Padding(padding),
   m_Dimensions(dimensions),
+  m_Hovered(false),
   m_Focused(false)
 {
 }
 
 void MenuInput::Update()
 {
-  bool mouseCollides = CheckCollisionPointRec(GetMousePosition(), m_Dimensions);
+  if (CheckCollisionPointRec(GetMousePosition(), m_Dimensions))
+  {
+    if (!m_Hovered)
+    {
+      SetMouseCursor(MOUSE_CURSOR_IBEAM);
+    }
 
-  SetMouseCursor(mouseCollides ? MOUSE_CURSOR_IBEAM : MOUSE_CURSOR_DEFAULT);
+    m_Hovered = true;
+  }
+  else
+  {
+    if (m_Hovered)
+    {
+      SetMouseCursor(MOUSE_CURSOR_DEFAULT);
+    }
+
+    m_Hovered = false;
+  }
+
   if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
   {
-    m_Focused = mouseCollides;
+    m_Focused = m_Hovered;
   }
 
   if (m_Focused)
@@ -68,6 +85,16 @@ void MenuInput::Render(const AssetManager& assets) const
     1,
     m_Text.empty() ? GRAY : BLACK
   );
+}
+
+bool MenuInput::IsHovered() const
+{
+  return m_Hovered;
+}
+
+bool MenuInput::IsFocused() const
+{
+  return m_Focused;
 }
 
 std::string MenuInput::GetText() const
