@@ -39,33 +39,33 @@ void Player::Render(const AssetManager& assets) const
   int length = 3 * height / 4;
   int thickness = 200;
   
-  Vector2 bottom{(GetScreenWidth() - float(570)) / 2  , GetScreenHeight() - float(200) };
-  Vector2 left  { 200  , (GetScreenHeight() - float(570)) / 2 };
-  Vector2 top   {(GetScreenWidth() + float(570)) / 2 , 200};
-  Vector2 right {GetScreenWidth() - float(200) , (GetScreenHeight() + float(570)) / 2 };
+  Vector2 BOTTOM{(GetScreenWidth() - float(570)) / 2  , GetScreenHeight() - float(200) };
+  Vector2 LEFT  { 200  , (GetScreenHeight() - float(570)) / 2 };
+  Vector2 TOP   {(GetScreenWidth() + float(570)) / 2 , 200};
+  Vector2 RIGHT {GetScreenWidth() - float(200) , (GetScreenHeight() + float(570)) / 2 };
 
   switch (m_Position)
   {
   case Position::TOP:
     DrawRectangle((width - length) / 2, 0, length, thickness, RED);
-    RenderRows( assets , Vector2{1210 , 250} , 180);
-    RenderCards( assets , top ,180);
+    RenderRows ( assets , Vector2{TOP.x + 50, TOP.y + 50} , 180);
+    RenderCards( assets , TOP ,180);
     break;
   case Position::RIGHT:
     DrawRectangle(width - thickness, (height - length) / 2, thickness, length, GREEN);
-    RenderRows(assets,Vector2{ 1670 , 800}, 270);
-    RenderCards(assets, right, 270);
+    RenderRows (assets,Vector2{ RIGHT.x - 50, RIGHT.y + 50}, 270);
+    RenderCards(assets, RIGHT , 270);
     break;
   case Position::BOTTOM:
     DrawRectangle((width - length) / 2, height - thickness, length, thickness, BLUE);
     DrawText("pass", 420, 950, 30, BLACK);
-    RenderRows(assets,Vector2{540 , 830}, 0);
-    RenderCards(assets, bottom, 0);
+    RenderRows (assets,Vector2{ BOTTOM.x - 50, BOTTOM.y - 50}, 0);
+    RenderCards(assets, BOTTOM, 0);
     break;
   case Position::LEFT:
     DrawRectangle(0, (height - length) / 2, thickness, length, GRAY);
-    RenderRows(assets,Vector2{250 , 125}, 90);
-    RenderCards(assets, left, 90);
+    RenderRows (assets,Vector2{ LEFT.x + 50, LEFT.y - 50}, 90);
+    RenderCards(assets, LEFT, 90);
     break;
   }
 }
