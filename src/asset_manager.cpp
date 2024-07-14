@@ -9,22 +9,22 @@ AssetManager::AssetManager()
   Map = LoadTextureFromImage(map);
   UnloadImage(map);
 
-  Mercenary1 = LoadTexture("assets/mercenary/1.png");
-  Mercenary2 = LoadTexture("assets/mercenary/2.png");
-  Mercenary3 = LoadTexture("assets/mercenary/3.png");
-  Mercenary4 = LoadTexture("assets/mercenary/4.png");
-  Mercenary5 = LoadTexture("assets/mercenary/5.png");
-  Mercenary6 = LoadTexture("assets/mercenary/6.png");
-  Mercenary10 = LoadTexture("assets/mercenary/10.png");
-
-  Bishop = LoadTexture("assets/special/bishop.png");
-  Drummer = LoadTexture("assets/special/drummer.png");
-  Heroine = LoadTexture("assets/special/heroine.png");
-  Scarecrow = LoadTexture("assets/special/scarecrow.png");
-  Spring = LoadTexture("assets/special/spring.png");
-  Spy = LoadTexture("assets/special/spy.png");
-  Turncoat = LoadTexture("assets/special/turncoat.png");
-  Winter = LoadTexture("assets/special/winter.png");
+  Back = LoadTexture("assets/cards/back.png");
+  Mercenary1 = LoadTexture("assets/cards/1.png");
+  Mercenary2 = LoadTexture("assets/cards/2.png");
+  Mercenary3 = LoadTexture("assets/cards/3.png");
+  Mercenary4 = LoadTexture("assets/cards/4.png");
+  Mercenary5 = LoadTexture("assets/cards/5.png");
+  Mercenary6 = LoadTexture("assets/cards/6.png");
+  Mercenary10 = LoadTexture("assets/cards/10.png");
+  Bishop = LoadTexture("assets/cards/bishop.png");
+  Drummer = LoadTexture("assets/cards/drummer.png");
+  Heroine = LoadTexture("assets/cards/heroine.png");
+  Scarecrow = LoadTexture("assets/cards/scarecrow.png");
+  Spring = LoadTexture("assets/cards/spring.png");
+  Spy = LoadTexture("assets/cards/spy.png");
+  Turncoat = LoadTexture("assets/cards/turncoat.png");
+  Winter = LoadTexture("assets/cards/winter.png");
 }
 
 AssetManager::~AssetManager()
@@ -39,7 +39,6 @@ AssetManager::~AssetManager()
   UnloadTexture(Heroine);
   UnloadTexture(Drummer);
   UnloadTexture(Bishop);
-
   UnloadTexture(Mercenary10);
   UnloadTexture(Mercenary6);
   UnloadTexture(Mercenary5);
@@ -47,6 +46,7 @@ AssetManager::~AssetManager()
   UnloadTexture(Mercenary3);
   UnloadTexture(Mercenary2);
   UnloadTexture(Mercenary1);
+  UnloadTexture(Back);
 
   UnloadTexture(Map);
 }

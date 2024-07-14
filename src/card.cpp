@@ -47,6 +47,6 @@ Texture2D Card::GetAsset(const AssetManager& assets) const
     return assets.Winter;
 
   default:
-    return assets.Mercenary1;
+    return assets.Back;
   }
 }
