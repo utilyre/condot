@@ -9,8 +9,22 @@ static const int MENU_HEIGHT = 900;
 
 PlayerPickMenu::PlayerPickMenu(State* state)
 : m_State(state),
-  m_PlayerCount(3)
+  m_Padding(50),
+  m_Dimensions({
+    (GetScreenWidth() - MENU_WIDTH) / 2.0f,
+    (GetScreenHeight() - MENU_HEIGHT) / 2.0f,
+    MENU_WIDTH,
+    MENU_HEIGHT
+  })
 {
+  for (size_t i = 0; i < 3; i++)
+  {
+    size_t count = m_Rows.size();
+    m_Rows.emplace_back(
+      MenuInput("Name", 40, 20, Rectangle{m_Dimensions.x + m_Padding, m_Dimensions.y + m_Padding + 120 * (count + 1), 600, 100}),
+      MenuInput("Age", 40, 20, Rectangle{m_Dimensions.x + m_Padding + 700, m_Dimensions.y + m_Padding + 120 * (count + 1), 200, 100})
+    );
+  }
 }
 
 void PlayerPickMenu::Update()
@@ -20,13 +34,23 @@ void PlayerPickMenu::Update()
     return;
   }
 
-  if (IsKeyPressed(KEY_UP) && m_PlayerCount < 4)
+  if (IsKeyPressed(KEY_UP) && m_Rows.size() < 4)
   {
-    m_PlayerCount++;
+    size_t count = m_Rows.size();
+    m_Rows.emplace_back(
+      MenuInput("Name", 40, 20, Rectangle{m_Dimensions.x + m_Padding, m_Dimensions.y + m_Padding + 120 * (count + 1), 600, 100}),
+      MenuInput("Age", 40, 20, Rectangle{m_Dimensions.x + m_Padding + 700, m_Dimensions.y + m_Padding + 120 * (count + 1), 200, 100})
+    );
   }
-  if (IsKeyPressed(KEY_DOWN) && m_PlayerCount > 3)
+  if (IsKeyPressed(KEY_DOWN) && m_Rows.size() > 3)
   {
-    m_PlayerCount--;
+    m_Rows.pop_back();
+  }
+
+  for (Row& r : m_Rows)
+  {
+    r.Name.Update();
+    r.Age.Update();
   }
 }
 
@@ -37,25 +61,20 @@ void PlayerPickMenu::Render(const AssetManager& assets) const
     return;
   }
 
-  int width = GetScreenWidth();
-  int height = GetScreenHeight();
-
-  int padding = 50;
-  Rectangle menuDimensions = {
-    (width - MENU_WIDTH) / 2.0f,
-    (height - MENU_HEIGHT) / 2.0f,
-    MENU_WIDTH,
-    MENU_HEIGHT
-  };
-
-  DrawRectangleRounded(menuDimensions, 0.1f, 0, WHITE);
+  DrawRectangleRounded(m_Dimensions, 0.1f, 0, WHITE);
 
   DrawTextEx(
     assets.PrimaryFont,
-    TextFormat("%d players (use <up> and <down> keys to adjust)", m_PlayerCount),
-    Vector2{menuDimensions.x + padding, menuDimensions.y + padding},
+    TextFormat("%d players (use <up> and <down> keys to adjust)", m_Rows.size()),
+    Vector2{m_Dimensions.x + m_Padding, m_Dimensions.y + m_Padding},
     50,
     1,
     BLACK
   );
+
+  for (const Row& r : m_Rows)
+  {
+    r.Name.Render(assets);
+    r.Age.Render(assets);
+  }
 }

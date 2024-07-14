@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 #include <raylib.h>
 
 #include <asset_manager.hpp>
@@ -74,6 +75,14 @@ public:
   void Render(const AssetManager& assets) const override;
 
 private:
+  struct Row {
+    MenuInput Name;
+    MenuInput Age;
+  };
+
+private:
   State* m_State;
-  size_t m_PlayerCount;
+  float m_Padding;
+  Rectangle m_Dimensions;
+  std::vector<Row> m_Rows;
 };
