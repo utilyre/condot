@@ -9,7 +9,6 @@ struct AssetManager
 
   Texture2D Map;
 
-  Texture2D Back;
   Texture2D Mercenary1;
   Texture2D Mercenary2;
   Texture2D Mercenary3;
@@ -17,6 +16,7 @@ struct AssetManager
   Texture2D Mercenary5;
   Texture2D Mercenary6;
   Texture2D Mercenary10;
+
   Texture2D Bishop; // Rish Sefid
   Texture2D Drummer; // Tabl Zan
   Texture2D Heroine; // Shah Dokht
