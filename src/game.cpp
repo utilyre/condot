@@ -1,17 +1,21 @@
-#include "state.hpp"
 #include <iostream>
 #include <algorithm>
 #include <climits>
 #include <raylib.h>
 
 #include <game.hpp>
+#include <state.hpp>
 #include <player.hpp>
 #include <card.hpp>
 #include <mercenary.hpp>
-#include <system_error>
+#include <main_menu.hpp>
+#include <customization_menu.hpp>
 
 Game::Game()
-: m_Map(&m_State)
+: m_Stopped(false),
+  m_MainMenu(&m_State),
+  m_CustomizationMenu(&m_State),
+  m_Map(&m_State)
 {
 }
 
@@ -28,11 +32,21 @@ void Game::Start()
   // NOTE: do NOT modify
   while (!WindowShouldClose())
   {
+    if (m_Stopped)
+    {
+      break;
+    }
+
     Update();
     BeginDrawing();
     Render();
     EndDrawing();
   }
+}
+
+void Game::Stop()
+{
+  m_Stopped = true;
 }
 
 void Game::Update()
@@ -44,6 +58,9 @@ void Game::Update()
     // TODO: PLACE BATTLE MARKER
     m_State.Set(State::PLAYING_CARD);
     }
+
+  m_MainMenu.Update();
+  m_CustomizationMenu.Update();
 
   for (Player& p : m_Players)
   {
@@ -62,14 +79,17 @@ void Game::Update()
 
 void Game::Render() const
 {
-  ClearBackground(RAYWHITE);
+  DrawTexture(m_Assets.Background, 0, 0, WHITE);
+
+  m_MainMenu.Render(m_Assets);
+  m_CustomizationMenu.Render(m_Assets);
 
   for (const Player& p : m_Players)
   {
     p.Render(m_Assets);
   }
 
-  //m_Map.Render(m_Assets);
+  m_Map.Render(m_Assets);
 
   DrawText(TextFormat("(%d, %d)", GetMouseX(), GetMouseY()), 10, 10, 30, BLACK);
 }

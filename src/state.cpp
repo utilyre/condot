@@ -3,7 +3,7 @@
 #include <state.hpp>
 
 State::State()
-: m_Curr(INITIATING_BATTLE), // TODO: should be MENU
+: m_Curr(START_MENU),
   m_Prev(m_Curr)
 {
 }
@@ -34,7 +34,7 @@ std::ostream& operator<<(std::ostream& out, State::Variant v)
 {
   switch (v)
   {
-  case State::MENU:
+  case State::START_MENU:
     out << "Menu";
     break;
   case State::INITIATING_BATTLE:
