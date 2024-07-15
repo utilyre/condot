@@ -6,6 +6,7 @@
 
 static const float BUTTON_FONT_SIZE = 50.0f;
 static const float BUTTON_ROUNDNESS = 0.5f;
+static const Color BUTTON_HOVER_COLOR = {25, 25, 25, 255};
 
 Button::Button(const std::string& text, Rectangle dimensions)
 : m_Text(text),
@@ -25,7 +26,7 @@ void Button::Render(const AssetManager& assets) const
     m_Dimensions,
     BUTTON_ROUNDNESS,
     0,
-    m_Hovered ? Color{25, 25, 25, 255} : BLACK
+    m_Hovered ? BUTTON_HOVER_COLOR : BLACK
   );
 
   const float textWidth = 0.3f * BUTTON_FONT_SIZE * m_Text.size();
