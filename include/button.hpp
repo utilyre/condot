@@ -9,7 +9,7 @@
 class Button : public Entity
 {
 public:
-  Button(const std::string& text, float fontSize, Rectangle dimensions);
+  Button(const std::string& text, Rectangle dimensions);
 
   void Update() override;
   void Render(const AssetManager& assets) const override;
@@ -19,7 +19,6 @@ public:
 
 private:
   std::string m_Text;
-  float m_FontSize;
   Rectangle m_Dimensions;
 
   bool m_Hovered;

@@ -22,14 +22,14 @@ PlayerPickMenu::PlayerPickMenu(State* state)
   {
     size_t count = m_Rows.size();
     m_Rows.emplace_back(
-      Input("Name", 40, Rectangle{
+      Input("Name", Rectangle{
         m_Dimensions.x + m_Padding,
         m_Dimensions.y + m_Padding + 120 * (count + 1),
         600,
         100
       }),
 
-      Input("Age", 40, Rectangle{
+      Input("Age", Rectangle{
         m_Dimensions.x + m_Padding + 700,
         m_Dimensions.y + m_Padding + 120 * (count + 1),
         200,
@@ -50,14 +50,14 @@ void PlayerPickMenu::Update()
   {
     size_t count = m_Rows.size();
     m_Rows.emplace_back(
-      Input("Name", 40, Rectangle{
+      Input("Name", Rectangle{
         m_Dimensions.x + m_Padding,
         m_Dimensions.y + m_Padding + 120 * (count + 1),
         600,
         100
       }),
 
-      Input("Age", 40, Rectangle{
+      Input("Age", Rectangle{
         m_Dimensions.x + m_Padding + 700,
         m_Dimensions.y + m_Padding + 120 * (count + 1),
         200,

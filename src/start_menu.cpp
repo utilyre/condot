@@ -9,13 +9,13 @@ static const int BUTTON_HEIGHT = 100;
 
 StartMenu::StartMenu(State* state)
 : m_State(state),
-  m_ButtonStart("Start", 50, Rectangle{
+  m_ButtonStart("Start", Rectangle{
     (GetScreenWidth() - BUTTON_WIDTH) / 2.0f,
     (GetScreenHeight() - BUTTON_HEIGHT) / 2.0f - 60,
     BUTTON_WIDTH,
     BUTTON_HEIGHT
   }),
-  m_ButtonExit("Exit", 50, Rectangle{
+  m_ButtonExit("Exit", Rectangle{
     (GetScreenWidth() - BUTTON_WIDTH) / 2.0f,
     (GetScreenHeight() - BUTTON_HEIGHT) / 2.0f + 60,
     BUTTON_WIDTH,

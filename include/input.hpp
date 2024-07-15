@@ -9,7 +9,7 @@
 class Input : public Entity
 {
 public:
-  Input(const std::string& placeHolder, float fontSize, Rectangle dimensions);
+  Input(const std::string& placeHolder, Rectangle dimensions);
 
   void Update() override;
   void Render(const AssetManager& assets) const override;
@@ -21,7 +21,6 @@ public:
 
 private:
   std::string m_PlaceHolder;
-  float m_FontSize;
   Rectangle m_Dimensions;
 
   std::string m_Text;

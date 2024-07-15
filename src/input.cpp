@@ -4,17 +4,13 @@
 #include <asset_manager.hpp>
 #include <input.hpp>
 
+static const float INPUT_FONT_SIZE = 40.0f;
 static const float INPUT_ROUNDNESS = 0.5f;
 static const float INPUT_BORDER_THICKNESS = 5.0f;
 static const float INPUT_PADDING = 20.0f;
 
-Input::Input(
-  const std::string& placeHolder,
-  float fontSize,
-  Rectangle dimensions
-)
+Input::Input(const std::string& placeHolder, Rectangle dimensions)
 : m_PlaceHolder(placeHolder),
-  m_FontSize(fontSize),
   m_Dimensions(dimensions),
   m_Hovered(false),
   m_Focused(false)
@@ -76,9 +72,9 @@ void Input::Render(const AssetManager& assets) const
     m_Text.empty() ? m_PlaceHolder.c_str() : m_Text.c_str(),
     Vector2{
       m_Dimensions.x + INPUT_PADDING,
-      m_Dimensions.y + 0.5f * (m_Dimensions.height - m_FontSize),
+      m_Dimensions.y + 0.5f * (m_Dimensions.height - INPUT_FONT_SIZE),
     },
-    m_FontSize,
+    INPUT_FONT_SIZE,
     1,
     m_Text.empty() ? GRAY : BLACK
   );
