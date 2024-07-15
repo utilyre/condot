@@ -4,6 +4,8 @@
 #include <asset_manager.hpp>
 #include <button.hpp>
 
+static const float BUTTON_ROUNDNESS = 0.5f;
+
 Button::Button(
   const std::string& text,
   float fontSize,
@@ -23,25 +25,24 @@ void Button::Update()
 
 void Button::Render(const AssetManager& assets) const
 {
-  Color background = BLACK;
-  Color foreground = WHITE;
+  DrawRectangleRounded(
+    m_Dimensions,
+    BUTTON_ROUNDNESS,
+    0,
+    m_Hovered ? Color{25, 25, 25, 255} : BLACK
+  );
 
-  if (m_Hovered)
-  {
-    background = Color{25, 25, 25, 255};
-  }
-
-  DrawRectangleRounded(m_Dimensions, 0.5f, 0, background);
+  const float textWidth = 0.5f * m_FontSize * m_Text.size();
   DrawTextEx(
     assets.PrimaryFont,
     m_Text.c_str(),
     Vector2{
-      m_Dimensions.x + 0.5f * m_Dimensions.width - 0.25f * m_FontSize * m_Text.size(),
+      m_Dimensions.x + 0.5f * (m_Dimensions.width - textWidth),
       m_Dimensions.y + 0.5f * (m_Dimensions.height - m_FontSize),
     },
     m_FontSize,
     1,
-    foreground
+    WHITE
   );
 }
 

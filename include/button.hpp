@@ -20,5 +20,6 @@ private:
   std::string m_Text;
   float m_FontSize;
   Rectangle m_Dimensions;
+
   bool m_Hovered;
 };
