@@ -9,20 +9,6 @@
 #include <button.hpp>
 #include <input.hpp>
 
-class StartMenu : public Entity
-{
-public:
-  StartMenu(State* state);
-
-  void Update() override;
-  void Render(const AssetManager& assets) const override;
-
-private:
-  State* m_State;
-  Button m_ButtonStart;
-  Button m_ButtonExit;
-};
-
 class PlayerPickMenu : public Entity
 {
 public:

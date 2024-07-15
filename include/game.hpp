@@ -9,6 +9,7 @@
 #include <player.hpp>
 #include <card.hpp>
 #include <menu.hpp>
+#include <main_menu.hpp>
 
 class Game
 {
@@ -35,7 +36,7 @@ private:
   mutable std::random_device m_RandDev;
   AssetManager m_Assets;
   State m_State;
-  StartMenu m_StartMenu;
+  MainMenu m_MainMenu;
   PlayerPickMenu m_PlayerPickMenu;
   Map m_Map;
   std::vector<Player> m_Players;

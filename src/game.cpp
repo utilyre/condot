@@ -10,7 +10,7 @@
 
 Game::Game()
 : m_Stopped(false),
-  m_StartMenu(&m_State),
+  m_MainMenu(&m_State),
   m_PlayerPickMenu(&m_State),
   m_Map(&m_State)
 {
@@ -55,7 +55,7 @@ void Game::Update()
     m_State.Set(State::PLACING_BATTLE_MARKER);
   }
 
-  m_StartMenu.Update();
+  m_MainMenu.Update();
   m_PlayerPickMenu.Update();
 
   for (Player& p : m_Players)
@@ -70,7 +70,7 @@ void Game::Render() const
 {
   DrawTexture(m_Assets.Background, 0, 0, WHITE);
 
-  m_StartMenu.Render(m_Assets);
+  m_MainMenu.Render(m_Assets);
   m_PlayerPickMenu.Render(m_Assets);
 
   for (const Player& p : m_Players)
