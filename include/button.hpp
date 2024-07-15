@@ -15,6 +15,7 @@ public:
   void Render(const AssetManager& assets) const override;
 
   bool Hovered() const;
+  bool Pressed() const;
 
 private:
   std::string m_Text;

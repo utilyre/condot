@@ -31,11 +31,11 @@ void StartMenu::Update()
     m_ButtonStart.Update();
     m_ButtonExit.Update();
 
-    if (m_ButtonStart.Hovered() && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+    if (m_ButtonStart.Pressed())
     {
       m_State->Set(State::PLAYER_PICK_MENU);
     }
-    if (m_ButtonExit.Hovered() && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+    if (m_ButtonExit.Pressed())
     {
       // TODO: signal game to exit
     }
