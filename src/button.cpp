@@ -28,7 +28,7 @@ void Button::Render(const AssetManager& assets) const
     m_Hovered ? Color{25, 25, 25, 255} : BLACK
   );
 
-  const float textWidth = 0.5f * BUTTON_FONT_SIZE * m_Text.size();
+  const float textWidth = 0.3f * BUTTON_FONT_SIZE * m_Text.size();
   DrawTextEx(
     assets.PrimaryFont,
     m_Text.c_str(),
