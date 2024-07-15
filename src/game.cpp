@@ -6,12 +6,13 @@
 #include <player.hpp>
 #include <card.hpp>
 #include <mercenary.hpp>
-#include <menu.hpp>
+#include <main_menu.hpp>
+#include <customization_menu.hpp>
 
 Game::Game()
 : m_Stopped(false),
   m_MainMenu(&m_State),
-  m_PlayerPickMenu(&m_State),
+  m_CustomizationMenu(&m_State),
   m_Map(&m_State)
 {
 }
@@ -56,7 +57,7 @@ void Game::Update()
   }
 
   m_MainMenu.Update();
-  m_PlayerPickMenu.Update();
+  m_CustomizationMenu.Update();
 
   for (Player& p : m_Players)
   {
@@ -71,7 +72,7 @@ void Game::Render() const
   DrawTexture(m_Assets.Background, 0, 0, WHITE);
 
   m_MainMenu.Render(m_Assets);
-  m_PlayerPickMenu.Render(m_Assets);
+  m_CustomizationMenu.Render(m_Assets);
 
   for (const Player& p : m_Players)
   {

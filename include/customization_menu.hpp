@@ -9,23 +9,23 @@
 #include <button.hpp>
 #include <input.hpp>
 
-class PlayerPickMenu : public Entity
+class CustomizationMenu : public Entity
 {
 public:
-  PlayerPickMenu(State* state);
+  CustomizationMenu(State* state);
 
   void Update() override;
   void Render(const AssetManager& assets) const override;
 
 private:
-  struct Row {
+  struct PlayerRow {
     Input Name;
     Input Age;
   };
 
 private:
   State* m_State;
-  float m_Padding;
+
   Rectangle m_Dimensions;
-  std::vector<Row> m_Rows;
+  std::vector<PlayerRow> m_PlayerRows;
 };

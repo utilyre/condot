@@ -8,8 +8,8 @@
 #include <map.hpp>
 #include <player.hpp>
 #include <card.hpp>
-#include <menu.hpp>
 #include <main_menu.hpp>
+#include <customization_menu.hpp>
 
 class Game
 {
@@ -37,7 +37,7 @@ private:
   AssetManager m_Assets;
   State m_State;
   MainMenu m_MainMenu;
-  PlayerPickMenu m_PlayerPickMenu;
+  CustomizationMenu m_CustomizationMenu;
   Map m_Map;
   std::vector<Player> m_Players;
   std::vector<Card> m_Deck;
