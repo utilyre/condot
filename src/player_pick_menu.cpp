@@ -2,6 +2,7 @@
 #include <raylib.h>
 
 #include <state.hpp>
+#include <input.hpp>
 #include <menu.hpp>
 
 static const int MENU_WIDTH = 1600;
@@ -21,8 +22,19 @@ PlayerPickMenu::PlayerPickMenu(State* state)
   {
     size_t count = m_Rows.size();
     m_Rows.emplace_back(
-      MenuInput("Name", 40, 20, Rectangle{m_Dimensions.x + m_Padding, m_Dimensions.y + m_Padding + 120 * (count + 1), 600, 100}),
-      MenuInput("Age", 40, 20, Rectangle{m_Dimensions.x + m_Padding + 700, m_Dimensions.y + m_Padding + 120 * (count + 1), 200, 100})
+      Input("Name", 40, Rectangle{
+        m_Dimensions.x + m_Padding,
+        m_Dimensions.y + m_Padding + 120 * (count + 1),
+        600,
+        100
+      }),
+
+      Input("Age", 40, Rectangle{
+        m_Dimensions.x + m_Padding + 700,
+        m_Dimensions.y + m_Padding + 120 * (count + 1),
+        200,
+        100
+      })
     );
   }
 }
@@ -38,8 +50,19 @@ void PlayerPickMenu::Update()
   {
     size_t count = m_Rows.size();
     m_Rows.emplace_back(
-      MenuInput("Name", 40, 20, Rectangle{m_Dimensions.x + m_Padding, m_Dimensions.y + m_Padding + 120 * (count + 1), 600, 100}),
-      MenuInput("Age", 40, 20, Rectangle{m_Dimensions.x + m_Padding + 700, m_Dimensions.y + m_Padding + 120 * (count + 1), 200, 100})
+      Input("Name", 40, Rectangle{
+        m_Dimensions.x + m_Padding,
+        m_Dimensions.y + m_Padding + 120 * (count + 1),
+        600,
+        100
+      }),
+
+      Input("Age", 40, Rectangle{
+        m_Dimensions.x + m_Padding + 700,
+        m_Dimensions.y + m_Padding + 120 * (count + 1),
+        200,
+        100
+      })
     );
   }
   if (IsKeyPressed(KEY_DOWN) && m_Rows.size() > 3)

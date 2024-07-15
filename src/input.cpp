@@ -2,42 +2,37 @@
 #include <raylib.h>
 
 #include <asset_manager.hpp>
-#include <menu.hpp>
+#include <input.hpp>
 
-MenuInput::MenuInput(
+static const float INPUT_ROUNDNESS = 0.5f;
+static const float INPUT_BORDER_THICKNESS = 5.0f;
+static const float INPUT_PADDING = 20.0f;
+
+Input::Input(
   const std::string& placeHolder,
   float fontSize,
-  float padding,
   Rectangle dimensions
 )
 : m_PlaceHolder(placeHolder),
   m_FontSize(fontSize),
-  m_Padding(padding),
   m_Dimensions(dimensions),
   m_Hovered(false),
   m_Focused(false)
 {
 }
 
-void MenuInput::Update()
+void Input::Update()
 {
-  if (CheckCollisionPointRec(GetMousePosition(), m_Dimensions))
-  {
-    if (!m_Hovered)
-    {
-      SetMouseCursor(MOUSE_CURSOR_IBEAM);
-    }
+  bool prevHovered = m_Hovered;
+  m_Hovered = CheckCollisionPointRec(GetMousePosition(), m_Dimensions);
 
-    m_Hovered = true;
+  if (prevHovered && !m_Hovered)
+  {
+    SetMouseCursor(MOUSE_CURSOR_DEFAULT);
   }
-  else
+  else if (!prevHovered && m_Hovered)
   {
-    if (m_Hovered)
-    {
-      SetMouseCursor(MOUSE_CURSOR_DEFAULT);
-    }
-
-    m_Hovered = false;
+    SetMouseCursor(MOUSE_CURSOR_IBEAM);
   }
 
   if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
@@ -49,7 +44,9 @@ void MenuInput::Update()
   {
     int key = GetCharPressed();
     if (key > 0)
+    {
       m_Text += key;
+    }
 
     if (
       !m_Text.empty()
@@ -64,13 +61,13 @@ void MenuInput::Update()
   }
 }
 
-void MenuInput::Render(const AssetManager& assets) const
+void Input::Render(const AssetManager& assets) const
 {
   DrawRectangleRoundedLines(
     m_Dimensions,
-    0.5f,
+    INPUT_ROUNDNESS,
     0,
-    5.0f,
+    INPUT_BORDER_THICKNESS,
     m_Focused ? RED : BLACK
   );
 
@@ -78,7 +75,7 @@ void MenuInput::Render(const AssetManager& assets) const
     assets.PrimaryFont,
     m_Text.empty() ? m_PlaceHolder.c_str() : m_Text.c_str(),
     Vector2{
-      m_Dimensions.x + m_Padding,
+      m_Dimensions.x + INPUT_PADDING,
       m_Dimensions.y + 0.5f * (m_Dimensions.height - m_FontSize),
     },
     m_FontSize,
@@ -87,17 +84,17 @@ void MenuInput::Render(const AssetManager& assets) const
   );
 }
 
-bool MenuInput::IsHovered() const
+bool Input::Hovered() const
 {
   return m_Hovered;
 }
 
-bool MenuInput::IsFocused() const
+bool Input::Focused() const
 {
   return m_Focused;
 }
 
-std::string MenuInput::GetText() const
+std::string Input::GetText() const
 {
   return m_Text;
 }

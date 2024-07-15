@@ -1,6 +1,5 @@
 #pragma once
 
-#include <string>
 #include <vector>
 #include <raylib.h>
 
@@ -8,33 +7,7 @@
 #include <state.hpp>
 #include <entity.hpp>
 #include <button.hpp>
-
-class MenuInput : public Entity
-{
-public:
-  MenuInput(
-    const std::string& placeHolder,
-    float fontSize,
-    float padding,
-    Rectangle dimensions
-  );
-
-  void Update() override;
-  void Render(const AssetManager& assets) const override;
-
-  bool IsHovered() const;
-  bool IsFocused() const;
-  std::string GetText() const;
-
-private:
-  std::string m_PlaceHolder;
-  std::string m_Text;
-  float m_FontSize;
-  float m_Padding;
-  Rectangle m_Dimensions;
-  bool m_Hovered;
-  bool m_Focused;
-};
+#include <input.hpp>
 
 class StartMenu : public Entity
 {
@@ -60,8 +33,8 @@ public:
 
 private:
   struct Row {
-    MenuInput Name;
-    MenuInput Age;
+    Input Name;
+    Input Age;
   };
 
 private:
