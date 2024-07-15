@@ -2,9 +2,9 @@
 #include <raylib.h>
 
 #include <asset_manager.hpp>
-#include <menu.hpp>
+#include <button.hpp>
 
-MenuButton::MenuButton(
+Button::Button(
   const std::string& text,
   float fontSize,
   Rectangle dimensions
@@ -16,12 +16,12 @@ MenuButton::MenuButton(
 {
 }
 
-void MenuButton::Update()
+void Button::Update()
 {
   m_Hovered = CheckCollisionPointRec(GetMousePosition(), m_Dimensions);
 }
 
-void MenuButton::Render(const AssetManager& assets) const
+void Button::Render(const AssetManager& assets) const
 {
   Color background = BLACK;
   Color foreground = WHITE;
@@ -45,7 +45,7 @@ void MenuButton::Render(const AssetManager& assets) const
   );
 }
 
-bool MenuButton::Hovered() const
+bool Button::Hovered() const
 {
   return m_Hovered;
 }

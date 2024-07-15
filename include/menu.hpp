@@ -7,23 +7,7 @@
 #include <asset_manager.hpp>
 #include <state.hpp>
 #include <entity.hpp>
-
-class MenuButton : public Entity
-{
-public:
-  MenuButton(const std::string& text, float fontSize, Rectangle dimensions);
-
-  void Update() override;
-  void Render(const AssetManager& assets) const override;
-
-  bool Hovered() const;
-
-private:
-  std::string m_Text;
-  float m_FontSize;
-  Rectangle m_Dimensions;
-  bool m_Hovered;
-};
+#include <button.hpp>
 
 class MenuInput : public Entity
 {
@@ -62,8 +46,8 @@ public:
 
 private:
   State* m_State;
-  MenuButton m_ButtonStart;
-  MenuButton m_ButtonExit;
+  Button m_ButtonStart;
+  Button m_ButtonExit;
 };
 
 class PlayerPickMenu : public Entity
