@@ -27,5 +27,8 @@ private:
   State* m_State;
 
   Rectangle m_Dimensions;
+
+  Button m_IncreasePlayersButton;
+  Button m_DecreasePlayersButton;
   std::vector<PlayerRow> m_PlayerRows;
 };

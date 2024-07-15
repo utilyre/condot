@@ -12,6 +12,9 @@ static const float MENU_SPACING = 120.0f;
 
 static const float TEXT_FONT_SIZE = 50.0f;
 
+static const float BUTTON_ADJUST_PLAYERS_WIDTH = 40.0f;
+static const float BUTTON_ADJUST_PLAYERS_HEIGHT = 40.0f;
+
 static const float INPUT_NAME_WIDTH = 600.0f;
 static const float INPUT_NAME_HEIGHT = 100.0f;
 static const float INPUT_AGE_WIDTH = 200.0f;
@@ -24,6 +27,18 @@ CustomizationMenu::CustomizationMenu(State* state)
     (GetScreenHeight() - MENU_HEIGHT) / 2.0f,
     MENU_WIDTH,
     MENU_HEIGHT
+  }),
+  m_IncreasePlayersButton("+", Rectangle{
+    m_Dimensions.x + MENU_PADDING,
+    m_Dimensions.y + MENU_PADDING,
+    BUTTON_ADJUST_PLAYERS_WIDTH,
+    BUTTON_ADJUST_PLAYERS_HEIGHT,
+  }),
+  m_DecreasePlayersButton("-", Rectangle{
+    m_Dimensions.x + MENU_PADDING,
+    m_Dimensions.y + MENU_PADDING + BUTTON_ADJUST_PLAYERS_HEIGHT,
+    BUTTON_ADJUST_PLAYERS_WIDTH,
+    BUTTON_ADJUST_PLAYERS_HEIGHT,
   })
 {
   for (size_t i = 0; i < 3; i++)
@@ -53,7 +68,10 @@ void CustomizationMenu::Update()
     return;
   }
 
-  if (IsKeyPressed(KEY_UP) && m_PlayerRows.size() < 4)
+  m_IncreasePlayersButton.Update();
+  m_DecreasePlayersButton.Update();
+
+  if (m_IncreasePlayersButton.Pressed() && m_PlayerRows.size() < 4)
   {
     size_t len = m_PlayerRows.size();
     m_PlayerRows.emplace_back(
@@ -72,7 +90,7 @@ void CustomizationMenu::Update()
       })
     );
   }
-  if (IsKeyPressed(KEY_DOWN) && m_PlayerRows.size() > 3)
+  if (m_DecreasePlayersButton.Pressed() && m_PlayerRows.size() > 3)
   {
     m_PlayerRows.pop_back();
   }
@@ -91,12 +109,18 @@ void CustomizationMenu::Render(const AssetManager& assets) const
     return;
   }
 
-  DrawRectangleRounded(m_Dimensions, MENU_ROUNDNESS, 0, WHITE);
+  DrawRectangleRounded(m_Dimensions, MENU_ROUNDNESS, 0, RAYWHITE);
+
+  m_IncreasePlayersButton.Render(assets);
+  m_DecreasePlayersButton.Render(assets);
 
   DrawTextEx(
     assets.PrimaryFont,
     TextFormat("%d players", m_PlayerRows.size()),
-    Vector2{m_Dimensions.x + MENU_PADDING, m_Dimensions.y + MENU_PADDING},
+    Vector2{
+      m_Dimensions.x + MENU_PADDING + BUTTON_ADJUST_PLAYERS_WIDTH + 0.25f * MENU_SPACING,
+      m_Dimensions.y + MENU_PADDING + BUTTON_ADJUST_PLAYERS_HEIGHT - 0.5f * TEXT_FONT_SIZE,
+    },
     TEXT_FONT_SIZE,
     1,
     BLACK
