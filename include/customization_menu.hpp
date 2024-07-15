@@ -28,6 +28,8 @@ private:
 
   Rectangle m_Dimensions;
 
+  Button m_MenuButton;
+  Button m_ContinueButton;
   Button m_IncreasePlayersButton;
   Button m_DecreasePlayersButton;
   std::vector<PlayerRow> m_PlayerRows;

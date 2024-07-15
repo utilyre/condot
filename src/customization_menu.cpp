@@ -10,6 +10,9 @@ static const float MENU_ROUNDNESS = 0.1f;
 static const float MENU_PADDING = 50.0f;
 static const float MENU_SPACING = 120.0f;
 
+static const float BUTTON_NAV_WIDTH = 400.0f;
+static const float BUTTON_NAV_HEIGHT = 80.0f;
+
 static const float TEXT_FONT_SIZE = 50.0f;
 
 static const float BUTTON_ADJUST_PLAYERS_WIDTH = 40.0f;
@@ -27,6 +30,18 @@ CustomizationMenu::CustomizationMenu(State* state)
     (GetScreenHeight() - MENU_HEIGHT) / 2.0f,
     MENU_WIDTH,
     MENU_HEIGHT
+  }),
+  m_MenuButton("Back to Menu", Rectangle{
+    m_Dimensions.x + MENU_PADDING,
+    m_Dimensions.y - MENU_PADDING,
+    BUTTON_NAV_WIDTH,
+    BUTTON_NAV_HEIGHT,
+  }),
+  m_ContinueButton("Continue", Rectangle{
+    m_Dimensions.x + MENU_WIDTH - BUTTON_NAV_WIDTH - MENU_PADDING,
+    m_Dimensions.y - MENU_PADDING,
+    BUTTON_NAV_WIDTH,
+    BUTTON_NAV_HEIGHT,
   }),
   m_IncreasePlayersButton("+", Rectangle{
     m_Dimensions.x + MENU_PADDING,
@@ -66,6 +81,18 @@ void CustomizationMenu::Update()
   if (m_State->Get() != State::PLAYER_PICK_MENU)
   {
     return;
+  }
+
+  m_MenuButton.Update();
+  m_ContinueButton.Update();
+
+  if (m_MenuButton.Pressed())
+  {
+    m_State->Set(State::START_MENU);
+  }
+  if (m_ContinueButton.Pressed())
+  {
+    m_State->Set(State::INITIATING_BATTLE);
   }
 
   m_IncreasePlayersButton.Update();
@@ -110,6 +137,9 @@ void CustomizationMenu::Render(const AssetManager& assets) const
   }
 
   DrawRectangleRounded(m_Dimensions, MENU_ROUNDNESS, 0, RAYWHITE);
+
+  m_MenuButton.Render(assets);
+  m_ContinueButton.Render(assets);
 
   m_IncreasePlayersButton.Render(assets);
   m_DecreasePlayersButton.Render(assets);
