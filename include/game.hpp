@@ -4,6 +4,7 @@
 #include <random>
 
 #include <asset_manager.hpp>
+#include <event.hpp>
 #include <state.hpp>
 #include <map.hpp>
 #include <player.hpp>
@@ -37,6 +38,7 @@ private:
   mutable std::random_device m_RandDev;
   AssetManager m_Assets;
   State m_State;
+  Event m_QuitEvent;
   MainMenu m_MainMenu;
   CustomizationMenu m_CustomizationMenu;
   Map m_Map;

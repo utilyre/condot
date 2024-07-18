@@ -1,14 +1,16 @@
 #include <raylib.h>
 
 #include <state.hpp>
+#include <event.hpp>
 #include <asset_manager.hpp>
 #include <main_menu.hpp>
 
 static const int BUTTON_WIDTH = 800;
 static const int BUTTON_HEIGHT = 100;
 
-MainMenu::MainMenu(State* state)
+MainMenu::MainMenu(State* state, Event* quitEvent)
 : m_State(state),
+  m_QuitEvent(quitEvent),
   m_ButtonStart("Start", Rectangle{
     (GetScreenWidth() - BUTTON_WIDTH) / 2.0f,
     (GetScreenHeight() - BUTTON_HEIGHT) / 2.0f - 60,
@@ -40,7 +42,7 @@ void MainMenu::Update()
   }
   if (m_ButtonExit.Pressed())
   {
-    // TODO: signal game to exit
+    m_QuitEvent->Raise(this, nullptr);
   }
 }
 

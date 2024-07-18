@@ -1,22 +1,38 @@
 #include <iostream>
 #include <algorithm>
 #include <climits>
+#include <memory>
 #include <raylib.h>
 
 #include <game.hpp>
 #include <state.hpp>
+#include <event.hpp>
 #include <player.hpp>
+#include <entity.hpp>
 #include <card.hpp>
 #include <mercenary.hpp>
 #include <main_menu.hpp>
 #include <customization_menu.hpp>
 
+class QuitListener : public EventListener {
+public:
+  explicit QuitListener(Game* game) : m_Game(game) {}
+
+  void OnEventRaised(Entity*, std::any) override {
+    m_Game->Stop();
+  }
+
+private:
+  Game* m_Game;
+};
+
 Game::Game()
 : m_Stopped(false),
-  m_MainMenu(&m_State),
+  m_MainMenu(&m_State, &m_QuitEvent),
   m_CustomizationMenu(&m_State),
   m_Map(&m_State)
 {
+  m_QuitEvent.RegisterListener(std::make_unique<QuitListener>(this));
 }
 
 void Game::Start()
@@ -30,16 +46,12 @@ void Game::Start()
   m_Players.emplace_back(&m_State, "Theo", GRAY, 4 ,Position::LEFT);
 
   // NOTE: do NOT modify
-  while (!WindowShouldClose())
+  while (!WindowShouldClose() && !m_Stopped)
   {
-    if (m_Stopped)
-    {
-      break;
-    }
-
     Update();
+
     BeginDrawing();
-    Render();
+      Render();
     EndDrawing();
   }
 }
