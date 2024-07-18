@@ -9,8 +9,8 @@
 #include <region.hpp>
 #include <player.hpp>
 
-static const int MAP_WIDTH = 1057;
-static const int MAP_HEIGHT = 831;
+static const int MAP_WIDTH = 0.81f * 1057;
+static const int MAP_HEIGHT = 0.81f * 831;
 
 Map::Map(State* state)
 : m_State(state),
