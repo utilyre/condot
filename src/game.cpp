@@ -1,7 +1,6 @@
 #include <iostream>
 #include <algorithm>
 #include <climits>
-#include <memory>
 #include <raylib.h>
 
 #include <game.hpp>
