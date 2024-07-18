@@ -25,6 +25,8 @@ Game::Game()
 
 void Game::Start()
 {
+  ToggleFullscreen();
+  SetExitKey(KEY_NULL);
   SetTargetFPS(60);
 
   // TODO: add/customize players through menu
@@ -34,7 +36,7 @@ void Game::Start()
   m_Players.emplace_back(&m_State, "Theo", GRAY, 4 ,Position::LEFT);
 
   // NOTE: do NOT modify
-  while (!WindowShouldClose() && !m_Stopped)
+  while (!m_Stopped && !WindowShouldClose())
   {
     Update();
 
