@@ -1,6 +1,7 @@
 #include <iostream>
 #include <algorithm>
 #include <climits>
+#include <any>
 #include <raylib.h>
 
 #include <game.hpp>
@@ -20,6 +21,7 @@ Game::Game()
   m_Map(&m_State)
 {
   m_StopEvent.Register([this](Entity*, std::any) { this->Stop(); });
+  m_RotateTurnEvent.Register([this](Entity*, std::any) { this->RotateTurn(); });
 }
 
 void Game::Start()
@@ -29,10 +31,10 @@ void Game::Start()
   SetTargetFPS(60);
 
   // TODO: add/customize players through menu
-  m_Players.emplace_back(&m_State, "John", RED, 10 , Position::TOP);
-  m_Players.emplace_back(&m_State, "Jane", GREEN, 2 , Position::RIGHT);
-  m_Players.emplace_back(&m_State, "Alex", BLUE, 1 , Position::BOTTOM);
-  m_Players.emplace_back(&m_State, "Theo", GRAY, 4 ,Position::LEFT);
+  m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "John", RED, 10 , Position::TOP);
+  m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "Jane", GREEN, 2 , Position::RIGHT);
+  m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "Alex", BLUE, 1 , Position::BOTTOM);
+  m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "Theo", GRAY, 4 ,Position::LEFT);
 
   // NOTE: do NOT modify
   while (!m_Stopped && !WindowShouldClose())
@@ -66,13 +68,6 @@ void Game::Update()
   for (Player& p : m_Players)
   {
     p.Update();
-    
-    if (m_State.Get() == State::ROTATING_TURN)
-    {
-      RotateTurn();
-      m_State.Set(State::PLAYING_CARD);
-      break;
-    }
   }
 
   m_Map.Update();

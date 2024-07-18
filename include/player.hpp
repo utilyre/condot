@@ -7,6 +7,7 @@
 
 #include <asset_manager.hpp>
 #include <state.hpp>
+#include <event.hpp>
 #include <entity.hpp>
 #include <card.hpp>
 #include <mercenary.hpp>
@@ -22,7 +23,14 @@ enum class Position
 class Player : public Entity
 {
 public:
-  Player(State* state, const std::string& name, Color color, int age, Position position);
+  Player(
+    State* state,
+    Event* rotateTurnEvent,
+    const std::string& name,
+    Color color,
+    int age,
+    Position position
+  );
 
   void Update() override;
   void Render(const AssetManager& assets) const override;
@@ -42,6 +50,7 @@ private:
   void Add(const size_t& index);
 private:
   State* m_State;
+  Event* m_RotateTurnEvent;
   std::string m_Name;
   Color m_Color;
   int m_Age;

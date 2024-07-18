@@ -3,12 +3,21 @@
 
 #include <asset_manager.hpp>
 #include <state.hpp>
+#include <event.hpp>
 #include <player.hpp>
 #include <card.hpp>
 #include <mercenary.hpp>
 
-Player::Player(State* state, const std::string& name, Color color, int age, Position position)
+Player::Player(
+  State* state,
+  Event* rotateTurnEvent,
+  const std::string& name,
+  Color color,
+  int age,
+  Position position
+)
 : m_State(state),
+  m_RotateTurnEvent(rotateTurnEvent),
   m_Name(name),
   m_Color(color),
   m_Age(age),
@@ -19,9 +28,11 @@ Player::Player(State* state, const std::string& name, Color color, int age, Posi
 
 void Player::Update()
 {
-  if (m_State->Get() == State::PLAYING_CARD) {
-    if(PlayCard()){
-      m_State->Set(State::ROTATING_TURN);
+  if (m_State->Get() == State::PLAYING_CARD)
+  {
+    if (PlayCard())
+    {
+      m_RotateTurnEvent->Raise(this, nullptr);
     }
   }
 }
