@@ -4,7 +4,7 @@
 
 #include <event.hpp>
 
-void Event::RegisterListener(std::unique_ptr<EventListener>&& listener)
+void Event::Register(std::unique_ptr<EventListener>&& listener)
 {
   if (!listener)
   {
@@ -22,7 +22,7 @@ void Event::RegisterListener(std::unique_ptr<EventListener>&& listener)
   m_Listeners.push_back(std::move(listener));
 }
 
-void Event::UnregisterListener(std::unique_ptr<EventListener>&& listener) noexcept
+void Event::Unregister(std::unique_ptr<EventListener>&& listener) noexcept
 {
   if (!listener)
   {

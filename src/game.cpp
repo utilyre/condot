@@ -32,7 +32,7 @@ Game::Game()
   m_CustomizationMenu(&m_State),
   m_Map(&m_State)
 {
-  m_QuitEvent.RegisterListener(std::make_unique<QuitListener>(this));
+  m_QuitEvent.Register(std::make_unique<QuitListener>(this));
 }
 
 void Game::Start()

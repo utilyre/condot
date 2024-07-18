@@ -16,8 +16,8 @@ public:
 class Event
 {
 public:
-  void RegisterListener(std::unique_ptr<EventListener>&& listener);
-  void UnregisterListener(std::unique_ptr<EventListener>&& listener) noexcept;
+  void Register(std::unique_ptr<EventListener>&& listener);
+  void Unregister(std::unique_ptr<EventListener>&& listener) noexcept;
 
   void Raise(Entity* sender, std::any data);
 
