@@ -3,6 +3,7 @@
 #include <any>
 #include <vector>
 #include <memory>
+#include <functional>
 
 #include <entity.hpp>
 
@@ -13,11 +14,13 @@ public:
   virtual void OnEventRaised(Entity* sender, std::any data) = 0;
 };
 
+using EventListenerFunc = std::function<void (Entity* sender, std::any data)>;
+
 class Event
 {
 public:
   void Register(std::unique_ptr<EventListener>&& listener);
-  void Unregister(std::unique_ptr<EventListener>&& listener) noexcept;
+  void Register(EventListenerFunc listener);
 
   void Raise(Entity* sender, std::any data);
 

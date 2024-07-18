@@ -22,21 +22,28 @@ void Event::Register(std::unique_ptr<EventListener>&& listener)
   m_Listeners.push_back(std::move(listener));
 }
 
-void Event::Unregister(std::unique_ptr<EventListener>&& listener) noexcept
+class LambdaEventListener : public EventListener
+{
+public:
+  LambdaEventListener(EventListenerFunc func) : m_Func(func) {}
+
+  void OnEventRaised(Entity* sender, std::any data) override
+  {
+    m_Func(sender, data);
+  }
+
+private:
+  std::function<void (Entity* sender, std::any data)> m_Func;
+};
+
+void Event::Register(EventListenerFunc listener)
 {
   if (!listener)
   {
-    return;
+    throw std::invalid_argument("argument 'listener' cannot be nullptr");
   }
 
-  for (auto it = m_Listeners.begin(); it != m_Listeners.end(); ++it)
-  {
-    if (*it == listener)
-    {
-      it = m_Listeners.erase(it);
-      return;
-    }
-  }
+  Register(std::make_unique<LambdaEventListener>(listener));
 }
 
 void Event::Raise(Entity* sender, std::any data)
