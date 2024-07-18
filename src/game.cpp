@@ -14,25 +14,13 @@
 #include <main_menu.hpp>
 #include <customization_menu.hpp>
 
-class QuitListener : public EventListener {
-public:
-  explicit QuitListener(Game* game) : m_Game(game) {}
-
-  void OnEventRaised(Entity*, std::any) override {
-    m_Game->Stop();
-  }
-
-private:
-  Game* m_Game;
-};
-
 Game::Game()
 : m_Stopped(false),
   m_MainMenu(&m_State, &m_QuitEvent),
   m_CustomizationMenu(&m_State),
   m_Map(&m_State)
 {
-  m_QuitEvent.Register(std::make_unique<QuitListener>(this));
+  m_QuitEvent.Register([this](Entity*, std::any) { this->Stop(); });
 }
 
 void Game::Start()
