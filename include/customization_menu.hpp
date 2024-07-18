@@ -5,6 +5,7 @@
 
 #include <asset_manager.hpp>
 #include <state.hpp>
+#include <event.hpp>
 #include <entity.hpp>
 #include <button.hpp>
 #include <input.hpp>
@@ -12,7 +13,7 @@
 class CustomizationMenu : public Entity
 {
 public:
-  CustomizationMenu(State* state);
+  CustomizationMenu(State* state, Event* initiateBattleEvent);
 
   void Update() override;
   void Render(const AssetManager& assets) const override;
@@ -25,6 +26,7 @@ private:
 
 private:
   State* m_State;
+  Event* m_InitiateBattleEvent;
 
   Rectangle m_Dimensions;
 

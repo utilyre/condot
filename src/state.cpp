@@ -37,9 +37,6 @@ std::ostream& operator<<(std::ostream& out, State::Variant v)
   case State::START_MENU:
     out << "Menu";
     break;
-  case State::INITIATING_BATTLE:
-    out << "Initiating Battle";
-    break;
   case State::PLACING_BATTLE_MARKER:
     out << "Placing Battle Marker";
     break;

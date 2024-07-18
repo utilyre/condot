@@ -23,8 +23,9 @@ static const float INPUT_NAME_HEIGHT = 100.0f;
 static const float INPUT_AGE_WIDTH = 200.0f;
 static const float INPUT_AGE_HEIGHT = 100.0f;
 
-CustomizationMenu::CustomizationMenu(State* state)
+CustomizationMenu::CustomizationMenu(State* state, Event* initiateBattle)
 : m_State(state),
+  m_InitiateBattleEvent(initiateBattle),
   m_Dimensions({
     (GetScreenWidth() - MENU_WIDTH) / 2.0f,
     (GetScreenHeight() - MENU_HEIGHT) / 2.0f,
@@ -92,7 +93,8 @@ void CustomizationMenu::Update()
   }
   if (m_ContinueButton.Pressed())
   {
-    m_State->Set(State::INITIATING_BATTLE);
+    m_InitiateBattleEvent->Raise(this, nullptr);
+    m_State->Set(State::PLACING_BATTLE_MARKER);
   }
 
   m_IncreasePlayersButton.Update();

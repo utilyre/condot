@@ -1,7 +1,6 @@
 #include <iostream>
 #include <algorithm>
 #include <climits>
-#include <any>
 #include <raylib.h>
 
 #include <game.hpp>
@@ -17,11 +16,12 @@
 Game::Game()
 : m_Stopped(false),
   m_MainMenu(&m_State, &m_StopEvent),
-  m_CustomizationMenu(&m_State),
+  m_CustomizationMenu(&m_State, &m_InitiateBattleEvent),
   m_Map(&m_State)
 {
-  m_StopEvent.Register([this](Entity*, std::any) { this->Stop(); });
-  m_RotateTurnEvent.Register([this](Entity*, std::any) { this->RotateTurn(); });
+  m_StopEvent.Register([this](auto, auto) { Stop(); });
+  m_InitiateBattleEvent.Register([this](auto, auto) { InitiateBattle(); });
+  m_RotateTurnEvent.Register([this](auto, auto) { RotateTurn(); });
 }
 
 void Game::Start()
@@ -54,14 +54,6 @@ void Game::Stop()
 
 void Game::Update()
 {
-  if (m_State.Get() == State::INITIATING_BATTLE)
-  {
-    InitiateBattle();
-    m_State.Set(State::PLACING_BATTLE_MARKER);
-    // TODO: PLACE BATTLE MARKER
-    m_State.Set(State::PLAYING_CARD);
-    }
-
   m_MainMenu.Update();
   m_CustomizationMenu.Update();
 

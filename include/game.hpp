@@ -39,6 +39,7 @@ private:
   AssetManager m_Assets;
   State m_State;
   Event m_StopEvent;
+  Event m_InitiateBattleEvent;
   Event m_RotateTurnEvent;
   MainMenu m_MainMenu;
   CustomizationMenu m_CustomizationMenu;
