@@ -16,11 +16,11 @@
 
 Game::Game()
 : m_Stopped(false),
-  m_MainMenu(&m_State, &m_QuitEvent),
+  m_MainMenu(&m_State, &m_StopEvent),
   m_CustomizationMenu(&m_State),
   m_Map(&m_State)
 {
-  m_QuitEvent.Register([this](Entity*, std::any) { this->Stop(); });
+  m_StopEvent.Register([this](Entity*, std::any) { this->Stop(); });
 }
 
 void Game::Start()

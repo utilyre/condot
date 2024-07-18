@@ -38,7 +38,7 @@ private:
   mutable std::random_device m_RandDev;
   AssetManager m_Assets;
   State m_State;
-  Event m_QuitEvent;
+  Event m_StopEvent;
   MainMenu m_MainMenu;
   CustomizationMenu m_CustomizationMenu;
   Map m_Map;
