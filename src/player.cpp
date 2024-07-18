@@ -240,7 +240,7 @@ void Player::PickCard(const size_t& index){
           // TODO : does something with gameflow
           else if (card == Card::BISHOP) {
             m_Cards.erase(m_Cards.begin() + index);
-            m_State->Set(State::BISHOP);
+            // TODO: use event
           }
           
           else if (card == Card::DRUMMER) {

@@ -13,8 +13,6 @@ public:
     PLACING_BATTLE_MARKER,
     PLACING_FAVOR_MARKER,
     PLAYING_CARD,
-    BISHOP,
-    SCARECROW
   };
 public:
   State();
