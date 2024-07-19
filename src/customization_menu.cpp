@@ -79,7 +79,7 @@ CustomizationMenu::CustomizationMenu(State* state, Event* initiateBattle)
 
 void CustomizationMenu::Update()
 {
-  if (m_State->Get() != State::PLAYER_PICK_MENU)
+  if (m_State->Get() != State::CUSTOMIZATION_MENU)
   {
     return;
   }
@@ -89,7 +89,7 @@ void CustomizationMenu::Update()
 
   if (m_MenuButton.Pressed())
   {
-    m_State->Set(State::START_MENU);
+    m_State->Set(State::MAIN_MENU);
   }
   if (m_ContinueButton.Pressed())
   {
@@ -133,7 +133,7 @@ void CustomizationMenu::Update()
 
 void CustomizationMenu::Render(const AssetManager& assets) const
 {
-  if (m_State->Get() != State::PLAYER_PICK_MENU)
+  if (m_State->Get() != State::CUSTOMIZATION_MENU)
   {
     return;
   }

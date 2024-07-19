@@ -28,7 +28,7 @@ MainMenu::MainMenu(State* state, Event* quitEvent)
 
 void MainMenu::Update()
 {
-  if (m_State->Get() != State::START_MENU)
+  if (m_State->Get() != State::MAIN_MENU)
   {
     return;
   }
@@ -38,7 +38,7 @@ void MainMenu::Update()
 
   if (m_ButtonStart.Pressed())
   {
-    m_State->Set(State::PLAYER_PICK_MENU);
+    m_State->Set(State::CUSTOMIZATION_MENU);
   }
   if (m_ButtonExit.Pressed())
   {
@@ -48,7 +48,7 @@ void MainMenu::Update()
 
 void MainMenu::Render(const AssetManager& assets) const
 {
-  if (m_State->Get() != State::START_MENU)
+  if (m_State->Get() != State::MAIN_MENU)
   {
     return;
   }

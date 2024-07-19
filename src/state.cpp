@@ -3,7 +3,7 @@
 #include <state.hpp>
 
 State::State()
-: m_Curr(START_MENU),
+: m_Curr(MAIN_MENU),
   m_Prev(m_Curr)
 {
 }
@@ -34,7 +34,7 @@ std::ostream& operator<<(std::ostream& out, State::Variant v)
 {
   switch (v)
   {
-  case State::START_MENU:
+  case State::MAIN_MENU:
     out << "Menu";
     break;
   case State::PLACING_BATTLE_MARKER:

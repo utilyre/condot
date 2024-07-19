@@ -8,8 +8,8 @@ class State
 {
 public:
   enum Variant {
-    START_MENU,
-    PLAYER_PICK_MENU,
+    MAIN_MENU,
+    CUSTOMIZATION_MENU,
     PLACING_BATTLE_MARKER,
     PLACING_FAVOR_MARKER,
     PLAYING_CARD,
