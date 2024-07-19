@@ -35,16 +35,19 @@ std::ostream& operator<<(std::ostream& out, State::Variant v)
   switch (v)
   {
   case State::MAIN_MENU:
-    out << "Menu";
+    out << "MAIN_MENU";
+    break;
+  case State::CUSTOMIZATION_MENU:
+    out << "CUSTOMIZATION_MENU";
     break;
   case State::PLACING_BATTLE_MARKER:
-    out << "Placing Battle Marker";
+    out << "PLACING_BATTLE_MARKER";
     break;
   case State::PLACING_FAVOR_MARKER:
-    out << "Placing Favor Marker";
+    out << "PLACING_FAVOR_MARKER";
     break;
   case State::PLAYING_CARD:
-    out << "Playing Card";
+    out << "PLAYING_CARD";
     break;
   }
 
