@@ -172,7 +172,7 @@ bool Game::RotateTurn(){
       m_Turn = StartPos;
       m_Players[m_Turn].SetPosition(Position::BOTTOM);
     }
-    std::cout << StartPos << " " << EndPos << " " << i << std::endl;
+    
     StartPos = EndPos;
     passed = 1;
   } 
