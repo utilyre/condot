@@ -76,8 +76,11 @@ void Game::Render() const
   {
     p.Render(m_Assets);
   }
-
-  m_Map.Render(m_Assets);
+  if(m_State.Get() == State::PLACING_BATTLE_MARKER || 
+     m_State.Get() == State::PLACING_FAVOR_MARKER)
+  {
+    m_Map.Render(m_Assets);
+  }
 
   DrawText(TextFormat("(%d, %d)", GetMouseX(), GetMouseY()), 10, 10, 30, BLACK);
 }
