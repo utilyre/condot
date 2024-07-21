@@ -56,10 +56,11 @@ void Game::Update()
 {
   m_MainMenu.Update();
   m_CustomizationMenu.Update();
-
+  
+  m_Players[m_Turn].Update();
   for (Player& p : m_Players)
   {
-    p.Update();
+    if(&m_Players[m_Turn] != &p) p.Update();
   }
 
   m_Map.Update();
@@ -175,8 +176,9 @@ void Game::RotateTurn(){
       m_Turn = StartPos;
       m_Players[m_Turn].SetPosition(Position::BOTTOM);
     }
-    
+    std::cout << StartPos << " " << EndPos << " " << i << std::endl;
     StartPos = EndPos;
     passed = 1;
   }
+  std::cout << std::endl;
 }

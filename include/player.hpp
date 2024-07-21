@@ -43,8 +43,8 @@ public:
   const Position& GetPosition() const;
   std::vector<Card>& GetCards();
   void PickCard(const size_t& index);
-private:
   bool PlayCard();
+private:
   void RenderCards(const AssetManager& assets, Vector2 cordinate, float rotation) const;
   void RenderRows(const AssetManager& assets, Vector2 cordinate, float rotation) const;
   void Pass();
