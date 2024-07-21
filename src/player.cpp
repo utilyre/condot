@@ -31,14 +31,14 @@ Player::Player(
 
 void Player::Update()
 {
-    m_PassButton.Update();
-  if (m_State->Get() == State::PLAYING_CARD)
-  {    
+  if (m_State->Get() != State::PLAYING_CARD){
+    return;
+  }
+    m_PassButton.Update();  
     if (PlayCard())
     {
       m_RotateTurnEvent->Raise(this, nullptr);
     }
-  }
 }
 
 void Player::AddCard(Card card)
