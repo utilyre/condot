@@ -29,7 +29,7 @@ private:
   void ResetCards();
   void DealCards();
   void InitiateBattle();
-  bool RotateTurn();
+  void RotateTurn();
   void PickCard();
 
 private:

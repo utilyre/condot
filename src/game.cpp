@@ -158,7 +158,7 @@ void Game::InitiateBattle()
   DealCards();
 }
 
-bool Game::RotateTurn(){
+void Game::RotateTurn(){
   size_t StartPos = (m_Turn);
   for(size_t i{},passed{1}; i < m_Players.size(); ++i){
     
@@ -178,6 +178,5 @@ bool Game::RotateTurn(){
     
     StartPos = EndPos;
     passed = 1;
-  } 
-  return true;
+  }
 }
