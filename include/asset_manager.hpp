@@ -8,7 +8,7 @@ struct AssetManager
   ~AssetManager();
 
   Font PrimaryFont;
-
+  Texture2D BackSide;
   Texture2D Background;
   Texture2D Map;
 
