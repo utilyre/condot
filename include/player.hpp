@@ -11,6 +11,7 @@
 #include <entity.hpp>
 #include <card.hpp>
 #include <mercenary.hpp>
+#include <button.hpp>
 
 enum class Position
 {
@@ -58,5 +59,6 @@ private:
   std::vector<Card> m_Cards;
   std::vector<Mercenary> m_Row;
   bool m_IsPassed;
+  Button m_PassButton;
   std::unordered_map<std::string , int> m_s;
 };

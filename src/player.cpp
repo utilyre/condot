@@ -7,6 +7,8 @@
 #include <player.hpp>
 #include <card.hpp>
 #include <mercenary.hpp>
+#include <button.hpp>
+
 
 Player::Player(
   State* state,
@@ -22,14 +24,16 @@ Player::Player(
   m_Color(color),
   m_Age(age),
   m_Position(position),
-  m_IsPassed(false)
+  m_IsPassed(false),
+  m_PassButton ("SURRENDER",Rectangle(GetScreenWidth() - float(1600), GetScreenHeight() - float(200), 170 , 100))
 {
 }
 
 void Player::Update()
 {
+    m_PassButton.Update();
   if (m_State->Get() == State::PLAYING_CARD)
-  {
+  {    
     if (PlayCard())
     {
       m_RotateTurnEvent->Raise(this, nullptr);
@@ -59,7 +63,7 @@ void Player::Render(const AssetManager& assets) const
   Vector2 TOP   {(width + float(570)) / 2  , 200};
   Vector2 LEFT  { 200                      , (height - float(570)) / 2 };
   Vector2 RIGHT {(width - float(200))      , (height + float(570)) / 2 };
-
+  
   switch (m_Position)
   {
   case Position::TOP:
@@ -74,8 +78,8 @@ void Player::Render(const AssetManager& assets) const
     break;
   case Position::BOTTOM:
     DrawRectangle((width - length) / 2, height - thickness, length, thickness, BLUE);
-    DrawText("pass", 420, 950, 30, BLACK);
     RenderRows (assets,Vector2{ BOTTOM.x - 50, BOTTOM.y - 200}, 0);
+    m_PassButton.Render(assets);
     RenderCards(assets, BOTTOM, 0);
     break;
   case Position::LEFT:
@@ -186,10 +190,9 @@ bool Player::PlayCard(){
           PickCard(index);
           return true;
         }
-      else if (CheckCollisionPointRec(GetMousePosition(),(Rectangle){420, 950, 70, 50}) &&
-           IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
-      {
-        
+      else if (m_PassButton.Pressed()){
+        //m_IsPassed = true;  
+        return true;
       }
       index++;
     }
