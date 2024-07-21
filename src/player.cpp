@@ -55,10 +55,10 @@ void Player::Render(const AssetManager& assets) const
   int length = 3 * height / 4;
   int thickness = 200;
   
-  Vector2 BOTTOM{(GetScreenWidth() - float(570)) / 2  , GetScreenHeight() - float(200) };
-  Vector2 LEFT  { 200  , (GetScreenHeight() - float(570)) / 2 };
-  Vector2 TOP   {(GetScreenWidth() + float(570)) / 2 , 200};
-  Vector2 RIGHT {GetScreenWidth() - float(200) , (GetScreenHeight() + float(570)) / 2 };
+  Vector2 BOTTOM{(width - float(570)) / 2  , height - float(200)};
+  Vector2 TOP   {(width + float(570)) / 2  , 200};
+  Vector2 LEFT  { 200                      , (height - float(570)) / 2 };
+  Vector2 RIGHT {(width - float(200))      , (height + float(570)) / 2 };
 
   switch (m_Position)
   {
