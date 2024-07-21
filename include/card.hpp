@@ -24,6 +24,8 @@ public:
     SPY,
     TURNCOAT,
     WINTER,
+
+    BACKSIDE
   };
 
 public:

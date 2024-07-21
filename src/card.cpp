@@ -45,6 +45,8 @@ Texture2D Card::GetAsset(const AssetManager& assets) const
     return assets.Turncoat;
   case WINTER:
     return assets.Winter;
+  case BACKSIDE:
+    return assets.BackSide;
 
   default:
     return assets.Mercenary1;

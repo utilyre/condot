@@ -21,7 +21,7 @@ AssetManager::AssetManager()
   ImageResize(&map, 0.81f * map.width, 0.81f * map.height);
   Map = LoadTextureFromImage(map);
   UnloadImage(map);
-  BackSide = LoadTexture("assets/back.png");
+  BackSide = LoadTexture("assets/Back.png");
   Mercenary1 = LoadTexture("assets/mercenary/1.png");
   Mercenary2 = LoadTexture("assets/mercenary/2.png");
   Mercenary3 = LoadTexture("assets/mercenary/3.png");

@@ -133,12 +133,14 @@ void Player::RenderRows(const AssetManager& assets, Vector2 cordinate, float rot
 
 void Player::RenderCards(const AssetManager& assets, Vector2 cordinate, float rotation) const
 {
+  Card card = Card::BACKSIDE;
+  
   float ratio = 0.75;
   if (m_Position == Position::TOP)
   {
-    for (auto c = m_Cards.rbegin(); c != m_Cards.rend(); ++c)
+    for (size_t c{} ; c < m_Cards.size() ; ++c)
     {
-      DrawTextureEx(c->GetAsset(assets), cordinate, rotation, ratio, WHITE);
+      DrawTextureEx(card.GetAsset(assets), cordinate, rotation, ratio, WHITE);
       cordinate.x -= 50;
     }
   }
@@ -155,18 +157,18 @@ void Player::RenderCards(const AssetManager& assets, Vector2 cordinate, float ro
   
   if (m_Position == Position::LEFT)
   {
-    for (const auto& c : m_Cards)
+    for (size_t c{} ; c < m_Cards.size(); ++c)
     {
-      DrawTextureEx(c.GetAsset(assets), cordinate, rotation, ratio, WHITE);
+      DrawTextureEx(card.GetAsset(assets), cordinate, rotation, ratio, WHITE);
       cordinate.y += 50;
     }
   }
   
   if (m_Position == Position::RIGHT)
   {
-    for(auto c = m_Cards.rbegin(); c != m_Cards.rend(); ++c)
+    for(size_t c{} ; c < m_Cards.size() ; ++c)
     {
-      DrawTextureEx(c->GetAsset(assets), cordinate, rotation, ratio, WHITE);
+      DrawTextureEx(card.GetAsset(assets), cordinate, rotation, ratio, WHITE);
       cordinate.y -= 50;
       
     }  
