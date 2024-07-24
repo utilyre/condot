@@ -9,7 +9,6 @@
 #include <mercenary.hpp>
 #include <button.hpp>
 
-
 Player::Player(
   State* state,
   Event* rotateTurnEvent,
@@ -25,7 +24,7 @@ Player::Player(
   m_Age(age),
   m_Position(position),
   m_IsPassed(false),
-  m_PassButton ("SURRENDER",Rectangle(GetScreenWidth() - float(1600), GetScreenHeight() - float(200), 170 , 100))
+  m_PassButton ("SURRENDER",Rectangle(0.5f * GetScreenWidth() - 3.0f * GetScreenHeight() / 8.0f - 200.0f, GetScreenHeight() - float(200), 170 , 100))
 {
 }
 
