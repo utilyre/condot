@@ -52,39 +52,42 @@ void Player::Render(const AssetManager& assets) const
     return;
   }
 
-  float width = GetScreenWidth();
-  float height = GetScreenHeight();
+ const float SCREEN_WIDTH  = GetScreenWidth();
+ const float SCREEN_HEIGHT = GetScreenHeight();
 
-  int length = 3 * height / 4;
-  int thickness = 200;
-  
-  Vector2 BOTTOM{(width - float(570)) / 2  , height - float(200)};
-  Vector2 TOP   {(width + float(570)) / 2  , 200};
-  Vector2 LEFT  { 200                      , (height - float(570)) / 2 };
-  Vector2 RIGHT {(width - float(200))      , (height + float(570)) / 2 };
-  
+ const float THICKNESS = 200;
+ const float LENGHT = 3 * SCREEN_HEIGHT / 4;
+
+ const float VERTICAL_SPACING   = 200.0f;
+ const float HORIZONTAL_SPACING = 570.0f;
+
+ const Vector2 SCREEN_BOTTOM {(SCREEN_WIDTH - HORIZONTAL_SPACING) / 2 , SCREEN_HEIGHT - VERTICAL_SPACING};
+ const Vector2 SCREEN_TOP    {(SCREEN_WIDTH + HORIZONTAL_SPACING) / 2 , VERTICAL_SPACING};
+ const Vector2 SCREEN_LEFT   {VERTICAL_SPACING , (SCREEN_HEIGHT - HORIZONTAL_SPACING) / 2};
+ const Vector2 SCREEN_RIGHT  {SCREEN_WIDTH - VERTICAL_SPACING , (SCREEN_HEIGHT + HORIZONTAL_SPACING) / 2};
+   
   switch (m_Position)
   {
   case Position::TOP:
-    DrawRectangle((width - length) / 2, 0, length, thickness, RED);
-    RenderRows ( assets , Vector2{TOP.x + 50, TOP.y + 200} , 180);
-    RenderCards( assets , TOP ,180);
+    DrawRectangle((SCREEN_WIDTH - LENGHT) / 2, 0 , LENGHT , THICKNESS , RED);
+    RenderRows ( assets , Vector2{SCREEN_TOP.x + 50, SCREEN_TOP.y + 200} , 180);
+    RenderCards( assets , SCREEN_TOP ,180);
     break;
   case Position::RIGHT:
-    DrawRectangle(width - thickness, (height - length) / 2, thickness, length, GREEN);
-    RenderRows (assets,Vector2{ RIGHT.x - 200, RIGHT.y + 50}, 270);
-    RenderCards(assets, RIGHT , 270);
+    DrawRectangle(SCREEN_WIDTH - THICKNESS, (SCREEN_HEIGHT - LENGHT) / 2, THICKNESS , LENGHT , GREEN);
+    RenderRows (assets , Vector2{ SCREEN_RIGHT.x - 200, SCREEN_RIGHT.y + 50} , 270);
+    RenderCards(assets , SCREEN_RIGHT , 270);
     break;
   case Position::BOTTOM:
-    DrawRectangle((width - length) / 2, height - thickness, length, thickness, BLUE);
-    RenderRows (assets,Vector2{ BOTTOM.x - 50, BOTTOM.y - 200}, 0);
+    DrawRectangle((SCREEN_WIDTH - LENGHT) / 2 , SCREEN_HEIGHT - THICKNESS , LENGHT , THICKNESS , BLUE);
+    RenderRows (assets , Vector2{ SCREEN_BOTTOM.x - 50 , SCREEN_BOTTOM.y - 200} , 0);
     m_PassButton.Render(assets);
-    RenderCards(assets, BOTTOM, 0);
+    RenderCards(assets , SCREEN_BOTTOM , 0);
     break;
   case Position::LEFT:
-    DrawRectangle(0, (height - length) / 2, thickness, length, GRAY);
-    RenderRows (assets,Vector2{ LEFT.x + 200, LEFT.y - 50}, 90);
-    RenderCards(assets, LEFT, 90);
+    DrawRectangle(0, (SCREEN_HEIGHT - LENGHT) / 2 , THICKNESS , LENGHT , GRAY);
+    RenderRows (assets , Vector2{ SCREEN_LEFT.x + 200 , SCREEN_LEFT.y - 50} , 90);
+    RenderCards(assets , SCREEN_LEFT, 90);
     break;
   }
 }
