@@ -54,7 +54,9 @@ Map::Map(State* state)
 
 void Map::Update()
 {
-  if (m_State->Get() == State::MAIN_MENU || m_State->Get() == State::CUSTOMIZATION_MENU)
+  if (
+    m_State->Get() != State::PLACING_BATTLE_MARKER
+    || m_State->Get() != State::PLACING_FAVOR_MARKER)
   {
     return;
   }
@@ -104,7 +106,9 @@ void Map::Update()
 
 void Map::Render(const AssetManager& assets) const
 {
-  if (m_State->Get() == State::MAIN_MENU || m_State->Get() == State::CUSTOMIZATION_MENU)
+  if (
+    m_State->Get() != State::PLACING_BATTLE_MARKER
+    || m_State->Get() != State::PLACING_FAVOR_MARKER)
   {
     return;
   }
