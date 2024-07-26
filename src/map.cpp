@@ -106,17 +106,39 @@ void Map::Update()
 
 void Map::Render(const AssetManager& assets) const
 {
-  if (
-    m_State->Get() != State::PLACING_BATTLE_MARKER
-    || m_State->Get() != State::PLACING_FAVOR_MARKER)
-  {
-    return;
-  }
-
   int width = GetScreenWidth();
   int height = GetScreenHeight();
 
-  DrawTexture(assets.Map, (width - MAP_WIDTH) / 2, (height - MAP_HEIGHT) / 2, WHITE);
+  if (m_State->Get() == State::PLACING_BATTLE_MARKER
+      || m_State->Get() == State::PLACING_FAVOR_MARKER
+      || m_State->Get() == State::PLAYING_CARD)
+  {
+    DrawTexture(
+      assets.Map,
+      (width - MAP_WIDTH) / 2,
+      (height - MAP_HEIGHT) / 2,
+      WHITE
+    );
+  }
+
+  if (m_State->Get() == State::PLACING_BATTLE_MARKER
+      || m_State->Get() == State::PLACING_FAVOR_MARKER)
+  {
+    const float fontSize = 80.0f;
+    const std::string text = "Pick a region";
+
+    DrawTextEx(
+      assets.PrimaryFont,
+      text.c_str(),
+      Vector2{
+        (width - 0.3f * fontSize * text.size()) / 2.0f,
+        (height + MAP_HEIGHT + 10.0f) / 2.0f,
+      },
+      fontSize,
+      1,
+      BLACK
+    );
+  }
 }
 
 std::vector<const Player*> Map::FindWinners() const
