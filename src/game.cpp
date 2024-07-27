@@ -31,8 +31,8 @@ void Game::Start()
   SetTargetFPS(60);
 
   // TODO: add/customize players through menu
-  m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "amir", PURPLE, 10 , Position::TOP_LEFT);
-  m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "abbas", ORANGE, 10 , Position::TOP_RIGHT);
+  m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "amir", PURPLE, 3 , Position::TOP_LEFT);
+  m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "abbas", ORANGE, 6 , Position::TOP_RIGHT);
   m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "John", RED, 10 , Position::BOTTOM_LEFT);
   m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "Alex", BLUE, 1 , Position::BOTTOM_RIGHT);
   m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "Theo", GRAY, 4 ,Position::LEFT);
@@ -173,7 +173,7 @@ void Game::RotateTurn(){
     
     if(i == m_Players.size() - 1){
       m_Turn = StartPos;
-      m_Players[m_Turn].SetPosition(Position::BOTTOM);
+      m_Players[m_Turn].SetPosition(Position::BOTTOM_LEFT);
     }
     std::cout << StartPos << " " << EndPos << " " << i << std::endl;
     StartPos = EndPos;
