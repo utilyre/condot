@@ -79,23 +79,23 @@ void Player::Render(const AssetManager& assets) const
   switch (m_Position)
   {
   case Position::TOP:
-    DrawRectangle((SCREEN_WIDTH - LENGHT) / 2, 0 , LENGHT , THICKNESS , RED);
+    DrawRectangle((SCREEN_WIDTH - LENGHT) / 2, 0 , LENGHT , THICKNESS , GetColor());
     RenderRows ( assets , Vector2{SCREEN_TOP.x + 50, SCREEN_TOP.y + 200} , 180);
     RenderCards( assets , SCREEN_TOP ,180);
     break;
   case Position::RIGHT:
-    DrawRectangle(SCREEN_WIDTH - THICKNESS, (SCREEN_HEIGHT - LENGHT) / 2, THICKNESS , LENGHT , GREEN);
+    DrawRectangle(SCREEN_WIDTH - THICKNESS, (SCREEN_HEIGHT - LENGHT) / 2, THICKNESS , LENGHT , GetColor());
     RenderRows (assets , Vector2{ SCREEN_RIGHT.x - 200, SCREEN_RIGHT.y + 50} , 270);
     RenderCards(assets , SCREEN_RIGHT , 270);
     break;
   case Position::BOTTOM:
-    DrawRectangle((SCREEN_WIDTH - LENGHT) / 2 , SCREEN_HEIGHT - THICKNESS , LENGHT , THICKNESS , BLUE);
+    DrawRectangle((SCREEN_WIDTH - LENGHT) / 2 , SCREEN_HEIGHT - THICKNESS , LENGHT , THICKNESS , GetColor());
     RenderRows (assets , Vector2{ SCREEN_BOTTOM.x - 50 , SCREEN_BOTTOM.y - 200} , 0);
     m_PassButton.Render(assets);
     RenderCards(assets , SCREEN_BOTTOM , 0);
     break;
   case Position::LEFT:
-    DrawRectangle(0, (SCREEN_HEIGHT - LENGHT) / 2 , THICKNESS , LENGHT , GRAY);
+    DrawRectangle(0, (SCREEN_HEIGHT - LENGHT) / 2 , THICKNESS , LENGHT , GetColor());
     RenderRows (assets , Vector2{ SCREEN_LEFT.x + 200 , SCREEN_LEFT.y - 50} , 90);
     RenderCards(assets , SCREEN_LEFT, 90);
     break;
@@ -318,6 +318,7 @@ std::vector<Card>&  Player::GetCards(){
 }
 
 void Player::Add(const size_t& index){
+
   size_t power = m_Row[index].GetPower();
   if (power == 1) {
     m_Cards.push_back(Card::MERCENARY_1);
@@ -348,3 +349,6 @@ void Player::Add(const size_t& index){
  }
 }
       
+const Color Player::GetColor() const{
+  return m_Color;
+}

@@ -31,7 +31,6 @@ private:
   void InitiateBattle();
   void RotateTurn();
   void PickCard();
-
 private:
   bool m_Stopped;
   size_t m_Turn;

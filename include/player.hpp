@@ -43,6 +43,7 @@ public:
   const Position& GetPosition() const;
   std::vector<Card>& GetCards();
   void PickCard(const size_t& index);
+  const Color GetColor() const;
 private:
   bool PlayCard();
   void RenderCards(const AssetManager& assets, Vector2 cordinate, float rotation) const;
