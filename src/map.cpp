@@ -9,8 +9,9 @@
 #include <region.hpp>
 #include <player.hpp>
 
-static const int MAP_WIDTH = 0.81f * 1057;
-static const int MAP_HEIGHT = 0.81f * 831;
+static const int MAP_WIDTH = 1057;
+static const int MAP_HEIGHT = 831;
+static const float MAP_SCALE = 0.4f;
 
 Map::Map(State* state)
 : m_State(state),
@@ -73,9 +74,11 @@ void Map::Update()
     )
   )
   {
+    float scaleFactor = MAP_SCALE * height / MAP_HEIGHT;
+
     Vector2 mouse = GetMousePosition();
-    mouse.x -= (width - MAP_WIDTH) / 2.0f;
-    mouse.y -= (height - MAP_HEIGHT) / 2.0f;
+    mouse.x -= (width - scaleFactor * MAP_WIDTH) / 2.0f;
+    mouse.y -= (height - scaleFactor * MAP_HEIGHT) / 2.0f;
 
     for (Region& r : m_Regions)
     {
@@ -109,14 +112,21 @@ void Map::Render(const AssetManager& assets) const
   int width = GetScreenWidth();
   int height = GetScreenHeight();
 
+  float scaleFactor = MAP_SCALE * height / MAP_HEIGHT;
+  std::clog << "Map Scaling Factor = " << scaleFactor << '\n';
+
   if (m_State->Get() == State::PLACING_BATTLE_MARKER
       || m_State->Get() == State::PLACING_FAVOR_MARKER
       || m_State->Get() == State::PLAYING_CARD)
   {
-    DrawTexture(
+    DrawTextureEx(
       assets.Map,
-      (width - MAP_WIDTH) / 2,
-      (height - MAP_HEIGHT) / 2,
+      Vector2{
+        (width - scaleFactor * MAP_WIDTH) / 2,
+        (height - scaleFactor * MAP_HEIGHT) / 2,
+      },
+      0.0f,
+      scaleFactor,
       WHITE
     );
   }
@@ -132,7 +142,7 @@ void Map::Render(const AssetManager& assets) const
       text.c_str(),
       Vector2{
         (width - 0.3f * fontSize * text.size()) / 2.0f,
-        (height + MAP_HEIGHT + 10.0f) / 2.0f,
+        (height + scaleFactor * MAP_HEIGHT + 10.0f) / 2.0f,
       },
       fontSize,
       1,
