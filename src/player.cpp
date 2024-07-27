@@ -9,6 +9,9 @@
 #include <mercenary.hpp>
 #include <button.hpp>
 
+static const int CARD_HEIGHT = 255;
+static const float CARD_SCALE = 0.15f;
+
 Player::Player(
   State* state,
   Event* rotateTurnEvent,
@@ -173,9 +176,9 @@ void Player::RenderRows(const AssetManager& assets, Vector2 cordinate, float rot
 
 void Player::RenderCards(const AssetManager& assets, Vector2 cordinate, float rotation) const
 {
-  Card card = Card::BACKSIDE;
+  float ratio = CARD_SCALE * GetScreenHeight() / CARD_HEIGHT;
   
-  float ratio = 0.75;
+  Card card = Card::BACKSIDE;
   if (m_Position == Position::TOP_LEFT)
   {
     for (size_t c{} ; c < m_Cards.size() ; ++c)
