@@ -106,13 +106,6 @@ void Map::Update()
 
 void Map::Render(const AssetManager& assets) const
 {
-  if (
-    m_State->Get() != State::PLACING_BATTLE_MARKER
-    && m_State->Get() != State::PLACING_FAVOR_MARKER)
-  {
-    return;
-  }
-  
   int width = GetScreenWidth();
   int height = GetScreenHeight();
 
