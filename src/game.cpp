@@ -31,10 +31,12 @@ void Game::Start()
   SetTargetFPS(60);
 
   // TODO: add/customize players through menu
-  m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "John", RED, 10 , Position::TOP);
-  m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "Jane", GREEN, 2 , Position::RIGHT);
-  m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "Alex", BLUE, 1 , Position::BOTTOM);
+  m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "amir", PURPLE, 10 , Position::TOP_LEFT);
+  m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "abbas", ORANGE, 10 , Position::TOP_RIGHT);
+  m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "John", RED, 10 , Position::BOTTOM_LEFT);
+  m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "Alex", BLUE, 1 , Position::BOTTOM_RIGHT);
   m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "Theo", GRAY, 4 ,Position::LEFT);
+  m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "Jane", GREEN, 2 , Position::RIGHT);
 
   // NOTE: do NOT modify
   while (!m_Stopped && !WindowShouldClose())
