@@ -47,8 +47,7 @@ void Player::AddCard(Card card)
 
 void Player::Render(const AssetManager& assets) const
 {
-  if (m_State->Get() == State::MAIN_MENU || m_State->Get() == State::CUSTOMIZATION_MENU)
-  {
+  if (m_State->Get() != State::PLAYING_CARD){
     return;
   }
 
@@ -195,7 +194,7 @@ bool Player::PlayCard(){
           return true;
         }
       else if (m_PassButton.Pressed()){
-        //m_IsPassed = true;  
+        m_IsPassed = true;  
         return true;
       }
       index++;
