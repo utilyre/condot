@@ -30,6 +30,11 @@ Player::Player(
 
 void Player::Update()
 {
+  if(m_State->Get() == State::PLACING_BATTLE_MARKER ||
+     m_State->Get() == State::PLACING_FAVOR_MARKER){
+    return;
+  }
+  
   if (m_State->Get() != State::PLAYING_CARD){
     return;
   }
@@ -47,6 +52,11 @@ void Player::AddCard(Card card)
 
 void Player::Render(const AssetManager& assets) const
 {
+  if(m_State->Get() == State::PLACING_BATTLE_MARKER ||
+     m_State->Get() == State::PLACING_FAVOR_MARKER){
+    return;
+  }
+
   if (m_State->Get() == State::MAIN_MENU || m_State->Get() == State::CUSTOMIZATION_MENU)
   {
     return;
