@@ -113,7 +113,6 @@ void Map::Render(const AssetManager& assets) const
   int height = GetScreenHeight();
 
   float scaleFactor = MAP_SCALE * height / MAP_HEIGHT;
-  std::clog << "Map Scaling Factor = " << scaleFactor << '\n';
 
   if (m_State->Get() == State::PLACING_BATTLE_MARKER
       || m_State->Get() == State::PLACING_FAVOR_MARKER
