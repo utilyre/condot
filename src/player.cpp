@@ -36,7 +36,14 @@ void Player::Update()
     m_PassButton.Update();  
     if (PlayCard())
     {
-      m_RotateTurnEvent->Raise(this, nullptr);
+      if(IsPassed()){
+        m_IsPassed = false;
+        m_RotateTurnEvent->Raise(this, nullptr);
+        m_IsPassed = true;
+      }
+      else{
+        m_RotateTurnEvent->Raise(this, nullptr);
+      }
     }
 }
 
