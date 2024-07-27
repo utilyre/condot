@@ -79,6 +79,8 @@ void Map::Update()
     Vector2 mouse = GetMousePosition();
     mouse.x -= (width - scaleFactor * MAP_WIDTH) / 2.0f;
     mouse.y -= (height - scaleFactor * MAP_HEIGHT) / 2.0f;
+    mouse.x *= scaleFactor;
+    mouse.y *= scaleFactor;
 
     for (Region& r : m_Regions)
     {
