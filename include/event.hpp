@@ -19,8 +19,8 @@ using EventListenerFunc = std::function<void (Entity* sender, std::any data)>;
 class Event
 {
 public:
-  void Register(std::unique_ptr<EventListener>&& listener);
-  void Register(EventListenerFunc listener);
+  void Register(std::unique_ptr<EventListener>&& listener); // TODO: rename to Subscribe
+  void Register(EventListenerFunc listener); // TODO: rename to Subscribe
 
   void Raise(Entity* sender, std::any data);
 
