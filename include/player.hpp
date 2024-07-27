@@ -13,12 +13,13 @@
 #include <mercenary.hpp>
 #include <button.hpp>
 
-enum class Position
-{
-  TOP,
-  RIGHT,
-  BOTTOM,
+enum class Position {
+  TOP_LEFT,
+  TOP_RIGHT,
+  BOTTOM_LEFT,
+  BOTTOM_RIGHT,
   LEFT,
+  RIGHT,
 };
 
 class Player : public Entity
