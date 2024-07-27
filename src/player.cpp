@@ -65,39 +65,45 @@ void Player::Render(const AssetManager& assets) const
  const float SCREEN_HEIGHT = GetScreenHeight();
 
  const float THICKNESS = 200;
- const float LENGHT = 3 * SCREEN_HEIGHT / 4;
+ const float LENGHT = 3 * SCREEN_HEIGHT / 5;
 
- const float VERTICAL_SPACING   = 200.0f;
+ const float VERTICAL_SPACING   = 200;
  const float HORIZONTAL_SPACING = 570.0f;
 
- const Vector2 SCREEN_BOTTOM {(SCREEN_WIDTH - HORIZONTAL_SPACING) / 2 , SCREEN_HEIGHT - VERTICAL_SPACING};
- const Vector2 SCREEN_TOP    {(SCREEN_WIDTH + HORIZONTAL_SPACING) / 2 , VERTICAL_SPACING};
+ const Vector2 SCREEN_BOTTOM_LEFT {VERTICAL_SPACING, SCREEN_HEIGHT - VERTICAL_SPACING};
+ const Vector2 SCREEN_BOTTOM_RIGHT {SCREEN_WIDTH - 2 * VERTICAL_SPACING - HORIZONTAL_SPACING, SCREEN_HEIGHT - THICKNESS };
+ 
+ const Vector2 SCREEN_TOP_LEFT  {VERTICAL_SPACING + HORIZONTAL_SPACING, VERTICAL_SPACING};
+ const Vector2 SCREEN_TOP_RIGHT {SCREEN_WIDTH - VERTICAL_SPACING * 2, VERTICAL_SPACING};
+ 
  const Vector2 SCREEN_LEFT   {VERTICAL_SPACING , (SCREEN_HEIGHT - HORIZONTAL_SPACING) / 2};
  const Vector2 SCREEN_RIGHT  {SCREEN_WIDTH - VERTICAL_SPACING , (SCREEN_HEIGHT + HORIZONTAL_SPACING) / 2};
    
   switch (m_Position)
   {
   case Position::TOP_LEFT:
-    DrawRectangle((SCREEN_WIDTH - LENGHT) / 2, 0 , LENGHT , THICKNESS , GetColor());
-    RenderRows ( assets , Vector2{SCREEN_TOP.x + 50, SCREEN_TOP.y + 200} , 180);
-    RenderCards( assets , SCREEN_TOP ,180);
+    DrawRectangle(VERTICAL_SPACING, 0 , LENGHT , THICKNESS , GetColor());
+    RenderRows ( assets , Vector2{SCREEN_TOP_LEFT.x + 50, SCREEN_TOP_LEFT.y + 200} , 180);
+    RenderCards( assets , SCREEN_TOP_LEFT ,180);
     break;
     
   case Position::TOP_RIGHT:
+    DrawRectangle(SCREEN_WIDTH - HORIZONTAL_SPACING - VERTICAL_SPACING * 2, 0 , LENGHT , THICKNESS , GetColor());
+    RenderRows(assets,Vector2{SCREEN_TOP_RIGHT.x + 50, SCREEN_TOP_RIGHT.y + 200} , 180);
+    RenderCards(assets, SCREEN_TOP_RIGHT, 180);
     break;
     
   case Position::BOTTOM_LEFT:
-    DrawRectangle((SCREEN_WIDTH - LENGHT) / 2 , SCREEN_HEIGHT - THICKNESS , LENGHT , THICKNESS , GetColor());
-    RenderRows (assets , Vector2{ SCREEN_BOTTOM.x - 50 , SCREEN_BOTTOM.y - 200} , 0);
-    m_PassButton.Render(assets);
-    RenderCards(assets , SCREEN_BOTTOM , 0);
+    DrawRectangle(VERTICAL_SPACING, SCREEN_HEIGHT - THICKNESS , LENGHT , THICKNESS , GetColor());
+    RenderRows (assets , Vector2{ SCREEN_BOTTOM_LEFT.x - 50 , SCREEN_BOTTOM_LEFT.y - 200} , 0);
+    //m_PassButton.Render(assets);
+    RenderCards(assets , SCREEN_BOTTOM_LEFT , 0);
     break;
     
   case Position::BOTTOM_RIGHT:
-    DrawRectangle((SCREEN_WIDTH - LENGHT) / 2 , SCREEN_HEIGHT - THICKNESS , LENGHT , THICKNESS , GetColor());
-    RenderRows (assets , Vector2{ SCREEN_BOTTOM.x - 50 , SCREEN_BOTTOM.y - 200} , 0);
-    m_PassButton.Render(assets);
-    RenderCards(assets , SCREEN_BOTTOM , 0);
+    DrawRectangle(SCREEN_WIDTH - HORIZONTAL_SPACING - VERTICAL_SPACING * 2, SCREEN_HEIGHT - THICKNESS , LENGHT , THICKNESS , GetColor());
+    RenderRows (assets , Vector2{ SCREEN_BOTTOM_RIGHT.x - 50 , SCREEN_BOTTOM_RIGHT.y - 200} , 0);
+    RenderCards(assets , SCREEN_BOTTOM_RIGHT , 0);
     break;
     
   case Position::RIGHT:
@@ -107,7 +113,7 @@ void Player::Render(const AssetManager& assets) const
     break;
     
   case Position::LEFT:
-    DrawRectangle(0, (SCREEN_HEIGHT - LENGHT) / 2 , THICKNESS , LENGHT , GetColor());
+    DrawRectangle(0, (SCREEN_HEIGHT / 2) - (LENGHT / 2), THICKNESS , LENGHT , GetColor());
     RenderRows (assets , Vector2{ SCREEN_LEFT.x + 200 , SCREEN_LEFT.y - 50} , 90);
     RenderCards(assets , SCREEN_LEFT, 90);
     break;
@@ -116,7 +122,8 @@ void Player::Render(const AssetManager& assets) const
 
 void Player::RenderRows(const AssetManager& assets, Vector2 cordinate, float rotation) const
 {
-  float ratio = 0.75;
+  float ratio = CARD_SCALE * GetScreenHeight() / CARD_HEIGHT;
+
   if (m_Position == Position::TOP_LEFT)
   {
     for (auto c = m_Row.rbegin(); c != m_Row.rend(); ++c)
@@ -188,6 +195,15 @@ void Player::RenderCards(const AssetManager& assets, Vector2 cordinate, float ro
     }
   }
 
+  if (m_Position == Position::TOP_RIGHT)
+  {
+    for (size_t c{} ; c < m_Cards.size() ; ++c)
+    {
+      DrawTextureEx(card.GetAsset(assets), cordinate, rotation, ratio, WHITE);
+      cordinate.x -= 50;
+    }
+  }
+  
   if (m_Position == Position::BOTTOM_LEFT)
   {
     for (const auto& c : m_Cards)
@@ -198,6 +214,15 @@ void Player::RenderCards(const AssetManager& assets, Vector2 cordinate, float ro
     
   }
   
+  if (m_Position == Position::BOTTOM_RIGHT)
+  {
+    for (const auto& c : m_Cards)
+    {
+      DrawTextureEx(c.GetAsset(assets), cordinate, rotation, ratio, WHITE);
+      cordinate.x += 50;
+    }
+    
+  }
   if (m_Position == Position::LEFT)
   {
     for (size_t c{} ; c < m_Cards.size(); ++c)
@@ -224,8 +249,8 @@ bool Player::PlayCard(){
     size_t index = 0;
     for(auto it = m_Cards.rbegin(); it != m_Cards.rend(); ++it)
     {
-      Rectangle LowerLayer = {((GetScreenWidth() - float(570)) / 2) + (float) 50 * index , GetScreenHeight() - float(200) , 50  , 190};
-      Rectangle UpperLayer = {((GetScreenWidth() - float(570)) / 2) + (float) 50 * index , GetScreenHeight() - float(200) , 120 , 190};
+      Rectangle LowerLayer = { 200 + (float) 50 * index , GetScreenHeight() - 200.0f, 50  , 190};
+      Rectangle UpperLayer = { 200 + (float) 50 * index , GetScreenHeight() - 200.0f, 120 , 190};
         
       if((CheckCollisionPointRec(GetMousePosition(), LowerLayer) ||
          (CheckCollisionPointRec(GetMousePosition(), UpperLayer) &&
