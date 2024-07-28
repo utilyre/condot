@@ -12,7 +12,6 @@
 static const int CARD_WIDTH = 164;
 static const int CARD_HEIGHT = 255;
 static const float CARD_SCALE = 0.15f;
- static const float HORIZONTAL_SPACING = 570.0f;
 
 Player::Player(
   State* state,
@@ -65,49 +64,48 @@ void Player::Render(const AssetManager& assets) const
   
  const float SCREEN_WIDTH  = GetScreenWidth();
  const float SCREEN_HEIGHT = GetScreenHeight();
-  
- const float SCALE = CARD_SCALE * GetScreenHeight() / CARD_HEIGHT;
+ const float SCALE = CARD_SCALE * SCREEN_HEIGHT * SCREEN_WIDTH / (CARD_HEIGHT * CARD_WIDTH * 12);
  const float THICKNESS = SCALE  * (CARD_HEIGHT + 50);
+ const float HORIZONTAL_SPACING = SCALE * (9.0 * CARD_WIDTH / 2 + CARD_WIDTH); 
 
- const Vector2 SCREEN_BOTTOM_LEFT  {(SCREEN_WIDTH - HORIZONTAL_SPACING) / 4  , SCREEN_HEIGHT - SCALE * (CARD_HEIGHT + 50)};
- const Vector2 SCREEN_BOTTOM_RIGHT {3 * (SCREEN_WIDTH - HORIZONTAL_SPACING) / 4 , SCREEN_HEIGHT - SCALE * (CARD_HEIGHT + 50)};
+ const Vector2 SCREEN_BOTTOM_LEFT  {SCALE * (CARD_HEIGHT * 2 + 50) , SCREEN_HEIGHT - SCALE * (CARD_HEIGHT + 50)};
+ const Vector2 SCREEN_BOTTOM_RIGHT {SCREEN_WIDTH - SCALE * (CARD_HEIGHT * 2 + 50) - HORIZONTAL_SPACING, SCREEN_HEIGHT - SCALE * (CARD_HEIGHT + 50)};
  
- const Vector2 SCREEN_TOP_LEFT  {(SCREEN_WIDTH - HORIZONTAL_SPACING) / 4 + HORIZONTAL_SPACING, SCALE * (CARD_HEIGHT + 50)};
- const Vector2 SCREEN_TOP_RIGHT {3 * (SCREEN_WIDTH - HORIZONTAL_SPACING) / 4 + HORIZONTAL_SPACING, SCALE * (CARD_HEIGHT + 50)};
+ const Vector2 SCREEN_TOP_LEFT  {SCALE * (CARD_HEIGHT * 2 + 50) + HORIZONTAL_SPACING, SCALE * (CARD_HEIGHT + 50)};
+ const Vector2 SCREEN_TOP_RIGHT {SCREEN_WIDTH - SCALE * (CARD_HEIGHT * 2 + 50) , SCALE * (CARD_HEIGHT + 50)};
  
  const Vector2 SCREEN_LEFT   {SCALE * (CARD_HEIGHT + 50), (SCREEN_HEIGHT - HORIZONTAL_SPACING) / 2};
  const Vector2 SCREEN_RIGHT  {SCREEN_WIDTH - SCALE * (CARD_HEIGHT + 50) , (SCREEN_HEIGHT + HORIZONTAL_SPACING) / 2};
- 
    
   switch (m_Position)
   {
   case Position::TOP_LEFT:
-    DrawRectangle((SCREEN_WIDTH - HORIZONTAL_SPACING) / 4, 0 , HORIZONTAL_SPACING , THICKNESS , m_Color);
+    DrawRectangle(SCALE * (CARD_HEIGHT * 2 + 50) , 0 , HORIZONTAL_SPACING , THICKNESS , GetColor());
     RenderRows ( assets , Vector2{SCREEN_TOP_LEFT.x , SCREEN_TOP_LEFT.y + CARD_HEIGHT * SCALE / 2} , 180, SCALE);
     RenderCards( assets , SCREEN_TOP_LEFT ,180, SCALE);
     break;
     
   case Position::TOP_RIGHT:
-    DrawRectangle(3 * (SCREEN_WIDTH - HORIZONTAL_SPACING) / 4, 0 , HORIZONTAL_SPACING , THICKNESS , m_Color);
+    DrawRectangle(SCREEN_WIDTH - SCALE * (CARD_HEIGHT * 2 + 50) - HORIZONTAL_SPACING, 0 , HORIZONTAL_SPACING , THICKNESS , GetColor());
     RenderRows(assets,Vector2{SCREEN_TOP_RIGHT.x , SCREEN_TOP_RIGHT.y + CARD_HEIGHT * SCALE / 2} , 180, SCALE);
     RenderCards(assets, SCREEN_TOP_RIGHT, 180, SCALE);
     break;
     
   case Position::BOTTOM_LEFT:
-    DrawRectangle((SCREEN_WIDTH - HORIZONTAL_SPACING) / 4, SCREEN_HEIGHT - THICKNESS , HORIZONTAL_SPACING , THICKNESS , m_Color);
+    DrawRectangle(SCALE * (CARD_HEIGHT * 2 + 50) , SCREEN_HEIGHT - THICKNESS , HORIZONTAL_SPACING , THICKNESS , GetColor());
     RenderRows (assets , Vector2{ SCREEN_BOTTOM_LEFT.x , SCREEN_BOTTOM_LEFT.y - CARD_HEIGHT * SCALE / 2} , 0, SCALE);
     //m_PassButton.Render(assets);
     RenderCards(assets , SCREEN_BOTTOM_LEFT , 0, SCALE);
     break;
     
   case Position::BOTTOM_RIGHT:
-    DrawRectangle(3 * (SCREEN_WIDTH - HORIZONTAL_SPACING) / 4, SCREEN_HEIGHT - THICKNESS , HORIZONTAL_SPACING , THICKNESS , m_Color);
+    DrawRectangle(SCREEN_WIDTH - SCALE * (CARD_HEIGHT * 2 + 50) - HORIZONTAL_SPACING , SCREEN_HEIGHT - THICKNESS , HORIZONTAL_SPACING , THICKNESS , GetColor());
     RenderRows (assets , Vector2{ SCREEN_BOTTOM_RIGHT.x , SCREEN_BOTTOM_RIGHT.y - CARD_HEIGHT * SCALE / 2} , 0,SCALE);
     RenderCards(assets , SCREEN_BOTTOM_RIGHT , 0, SCALE);
     break;
     
   case Position::RIGHT:
-    DrawRectangle(SCREEN_WIDTH - THICKNESS, (SCREEN_HEIGHT - HORIZONTAL_SPACING) / 2, THICKNESS , HORIZONTAL_SPACING , m_Color);
+    DrawRectangle(SCREEN_WIDTH - THICKNESS, (SCREEN_HEIGHT - HORIZONTAL_SPACING) / 2, HORIZONTAL_SPACING , HORIZONTAL_SPACING , GetColor());
     RenderRows (assets , Vector2{ SCREEN_RIGHT.x - CARD_HEIGHT * SCALE / 2, SCREEN_RIGHT.y} , 270, SCALE);
     RenderCards(assets , SCREEN_RIGHT , 270, SCALE);
     break;
@@ -122,12 +120,13 @@ void Player::Render(const AssetManager& assets) const
 
 void Player::RenderRows(const AssetManager& assets, Vector2 cordinate, float rotation, float ratio) const
 {
+ const float SCALE = CARD_SCALE * GetScreenHeight() * GetScreenWidth() / (CARD_HEIGHT * CARD_WIDTH * 12);
   if (m_Position == Position::TOP_LEFT)
   {
     for (auto c = m_Row.rbegin(); c != m_Row.rend(); ++c)
     {
       DrawTextureEx(c->GetAsset(assets), cordinate, rotation, ratio, WHITE);
-      cordinate.x -= 50;
+      cordinate.x -= CARD_WIDTH / 2.0 * SCALE;
     }
   }
   
@@ -136,7 +135,7 @@ void Player::RenderRows(const AssetManager& assets, Vector2 cordinate, float rot
     for (auto c = m_Row.rbegin(); c != m_Row.rend(); ++c)
     {
       DrawTextureEx(c->GetAsset(assets), cordinate, rotation, ratio, WHITE);
-      cordinate.x -= 50;
+      cordinate.x -= CARD_WIDTH / 2.0 * SCALE;
     }
   }
   
@@ -145,7 +144,7 @@ void Player::RenderRows(const AssetManager& assets, Vector2 cordinate, float rot
     for (auto c = m_Row.rbegin(); c != m_Row.rend(); ++c)
     {
       DrawTextureEx(c->GetAsset(assets), cordinate, rotation, ratio, WHITE);
-      cordinate.x += 50;
+      cordinate.x += CARD_WIDTH / 2.0 * SCALE;
     }
   }
 
@@ -154,7 +153,7 @@ void Player::RenderRows(const AssetManager& assets, Vector2 cordinate, float rot
     for (const auto& c : m_Row)
     {
       DrawTextureEx(c.GetAsset(assets), cordinate, rotation, ratio, WHITE);
-      cordinate.x += 50;
+      cordinate.x += CARD_WIDTH / 2.0 * SCALE;
     }
     
   }
@@ -164,7 +163,7 @@ void Player::RenderRows(const AssetManager& assets, Vector2 cordinate, float rot
     for (const auto& c : m_Row)
     {
       DrawTextureEx(c.GetAsset(assets), cordinate, rotation, ratio, WHITE);
-      cordinate.y += 50;
+      cordinate.y += CARD_WIDTH / 2.0 * SCALE;
     }
   }
 
@@ -173,7 +172,7 @@ void Player::RenderRows(const AssetManager& assets, Vector2 cordinate, float rot
     for(auto c = m_Row.rbegin(); c != m_Row.rend(); ++c)
     {
       DrawTextureEx(c->GetAsset(assets), cordinate, rotation, ratio, WHITE);
-      cordinate.y -= 50;
+      cordinate.y -= CARD_WIDTH / 2.0 * SCALE;
       
     }  
   }
@@ -181,14 +180,15 @@ void Player::RenderRows(const AssetManager& assets, Vector2 cordinate, float rot
 
 void Player::RenderCards(const AssetManager& assets, Vector2 cordinate, float rotation, float ratio) const
 {
-  
+   
+  const float SCALE = CARD_SCALE * GetScreenHeight() * GetScreenWidth() / (CARD_HEIGHT * CARD_WIDTH * 12);
   Card card = Card::BACKSIDE;
   if (m_Position == Position::TOP_LEFT)
   {
     for (size_t c{} ; c < m_Cards.size() ; ++c)
     {
       DrawTextureEx(card.GetAsset(assets), cordinate, rotation, ratio, WHITE);
-      cordinate.x -= 50;
+      cordinate.x -= CARD_WIDTH / 2.0 * SCALE;
     }
   }
 
@@ -197,7 +197,7 @@ void Player::RenderCards(const AssetManager& assets, Vector2 cordinate, float ro
     for (size_t c{} ; c < m_Cards.size() ; ++c)
     {
       DrawTextureEx(card.GetAsset(assets), cordinate, rotation, ratio, WHITE);
-      cordinate.x -= 50;
+      cordinate.x -= CARD_WIDTH / 2.0 * SCALE;
     }
   }
   
@@ -206,7 +206,7 @@ void Player::RenderCards(const AssetManager& assets, Vector2 cordinate, float ro
     for (const auto& c : m_Cards)
     {
       DrawTextureEx(c.GetAsset(assets), cordinate, rotation, ratio, WHITE);
-      cordinate.x += 50;
+      cordinate.x += CARD_WIDTH / 2.0 * SCALE;
     }
     
   }
@@ -216,7 +216,7 @@ void Player::RenderCards(const AssetManager& assets, Vector2 cordinate, float ro
     for (size_t c{}; c < m_Cards.size(); ++c)
     {
       DrawTextureEx(card.GetAsset(assets), cordinate, rotation, ratio, WHITE);
-      cordinate.x += 50;
+      cordinate.x += CARD_WIDTH / 2.0 * SCALE;
     }
     
   }
@@ -225,7 +225,7 @@ void Player::RenderCards(const AssetManager& assets, Vector2 cordinate, float ro
     for (size_t c{} ; c < m_Cards.size(); ++c)
     {
       DrawTextureEx(card.GetAsset(assets), cordinate, rotation, ratio, WHITE);
-      cordinate.y += 50;
+      cordinate.y += CARD_WIDTH / 2.0 * SCALE;
     }
   }
   
@@ -234,7 +234,7 @@ void Player::RenderCards(const AssetManager& assets, Vector2 cordinate, float ro
     for(size_t c{} ; c < m_Cards.size() ; ++c)
     {
       DrawTextureEx(card.GetAsset(assets), cordinate, rotation, ratio, WHITE);
-      cordinate.y -= 50;
+      cordinate.y -= CARD_WIDTH / 2.0 * SCALE;
       
     }  
   }
@@ -242,20 +242,24 @@ void Player::RenderCards(const AssetManager& assets, Vector2 cordinate, float ro
 
 bool Player::PlayCard(){
 
+  const float scale = CARD_SCALE * GetScreenWidth() * GetScreenHeight() / (CARD_HEIGHT * CARD_WIDTH * 12);
+ const float HORIZONTAL_SPACING = scale * (9.0 * CARD_WIDTH / 2 + CARD_WIDTH); 
   if (m_Position == Position::BOTTOM_LEFT)
   {
     size_t index = 0;
     for(auto it = m_Cards.rbegin(); it != m_Cards.rend(); ++it)
     {
-      float scale = CARD_SCALE * GetScreenHeight() / CARD_HEIGHT;
-      Rectangle LowerLayer = { (GetScreenWidth() - HORIZONTAL_SPACING) / 4 + (float) 50 * index , GetScreenHeight() - scale * (CARD_HEIGHT + 50), 50 , CARD_HEIGHT * scale};
-      Rectangle UpperLayer = { (GetScreenWidth() - HORIZONTAL_SPACING) / 4 + (float) 50 * index , GetScreenHeight() - scale * (CARD_HEIGHT + 50), CARD_WIDTH * scale, CARD_HEIGHT * scale};
+      Rectangle LowerLayer = { (GetScreenWidth() - HORIZONTAL_SPACING) / 4 + CARD_WIDTH / 2.0f * scale * index , GetScreenHeight() - scale * (CARD_HEIGHT + 50), CARD_WIDTH / 2.0f * scale , CARD_HEIGHT * scale};
+      Rectangle UpperLayer = { (GetScreenWidth() - HORIZONTAL_SPACING) / 4 + CARD_WIDTH / 2.0f * scale  * index , GetScreenHeight() - scale * (CARD_HEIGHT + 50), CARD_WIDTH * scale, CARD_HEIGHT * scale};
         
       if((CheckCollisionPointRec(GetMousePosition(), LowerLayer) ||
          (CheckCollisionPointRec(GetMousePosition(), UpperLayer) &&
          m_Cards.size() - 1 == index )) && 
           IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
         {
+          // BeginDrawing();
+          // DrawRectangle((GetScreenWidth() - HORIZONTAL_SPACING) / 4 + CARD_WIDTH / 2.0f * scale  * index , GetScreenHeight() - scale * (CARD_HEIGHT + 50), CARD_WIDTH * scale, CARD_HEIGHT * scale , BLACK );
+          // EndDrawing();
           PickCard(index);
           return true;
         }
