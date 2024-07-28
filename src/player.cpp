@@ -364,7 +364,7 @@ bool Player::IsPassed(){
   return m_IsPassed;
 }
 
-const Position& Player::GetPosition() const{
+Position Player::GetPosition() const{
   return m_Position;
 }
 

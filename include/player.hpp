@@ -41,7 +41,7 @@ public:
   void AddCard(Card card);
   bool IsPassed();
   void SetPosition(const Position& position);
-  const Position& GetPosition() const;
+  Position GetPosition() const;
   std::vector<Card>& GetCards();
   void PickCard(const size_t& index);
   const Color GetColor() const;
