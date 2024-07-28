@@ -63,59 +63,57 @@ void Player::Render(const AssetManager& assets) const
   
  const float SCREEN_WIDTH  = GetScreenWidth();
  const float SCREEN_HEIGHT = GetScreenHeight();
-
- const float THICKNESS = 200;
- const float LENGHT = 3 * SCREEN_HEIGHT / 5;
-
- const float VERTICAL_SPACING   = 200;
+ 
  const float HORIZONTAL_SPACING = 570.0f;
+ 
+ const float SCALE = CARD_SCALE * GetScreenHeight() / CARD_HEIGHT;
+ const float THICKNESS = SCALE * (CARD_HEIGHT + 50);
 
- const Vector2 SCREEN_BOTTOM_LEFT {VERTICAL_SPACING, SCREEN_HEIGHT - VERTICAL_SPACING};
- const Vector2 SCREEN_BOTTOM_RIGHT {SCREEN_WIDTH - 2 * VERTICAL_SPACING - HORIZONTAL_SPACING, SCREEN_HEIGHT - THICKNESS };
+ const Vector2 SCREEN_BOTTOM_LEFT  {(SCREEN_WIDTH - HORIZONTAL_SPACING) / 4  , SCREEN_HEIGHT - SCALE * (CARD_HEIGHT + 50)};
+ const Vector2 SCREEN_BOTTOM_RIGHT {3 * (SCREEN_WIDTH - HORIZONTAL_SPACING) / 4 , SCREEN_HEIGHT - SCALE * (CARD_HEIGHT + 50)};
  
- const Vector2 SCREEN_TOP_LEFT  {VERTICAL_SPACING + HORIZONTAL_SPACING, VERTICAL_SPACING};
- const Vector2 SCREEN_TOP_RIGHT {SCREEN_WIDTH - VERTICAL_SPACING * 2, VERTICAL_SPACING};
+ const Vector2 SCREEN_TOP_LEFT  {(SCREEN_WIDTH - HORIZONTAL_SPACING) / 4 + HORIZONTAL_SPACING, SCALE * (CARD_HEIGHT + 50)};
+ const Vector2 SCREEN_TOP_RIGHT {3 * (SCREEN_WIDTH - HORIZONTAL_SPACING) / 4 + HORIZONTAL_SPACING, SCALE * (CARD_HEIGHT + 50)};
  
- const Vector2 SCREEN_LEFT   {VERTICAL_SPACING , (SCREEN_HEIGHT - HORIZONTAL_SPACING) / 2};
- const Vector2 SCREEN_RIGHT  {SCREEN_WIDTH - VERTICAL_SPACING , (SCREEN_HEIGHT + HORIZONTAL_SPACING) / 2};
+ const Vector2 SCREEN_LEFT   {SCALE * (CARD_HEIGHT + 50), (SCREEN_HEIGHT - HORIZONTAL_SPACING) / 2};
+ const Vector2 SCREEN_RIGHT  {SCREEN_WIDTH - SCALE * (CARD_HEIGHT + 50) , (SCREEN_HEIGHT + HORIZONTAL_SPACING) / 2};
  
- float SCALE = CARD_SCALE * GetScreenHeight() / CARD_HEIGHT;
    
   switch (m_Position)
   {
   case Position::TOP_LEFT:
-    DrawRectangle(VERTICAL_SPACING, 0 , LENGHT , THICKNESS , GetColor());
+    DrawRectangle((SCREEN_WIDTH - HORIZONTAL_SPACING) / 4, 0 , HORIZONTAL_SPACING , THICKNESS , GetColor());
     RenderRows ( assets , Vector2{SCREEN_TOP_LEFT.x + 50, SCREEN_TOP_LEFT.y + 200} , 180, SCALE);
     RenderCards( assets , SCREEN_TOP_LEFT ,180, SCALE);
     break;
     
   case Position::TOP_RIGHT:
-    DrawRectangle(SCREEN_WIDTH - HORIZONTAL_SPACING - VERTICAL_SPACING * 2, 0 , LENGHT , THICKNESS , GetColor());
+    DrawRectangle(3 * (SCREEN_WIDTH - HORIZONTAL_SPACING) / 4, 0 , HORIZONTAL_SPACING , THICKNESS , GetColor());
     RenderRows(assets,Vector2{SCREEN_TOP_RIGHT.x + 50, SCREEN_TOP_RIGHT.y + 200} , 180, SCALE);
     RenderCards(assets, SCREEN_TOP_RIGHT, 180, SCALE);
     break;
     
   case Position::BOTTOM_LEFT:
-    DrawRectangle(VERTICAL_SPACING, SCREEN_HEIGHT - THICKNESS , LENGHT , THICKNESS , GetColor());
+    DrawRectangle((SCREEN_WIDTH - HORIZONTAL_SPACING) / 4, SCREEN_HEIGHT - THICKNESS , HORIZONTAL_SPACING , THICKNESS , GetColor());
     RenderRows (assets , Vector2{ SCREEN_BOTTOM_LEFT.x - 50 , SCREEN_BOTTOM_LEFT.y - 200} , 0, SCALE);
     //m_PassButton.Render(assets);
     RenderCards(assets , SCREEN_BOTTOM_LEFT , 0, SCALE);
     break;
     
   case Position::BOTTOM_RIGHT:
-    DrawRectangle(SCREEN_WIDTH - HORIZONTAL_SPACING - VERTICAL_SPACING * 2, SCREEN_HEIGHT - THICKNESS , LENGHT , THICKNESS , GetColor());
+    DrawRectangle(3 * (SCREEN_WIDTH - HORIZONTAL_SPACING) / 4, SCREEN_HEIGHT - THICKNESS , HORIZONTAL_SPACING , THICKNESS , GetColor());
     RenderRows (assets , Vector2{ SCREEN_BOTTOM_RIGHT.x - 50 , SCREEN_BOTTOM_RIGHT.y - 200} , 0,SCALE);
     RenderCards(assets , SCREEN_BOTTOM_RIGHT , 0, SCALE);
     break;
     
   case Position::RIGHT:
-    DrawRectangle(SCREEN_WIDTH - THICKNESS, (SCREEN_HEIGHT - LENGHT) / 2, THICKNESS , LENGHT , GetColor());
+    DrawRectangle(SCREEN_WIDTH - THICKNESS, (SCREEN_HEIGHT - HORIZONTAL_SPACING) / 2, THICKNESS , HORIZONTAL_SPACING , GetColor());
     RenderRows (assets , Vector2{ SCREEN_RIGHT.x - 200, SCREEN_RIGHT.y + 50} , 270, SCALE);
     RenderCards(assets , SCREEN_RIGHT , 270, SCALE);
     break;
     
   case Position::LEFT:
-    DrawRectangle(0, (SCREEN_HEIGHT / 2) - (LENGHT / 2), THICKNESS , LENGHT , GetColor());
+    DrawRectangle(0, (SCREEN_HEIGHT - HORIZONTAL_SPACING) / 2, THICKNESS , HORIZONTAL_SPACING , GetColor());
     RenderRows (assets , Vector2{ SCREEN_LEFT.x + 200 , SCREEN_LEFT.y - 50} , 90, SCALE);
     RenderCards(assets , SCREEN_LEFT, 90, SCALE);
     break;
