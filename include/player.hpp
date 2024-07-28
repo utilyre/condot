@@ -42,15 +42,15 @@ public:
   bool IsPassed();
   void SetPosition(const Position& position);
   Position GetPosition() const;
-  std::vector<Card>& GetCards();
   void PickCard(const size_t& index);
-  const Color GetColor() const;
+
 private:
   bool PlayCard();
   void RenderCards(const AssetManager& assets, Vector2 cordinate, float rotation, float ratio) const;
   void RenderRows(const AssetManager& assets, Vector2 cordinate, float rotation, float ratio) const;
   void Pass();
   void Add(const size_t& index);
+
 private:
   State* m_State;
   Event* m_RotateTurnEvent;

@@ -82,38 +82,38 @@ void Player::Render(const AssetManager& assets) const
   switch (m_Position)
   {
   case Position::TOP_LEFT:
-    DrawRectangle((SCREEN_WIDTH - HORIZONTAL_SPACING) / 4, 0 , HORIZONTAL_SPACING , THICKNESS , GetColor());
+    DrawRectangle((SCREEN_WIDTH - HORIZONTAL_SPACING) / 4, 0 , HORIZONTAL_SPACING , THICKNESS , m_Color);
     RenderRows ( assets , Vector2{SCREEN_TOP_LEFT.x , SCREEN_TOP_LEFT.y + CARD_HEIGHT * SCALE / 2} , 180, SCALE);
     RenderCards( assets , SCREEN_TOP_LEFT ,180, SCALE);
     break;
     
   case Position::TOP_RIGHT:
-    DrawRectangle(3 * (SCREEN_WIDTH - HORIZONTAL_SPACING) / 4, 0 , HORIZONTAL_SPACING , THICKNESS , GetColor());
+    DrawRectangle(3 * (SCREEN_WIDTH - HORIZONTAL_SPACING) / 4, 0 , HORIZONTAL_SPACING , THICKNESS , m_Color);
     RenderRows(assets,Vector2{SCREEN_TOP_RIGHT.x , SCREEN_TOP_RIGHT.y + CARD_HEIGHT * SCALE / 2} , 180, SCALE);
     RenderCards(assets, SCREEN_TOP_RIGHT, 180, SCALE);
     break;
     
   case Position::BOTTOM_LEFT:
-    DrawRectangle((SCREEN_WIDTH - HORIZONTAL_SPACING) / 4, SCREEN_HEIGHT - THICKNESS , HORIZONTAL_SPACING , THICKNESS , GetColor());
+    DrawRectangle((SCREEN_WIDTH - HORIZONTAL_SPACING) / 4, SCREEN_HEIGHT - THICKNESS , HORIZONTAL_SPACING , THICKNESS , m_Color);
     RenderRows (assets , Vector2{ SCREEN_BOTTOM_LEFT.x , SCREEN_BOTTOM_LEFT.y - CARD_HEIGHT * SCALE / 2} , 0, SCALE);
     //m_PassButton.Render(assets);
     RenderCards(assets , SCREEN_BOTTOM_LEFT , 0, SCALE);
     break;
     
   case Position::BOTTOM_RIGHT:
-    DrawRectangle(3 * (SCREEN_WIDTH - HORIZONTAL_SPACING) / 4, SCREEN_HEIGHT - THICKNESS , HORIZONTAL_SPACING , THICKNESS , GetColor());
+    DrawRectangle(3 * (SCREEN_WIDTH - HORIZONTAL_SPACING) / 4, SCREEN_HEIGHT - THICKNESS , HORIZONTAL_SPACING , THICKNESS , m_Color);
     RenderRows (assets , Vector2{ SCREEN_BOTTOM_RIGHT.x , SCREEN_BOTTOM_RIGHT.y - CARD_HEIGHT * SCALE / 2} , 0,SCALE);
     RenderCards(assets , SCREEN_BOTTOM_RIGHT , 0, SCALE);
     break;
     
   case Position::RIGHT:
-    DrawRectangle(SCREEN_WIDTH - THICKNESS, (SCREEN_HEIGHT - HORIZONTAL_SPACING) / 2, THICKNESS , HORIZONTAL_SPACING , GetColor());
+    DrawRectangle(SCREEN_WIDTH - THICKNESS, (SCREEN_HEIGHT - HORIZONTAL_SPACING) / 2, THICKNESS , HORIZONTAL_SPACING , m_Color);
     RenderRows (assets , Vector2{ SCREEN_RIGHT.x - CARD_HEIGHT * SCALE / 2, SCREEN_RIGHT.y} , 270, SCALE);
     RenderCards(assets , SCREEN_RIGHT , 270, SCALE);
     break;
     
   case Position::LEFT:
-    DrawRectangle(0, (SCREEN_HEIGHT - HORIZONTAL_SPACING) / 2, THICKNESS  , HORIZONTAL_SPACING , GetColor());
+    DrawRectangle(0, (SCREEN_HEIGHT - HORIZONTAL_SPACING) / 2, THICKNESS  , HORIZONTAL_SPACING , m_Color);
     RenderRows (assets , Vector2{ SCREEN_LEFT.x + CARD_HEIGHT * SCALE / 2 , SCREEN_LEFT.y} , 90, SCALE);
     RenderCards(assets , SCREEN_LEFT, 90, SCALE);
     break;
@@ -368,12 +368,7 @@ Position Player::GetPosition() const{
   return m_Position;
 }
 
-std::vector<Card>&  Player::GetCards(){
-  return m_Cards;
-}
-
 void Player::Add(const size_t& index){
-
   size_t power = m_Row[index].GetPower();
   if (power == 1) {
     m_Cards.push_back(Card::MERCENARY_1);
@@ -402,8 +397,4 @@ void Player::Add(const size_t& index){
   else if (power == 10) {
     m_Cards.push_back(Card::MERCENARY_10);
  }
-}
-      
-const Color Player::GetColor() const{
-  return m_Color;
 }
