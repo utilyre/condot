@@ -9,8 +9,10 @@
 #include <mercenary.hpp>
 #include <button.hpp>
 
+static const int CARD_WIDTH = 164;
 static const int CARD_HEIGHT = 255;
 static const float CARD_SCALE = 0.15f;
+ static const float HORIZONTAL_SPACING = 570.0f;
 
 Player::Player(
   State* state,
@@ -26,8 +28,8 @@ Player::Player(
   m_Color(color),
   m_Age(age),
   m_Position(position),
-  m_IsPassed(false),
-  m_PassButton ("SURRENDER",Rectangle(0.5f * GetScreenWidth() - 3.0f * GetScreenHeight() / 8.0f - 200.0f, GetScreenHeight() - float(200), 170 , 100))
+  m_IsPassed(false)
+  //m_PassButton ("SURRENDER",Rectangle(0.5f * GetScreenWidth() - 3.0f * GetScreenHeight() / 8.0f - 200.0f, GetScreenHeight() - float(200), 170 , 100))
 {
 }
 
@@ -36,7 +38,7 @@ void Player::Update()
   if (m_State->Get() != State::PLAYING_CARD){
     return;
   }
-    m_PassButton.Update();  
+    //m_PassButton.Update();  
     if (PlayCard())
     {
       if(IsPassed()){
@@ -63,11 +65,9 @@ void Player::Render(const AssetManager& assets) const
   
  const float SCREEN_WIDTH  = GetScreenWidth();
  const float SCREEN_HEIGHT = GetScreenHeight();
- 
- const float HORIZONTAL_SPACING = 570.0f;
- 
+  
  const float SCALE = CARD_SCALE * GetScreenHeight() / CARD_HEIGHT;
- const float THICKNESS = SCALE * (CARD_HEIGHT + 50);
+ const float THICKNESS = SCALE  * (CARD_HEIGHT + 50);
 
  const Vector2 SCREEN_BOTTOM_LEFT  {(SCREEN_WIDTH - HORIZONTAL_SPACING) / 4  , SCREEN_HEIGHT - SCALE * (CARD_HEIGHT + 50)};
  const Vector2 SCREEN_BOTTOM_RIGHT {3 * (SCREEN_WIDTH - HORIZONTAL_SPACING) / 4 , SCREEN_HEIGHT - SCALE * (CARD_HEIGHT + 50)};
@@ -247,8 +247,9 @@ bool Player::PlayCard(){
     size_t index = 0;
     for(auto it = m_Cards.rbegin(); it != m_Cards.rend(); ++it)
     {
-      Rectangle LowerLayer = { 200 + (float) 50 * index , GetScreenHeight() - 200.0f, 50  , 190};
-      Rectangle UpperLayer = { 200 + (float) 50 * index , GetScreenHeight() - 200.0f, 120 , 190};
+      float scale = CARD_SCALE * GetScreenHeight() / CARD_HEIGHT;
+      Rectangle LowerLayer = { (GetScreenWidth() - HORIZONTAL_SPACING) / 4 + (float) 50 * index , GetScreenHeight() - scale * (CARD_HEIGHT + 50), 50 , CARD_HEIGHT * scale};
+      Rectangle UpperLayer = { (GetScreenWidth() - HORIZONTAL_SPACING) / 4 + (float) 50 * index , GetScreenHeight() - scale * (CARD_HEIGHT + 50), CARD_WIDTH * scale, CARD_HEIGHT * scale};
         
       if((CheckCollisionPointRec(GetMousePosition(), LowerLayer) ||
          (CheckCollisionPointRec(GetMousePosition(), UpperLayer) &&
@@ -258,10 +259,10 @@ bool Player::PlayCard(){
           PickCard(index);
           return true;
         }
-      else if (m_PassButton.Pressed()){
-        m_IsPassed = true;  
-        return true;
-      }
+      // else if (m_PassButton.Pressed()){
+      //   m_IsPassed = true;  
+      //   return true;
+      // }
       index++;
     }
   }
