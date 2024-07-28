@@ -399,3 +399,7 @@ void Player::Add(size_t index){
     m_Cards.push_back(Card::MERCENARY_10);
  }
 }
+
+Color Player::GetColor() const{
+  return m_Color;
+}
