@@ -119,11 +119,6 @@ void Game::DealCards()
   }
 }
 
-const Player& Game::GetCurrentPlayer() const
-{
-  return m_Players[m_Turn];
-}
-
 size_t Game::FindBattleInstigatorIndex() const
 {
   int min = INT_MAX;

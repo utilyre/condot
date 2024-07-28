@@ -24,13 +24,11 @@ private:
   void Update();
   void Render() const;
 
-  const Player& GetCurrentPlayer() const;
   size_t FindBattleInstigatorIndex() const;
   void ResetCards();
   void DealCards();
   void InitiateBattle();
   bool RotateTurn();
-  void PickCard();
 
 private:
   bool m_Stopped;
