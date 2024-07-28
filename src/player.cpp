@@ -368,7 +368,7 @@ Position Player::GetPosition() const{
   return m_Position;
 }
 
-void Player::Add(const size_t& index){
+void Player::Add(size_t index){
   size_t power = m_Row[index].GetPower();
   if (power == 1) {
     m_Cards.push_back(Card::MERCENARY_1);

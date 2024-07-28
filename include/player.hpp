@@ -49,7 +49,7 @@ private:
   void RenderCards(const AssetManager& assets, Vector2 cordinate, float rotation, float ratio) const;
   void RenderRows(const AssetManager& assets, Vector2 cordinate, float rotation, float ratio) const;
   void Pass();
-  void Add(const size_t& index);
+  void Add(size_t index);
 
 private:
   State* m_State;
