@@ -257,9 +257,6 @@ bool Player::PlayCard(){
          m_Cards.size() - 1 == index )) && 
           IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
         {
-          // BeginDrawing();
-          // DrawRectangle((GetScreenWidth() - HORIZONTAL_SPACING) / 4 + CARD_WIDTH / 2.0f * scale  * index , GetScreenHeight() - scale * (CARD_HEIGHT + 50), CARD_WIDTH * scale, CARD_HEIGHT * scale , BLACK );
-          // EndDrawing();
           PickCard(index);
           return true;
         }
