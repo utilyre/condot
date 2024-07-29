@@ -29,7 +29,7 @@ bool StreamWriter::WriteVector(const std::vector<T>& v)
 
   for (const T& x : v)
   {
-    if (!WriteObject(v))
+    if (!WriteObject(x))
     {
       return false;
     }
@@ -68,7 +68,7 @@ bool StreamReader::ReadVector(std::vector<T>& v)
 
   for (T& x : v)
   {
-    if (!ReadObject(v))
+    if (!ReadObject(x))
     {
       return false;
     }
