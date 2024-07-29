@@ -34,6 +34,8 @@ bool StreamWriter::WriteVector(const std::vector<T>& v)
       return false;
     }
   }
+
+  return true;
 }
 
 bool StreamReader::ReadString(std::string& s)
@@ -72,5 +74,5 @@ bool StreamReader::ReadVector(std::vector<T>& v)
     }
   }
 
-  return v;
+  return true;
 }
