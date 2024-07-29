@@ -24,7 +24,7 @@ bool StreamWriter::WriteVector(const std::vector<T>& v)
 
   if constexpr (std::is_trivial<T>())
   {
-    return WriteData(&v[0], v.size() * sizeof(T));
+    return WriteData((const char*)&v[0], v.size() * sizeof(T));
   }
 
   for (const T& x : v)
@@ -63,7 +63,7 @@ bool StreamReader::ReadVector(std::vector<T>& v)
 
   if constexpr (std::is_trivial<T>())
   {
-    return ReadData(&v[0], v.size() * sizeof(T));
+    return ReadData((char*)&v[0], v.size() * sizeof(T));
   }
 
   for (T& x : v)
