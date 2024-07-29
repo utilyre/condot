@@ -1,16 +1,22 @@
-#include <raylib.h>
+#include <file_stream.hpp>
+#include <iostream>
 
-#include <game.hpp>
+struct Data {
+  int age;
+};
 
 int main()
 {
-  int m = GetCurrentMonitor();
-  InitWindow(GetMonitorWidth(m), GetMonitorHeight(m), "Condottiere");
+  FileStream f(
+    "data.bin",
+    std::ios::in | std::ios::out | std::ios::trunc | std::ios::binary
+  );
+  if (!f) return 1;
 
-  {
-    Game game;
-    game.Start();
-  }
+  std::vector<int> arr;
+  arr.push_back(1);
+  arr.push_back(2);
+  arr.push_back(3);
 
-  CloseWindow();
+  f.WriteVector(arr);
 }
