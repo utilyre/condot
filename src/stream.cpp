@@ -1,3 +1,4 @@
+#include <type_traits>
 #include <cstdint>
 #include <string>
 
@@ -19,6 +20,11 @@ bool StreamWriter::WriteVector(const std::vector<T>& v)
   if (!WriteRaw((uint64_t)v.size()))
   {
     return false;
+  }
+
+  if constexpr (std::is_trivial<T>())
+  {
+    return WriteData(&v[0], v.size());
   }
 
   for (const T& x : v)
@@ -52,6 +58,12 @@ bool StreamReader::ReadVector(std::vector<T>& v)
   }
 
   v.resize(size);
+
+  if constexpr (std::is_trivial<T>())
+  {
+    return ReadData(&v[0], v.size());
+  }
+
   for (T& x : v)
   {
     if (!ReadObject(v))
