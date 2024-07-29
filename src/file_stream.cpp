@@ -5,9 +5,9 @@
 #include <file_stream.hpp>
 
 FileStream::FileStream(const std::filesystem::path& path, std::ios::openmode mode)
-: m_Path(path)
+: m_Path(path),
+  m_File(path, mode)
 {
-  m_File = std::fstream(path, mode);
 }
 
 bool FileStream::WriteData(const char* data, uint64_t size)
