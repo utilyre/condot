@@ -1,7 +1,6 @@
 #pragma once
 
 #include <cstdint>
-#include <type_traits>
 #include <string>
 #include <vector>
 
@@ -19,15 +18,7 @@ public:
   bool WriteRaw(const T&  v) { return WriteData((const char*)&v, sizeof(T)); }
 
   template<typename T>
-  bool WriteObject(const T& v)
-  {
-    if constexpr (std::is_trivial<T>())
-    {
-      return WriteRaw(v);
-    }
-
-    return T::Serialize(*this, v);
-  }
+  bool WriteObject(const T& v) { return T::Serialize(*this, v); }
 
   bool WriteString(const std::string& s);
 
@@ -49,14 +40,7 @@ public:
   bool ReadRaw(T&  v) { return ReadData((char*)&v, sizeof(T)); }
 
   template<typename T>
-  bool ReadObject(T& v) {
-    if constexpr (std::is_trivial<T>())
-    {
-      return ReadRaw(v);
-    }
-
-    return T::Deserialize(*this, v);
-  }
+  bool ReadObject(T& v) { return T::Deserialize(*this, v); }
 
   bool ReadString(std::string& s);
 
