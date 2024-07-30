@@ -64,6 +64,7 @@ void Player::Render(const AssetManager& assets) const
   
  const float SCREEN_WIDTH  = GetScreenWidth();
  const float SCREEN_HEIGHT = GetScreenHeight();
+
  const float SCALE = CARD_SCALE * SCREEN_HEIGHT * SCREEN_WIDTH / (CARD_HEIGHT * CARD_WIDTH * 12);
  const float THICKNESS = SCALE  * (CARD_HEIGHT + 50);
  const float HORIZONTAL_SPACING = SCALE * (9.0 * CARD_WIDTH / 2 + CARD_WIDTH); 

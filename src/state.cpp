@@ -49,6 +49,8 @@ std::ostream& operator<<(std::ostream& out, State::Variant v)
   case State::PLAYING_CARD:
     out << "PLAYING_CARD";
     break;
+  case State::SCARECROW:
+    out << "SCARECROW";
   }
 
   return out;
