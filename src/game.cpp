@@ -64,8 +64,8 @@ void Game::Update()
   {
     if(&m_Players[m_Turn] != &p) p.Update();
   }
-
   m_Map.Update();
+  //FindRegionConquerer();
 }
 
 void Game::Render() const
@@ -82,7 +82,9 @@ void Game::Render() const
 
   m_Map.Render(m_Assets);
 
-  DrawText(TextFormat("(%d, %d)", GetMouseX(), GetMouseY()), 10, 10, 30, BLACK);
+ // DrawText(TextFormat("(%d, %d)", GetMouseX(), GetMouseY()), 10, 10, 30, BLACK);
+  DrawText(TextFormat("(%d)",GetCurrentPlayer().CalculateScore()), 10, 10, 30, BLACK);
+  
 }
 
 void Game::ResetCards()
@@ -175,10 +177,31 @@ void Game::RotateTurn(){
       m_Turn = StartPos;
       m_Players[m_Turn].SetPosition(Position::BOTTOM_LEFT);
     }
-    std::cout << StartPos << " " << EndPos << " " << i << std::endl;
     StartPos = EndPos;
     passed = 1;
   }
   std::cout << std::endl;
-  std::cout << m_Players[m_Turn].GetAge()<< std::endl;
+}
+
+void Game::FindRegionConquerer()
+{
+  int BNum{};
+  int WinnerScore{};
+  
+  for(const auto& p : m_Players)
+  {
+    if (BNum < p.GetBiggestNum()){
+      BNum = p.GetBiggestNum();
+    }
+  }
+
+  for(auto& p : m_Players)
+  {
+    if(WinnerScore < p.CalculateScore(BNum))
+    {
+      WinnerScore = p.CalculateScore(BNum);
+      m_Map.GetBattleMarker()->SetRuler(p);
+    }
+  }
+  
 }

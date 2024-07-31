@@ -1,5 +1,6 @@
 #include <iostream>
 
+#include <ostream>
 #include <state.hpp>
 
 State::State()
@@ -24,9 +25,11 @@ State::Season State::GetSeason() const
   return m_Season;
 }
 
-void State::Set(Season current)
+void State::Set(State::Season current)
 {
   m_Season = current;
+
+  std::clog << "INFO: season changed to " << m_Season << '\n';
 }
 
 void State::Set(State::Variant current)
@@ -64,5 +67,21 @@ std::ostream& operator<<(std::ostream& out, State::Variant v)
     out << "SCARECROW";
   }
 
+  return out;
+}
+
+std::ostream& operator<<(std::ostream& out, State::Season s)
+{
+  switch (s)
+  {
+    case State::NONE:
+      out << "NONE";
+      break;
+    case State::SPRING:
+      out << "SPRING";
+      break;
+    case State::WINTER:
+      out << "WINTER";
+  }
   return out;
 }

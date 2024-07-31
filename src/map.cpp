@@ -97,7 +97,6 @@ void Map::Update()
         default:
           break;
         }
-
         m_State->Set(State::PLAYING_CARD);
       }
     }
@@ -202,7 +201,7 @@ std::vector<const Player*> Map::FindWinners() const
       || (
         indices.size() == 4
         && (
-          AreNeighbors(indices[0], indices[1], indices[2])
+             AreNeighbors(indices[0], indices[1], indices[2])
           || AreNeighbors(indices[0], indices[1], indices[3])
           || AreNeighbors(indices[0], indices[2], indices[3])
           || AreNeighbors(indices[1], indices[2], indices[3])
@@ -225,4 +224,9 @@ bool Map::AreNeighbors(size_t i, size_t j) const
 bool Map::AreNeighbors(size_t i, size_t j, size_t k) const
 {
   return AreNeighbors(i, j) || AreNeighbors(i, k) || AreNeighbors(j, k);
+}
+
+Region* Map::GetBattleMarker()
+{
+  return m_BattleMarker;
 }

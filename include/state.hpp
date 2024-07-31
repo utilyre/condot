@@ -1,5 +1,6 @@
 #pragma once
 
+#include <csetjmp>
 #include <iostream>
 
 #include <card.hpp>
@@ -38,3 +39,4 @@ private:
 };
 
 std::ostream& operator<<(std::ostream& out, State::Variant v);
+std::ostream& operator<<(std::ostream& out, State::Season s);

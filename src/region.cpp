@@ -21,6 +21,11 @@ const Player* Region::GetRuler() const
   return m_Ruler;
 }
 
+void Region::SetRuler(Player& p)
+{
+  m_Ruler = &p;
+}
+
 bool Region::CollidesWith(Vector2 v) const
 {
   return CheckCollisionPointRec(v, m_Collision);

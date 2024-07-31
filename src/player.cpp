@@ -363,8 +363,8 @@ bool Player::PickCard(const size_t& index){
           
           else if (card == Card::SPRING) {
             m_Cards.erase(m_Cards.begin() + index);
+            m_State->Set(State::SPRING);
             return true;
-            m_State->Set(State::Season::SPRING);
           }
           
           else if (card == Card::SPY) {
@@ -381,8 +381,8 @@ bool Player::PickCard(const size_t& index){
           
           else if (card == Card::WINTER) {
             m_Cards.erase(m_Cards.begin() + index);
+            m_State->Set(State::WINTER);
             return true;
-            m_State->Set(State::Season::WINTER);
           }
           return false;
 }
@@ -467,4 +467,51 @@ void Player::Add(size_t index){
 
 Color Player::GetColor() const{
   return m_Color;
+}
+
+int Player::CalculateScore(int C) const
+{
+  int score{};
+  int BNum{};
+
+  for(const auto& c : m_Row)
+  {
+    if (C == c.GetPower())
+    {
+      BNum++;
+    }
+    score += c.GetPower();
+  }
+
+  if (m_State->GetSeason() == State::Season::WINTER)
+  {
+    score = m_Row.size();
+  }
+
+  if (m_Drummer == true)
+  {
+    score *= 2;
+  }
+
+  if (m_State->GetSeason() == State::Season::SPRING)
+  {
+     score += BNum * 3;
+  }
+  score += m_Heroine;
+  score += m_Spy;
+  
+  return score;
+}
+
+int Player::GetBiggestNum() const
+{
+  int BNum{};
+  for(const auto& c : m_Row)
+  {
+    if (BNum < c.GetPower())
+    {
+      BNum  = c.GetPower();
+    }
+  }
+  return BNum;
 }

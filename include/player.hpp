@@ -42,6 +42,8 @@ public:
   bool IsPassed();
   void SetPosition(const Position& position);
   Position GetPosition() const;
+  int CalculateScore(int C = 0) const;
+  int GetBiggestNum() const;
 private:
   bool PlayCard();
   void RenderCards(const AssetManager& assets, Vector2 cordinate, float rotation, float ratio) const;
