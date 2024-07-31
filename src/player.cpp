@@ -358,13 +358,13 @@ bool Player::PickCard(const size_t& index){
             if(m_Row.empty()) return false;
             m_Cards.erase((m_Cards.begin() + index));
             m_State->Set(State::SCARECROW);
-            return true;
-            
+            return true; 
           }
+          
           else if (card == Card::SPRING) {
             m_Cards.erase(m_Cards.begin() + index);
             return true;
-            //TODO : Set(Season::SPRING);
+            m_State->Set(State::Season::SPRING);
           }
           
           else if (card == Card::SPY) {
@@ -382,7 +382,7 @@ bool Player::PickCard(const size_t& index){
           else if (card == Card::WINTER) {
             m_Cards.erase(m_Cards.begin() + index);
             return true;
-            // TODO : Set(Season::WINTER);
+            m_State->Set(State::Season::WINTER);
           }
           return false;
 }
