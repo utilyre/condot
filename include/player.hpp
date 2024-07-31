@@ -63,5 +63,8 @@ private:
   std::vector<Mercenary> m_Row;
   bool m_IsPassed;
   //Button m_PassButton;
-  std::unordered_map<std::string , int> m_s;
+  unsigned int m_Spy;
+  unsigned int m_Heroine;
+  bool m_Drummer;
+  
 };

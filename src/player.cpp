@@ -27,7 +27,10 @@ Player::Player(
   m_Color(color),
   m_Age(age),
   m_Position(position),
-  m_IsPassed(false)
+  m_IsPassed(false),
+  m_Spy(0),
+  m_Heroine(0),
+  m_Drummer(false)
   //m_PassButton ("SURRENDER",Rectangle(0.5f * GetScreenWidth() - 3.0f * GetScreenHeight() / 8.0f - 200.0f, GetScreenHeight() - float(200), 170 , 100))
 {
 }
@@ -341,13 +344,14 @@ bool Player::PickCard(const size_t& index){
           
           else if (card == Card::DRUMMER) {
             m_Cards.erase(m_Cards.begin() + index);
+            m_Drummer = true;
             return true;
           }
           
           else if (card == Card::HEROINE) {
             m_Cards.erase(m_Cards.begin() + index);
+            m_Heroine++;
             return true;
-            // TODO int Heroine++;
           }
           
           else if (card == Card::SCARECROW) {
@@ -365,9 +369,8 @@ bool Player::PickCard(const size_t& index){
           
           else if (card == Card::SPY) {
             m_Cards.erase(m_Cards.begin() + index);
+            m_Spy++;
             return true;
-            //TODO : int Spy++;
-            
           }
           
           else if (card == Card::TURNCOAT) {
