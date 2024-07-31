@@ -271,9 +271,6 @@ bool Player::PlayCard(){
          m_Cards.size() - 1 == index )) && 
           IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
         {
-          // BeginDrawing();
-          // DrawRectangle(scale * (CARD_HEIGHT * 2 + 50) + CARD_WIDTH / 2.0f * scale * index , GetScreenHeight() - scale * (CARD_HEIGHT + 50), CARD_WIDTH / 2.0f * scale , CARD_HEIGHT * scale, BLACK);
-          // EndDrawing();
           bool status = PickCard(index);
           return status;
         }
@@ -421,9 +418,6 @@ bool Player::RetrieveCard(){
          m_Row.size() - 1 == index )) && 
           IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
       {
-        // BeginDrawing();
-        // DrawRectangle(scale * (CARD_HEIGHT * 2 + 50) + CARD_WIDTH / 2.0f * scale * index , GetScreenHeight() - scale * (CARD_HEIGHT + 50) - SPACING , CARD_WIDTH / 2.0f * scale, SPACING , BLACK );
-        // EndDrawing();
         Add(index);
         m_State->Set(State::PLAYING_CARD);
         return true;
