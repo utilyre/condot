@@ -4,7 +4,8 @@
 
 State::State()
 : m_Curr(MAIN_MENU),
-  m_Prev(m_Curr)
+  m_Prev(m_Curr),
+  m_Season(NONE)
 {
 }
 
@@ -16,6 +17,16 @@ State::Variant State::GetPrev() const
 State::Variant State::Get() const
 {
   return m_Curr;
+}
+
+State::Season State::GetSeason() const
+{
+  return m_Season;
+}
+
+void State::Set(Season current)
+{
+  m_Season = current;
 }
 
 void State::Set(State::Variant current)
