@@ -42,8 +42,6 @@ public:
   bool IsPassed();
   void SetPosition(const Position& position);
   Position GetPosition() const;
-  void PickCard(const size_t& index);
-
 private:
   bool PlayCard();
   void RenderCards(const AssetManager& assets, Vector2 cordinate, float rotation, float ratio) const;
@@ -51,6 +49,8 @@ private:
   void Pass();
   void Add(size_t index);
   Color GetColor() const;
+  bool RetrieveCard();
+  bool PickCard(const size_t& index);
 
 private:
   State* m_State;

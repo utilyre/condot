@@ -118,7 +118,9 @@ void Map::Render(const AssetManager& assets) const
 
   if (m_State->Get() == State::PLACING_BATTLE_MARKER
       || m_State->Get() == State::PLACING_FAVOR_MARKER
-      || m_State->Get() == State::PLAYING_CARD)
+      || m_State->Get() == State::PLAYING_CARD
+      || m_State->Get() == State::SCARECROW)
+  
   {
     DrawTextureEx(
       assets.Map,
