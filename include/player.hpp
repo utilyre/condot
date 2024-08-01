@@ -11,13 +11,15 @@
 #include <entity.hpp>
 #include <card.hpp>
 #include <mercenary.hpp>
+#include <button.hpp>
 
-enum class Position
-{
-  TOP,
-  RIGHT,
-  BOTTOM,
+enum class Position {
+  TOP_LEFT,
+  TOP_RIGHT,
+  BOTTOM_LEFT,
+  BOTTOM_RIGHT,
   LEFT,
+  RIGHT,
 };
 
 class Player : public Entity
@@ -39,15 +41,17 @@ public:
   void AddCard(Card card);
   bool IsPassed();
   void SetPosition(const Position& position);
-  const Position& GetPosition() const;
-  std::vector<Card>& GetCards();
+  Position GetPosition() const;
   void PickCard(const size_t& index);
+
 private:
   bool PlayCard();
-  void RenderCards(const AssetManager& assets, Vector2 cordinate, float rotation) const;
-  void RenderRows(const AssetManager& assets, Vector2 cordinate, float rotation) const;
+  void RenderCards(const AssetManager& assets, Vector2 cordinate, float rotation, float ratio) const;
+  void RenderRows(const AssetManager& assets, Vector2 cordinate, float rotation, float ratio) const;
   void Pass();
-  void Add(const size_t& index);
+  void Add(size_t index);
+  Color GetColor() const;
+
 private:
   State* m_State;
   Event* m_RotateTurnEvent;
@@ -58,5 +62,6 @@ private:
   std::vector<Card> m_Cards;
   std::vector<Mercenary> m_Row;
   bool m_IsPassed;
+  //Button m_PassButton;
   std::unordered_map<std::string , int> m_s;
 };

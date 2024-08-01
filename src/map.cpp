@@ -9,26 +9,27 @@
 #include <region.hpp>
 #include <player.hpp>
 
-static const int MAP_WIDTH = 0.81f * 1057;
-static const int MAP_HEIGHT = 0.81f * 831;
+static const int MAP_WIDTH = 1057;
+static const int MAP_HEIGHT = 831;
+static const float MAP_SCALE = 0.4f;
 
 Map::Map(State* state)
 : m_State(state),
   m_Regions({
-    Region("Elinia", Rectangle{28, 20, 103, 210}),
-    Region("Rollo", Rectangle{132, 20, 303, 110}),
-    Region("Pladaci", Rectangle{438, 22, 190, 143}),
-    Region("Bella", Rectangle{630, 21, 195, 160}),
-    Region("Talmone", Rectangle{135, 134, 229, 110}),
-    Region("Morina", Rectangle{371, 167, 151, 190}),
-    Region("Borge", Rectangle{528, 170, 115, 220}),
-    Region("Caline", Rectangle{644, 184, 179, 117}),
-    Region("Armento", Rectangle{292, 356, 130, 197}),
-    Region("Olivadi", Rectangle{422, 384, 87, 250}),
-    Region("Dimase", Rectangle{510, 391, 137, 240}),
-    Region("Enna", Rectangle{651, 303, 109, 129}),
-    Region("Atela", Rectangle{652, 443, 168, 194}),
-    Region("Lia", Rectangle{262, 557, 152, 80}),
+    Region("Elinia", Rectangle{34, 24, 127, 259}),
+    Region("Rollo", Rectangle{162, 24, 374, 135}),
+    Region("Pladaci", Rectangle{540, 27, 234, 176}),
+    Region("Bella", Rectangle{777, 25, 240, 197}),
+    Region("Talmone", Rectangle{166, 165, 282, 135}),
+    Region("Morina", Rectangle{458, 206, 186, 234}),
+    Region("Borge", Rectangle{651, 209, 141, 271}),
+    Region("Caline", Rectangle{795, 227, 220, 144}),
+    Region("Armento", Rectangle{360, 439, 160, 243}),
+    Region("Olivadi", Rectangle{520, 474, 107, 308}),
+    Region("Dimase", Rectangle{629, 482, 169, 296}),
+    Region("Enna", Rectangle{803, 374, 134, 159}),
+    Region("Atela", Rectangle{804, 546, 207, 239}),
+    Region("Lia", Rectangle{323, 687, 187, 98}),
   }),
   m_Adjacency({
     /*                0  1  2  3  4  5  6  7  8  9 10 11 12 13 */
@@ -73,9 +74,13 @@ void Map::Update()
     )
   )
   {
+    float scaleFactor = MAP_SCALE * height / MAP_HEIGHT;
+
     Vector2 mouse = GetMousePosition();
-    mouse.x -= (width - MAP_WIDTH) / 2.0f;
-    mouse.y -= (height - MAP_HEIGHT) / 2.0f;
+    mouse.x -= (width - scaleFactor * MAP_WIDTH) / 2.0f;
+    mouse.y -= (height - scaleFactor * MAP_HEIGHT) / 2.0f;
+    mouse.x /= scaleFactor;
+    mouse.y /= scaleFactor;
 
     for (Region& r : m_Regions)
     {
@@ -116,7 +121,42 @@ void Map::Render(const AssetManager& assets) const
   int width = GetScreenWidth();
   int height = GetScreenHeight();
 
-  DrawTexture(assets.Map, (width - MAP_WIDTH) / 2, (height - MAP_HEIGHT) / 2, WHITE);
+  float scaleFactor = MAP_SCALE * height / MAP_HEIGHT;
+
+  if (m_State->Get() == State::PLACING_BATTLE_MARKER
+      || m_State->Get() == State::PLACING_FAVOR_MARKER
+      || m_State->Get() == State::PLAYING_CARD)
+  {
+    DrawTextureEx(
+      assets.Map,
+      Vector2{
+        (width - scaleFactor * MAP_WIDTH) / 2,
+        (height - scaleFactor * MAP_HEIGHT) / 2,
+      },
+      0.0f,
+      scaleFactor,
+      WHITE
+    );
+  }
+
+  if (m_State->Get() == State::PLACING_BATTLE_MARKER
+      || m_State->Get() == State::PLACING_FAVOR_MARKER)
+  {
+    const float fontSize = 80.0f;
+    const std::string text = "Pick a region";
+
+    DrawTextEx(
+      assets.PrimaryFont,
+      text.c_str(),
+      Vector2{
+        (width - 0.3f * fontSize * text.size()) / 2.0f,
+        (height + scaleFactor * MAP_HEIGHT + 10.0f) / 2.0f,
+      },
+      fontSize,
+      1,
+      BLACK
+    );
+  }
 }
 
 std::vector<const Player*> Map::FindWinners() const

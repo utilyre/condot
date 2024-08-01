@@ -31,10 +31,12 @@ void Game::Start()
   SetTargetFPS(60);
 
   // TODO: add/customize players through menu
-  m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "John", RED, 10 , Position::TOP);
-  m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "Jane", GREEN, 2 , Position::RIGHT);
-  m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "Alex", BLUE, 1 , Position::BOTTOM);
+  m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "abbas", ORANGE, 6 , Position::TOP_RIGHT);
+  m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "amir", PURPLE, 3 , Position::RIGHT);
+  m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "John", RED, 10 , Position::BOTTOM_RIGHT);
+  m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "Alex", BLUE, 1 , Position::BOTTOM_LEFT);
   m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "Theo", GRAY, 4 ,Position::LEFT);
+  m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "Jane", GREEN, 2 , Position::TOP_LEFT);
 
   // NOTE: do NOT modify
   while (!m_Stopped && !WindowShouldClose())
@@ -56,10 +58,11 @@ void Game::Update()
 {
   m_MainMenu.Update();
   m_CustomizationMenu.Update();
-
+  
+  m_Players[m_Turn].Update();
   for (Player& p : m_Players)
   {
-    p.Update();
+    if(&m_Players[m_Turn] != &p) p.Update();
   }
 
   m_Map.Update();
@@ -150,7 +153,7 @@ void Game::InitiateBattle()
   DealCards();
 }
 
-bool Game::RotateTurn(){
+void Game::RotateTurn(){
   size_t StartPos = (m_Turn);
   for(size_t i{},passed{1}; i < m_Players.size(); ++i){
     
@@ -165,11 +168,12 @@ bool Game::RotateTurn(){
     
     if(i == m_Players.size() - 1){
       m_Turn = StartPos;
-      m_Players[m_Turn].SetPosition(Position::BOTTOM);
+      m_Players[m_Turn].SetPosition(Position::BOTTOM_LEFT);
     }
-    
+    std::cout << StartPos << " " << EndPos << " " << i << std::endl;
     StartPos = EndPos;
     passed = 1;
-  } 
-  return true;
+  }
+  std::cout << std::endl;
+  std::cout << m_Players[m_Turn].GetAge()<< std::endl;
 }
