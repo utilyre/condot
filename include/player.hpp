@@ -44,6 +44,7 @@ public:
   Position GetPosition() const;
   int CalculateScore(int C = 0) const;
   int GetBiggestNum() const;
+  void Reset();
 private:
   bool PlayCard();
   void RenderCards(const AssetManager& assets, Vector2 cordinate, float rotation, float ratio) const;
@@ -64,9 +65,9 @@ private:
   std::vector<Card> m_Cards;
   std::vector<Mercenary> m_Row;
   bool m_IsPassed;
-  //Button m_PassButton;
   unsigned int m_Spy;
   unsigned int m_Heroine;
   bool m_Drummer;
+  Button m_PassButton;
   
 };

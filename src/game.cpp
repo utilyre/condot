@@ -1,3 +1,4 @@
+#include <cstdlib>
 #include <iostream>
 #include <algorithm>
 #include <climits>
@@ -31,9 +32,9 @@ void Game::Start()
   SetTargetFPS(60);
 
   // TODO: add/customize players through menu
-  m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "abbas", ORANGE, 6 , Position::TOP_RIGHT);
-  m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "amir", PURPLE, 3 , Position::RIGHT);
-  m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "John", RED, 10 , Position::BOTTOM_RIGHT);
+ // m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "abbas", ORANGE, 6 , Position::TOP_RIGHT);
+ // m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "amir", PURPLE, 3 , Position::RIGHT);
+ // m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "John", RED, 10 , Position::BOTTOM_RIGHT);
   m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "Alex", BLUE, 1 , Position::BOTTOM_LEFT);
   m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "Theo", GRAY, 4 ,Position::LEFT);
   m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "Jane", GREEN, 2 , Position::TOP_LEFT);
@@ -83,14 +84,20 @@ void Game::Render() const
   m_Map.Render(m_Assets);
 
  // DrawText(TextFormat("(%d, %d)", GetMouseX(), GetMouseY()), 10, 10, 30, BLACK);
-  DrawText(TextFormat("(%d)",GetCurrentPlayer().CalculateScore()), 10, 10, 30, BLACK);
+  DrawText(TextFormat("(%d)", FindRegionConquerer()), 10, 10, 30, BLACK);
   
 }
 
 void Game::ResetCards()
 {
   m_Deck.clear();
+  m_State.Set(State::NONE);
 
+  for(auto& p : m_Players)
+  {
+    p.Reset();
+  }
+  
   m_Deck.insert(m_Deck.end(), 10, Card::MERCENARY_1);
   m_Deck.insert(m_Deck.end(), 8, Card::MERCENARY_2);
   m_Deck.insert(m_Deck.end(), 8, Card::MERCENARY_3);
@@ -162,28 +169,36 @@ void Game::InitiateBattle()
 
 void Game::RotateTurn(){
   size_t StartPos = (m_Turn);
-  for(size_t i{},passed{1}; i < m_Players.size(); ++i){
-    
+  for(size_t i{},passed{1}; i < m_Players.size(); ++i)
+  {
     size_t EndPos = (StartPos + passed) % m_Players.size();
-    while(m_Players[EndPos].IsPassed()){
+    while(m_Players[EndPos].IsPassed())
+    {
       passed++;
       EndPos = ( StartPos + passed ) % m_Players.size();
       i++;
     }
+
+    if (passed == m_Players.size())
+    {
+      FindRegionConquerer();
+      m_InitiateBattleEvent.Raise(nullptr, nullptr);
+      //exit(0);
+    }
     
     m_Players[StartPos].SetPosition(m_Players[EndPos].GetPosition());
     
-    if(i == m_Players.size() - 1){
+    if(i == m_Players.size() - 1)
+    {
       m_Turn = StartPos;
       m_Players[m_Turn].SetPosition(Position::BOTTOM_LEFT);
     }
     StartPos = EndPos;
     passed = 1;
   }
-  std::cout << std::endl;
 }
 
-void Game::FindRegionConquerer()
+int Game::FindRegionConquerer() const
 {
   int BNum{};
   int WinnerScore{};
@@ -194,14 +209,16 @@ void Game::FindRegionConquerer()
       BNum = p.GetBiggestNum();
     }
   }
-
+  auto* pl = &m_Players[m_Turn];
+  
   for(auto& p : m_Players)
   {
     if(WinnerScore < p.CalculateScore(BNum))
     {
       WinnerScore = p.CalculateScore(BNum);
-      m_Map.GetBattleMarker()->SetRuler(p);
+      //m_Map.GetBattleMarker()->SetRuler(p);
+      pl = &p;
     }
   }
-  
+  return pl->GetAge();
 }

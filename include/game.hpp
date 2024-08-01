@@ -31,7 +31,7 @@ private:
   void InitiateBattle();
   void RotateTurn();
   void PickCard();
-  void FindRegionConquerer();
+  int FindRegionConquerer() const;
 private:
   bool m_Stopped;
   size_t m_Turn;

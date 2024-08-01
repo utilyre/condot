@@ -30,8 +30,8 @@ Player::Player(
   m_IsPassed(false),
   m_Spy(0),
   m_Heroine(0),
-  m_Drummer(false)
-  //m_PassButton ("SURRENDER",Rectangle(0.5f * GetScreenWidth() - 3.0f * GetScreenHeight() / 8.0f - 200.0f, GetScreenHeight() - float(200), 170 , 100))
+  m_Drummer(false),
+  m_PassButton ("SURRENDER",Rectangle(0,GetScreenHeight() - 100 , 170 , 100))
 {
 }
 
@@ -44,7 +44,7 @@ void Player::Update()
     return;
   }
     bool a = false;
-    //m_PassButton.Update();  
+    m_PassButton.Update();  
     if(state == State::PLAYING_CARD)
       a = PlayCard();
     if (m_State->Get() == State::SCARECROW)
@@ -111,7 +111,7 @@ void Player::Render(const AssetManager& assets) const
   case Position::BOTTOM_LEFT:
     DrawRectangle(SCALE * (CARD_HEIGHT * 2 + 50) , SCREEN_HEIGHT - THICKNESS , HORIZONTAL_SPACING , THICKNESS , GetColor());
     RenderRows (assets , Vector2{ SCREEN_BOTTOM_LEFT.x , SCREEN_BOTTOM_LEFT.y - CARD_HEIGHT * SCALE / 2} , 0, SCALE);
-    //m_PassButton.Render(assets);
+    m_PassButton.Render(assets);
     RenderCards(assets , SCREEN_BOTTOM_LEFT , 0, SCALE);
     break;
     
@@ -273,15 +273,16 @@ bool Player::PlayCard(){
          (CheckCollisionPointRec(GetMousePosition(), UpperLayer) &&
          m_Cards.size() - 1 == index )) && 
           IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
-        {
-          bool status = PickCard(index);
-          return status;
-        }
-
-      // else if (m_PassButton.Pressed()){
-      //   m_IsPassed = true;  
-      //   return true;
-      // }
+      {
+        bool status = PickCard(index);
+        return status;
+      }
+        
+      else if (m_PassButton.Pressed())
+      {
+        m_IsPassed = true;  
+        return true;
+      }
       index++;
     }
   }
@@ -514,4 +515,14 @@ int Player::GetBiggestNum() const
     }
   }
   return BNum;
+}
+
+void Player::Reset()
+{
+  m_Cards.clear();
+  m_Row.clear();
+  m_Heroine = 0;
+  m_Spy = 0;
+  m_Drummer = false;
+  m_IsPassed = false;
 }
