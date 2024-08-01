@@ -5,6 +5,7 @@
 struct AssetManager
 {
   AssetManager();
+  AssetManager(const AssetManager&) = delete;
   ~AssetManager();
 
   Font PrimaryFont;
