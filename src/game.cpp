@@ -25,6 +25,7 @@ Game::Game()
   m_RotateTurnEvent.Register([this](auto, auto) { RotateTurn(); });
   m_AddPlayerEvent.Register([this](auto, std::any data) {
     Player* player = std::any_cast<Player*>(data);
+    player->SetContext(&m_State, &m_RotateTurnEvent);
     m_Players.push_back(player);
   });
 }

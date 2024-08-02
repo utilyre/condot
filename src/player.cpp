@@ -13,20 +13,10 @@ static const int CARD_WIDTH = 164;
 static const int CARD_HEIGHT = 255;
 static const float CARD_SCALE = 0.15f;
 
-Player::Player(
-  State* state,
-  Event* rotateTurnEvent,
-  const std::string& name,
-  Color color,
-  int age,
-  Position position
-)
-: m_State(state),
-  m_RotateTurnEvent(rotateTurnEvent),
-  m_Name(name),
+Player::Player(const std::string& name, int age, Color color)
+: m_Name(name),
   m_Color(color),
   m_Age(age),
-  m_Position(position),
   m_IsPassed(false)
   //m_PassButton ("SURRENDER",Rectangle(0.5f * GetScreenWidth() - 3.0f * GetScreenHeight() / 8.0f - 200.0f, GetScreenHeight() - float(200), 170 , 100))
 {
@@ -402,4 +392,10 @@ void Player::Add(size_t index){
 
 Color Player::GetColor() const{
   return m_Color;
+}
+
+void Player::SetContext(State* state, Event* rotateTurnEvent)
+{
+  m_State = state;
+  m_RotateTurnEvent = rotateTurnEvent;
 }
