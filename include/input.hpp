@@ -14,7 +14,7 @@ public:
   void Update() override;
   void Render(const AssetManager& assets) const override;
 
-  std::string GetText() const;
+  const std::string& GetText() const;
 
   bool Hovered() const;
   bool Focused() const;

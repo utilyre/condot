@@ -90,7 +90,7 @@ bool Input::Focused() const
   return m_Focused;
 }
 
-std::string Input::GetText() const
+const std::string& Input::GetText() const
 {
   return m_Text;
 }
