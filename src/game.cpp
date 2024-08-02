@@ -27,6 +27,7 @@ Game::Game()
     Player* player = std::any_cast<Player*>(data);
     player->SetContext(&m_State, &m_RotateTurnEvent);
     m_Players.push_back(player);
+    std::clog << "Added player: " << player->GetName() << '\n';
   });
 }
 

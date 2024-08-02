@@ -31,6 +31,7 @@ public:
   void Render(const AssetManager& assets) const override;
 
   void SetContext(State* state, Event* rotateTurnEvent);
+  const std::string& GetName() const;
   int GetAge() const;
   void AddCard(Card card);
   bool IsPassed();

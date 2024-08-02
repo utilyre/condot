@@ -399,3 +399,8 @@ void Player::SetContext(State* state, Event* rotateTurnEvent)
   m_State = state;
   m_RotateTurnEvent = rotateTurnEvent;
 }
+
+const std::string& Player::GetName() const
+{
+  return m_Name;
+}
