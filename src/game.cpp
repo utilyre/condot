@@ -64,8 +64,11 @@ void Game::Update()
 {
   m_MainMenu.Update();
   m_CustomizationMenu.Update();
-  
-  m_Players[m_Turn]->Update();
+
+  if (m_Players.size() > m_Turn)
+  {
+    m_Players[m_Turn]->Update();
+  }
   for (auto& p : m_Players)
   {
     if (m_Players[m_Turn] != p) p->Update();
@@ -81,7 +84,7 @@ void Game::Render() const
   m_MainMenu.Render(m_Assets);
   m_CustomizationMenu.Render(m_Assets);
 
-  for (const auto& p : m_Players)
+  for (const Player* p : m_Players)
   {
     p->Render(m_Assets);
   }
@@ -118,7 +121,7 @@ void Game::ResetCards()
 
 void Game::DealCards()
 {
-  for (auto& player : m_Players)
+  for (Player* player : m_Players)
   {
     for (int i = 0; i < 10; i++)
     {
