@@ -28,7 +28,7 @@ private:
   void ResetCards();
   void DealCards();
   void InitiateBattle();
-  bool RotateTurn();
+  void RotateTurn();
 
 private:
   bool m_Stopped;
