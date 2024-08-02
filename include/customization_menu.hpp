@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <string>
 #include <raylib.h>
 
 #include <asset_manager.hpp>
@@ -23,6 +24,9 @@ public:
   void Render(const AssetManager& assets) const override;
 
 private:
+  void Continue();
+
+private:
   struct PlayerRow {
     Input Name;
     Input Age;
@@ -40,4 +44,5 @@ private:
   Button m_IncreasePlayersButton;
   Button m_DecreasePlayersButton;
   std::vector<PlayerRow> m_PlayerRows;
+  std::string m_ErrorMsg;
 };

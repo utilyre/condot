@@ -1,7 +1,10 @@
+#include <stdexcept>
+#include <vector>
 #include <raylib.h>
 
 #include <state.hpp>
 #include <input.hpp>
+#include <player.hpp>
 #include <customization_menu.hpp>
 
 static const float MENU_WIDTH = 1600.0f;
@@ -98,8 +101,7 @@ void CustomizationMenu::Update()
   }
   if (m_ContinueButton.Pressed())
   {
-    m_InitiateBattleEvent->Raise(this, nullptr);
-    m_State->Set(State::PLACING_BATTLE_MARKER);
+    Continue();
   }
 
   m_IncreasePlayersButton.Update();
@@ -163,9 +165,95 @@ void CustomizationMenu::Render(const AssetManager& assets) const
     BLACK
   );
 
+  DrawTextEx(
+    assets.PrimaryFont,
+    m_ErrorMsg.c_str(),
+    Vector2{
+      m_Dimensions.x + 0.5f * MENU_WIDTH - 0.15f * TEXT_FONT_SIZE * m_ErrorMsg.size(),
+      m_Dimensions.y + MENU_PADDING,
+    },
+    TEXT_FONT_SIZE,
+    1,
+    RED
+  );
+
   for (const PlayerRow& row : m_PlayerRows)
   {
     row.Name.Render(assets);
     row.Age.Render(assets);
   }
+}
+
+template <typename T>
+class OwnedVector
+{
+public:
+  OwnedVector() {}
+  OwnedVector(std::vector<T*>&& v) : m_Vector(std::move(v)) {}
+
+  ~OwnedVector()
+  {
+    for (T* x : m_Vector)
+    {
+      delete x;
+    }
+  }
+
+  std::vector<T*>& operator*()
+  {
+    return m_Vector;
+  }
+
+  std::vector<T*>* operator->()
+  {
+    return &m_Vector;
+  }
+
+private:
+  std::vector<T*> m_Vector;
+};
+
+void CustomizationMenu::Continue()
+{
+  OwnedVector<Player> players;
+
+  for (const PlayerRow& row : m_PlayerRows)
+  {
+    const std::string& name = row.Name.GetText();
+    if (name.empty())
+    {
+      m_ErrorMsg = "Please fill out all name inputs.";
+      return;
+    }
+    const std::string& ageStr = row.Age.GetText();
+    if (ageStr.empty())
+    {
+      m_ErrorMsg = "Please fill out all age inputs.";
+      return;
+    }
+
+    try
+    {
+      int age = std::stoi(ageStr);
+      if (age < 0)
+      {
+        m_ErrorMsg = "Age cannot be negative.";
+        return;
+      }
+
+      players->push_back(new Player(name, age, RED));
+    }
+    catch (const std::invalid_argument&)
+    {
+      m_ErrorMsg = "Invalid age.";
+      return;
+    }
+  }
+
+  for (Player* p : *players)
+  {
+    m_AddPlayerEvent->Raise(this, p);
+  }
+  m_InitiateBattleEvent->Raise(this, nullptr);
+  m_State->Set(State::PLACING_BATTLE_MARKER);
 }
