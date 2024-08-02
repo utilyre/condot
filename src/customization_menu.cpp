@@ -23,9 +23,14 @@ static const float INPUT_NAME_HEIGHT = 100.0f;
 static const float INPUT_AGE_WIDTH = 200.0f;
 static const float INPUT_AGE_HEIGHT = 100.0f;
 
-CustomizationMenu::CustomizationMenu(State* state, Event* initiateBattle)
-: m_State(state),
-  m_InitiateBattleEvent(initiateBattle),
+CustomizationMenu::CustomizationMenu(
+  State* state,
+  Event* initiateBattleEvent,
+  Event* addPlayerEvent
+) :
+  m_State(state),
+  m_InitiateBattleEvent(initiateBattleEvent),
+  m_AddPlayerEvent(addPlayerEvent),
   m_Dimensions({
     (GetScreenWidth() - MENU_WIDTH) / 2.0f,
     (GetScreenHeight() - MENU_HEIGHT) / 2.0f,
