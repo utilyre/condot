@@ -70,7 +70,7 @@ void Game::Update()
   {
     m_Players[m_Turn]->Update();
   }
-  for (auto& p : m_Players)
+  for (Player* p : m_Players)
   {
     if (m_Players[m_Turn] != p) p->Update();
   }
