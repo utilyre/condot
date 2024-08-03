@@ -27,6 +27,9 @@ static const float INPUT_NAME_HEIGHT = 100.0f;
 static const float INPUT_AGE_WIDTH = 200.0f;
 static const float INPUT_AGE_HEIGHT = 100.0f;
 
+static const size_t MIN_PLAYERS = 3;
+static const size_t MAX_PLAYERS = 6;
+
 CustomizationMenu::CustomizationMenu(
   State* state,
   Event* initiateBattleEvent,
@@ -108,7 +111,7 @@ void CustomizationMenu::Update()
   m_IncreasePlayersButton.Update();
   m_DecreasePlayersButton.Update();
 
-  if (m_IncreasePlayersButton.Pressed() && m_PlayerRows.size() < 4)
+  if (m_IncreasePlayersButton.Pressed() && m_PlayerRows.size() < MAX_PLAYERS)
   {
     size_t len = m_PlayerRows.size();
     m_PlayerRows.emplace_back(
@@ -127,7 +130,7 @@ void CustomizationMenu::Update()
       })
     );
   }
-  if (m_DecreasePlayersButton.Pressed() && m_PlayerRows.size() > 3)
+  if (m_DecreasePlayersButton.Pressed() && m_PlayerRows.size() > MIN_PLAYERS)
   {
     m_PlayerRows.pop_back();
   }
