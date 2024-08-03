@@ -29,9 +29,10 @@ private:
   void ResetCards();
   void DealCards();
   void InitiateBattle();
-  void RotateTurn();
+  void RotateTurn(bool* x);
   void PickCard();
-  int FindRegionConquerer() const;
+  void FindRegionConquerer();
+  void FixPosition();
 private:
   bool m_Stopped;
   size_t m_Turn;

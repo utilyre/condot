@@ -12,7 +12,7 @@ public:
 
   const std::string& GetName() const;
   const Player* GetRuler() const;
-  void SetRuler(Player& ruler);
+  void SetRuler(Player* ruler);
   bool CollidesWith(Vector2 v) const;
 
 private:

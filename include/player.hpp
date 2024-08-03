@@ -14,12 +14,12 @@
 #include <button.hpp>
 
 enum class Position {
+  BOTTOM_LEFT,
+  LEFT,
   TOP_LEFT,
   TOP_RIGHT,
-  BOTTOM_LEFT,
-  BOTTOM_RIGHT,
-  LEFT,
   RIGHT,
+  BOTTOM_RIGHT,
 };
 
 class Player : public Entity
@@ -42,6 +42,7 @@ public:
   bool IsPassed();
   void SetPosition(const Position& position);
   Position GetPosition() const;
+  const std::string& GetName() const;
   int CalculateScore(int C = 0) const;
   int GetBiggestNum() const;
   void Reset();

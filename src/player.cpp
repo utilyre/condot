@@ -1,4 +1,3 @@
-#include <cstddef>
 #include <raylib.h>
 
 #include <asset_manager.hpp>
@@ -43,24 +42,28 @@ void Player::Update()
       state != State::SCARECROW){
     return;
   }
-    bool a = false;
+    bool RotateStatus = false;
     m_PassButton.Update();  
     if(state == State::PLAYING_CARD)
-      a = PlayCard();
-    if (m_State->Get() == State::SCARECROW)
-      a = RetrieveCard();
-    //else if (a == true && m_State->Get() == BISHOP)
-    if(a == true && m_State->Get() == State::PLAYING_CARD)
+      RotateStatus = PlayCard();
+    
+    else if (m_State->Get() == State::SCARECROW)
+      RotateStatus = RetrieveCard();
+    
+    //else if (m_State->Get() == BISHOP)
+    if(RotateStatus == true && m_State->Get() == State::PLAYING_CARD)
     {
+      bool PassStatus = false;
+      bool PlayStatus = true;
       if(IsPassed())
       {
-        m_IsPassed = false;
-        m_RotateTurnEvent->Raise(this, nullptr);
-        m_IsPassed = true;
+        m_IsPassed = PassStatus;
+        m_RotateTurnEvent->Raise(this, &PassStatus);
+        m_IsPassed = PassStatus;
       }
       else
       {
-      m_RotateTurnEvent->Raise(this, nullptr);
+        m_RotateTurnEvent->Raise(this, &PlayStatus);
       }
     }
 }
@@ -498,7 +501,7 @@ int Player::CalculateScore(int C) const
   {
      score += BNum * 3;
   }
-  score += m_Heroine;
+  score += m_Heroine * 10;
   score += m_Spy;
   
   return score;
@@ -525,4 +528,9 @@ void Player::Reset()
   m_Spy = 0;
   m_Drummer = false;
   m_IsPassed = false;
+}
+
+const std::string& Player::GetName() const
+{
+  return m_Name;
 }

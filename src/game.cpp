@@ -1,3 +1,4 @@
+#include <any>
 #include <cstdlib>
 #include <iostream>
 #include <algorithm>
@@ -22,7 +23,7 @@ Game::Game()
 {
   m_StopEvent.Register([this](auto, auto) { Stop(); });
   m_InitiateBattleEvent.Register([this](auto, auto) { InitiateBattle(); });
-  m_RotateTurnEvent.Register([this](auto, auto) { RotateTurn(); });
+  m_RotateTurnEvent.Register([this](auto,auto data) { RotateTurn(std::any_cast<bool*>(data)); });
 }
 
 void Game::Start()
@@ -32,18 +33,18 @@ void Game::Start()
   SetTargetFPS(60);
 
   // TODO: add/customize players through menu
- // m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "abbas", ORANGE, 6 , Position::TOP_RIGHT);
- // m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "amir", PURPLE, 3 , Position::RIGHT);
- // m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "John", RED, 10 , Position::BOTTOM_RIGHT);
-  m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "Alex", BLUE, 1 , Position::BOTTOM_LEFT);
-  m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "Theo", GRAY, 4 ,Position::LEFT);
-  m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "Jane", GREEN, 2 , Position::TOP_LEFT);
+  m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "Abbas", ORANGE, 6 , Position::TOP_RIGHT);
+  m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "Amir", PURPLE, 3 , Position::RIGHT);
+  m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "John", RED, 10 , Position::BOTTOM_RIGHT);
+  m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "Alex", BLUE, 3 , Position::BOTTOM_LEFT);
+  m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "Theo", GRAY, 1 ,Position::LEFT);
+  m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "Jane", GREEN, 5 , Position::TOP_LEFT);
+  InitiateBattle();
 
   // NOTE: do NOT modify
   while (!m_Stopped && !WindowShouldClose())
   {
     Update();
-
     BeginDrawing();
       Render();
     EndDrawing();
@@ -66,7 +67,6 @@ void Game::Update()
     if(&m_Players[m_Turn] != &p) p.Update();
   }
   m_Map.Update();
-  //FindRegionConquerer();
 }
 
 void Game::Render() const
@@ -83,8 +83,7 @@ void Game::Render() const
 
   m_Map.Render(m_Assets);
 
- // DrawText(TextFormat("(%d, %d)", GetMouseX(), GetMouseY()), 10, 10, 30, BLACK);
-  DrawText(TextFormat("(%d)", FindRegionConquerer()), 10, 10, 30, BLACK);
+ DrawText(TextFormat("(%d,%d)",GetMouseX(),GetMouseY()), 10, 10, 30, BLACK);
   
 }
 
@@ -163,11 +162,13 @@ size_t Game::FindBattleInstigatorIndex() const
 void Game::InitiateBattle()
 {
   m_Turn = FindBattleInstigatorIndex();
+  FixPosition();
   ResetCards();
   DealCards();
 }
 
-void Game::RotateTurn(){
+void Game::RotateTurn(bool* PassStatus){
+  
   size_t StartPos = (m_Turn);
   for(size_t i{},passed{1}; i < m_Players.size(); ++i)
   {
@@ -179,15 +180,22 @@ void Game::RotateTurn(){
       i++;
     }
 
-    if (passed == m_Players.size())
+    if (passed == m_Players.size() && !(*PassStatus))
     {
       FindRegionConquerer();
-      m_InitiateBattleEvent.Raise(nullptr, nullptr);
-      //exit(0);
+      ResetCards();
+      FixPosition();
+      DealCards();
+      *PassStatus = false;
+      return;
+    }
+    else
+    {
+      *PassStatus = true;
     }
     
     m_Players[StartPos].SetPosition(m_Players[EndPos].GetPosition());
-    
+
     if(i == m_Players.size() - 1)
     {
       m_Turn = StartPos;
@@ -195,13 +203,14 @@ void Game::RotateTurn(){
     }
     StartPos = EndPos;
     passed = 1;
-  }
+  } 
 }
 
-int Game::FindRegionConquerer() const
+void Game::FindRegionConquerer()
 {
-  int BNum{};
-  int WinnerScore{};
+  int BNum = 0;
+  int max_strength = 0;
+  std::vector<size_t> potentialWinners;
   
   for(const auto& p : m_Players)
   {
@@ -209,16 +218,39 @@ int Game::FindRegionConquerer() const
       BNum = p.GetBiggestNum();
     }
   }
-  auto* pl = &m_Players[m_Turn];
-  
-  for(auto& p : m_Players)
+
+  for (size_t i = 0; i < m_Players.size(); i++)
   {
-    if(WinnerScore < p.CalculateScore(BNum))
+    int strength = m_Players[i].CalculateScore(BNum);
+    
+    if (strength > max_strength)
     {
-      WinnerScore = p.CalculateScore(BNum);
-      //m_Map.GetBattleMarker()->SetRuler(p);
-      pl = &p;
+      max_strength = strength;
+      potentialWinners.clear();
+      potentialWinners.push_back(i);
+    }
+    else if (strength == max_strength) 
+    {
+      potentialWinners.push_back(i);
     }
   }
-  return pl->GetAge();
+
+  if (potentialWinners.size() == 1) {
+    m_Map.GetBattleMarker()->SetRuler(&m_Players[potentialWinners[0]]);
+  }
+
+  std::mt19937 mt(m_RandDev());
+  std::uniform_int_distribution<size_t> dist(0, potentialWinners.size() - 1);
+  m_Turn = potentialWinners[dist(mt)];
+  
+  m_State.Set(State::PLACING_BATTLE_MARKER);
 }
+
+void Game::FixPosition()
+{
+  for(size_t i = 0; i < m_Players.size(); ++i)
+  {
+    m_Players[(m_Turn + i) % m_Players.size()].SetPosition(static_cast<Position>(i));
+  }
+}
+

@@ -93,7 +93,7 @@ void CustomizationMenu::Update()
   }
   if (m_ContinueButton.Pressed())
   {
-    m_InitiateBattleEvent->Raise(this, nullptr);
+    //m_InitiateBattleEvent->Raise(this, nullptr);
     m_State->Set(State::PLACING_BATTLE_MARKER);
   }
 
