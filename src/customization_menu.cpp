@@ -232,7 +232,7 @@ void CustomizationMenu::Continue()
     }
     if (names.count(name))
     {
-      m_ErrorMsg = "Duplicated name.";
+      m_ErrorMsg = "Please avoid duplicated names.";
       return;
     }
     names.insert(name);
@@ -249,7 +249,7 @@ void CustomizationMenu::Continue()
       int age = std::stoi(ageStr);
       if (age < 0)
       {
-        m_ErrorMsg = "Age cannot be negative.";
+        m_ErrorMsg = "Please enter a non-negative age.";
         return;
       }
 
@@ -257,7 +257,7 @@ void CustomizationMenu::Continue()
     }
     catch (const std::invalid_argument&)
     {
-      m_ErrorMsg = "Invalid age.";
+      m_ErrorMsg = "Please enter a valid age.";
       return;
     }
   }
