@@ -251,7 +251,8 @@ void CustomizationMenu::Continue()
     }
   }
 
-  for (size_t i = 0; i < players->size(); i++)
+  size_t numPlayers = players->size();
+  for (size_t i = 0; i < numPlayers; i++)
   {
     m_AddPlayerEvent->Raise(this, players->back());
     players->pop_back();
