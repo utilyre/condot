@@ -1,5 +1,6 @@
 #include <stdexcept>
 #include <vector>
+#include <set>
 #include <raylib.h>
 
 #include <state.hpp>
@@ -25,6 +26,9 @@ static const float INPUT_NAME_WIDTH = 600.0f;
 static const float INPUT_NAME_HEIGHT = 100.0f;
 static const float INPUT_AGE_WIDTH = 200.0f;
 static const float INPUT_AGE_HEIGHT = 100.0f;
+
+static const size_t MIN_PLAYERS = 3;
+static const size_t MAX_PLAYERS = 6;
 
 CustomizationMenu::CustomizationMenu(
   State* state,
@@ -107,7 +111,7 @@ void CustomizationMenu::Update()
   m_IncreasePlayersButton.Update();
   m_DecreasePlayersButton.Update();
 
-  if (m_IncreasePlayersButton.Pressed() && m_PlayerRows.size() < 4)
+  if (m_IncreasePlayersButton.Pressed() && m_PlayerRows.size() < MAX_PLAYERS)
   {
     size_t len = m_PlayerRows.size();
     m_PlayerRows.emplace_back(
@@ -126,7 +130,7 @@ void CustomizationMenu::Update()
       })
     );
   }
-  if (m_DecreasePlayersButton.Pressed() && m_PlayerRows.size() > 3)
+  if (m_DecreasePlayersButton.Pressed() && m_PlayerRows.size() > MIN_PLAYERS)
   {
     m_PlayerRows.pop_back();
   }
@@ -213,11 +217,22 @@ private:
   std::vector<T*> m_Vector;
 };
 
+static const Color colors[6] = {RED, GREEN, BLUE, MAGENTA, GRAY, YELLOW};
+static const Position positions[6] = {
+  Position::TOP_LEFT,
+  Position::TOP_RIGHT,
+  Position::LEFT,
+  Position::RIGHT,
+  Position::BOTTOM_LEFT,
+  Position::BOTTOM_RIGHT,
+};
+
 void CustomizationMenu::Continue()
 {
   OwnedVector<Player> players;
 
-  // TODO: check for duplicated names
+  std::set<std::string> names;
+
   for (const PlayerRow& row : m_PlayerRows)
   {
     const std::string& name = row.Name.GetText();
@@ -226,6 +241,13 @@ void CustomizationMenu::Continue()
       m_ErrorMsg = "Please fill out all name inputs.";
       return;
     }
+    if (names.count(name))
+    {
+      m_ErrorMsg = "Please avoid duplicated names.";
+      return;
+    }
+    names.insert(name);
+
     const std::string& ageStr = row.Age.GetText();
     if (ageStr.empty())
     {
@@ -238,15 +260,20 @@ void CustomizationMenu::Continue()
       int age = std::stoi(ageStr);
       if (age < 0)
       {
-        m_ErrorMsg = "Age cannot be negative.";
+        m_ErrorMsg = "Please enter a non-negative age.";
         return;
       }
 
-      players->push_back(new Player(name, age, RED));
+      players->push_back(new Player(
+        name,
+        age,
+        colors[players->size()],
+        positions[players->size()]
+      ));
     }
     catch (const std::invalid_argument&)
     {
-      m_ErrorMsg = "Invalid age.";
+      m_ErrorMsg = "Please enter a valid age.";
       return;
     }
   }
@@ -254,8 +281,8 @@ void CustomizationMenu::Continue()
   size_t numPlayers = players->size();
   for (size_t i = 0; i < numPlayers; i++)
   {
-    m_AddPlayerEvent->Raise(this, players->back());
-    players->pop_back();
+    m_AddPlayerEvent->Raise(this, (*players)[i]);
+    (*players)[i] = nullptr;
   }
   m_InitiateBattleEvent->Raise(this, nullptr);
   m_State->Set(State::PLACING_BATTLE_MARKER);

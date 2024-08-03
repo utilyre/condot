@@ -25,7 +25,7 @@ enum class Position {
 class Player : public Entity
 {
 public:
-  Player(const std::string& name, int age, Color color);
+  Player(const std::string& name, int age, Color color, Position position);
 
   void Update() override;
   void Render(const AssetManager& assets) const override;
