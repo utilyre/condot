@@ -33,11 +33,11 @@ void Player::Update()
     {
       if(IsPassed()){
         m_IsPassed = false;
-        m_RotateTurnEvent->Raise(this, nullptr);
+        m_RotateTurnEvent->Raise(this);
         m_IsPassed = true;
       }
       else{
-        m_RotateTurnEvent->Raise(this, nullptr);
+        m_RotateTurnEvent->Raise(this);
       }
     }
 }

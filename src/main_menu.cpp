@@ -42,7 +42,7 @@ void MainMenu::Update()
   }
   if (m_ButtonExit.Pressed())
   {
-    m_QuitEvent->Raise(this, nullptr);
+    m_QuitEvent->Raise(this);
   }
 }
 

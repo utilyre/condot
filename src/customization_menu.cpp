@@ -116,7 +116,7 @@ void CustomizationMenu::Update()
   m_AddPlayerEvent->Raise(this, new Player("Alex", 5, COLORS[4], POSITIONS[4]));
   m_AddPlayerEvent->Raise(this, new Player("John", 6, COLORS[5], POSITIONS[5]));
 
-  m_InitiateBattleEvent->Raise(this, nullptr);
+  m_InitiateBattleEvent->Raise(this);
   m_State->Set(State::PLACING_BATTLE_MARKER);
 #else
   m_MenuButton.Update();
@@ -298,6 +298,6 @@ void CustomizationMenu::Continue()
     m_AddPlayerEvent->Raise(this, (*players)[i]);
     (*players)[i] = nullptr;
   }
-  m_InitiateBattleEvent->Raise(this, nullptr);
+  m_InitiateBattleEvent->Raise(this);
   m_State->Set(State::PLACING_BATTLE_MARKER);
 }
