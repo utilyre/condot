@@ -25,18 +25,13 @@ enum class Position {
 class Player : public Entity
 {
 public:
-  Player(
-    State* state,
-    Event* rotateTurnEvent,
-    const std::string& name,
-    Color color,
-    int age,
-    Position position
-  );
+  Player(const std::string& name, int age, Color color);
 
   void Update() override;
   void Render(const AssetManager& assets) const override;
 
+  void SetContext(State* state, Event* rotateTurnEvent);
+  const std::string& GetName() const;
   int GetAge() const;
   void AddCard(Card card);
   bool IsPassed();

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <string>
 #include <raylib.h>
 
 #include <asset_manager.hpp>
@@ -13,10 +14,17 @@
 class CustomizationMenu : public Entity
 {
 public:
-  CustomizationMenu(State* state, Event* initiateBattleEvent);
+  CustomizationMenu(
+    State* state,
+    Event* initiateBattleEvent,
+    Event* addPlayerEvent
+  );
 
   void Update() override;
   void Render(const AssetManager& assets) const override;
+
+private:
+  void Continue();
 
 private:
   struct PlayerRow {
@@ -27,6 +35,7 @@ private:
 private:
   State* m_State;
   Event* m_InitiateBattleEvent;
+  Event* m_AddPlayerEvent;
 
   Rectangle m_Dimensions;
 
@@ -35,4 +44,5 @@ private:
   Button m_IncreasePlayersButton;
   Button m_DecreasePlayersButton;
   std::vector<PlayerRow> m_PlayerRows;
+  std::string m_ErrorMsg;
 };

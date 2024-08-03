@@ -1,6 +1,7 @@
 #include <iostream>
 #include <algorithm>
 #include <climits>
+#include <any>
 #include <raylib.h>
 
 #include <game.hpp>
@@ -16,12 +17,26 @@
 Game::Game()
 : m_Stopped(false),
   m_MainMenu(&m_State, &m_StopEvent),
-  m_CustomizationMenu(&m_State, &m_InitiateBattleEvent),
+  m_CustomizationMenu(&m_State, &m_InitiateBattleEvent, &m_AddPlayerEvent),
   m_Map(&m_State)
 {
   m_StopEvent.Register([this](auto, auto) { Stop(); });
   m_InitiateBattleEvent.Register([this](auto, auto) { InitiateBattle(); });
   m_RotateTurnEvent.Register([this](auto, auto) { RotateTurn(); });
+  m_AddPlayerEvent.Register([this](auto, std::any data) {
+    Player* player = std::any_cast<Player*>(data);
+    player->SetContext(&m_State, &m_RotateTurnEvent);
+    m_Players.push_back(player);
+    std::clog << "Added player: " << player->GetName() << '\n';
+  });
+}
+
+Game::~Game()
+{
+  for (Player* p : m_Players)
+  {
+    delete p;
+  }
 }
 
 void Game::Start()
@@ -29,14 +44,6 @@ void Game::Start()
   ToggleFullscreen();
   SetExitKey(KEY_NULL);
   SetTargetFPS(60);
-
-  // TODO: add/customize players through menu
-  m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "abbas", ORANGE, 6 , Position::TOP_RIGHT);
-  m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "amir", PURPLE, 3 , Position::RIGHT);
-  m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "John", RED, 10 , Position::BOTTOM_RIGHT);
-  m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "Alex", BLUE, 1 , Position::BOTTOM_LEFT);
-  m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "Theo", GRAY, 4 ,Position::LEFT);
-  m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "Jane", GREEN, 2 , Position::TOP_LEFT);
 
   // NOTE: do NOT modify
   while (!m_Stopped && !WindowShouldClose())
@@ -58,11 +65,14 @@ void Game::Update()
 {
   m_MainMenu.Update();
   m_CustomizationMenu.Update();
-  
-  m_Players[m_Turn].Update();
-  for (Player& p : m_Players)
+
+  if (m_Players.size() > m_Turn)
   {
-    if(&m_Players[m_Turn] != &p) p.Update();
+    m_Players[m_Turn]->Update();
+  }
+  for (Player* p : m_Players)
+  {
+    if (m_Players[m_Turn] != p) p->Update();
   }
 
   m_Map.Update();
@@ -75,9 +85,9 @@ void Game::Render() const
   m_MainMenu.Render(m_Assets);
   m_CustomizationMenu.Render(m_Assets);
 
-  for (const Player& p : m_Players)
+  for (const Player* p : m_Players)
   {
-    p.Render(m_Assets);
+    p->Render(m_Assets);
   }
 
   m_Map.Render(m_Assets);
@@ -112,11 +122,11 @@ void Game::ResetCards()
 
 void Game::DealCards()
 {
-  for (Player& player : m_Players)
+  for (Player* player : m_Players)
   {
     for (int i = 0; i < 10; i++)
     {
-      player.AddCard(m_Deck.back());
+      player->AddCard(m_Deck.back());
       m_Deck.pop_back();
     }
   }
@@ -128,7 +138,7 @@ size_t Game::FindBattleInstigatorIndex() const
   std::vector<size_t> candidateIndices;
   for (size_t i = 0; i < m_Players.size(); i++)
   {
-    int age = m_Players[i].GetAge();
+    int age = m_Players[i]->GetAge();
     if (age < min)
     {
       min = age;
@@ -158,22 +168,22 @@ void Game::RotateTurn(){
   for(size_t i{},passed{1}; i < m_Players.size(); ++i){
     
     size_t EndPos = (StartPos + passed) % m_Players.size();
-    while(m_Players[EndPos].IsPassed()){
+    while(m_Players[EndPos]->IsPassed()){
       passed++;
       EndPos = ( StartPos + passed ) % m_Players.size();
       i++;
     }
     
-    m_Players[StartPos].SetPosition(m_Players[EndPos].GetPosition());
+    m_Players[StartPos]->SetPosition(m_Players[EndPos]->GetPosition());
     
     if(i == m_Players.size() - 1){
       m_Turn = StartPos;
-      m_Players[m_Turn].SetPosition(Position::BOTTOM_LEFT);
+      m_Players[m_Turn]->SetPosition(Position::BOTTOM_LEFT);
     }
     std::cout << StartPos << " " << EndPos << " " << i << std::endl;
     StartPos = EndPos;
     passed = 1;
   }
   std::cout << std::endl;
-  std::cout << m_Players[m_Turn].GetAge()<< std::endl;
+  std::cout << m_Players[m_Turn]->GetAge()<< std::endl;
 }
