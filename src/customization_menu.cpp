@@ -8,6 +8,8 @@
 #include <player.hpp>
 #include <customization_menu.hpp>
 
+#define DEBUG
+
 static const float MENU_WIDTH = 1600.0f;
 static const float MENU_HEIGHT = 900.0f;
 static const float MENU_ROUNDNESS = 0.1f;
@@ -29,6 +31,16 @@ static const float INPUT_AGE_HEIGHT = 100.0f;
 
 static const size_t MIN_PLAYERS = 3;
 static const size_t MAX_PLAYERS = 6;
+
+static const Color COLORS[6] = {RED, GREEN, BLUE, MAGENTA, GRAY, YELLOW};
+static const Position POSITIONS[6] = {
+  Position::TOP_LEFT,
+  Position::TOP_RIGHT,
+  Position::LEFT,
+  Position::RIGHT,
+  Position::BOTTOM_LEFT,
+  Position::BOTTOM_RIGHT,
+};
 
 CustomizationMenu::CustomizationMenu(
   State* state,
@@ -96,6 +108,17 @@ void CustomizationMenu::Update()
     return;
   }
 
+#ifdef DEBUG
+  m_AddPlayerEvent->Raise(this, new Player("Jane", 1, COLORS[0], POSITIONS[0]));
+  m_AddPlayerEvent->Raise(this, new Player("Aria", 2, COLORS[1], POSITIONS[1]));
+  m_AddPlayerEvent->Raise(this, new Player("Theo", 3, COLORS[2], POSITIONS[2]));
+  m_AddPlayerEvent->Raise(this, new Player("Milo", 4, COLORS[3], POSITIONS[3]));
+  m_AddPlayerEvent->Raise(this, new Player("Alex", 5, COLORS[4], POSITIONS[4]));
+  m_AddPlayerEvent->Raise(this, new Player("John", 6, COLORS[5], POSITIONS[5]));
+
+  m_InitiateBattleEvent->Raise(this, nullptr);
+  m_State->Set(State::PLACING_BATTLE_MARKER);
+#else
   m_MenuButton.Update();
   m_ContinueButton.Update();
 
@@ -140,6 +163,7 @@ void CustomizationMenu::Update()
     row.Name.Update();
     row.Age.Update();
   }
+#endif
 }
 
 void CustomizationMenu::Render(const AssetManager& assets) const
@@ -217,16 +241,6 @@ private:
   std::vector<T*> m_Vector;
 };
 
-static const Color colors[6] = {RED, GREEN, BLUE, MAGENTA, GRAY, YELLOW};
-static const Position positions[6] = {
-  Position::TOP_LEFT,
-  Position::TOP_RIGHT,
-  Position::LEFT,
-  Position::RIGHT,
-  Position::BOTTOM_LEFT,
-  Position::BOTTOM_RIGHT,
-};
-
 void CustomizationMenu::Continue()
 {
   OwnedVector<Player> players;
@@ -267,8 +281,8 @@ void CustomizationMenu::Continue()
       players->push_back(new Player(
         name,
         age,
-        colors[players->size()],
-        positions[players->size()]
+        COLORS[players->size()],
+        POSITIONS[players->size()]
       ));
     }
     catch (const std::invalid_argument&)
