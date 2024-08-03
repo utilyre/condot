@@ -11,14 +11,6 @@ void Event::Subscribe(std::unique_ptr<Observer>&& observer)
     throw std::invalid_argument("argument 'observer' cannot be nullptr");
   }
 
-  for (const auto& l : m_Observers)
-  {
-    if (l == observer)
-    {
-      throw std::logic_error("duplicated observer");
-    }
-  }
-
   m_Observers.push_back(std::move(observer));
 }
 
