@@ -4,30 +4,30 @@
 
 #include <event.hpp>
 
-void Event::Register(std::unique_ptr<EventListener>&& listener)
+void Event::Subscribe(std::unique_ptr<Observer>&& observer)
 {
-  if (!listener)
+  if (!observer)
   {
-    throw std::invalid_argument("argument 'listener' cannot be nullptr");
+    throw std::invalid_argument("argument 'observer' cannot be nullptr");
   }
 
-  for (const auto& l : m_Listeners)
+  for (const auto& l : m_Observers)
   {
-    if (l == listener)
+    if (l == observer)
     {
-      throw std::logic_error("duplicated listener");
+      throw std::logic_error("duplicated observer");
     }
   }
 
-  m_Listeners.push_back(std::move(listener));
+  m_Observers.push_back(std::move(observer));
 }
 
-class LambdaEventListener : public EventListener
+class LambdaObserver : public Observer
 {
 public:
-  LambdaEventListener(EventListenerFunc func) : m_Func(func) {}
+  LambdaObserver(ObserverFunc func) : m_Func(func) {}
 
-  void OnEventRaised(Entity* sender, std::any data) override
+  void OnNotify(Entity* sender, std::any data) override
   {
     m_Func(sender, data);
   }
@@ -36,19 +36,19 @@ private:
   std::function<void (Entity* sender, std::any data)> m_Func;
 };
 
-void Event::Register(EventListenerFunc listener)
+void Event::Subscribe(ObserverFunc observer)
 {
-  if (!listener)
+  if (!observer)
   {
-    throw std::invalid_argument("argument 'listener' cannot be nullptr");
+    throw std::invalid_argument("argument 'observer' cannot be nullptr");
   }
 
-  Register(std::make_unique<LambdaEventListener>(listener));
+  Subscribe(std::make_unique<LambdaObserver>(observer));
 }
 
-void Event::Raise(Entity* sender, std::any data)
+void Event::Notify(Entity* sender, std::any data)
 {
-  for (auto& l : m_Listeners)
+  for (auto& l : m_Observers)
   {
     l->OnEventRaised(sender, data);
   }

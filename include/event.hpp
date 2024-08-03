@@ -7,23 +7,23 @@
 
 #include <entity.hpp>
 
-class EventListener
+class Observer
 {
 public:
-  virtual ~EventListener() {}
-  virtual void OnEventRaised(Entity* sender, std::any data) = 0;
+  virtual ~Observer() {}
+  virtual void OnNotify(Entity* sender, std::any data) = 0;
 };
 
-using EventListenerFunc = std::function<void (Entity* sender, std::any data)>;
+using ObserverFunc = std::function<void (Entity* sender, std::any data)>;
 
 class Event
 {
 public:
-  void Register(std::unique_ptr<EventListener>&& listener); // TODO: rename to Subscribe
-  void Register(EventListenerFunc listener); // TODO: rename to Subscribe
+  void Subscribe(std::unique_ptr<Observer>&& observer);
+  void Subscribe(ObserverFunc observer);
 
-  void Raise(Entity* sender, std::any data = nullptr);
+  void Notify(Entity* sender, std::any data = nullptr);
 
 private:
-  std::vector<std::unique_ptr<EventListener>> m_Listeners;
+  std::vector<std::unique_ptr<Observer>> m_Observers;
 };

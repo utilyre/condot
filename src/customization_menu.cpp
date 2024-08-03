@@ -109,14 +109,14 @@ void CustomizationMenu::Update()
   }
 
 #ifdef DEBUG
-  m_AddPlayerEvent->Raise(this, new Player("Jane", 1, COLORS[0], POSITIONS[0]));
-  m_AddPlayerEvent->Raise(this, new Player("Aria", 2, COLORS[1], POSITIONS[1]));
-  m_AddPlayerEvent->Raise(this, new Player("Theo", 3, COLORS[2], POSITIONS[2]));
-  m_AddPlayerEvent->Raise(this, new Player("Milo", 4, COLORS[3], POSITIONS[3]));
-  m_AddPlayerEvent->Raise(this, new Player("Alex", 5, COLORS[4], POSITIONS[4]));
-  m_AddPlayerEvent->Raise(this, new Player("John", 6, COLORS[5], POSITIONS[5]));
+  m_AddPlayerEvent->Notify(this, new Player("Jane", 1, COLORS[0], POSITIONS[0]));
+  m_AddPlayerEvent->Notify(this, new Player("Aria", 2, COLORS[1], POSITIONS[1]));
+  m_AddPlayerEvent->Notify(this, new Player("Theo", 3, COLORS[2], POSITIONS[2]));
+  m_AddPlayerEvent->Notify(this, new Player("Milo", 4, COLORS[3], POSITIONS[3]));
+  m_AddPlayerEvent->Notify(this, new Player("Alex", 5, COLORS[4], POSITIONS[4]));
+  m_AddPlayerEvent->Notify(this, new Player("John", 6, COLORS[5], POSITIONS[5]));
 
-  m_InitiateBattleEvent->Raise(this);
+  m_InitiateBattleEvent->Notify(this);
   m_State->Set(State::PLACING_BATTLE_MARKER);
 #else
   m_MenuButton.Update();
@@ -295,9 +295,9 @@ void CustomizationMenu::Continue()
   size_t numPlayers = players->size();
   for (size_t i = 0; i < numPlayers; i++)
   {
-    m_AddPlayerEvent->Raise(this, (*players)[i]);
+    m_AddPlayerEvent->Notify(this, (*players)[i]);
     (*players)[i] = nullptr;
   }
-  m_InitiateBattleEvent->Raise(this);
+  m_InitiateBattleEvent->Notify(this);
   m_State->Set(State::PLACING_BATTLE_MARKER);
 }

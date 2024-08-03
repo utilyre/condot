@@ -20,10 +20,10 @@ Game::Game()
   m_CustomizationMenu(&m_State, &m_InitiateBattleEvent, &m_AddPlayerEvent),
   m_Map(&m_State)
 {
-  m_StopEvent.Register([this](auto, auto) { Stop(); });
-  m_InitiateBattleEvent.Register([this](auto, auto) { InitiateBattle(); });
-  m_RotateTurnEvent.Register([this](auto, auto) { RotateTurn(); });
-  m_AddPlayerEvent.Register([this](auto, std::any data) {
+  m_StopEvent.Subscribe([this](auto, auto) { Stop(); });
+  m_InitiateBattleEvent.Subscribe([this](auto, auto) { InitiateBattle(); });
+  m_RotateTurnEvent.Subscribe([this](auto, auto) { RotateTurn(); });
+  m_AddPlayerEvent.Subscribe([this](auto, std::any data) {
     Player* player = std::any_cast<Player*>(data);
     player->SetContext(&m_State, &m_RotateTurnEvent);
     m_Players.push_back(player);
