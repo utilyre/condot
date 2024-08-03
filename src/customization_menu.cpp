@@ -1,5 +1,6 @@
 #include <stdexcept>
 #include <vector>
+#include <set>
 #include <raylib.h>
 
 #include <state.hpp>
@@ -217,7 +218,8 @@ void CustomizationMenu::Continue()
 {
   OwnedVector<Player> players;
 
-  // TODO: check for duplicated names
+  std::set<std::string> names;
+
   for (const PlayerRow& row : m_PlayerRows)
   {
     const std::string& name = row.Name.GetText();
@@ -226,6 +228,13 @@ void CustomizationMenu::Continue()
       m_ErrorMsg = "Please fill out all name inputs.";
       return;
     }
+    if (names.count(name))
+    {
+      m_ErrorMsg = "Duplicated name.";
+      return;
+    }
+    names.insert(name);
+
     const std::string& ageStr = row.Age.GetText();
     if (ageStr.empty())
     {
