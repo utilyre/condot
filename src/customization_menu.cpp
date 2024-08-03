@@ -217,6 +217,7 @@ void CustomizationMenu::Continue()
 {
   OwnedVector<Player> players;
 
+  // TODO: check for duplicated names
   for (const PlayerRow& row : m_PlayerRows)
   {
     const std::string& name = row.Name.GetText();
@@ -250,9 +251,10 @@ void CustomizationMenu::Continue()
     }
   }
 
-  for (Player* p : *players)
+  for (size_t i = 0; i < players->size(); i++)
   {
-    m_AddPlayerEvent->Raise(this, p);
+    m_AddPlayerEvent->Raise(this, players->back());
+    players->pop_back();
   }
   m_InitiateBattleEvent->Raise(this, nullptr);
   m_State->Set(State::PLACING_BATTLE_MARKER);
