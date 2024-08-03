@@ -19,7 +19,7 @@ class LambdaObserver : public Observer
 public:
   LambdaObserver(ObserverFunc func) : m_Func(func) {}
 
-  void OnNotify(Entity* sender, std::any data) override
+  void OnNotified(Entity* sender, std::any data) override
   {
     m_Func(sender, data);
   }
@@ -42,6 +42,6 @@ void Event::Notify(Entity* sender, std::any data)
 {
   for (auto& l : m_Observers)
   {
-    l->OnEventRaised(sender, data);
+    l->OnNotified(sender, data);
   }
 }

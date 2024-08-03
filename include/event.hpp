@@ -11,7 +11,7 @@ class Observer
 {
 public:
   virtual ~Observer() {}
-  virtual void OnNotify(Entity* sender, std::any data) = 0;
+  virtual void OnNotified(Entity* sender, std::any data) = 0;
 };
 
 using ObserverFunc = std::function<void (Entity* sender, std::any data)>;
