@@ -214,6 +214,8 @@ private:
   std::vector<T*> m_Vector;
 };
 
+static const Color colors[6] = {RED, GREEN, BLUE, MAGENTA, GRAY, YELLOW};
+
 void CustomizationMenu::Continue()
 {
   OwnedVector<Player> players;
@@ -251,7 +253,7 @@ void CustomizationMenu::Continue()
         return;
       }
 
-      players->push_back(new Player(name, age, RED));
+      players->push_back(new Player(name, age, colors[players->size()]));
     }
     catch (const std::invalid_argument&)
     {
