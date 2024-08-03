@@ -215,6 +215,14 @@ private:
 };
 
 static const Color colors[6] = {RED, GREEN, BLUE, MAGENTA, GRAY, YELLOW};
+static const Position positions[6] = {
+  Position::TOP_LEFT,
+  Position::TOP_RIGHT,
+  Position::LEFT,
+  Position::RIGHT,
+  Position::BOTTOM_LEFT,
+  Position::BOTTOM_RIGHT,
+};
 
 void CustomizationMenu::Continue()
 {
@@ -253,7 +261,12 @@ void CustomizationMenu::Continue()
         return;
       }
 
-      players->push_back(new Player(name, age, colors[players->size()]));
+      players->push_back(new Player(
+        name,
+        age,
+        colors[players->size()],
+        positions[players->size()]
+      ));
     }
     catch (const std::invalid_argument&)
     {

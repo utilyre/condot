@@ -13,10 +13,11 @@ static const int CARD_WIDTH = 164;
 static const int CARD_HEIGHT = 255;
 static const float CARD_SCALE = 0.15f;
 
-Player::Player(const std::string& name, int age, Color color)
+Player::Player(const std::string& name, int age, Color color, Position position)
 : m_Name(name),
   m_Color(color),
   m_Age(age),
+  m_Position(position),
   m_IsPassed(false)
   //m_PassButton ("SURRENDER",Rectangle(0.5f * GetScreenWidth() - 3.0f * GetScreenHeight() / 8.0f - 200.0f, GetScreenHeight() - float(200), 170 , 100))
 {
