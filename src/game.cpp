@@ -84,7 +84,7 @@ void Game::Render() const
     p.Render(m_Assets);
   }
   
- DrawText(TextFormat("(%d,%d)",GetMouseX(),GetMouseY()), 10, 10, 30, BLACK);
+ DrawText(TextFormat("(%d,%d)",GetMouseX(),GetMouseY()), 10, 10, 30, WHITE);
 }
 
 void Game::ResetCards()
