@@ -28,6 +28,7 @@ public:
   Player(
     State* state,
     Event* rotateTurnEvent,
+    Event* restartbattle,
     const std::string& name,
     Color color,
     int age,
@@ -60,6 +61,7 @@ private:
 private:
   State* m_State;
   Event* m_RotateTurnEvent;
+  Event* m_RestartBattle;
   std::string m_Name;
   Color m_Color;
   int m_Age;

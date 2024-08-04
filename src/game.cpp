@@ -24,6 +24,7 @@ Game::Game()
   m_StopEvent.Register([this](auto, auto) { Stop(); });
   m_InitiateBattleEvent.Register([this](auto, auto) { InitiateBattle(); });
   m_RotateTurnEvent.Register([this](auto,auto data) { RotateTurn(std::any_cast<bool*>(data)); });
+  m_RestartBattle.Register([this](auto , auto) { RestartBattle(); });
 }
 
 void Game::Start()
@@ -33,12 +34,12 @@ void Game::Start()
   SetTargetFPS(60);
 
   // TODO: add/customize players through menu
-  m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "Abbas", ORANGE, 6 , Position::TOP_RIGHT);
-  m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "Amir", PURPLE, 3 , Position::RIGHT);
-  m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "John", RED, 10 , Position::BOTTOM_RIGHT);
-  m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "Alex", BLUE, 3 , Position::BOTTOM_LEFT);
-  m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "Theo", GRAY, 1 ,Position::LEFT);
-  m_Players.emplace_back(&m_State, &m_RotateTurnEvent, "Jane", GREEN, 5 , Position::TOP_LEFT);
+  m_Players.emplace_back(&m_State, &m_RotateTurnEvent, &m_RestartBattle, "Abbas", ORANGE, 6 , Position::TOP_RIGHT);
+  m_Players.emplace_back(&m_State, &m_RotateTurnEvent, &m_RestartBattle, "Amir", PURPLE, 3 , Position::RIGHT);
+  m_Players.emplace_back(&m_State, &m_RotateTurnEvent, &m_RestartBattle, "John", RED, 10 , Position::BOTTOM_RIGHT);
+  m_Players.emplace_back(&m_State, &m_RotateTurnEvent, &m_RestartBattle, "Alex", BLUE, 3 , Position::BOTTOM_LEFT);
+  m_Players.emplace_back(&m_State, &m_RotateTurnEvent, &m_RestartBattle, "Theo", GRAY, 1 ,Position::LEFT);
+  m_Players.emplace_back(&m_State, &m_RotateTurnEvent, &m_RestartBattle, "Jane", GREEN, 5 , Position::TOP_LEFT);
   InitiateBattle();
 
   // NOTE: do NOT modify
@@ -182,10 +183,7 @@ void Game::RotateTurn(bool* Status){
 
     if (passed == m_Players.size() && !(*Status))
     {
-      FindRegionConquerer();
-      ResetCards();
-      FixPosition();
-      DealCards();
+      RestartBattle();
       *Status = false;
       return;
     }
@@ -269,3 +267,10 @@ void Game::FixPosition()
   }
 }
 
+void Game::RestartBattle()
+{
+  FindRegionConquerer();
+  ResetCards();
+  FixPosition();
+  DealCards();
+}

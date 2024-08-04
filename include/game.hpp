@@ -33,6 +33,7 @@ private:
   void PickCard();
   void FindRegionConquerer();
   void FixPosition();
+  void RestartBattle();
 private:
   bool m_Stopped;
   size_t m_Turn;
@@ -42,6 +43,7 @@ private:
   Event m_StopEvent;
   Event m_InitiateBattleEvent;
   Event m_RotateTurnEvent;
+  Event m_RestartBattle;
   MainMenu m_MainMenu;
   CustomizationMenu m_CustomizationMenu;
   Map m_Map;

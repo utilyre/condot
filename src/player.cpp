@@ -15,6 +15,7 @@ static const float CARD_SCALE = 0.15f;
 Player::Player(
   State* state,
   Event* rotateTurnEvent,
+  Event* restartbattle,
   const std::string& name,
   Color color,
   int age,
@@ -22,6 +23,7 @@ Player::Player(
 )
 : m_State(state),
   m_RotateTurnEvent(rotateTurnEvent),
+  m_RestartBattle(restartbattle),
   m_Name(name),
   m_Color(color),
   m_Age(age),
@@ -380,8 +382,8 @@ bool Player::PickCard(const size_t& index){
           
           else if (card == Card::TURNCOAT) {
             m_Cards.erase(m_Cards.begin() + index);
+            m_RestartBattle->Raise(this, nullptr);
             return true;
-            // TODO : EndGame();
           }
           
           else if (card == Card::WINTER) {
