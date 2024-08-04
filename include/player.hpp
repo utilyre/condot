@@ -50,13 +50,13 @@ public:
   void DeleteCard(int BNum);
   int GetBishop() const;
   int GetSpy() const;
+  Color GetColor() const;
 private:
   bool PlayCard();
   void RenderCards(const AssetManager& assets, Vector2 cordinate, float rotation, float ratio) const;
   void RenderRows(const AssetManager& assets, Vector2 cordinate, float rotation, float ratio) const;
   void Pass();
   void Add(size_t index);
-  Color GetColor() const;
   bool RetrieveCard();
   bool PickCard(const size_t& index);
 private:

@@ -31,3 +31,8 @@ bool Region::CollidesWith(Vector2 v) const
 {
   return CheckCollisionPointRec(v, m_Collision);
 }
+
+Rectangle Region::GetRec() const
+{
+  return m_Collision;
+}
