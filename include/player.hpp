@@ -46,6 +46,8 @@ public:
   int CalculateScore(int C = 0) const;
   int GetBiggestNum() const;
   void Reset();
+  void DeleteCard(int BNum);
+  int GetBishop() const;
 private:
   bool PlayCard();
   void RenderCards(const AssetManager& assets, Vector2 cordinate, float rotation, float ratio) const;
@@ -55,7 +57,6 @@ private:
   Color GetColor() const;
   bool RetrieveCard();
   bool PickCard(const size_t& index);
-
 private:
   State* m_State;
   Event* m_RotateTurnEvent;

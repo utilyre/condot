@@ -343,8 +343,8 @@ bool Player::PickCard(const size_t& index){
           // TODO : does something with gameflow
           else if (card == Card::BISHOP) {
             m_Cards.erase(m_Cards.begin() + index);
+            m_Bishop++;
             return true;
-            // TODO: use event
           }
           
           else if (card == Card::DRUMMER) {
@@ -534,4 +534,20 @@ void Player::Reset()
 const std::string& Player::GetName() const
 {
   return m_Name;
+}
+
+void Player::DeleteCard(int BNum)
+{
+  for (size_t index = 0; index < m_Row.size(); ++index)
+  {
+    if (m_Row[index].GetPower() == BNum)
+    {
+      m_Row.erase(m_Row.begin() + index);
+    }
+  }
+}
+
+int Player::GetBishop() const
+{
+  return m_Bishop;
 }

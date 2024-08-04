@@ -180,7 +180,7 @@ void Game::RotateTurn(bool* Status){
       i++;
     }
 
-    if (passed == m_Players.size() && !(*PassStatus))
+    if (passed == m_Players.size() && !(*Status))
     {
       FindRegionConquerer();
       ResetCards();
@@ -208,20 +208,35 @@ void Game::RotateTurn(bool* Status){
 
 void Game::FindRegionConquerer()
 {
-  int BNum = 0;
+  int BishopNum = 0;
+  int BiggestNum = 0;
   int max_strength = 0;
   std::vector<size_t> potentialWinners;
-  
-  for(const auto& p : m_Players)
+
+  for (auto p : m_Players)
   {
-    if (BNum < p.GetBiggestNum()){
-      BNum = p.GetBiggestNum();
-    }
+    BishopNum += p.GetBishop();
   }
 
+  for (int counter = 0; counter < BishopNum; ++counter)
+  {
+    for (const auto& p : m_Players)
+    {
+      if (BiggestNum < p.GetBiggestNum()){
+        BiggestNum = p.GetBiggestNum();
+      }
+    }
+
+    for (auto& p : m_Players)
+    {
+      p.DeleteCard(BiggestNum);
+    }
+    BiggestNum = 0;
+  }
+   
   for (size_t i = 0; i < m_Players.size(); i++)
   {
-    int strength = m_Players[i].CalculateScore(BNum);
+    int strength = m_Players[i].CalculateScore(BiggestNum);
     
     if (strength > max_strength)
     {
