@@ -180,7 +180,7 @@ void Game::RotateTurn(bool* PassStatus){
       i++;
     }
 
-    if (passed == m_Players.size() && !(*Status))
+    if (passed == m_Players.size() && !(*PassStatus))
     {
       FindRegionConquerer();
       ResetCards();
