@@ -62,13 +62,13 @@ void Game::Update()
 {
   m_MainMenu.Update();
   m_CustomizationMenu.Update();
-  m_Map.Update();
   
   m_Players[m_Turn].Update();
   for (Player& p : m_Players)
   {
     if(&m_Players[m_Turn] != &p) p.Update();
   }
+  m_Map.Update();
 }
 
 void Game::Render() const
@@ -77,14 +77,16 @@ void Game::Render() const
 
   m_MainMenu.Render(m_Assets);
   m_CustomizationMenu.Render(m_Assets);
-  m_Map.Render(m_Assets);
 
   for (const Player& p : m_Players)
   {
     p.Render(m_Assets);
   }
-  
+
+  m_Map.Render(m_Assets);
+
  DrawText(TextFormat("(%d,%d)",GetMouseX(),GetMouseY()), 10, 10, 30, BLACK);
+  
 }
 
 void Game::ResetCards()
@@ -254,13 +256,6 @@ void Game::FindRegionConquerer()
     }
     BiggestNum = 0;
   }
-  
-  for (const auto& p : m_Players)
-  {
-    if (BiggestNum < p.GetBiggestNum()){
-      BiggestNum = p.GetBiggestNum();
-    }
-  }
    
   for (size_t i = 0; i < m_Players.size(); i++)
   {
@@ -280,10 +275,6 @@ void Game::FindRegionConquerer()
 
   if (potentialWinners.size() == 1) {
     m_Map.GetBattleMarker()->SetRuler(&m_Players[potentialWinners[0]]);
-  }
-  else
-  {
-    m_Map.GetBattleMarker()->SetRuler(nullptr);
   }
 
   std::mt19937 mt(m_RandDev());

@@ -23,11 +23,8 @@ const Player* Region::GetRuler() const
 
 void Region::SetRuler(Player* p)
 {
-  if(p)
-  {
-    m_Ruler = p;
-    std::clog << "INFO: " << GetName() << " is conquered by " << GetRuler()->GetName() << '\n';
-  }
+  m_Ruler = p;
+  std::clog << "INFO: " << GetName() << " is conquered by " << GetRuler()->GetName() << '\n';
 }
 
 bool Region::CollidesWith(Vector2 v) const
