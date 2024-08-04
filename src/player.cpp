@@ -553,3 +553,8 @@ int Player::GetBishop() const
 {
   return m_Bishop;
 }
+
+int Player::GetSpy() const
+{
+  return m_Spy;
+}

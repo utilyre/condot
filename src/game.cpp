@@ -1,4 +1,5 @@
 #include <any>
+#include <cstddef>
 #include <cstdlib>
 #include <iostream>
 #include <algorithm>
@@ -206,10 +207,34 @@ void Game::RotateTurn(bool* Status){
 
 void Game::FindRegionConquerer()
 {
+  int SpyNum = 0;
   int BishopNum = 0;
   int BiggestNum = 0;
   int max_strength = 0;
   std::vector<size_t> potentialWinners;
+
+  for (size_t index = 0; index < m_Players.size(); ++index)
+  {
+    int Num = m_Players[index].GetSpy();
+    if (SpyNum < Num)
+    {
+      SpyNum = Num;
+      potentialWinners.clear();
+      potentialWinners.push_back(index);
+    }
+    
+    else if (Num == SpyNum)
+    {
+     potentialWinners.push_back(index); 
+    }
+  }
+  
+  if (potentialWinners.size() == 1) 
+  {
+    m_Map.GetBattleMarker()->SetRuler(&m_Players[potentialWinners[0]]);
+    m_State.Set(State::PLACING_BATTLE_MARKER);
+    return;
+  }
 
   for (auto p : m_Players)
   {

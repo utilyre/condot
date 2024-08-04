@@ -49,6 +49,7 @@ public:
   void Reset();
   void DeleteCard(int BNum);
   int GetBishop() const;
+  int GetSpy() const;
 private:
   bool PlayCard();
   void RenderCards(const AssetManager& assets, Vector2 cordinate, float rotation, float ratio) const;
