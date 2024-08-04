@@ -135,7 +135,7 @@ void Map::Render(const AssetManager& assets) const
     );
   }
   
-  if(m_BattleMarker)
+  if(m_BattleMarker && m_State->Get() != State::PLACING_BATTLE_MARKER)
   {
     DrawCircle(
       MapPosX + (m_BattleMarker->GetRec().x + m_BattleMarker->GetRec().width / 2.0f) * scaleFactor ,
@@ -144,7 +144,7 @@ void Map::Render(const AssetManager& assets) const
       BLACK); 
   }
   
-  if(m_FavorMarker)
+  if(m_FavorMarker && m_State->Get() != State::PLACING_FAVOR_MARKER)
   {
     DrawCircle(
       MapPosX + (m_FavorMarker->GetRec().x + m_FavorMarker->GetRec().width / 2.0f) * scaleFactor ,
