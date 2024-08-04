@@ -167,7 +167,7 @@ void Game::InitiateBattle()
   DealCards();
 }
 
-void Game::RotateTurn(bool* PassStatus){
+void Game::RotateTurn(bool* Status){
   
   size_t StartPos = (m_Turn);
   for(size_t i{},passed{1}; i < m_Players.size(); ++i)
@@ -186,12 +186,12 @@ void Game::RotateTurn(bool* PassStatus){
       ResetCards();
       FixPosition();
       DealCards();
-      *PassStatus = false;
+      *Status = false;
       return;
     }
     else
     {
-      *PassStatus = true;
+      *Status = true;
     }
     
     m_Players[StartPos].SetPosition(m_Players[EndPos].GetPosition());

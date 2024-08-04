@@ -29,7 +29,7 @@ private:
   void ResetCards();
   void DealCards();
   void InitiateBattle();
-  void RotateTurn(bool* x);
+  void RotateTurn(bool* Status);
   void PickCard();
   void FindRegionConquerer();
   void FixPosition();
