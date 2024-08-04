@@ -262,3 +262,8 @@ Region* Map::GetBattleMarker()
 {
   return m_BattleMarker;
 }
+
+void Map::ResetBattleMarker()
+{
+  m_BattleMarker = nullptr;
+}

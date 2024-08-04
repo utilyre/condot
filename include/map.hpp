@@ -17,6 +17,7 @@ public:
   void Render(const AssetManager& assets) const override;
   std::vector<const Player*> FindWinners() const;
   Region* GetBattleMarker();
+  void ResetBattleMarker();
 
 private:
   bool AreNeighbors(size_t i, size_t j) const;
