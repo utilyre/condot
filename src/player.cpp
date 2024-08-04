@@ -30,6 +30,7 @@ Player::Player(
   m_Spy(0),
   m_Heroine(0),
   m_Drummer(false),
+  m_Bishop(0),
   m_PassButton ("SURRENDER",Rectangle(0,GetScreenHeight() - 100 , 170 , 100))
 {
 }
