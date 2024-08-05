@@ -29,7 +29,11 @@ private:
   void ResetCards();
   void DealCards();
   void InitiateBattle();
-  void RotateTurn();
+  void RotateTurn(bool* Status);
+  void PickCard();
+  void FindRegionConquerer();
+  void FixPosition();
+  void RestartBattle();
 
 private:
   bool m_Stopped;
@@ -41,6 +45,7 @@ private:
   Event m_InitiateBattleEvent;
   Event m_RotateTurnEvent;
   Event m_AddPlayerEvent;
+  Event m_RestartBattle;
   MainMenu m_MainMenu;
   CustomizationMenu m_CustomizationMenu;
   Map m_Map;

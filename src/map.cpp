@@ -97,7 +97,6 @@ void Map::Update()
         default:
           break;
         }
-
         m_State->Set(State::PLAYING_CARD);
       }
     }
@@ -122,23 +121,57 @@ void Map::Render(const AssetManager& assets) const
   int height = GetScreenHeight();
 
   float scaleFactor = MAP_SCALE * height / MAP_HEIGHT;
+  float MapPosX = (width - scaleFactor * MAP_WIDTH) / 2.0f;
+  float MapPosY = (height - scaleFactor * MAP_HEIGHT) / 2.0f;
 
   if (m_State->Get() == State::PLACING_BATTLE_MARKER
       || m_State->Get() == State::PLACING_FAVOR_MARKER
-      || m_State->Get() == State::PLAYING_CARD)
+      || m_State->Get() == State::PLAYING_CARD
+      || m_State->Get() == State::SCARECROW)
+  
   {
     DrawTextureEx(
       assets.Map,
       Vector2{
-        (width - scaleFactor * MAP_WIDTH) / 2,
-        (height - scaleFactor * MAP_HEIGHT) / 2,
+        MapPosX,
+        MapPosY,
       },
       0.0f,
       scaleFactor,
       WHITE
     );
   }
-
+  
+  if(m_BattleMarker)
+  {
+    DrawCircle(
+      MapPosX + (m_BattleMarker->GetRec().x + m_BattleMarker->GetRec().width / 2.0f) * scaleFactor ,
+      MapPosY + (m_BattleMarker->GetRec().y + m_BattleMarker->GetRec().height / 2.0f) * scaleFactor ,
+      30 * scaleFactor,
+      BLACK); 
+  }
+  
+  if(m_FavorMarker)
+  {
+    DrawCircle(
+      MapPosX + (m_FavorMarker->GetRec().x + m_FavorMarker->GetRec().width / 2.0f) * scaleFactor ,
+      MapPosY + (m_FavorMarker->GetRec().y + m_FavorMarker->GetRec().height / 2.0f) * scaleFactor ,
+      30 * scaleFactor,
+      WHITE); 
+  }
+  
+  for (auto& r : m_Regions)
+  {
+    if(r.GetRuler())
+    {
+      DrawCircle(
+        MapPosX + (r.GetRec().x + r.GetRec().width / 2.0f) * scaleFactor ,
+        MapPosY + (r.GetRec().y + r.GetRec().height / 2.0f) * scaleFactor ,
+        30 * scaleFactor,
+        r.GetRuler()->GetColor()); 
+    }
+  }
+  
   if (m_State->Get() == State::PLACING_BATTLE_MARKER
       || m_State->Get() == State::PLACING_FAVOR_MARKER)
   {
@@ -207,7 +240,7 @@ std::vector<const Player*> Map::FindWinners() const
       || (
         indices.size() == 4
         && (
-          AreNeighbors(indices[0], indices[1], indices[2])
+             AreNeighbors(indices[0], indices[1], indices[2])
           || AreNeighbors(indices[0], indices[1], indices[3])
           || AreNeighbors(indices[0], indices[2], indices[3])
           || AreNeighbors(indices[1], indices[2], indices[3])
@@ -230,4 +263,14 @@ bool Map::AreNeighbors(size_t i, size_t j) const
 bool Map::AreNeighbors(size_t i, size_t j, size_t k) const
 {
   return AreNeighbors(i, j) || AreNeighbors(i, k) || AreNeighbors(j, k);
+}
+
+Region* Map::GetBattleMarker()
+{
+  return m_BattleMarker;
+}
+
+void Map::ResetBattleMarker()
+{
+  m_BattleMarker = nullptr;
 }

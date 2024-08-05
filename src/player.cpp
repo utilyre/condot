@@ -1,4 +1,3 @@
-#include <cstddef>
 #include <raylib.h>
 
 #include <asset_manager.hpp>
@@ -18,26 +17,45 @@ Player::Player(const std::string& name, int age, Color color, Position position)
   m_Color(color),
   m_Age(age),
   m_Position(position),
-  m_IsPassed(false)
-  //m_PassButton ("SURRENDER",Rectangle(0.5f * GetScreenWidth() - 3.0f * GetScreenHeight() / 8.0f - 200.0f, GetScreenHeight() - float(200), 170 , 100))
+  m_IsPassed(false),
+  m_Spy(0),
+  m_Heroine(0),
+  m_Drummer(false),
+  m_Bishop(0),
+  m_PassButton ("SURRENDER",Rectangle(0,GetScreenHeight() - 100 , 170 , 100))
 {
 }
 
 void Player::Update()
 {
-  if (m_State->Get() != State::PLAYING_CARD){
+  auto state = m_State->Get();
+
+  if (state != State::PLAYING_CARD &&
+      state != State::SCARECROW){
     return;
   }
-    //m_PassButton.Update();  
-    if (PlayCard())
+    bool RotateStatus = false;
+    m_PassButton.Update();  
+    if(state == State::PLAYING_CARD)
+      RotateStatus = PlayCard();
+    
+    else if (m_State->Get() == State::SCARECROW)
+      RotateStatus = RetrieveCard();
+    
+    //else if (m_State->Get() == BISHOP)
+    if(RotateStatus == true && m_State->Get() == State::PLAYING_CARD)
     {
-      if(IsPassed()){
-        m_IsPassed = false;
-        m_RotateTurnEvent->Raise(this);
-        m_IsPassed = true;
+      bool PassStatus = false;
+      bool PlayStatus = true;
+      if(IsPassed())
+      {
+        m_IsPassed = PassStatus;
+        m_RotateTurnEvent->Raise(this, &PassStatus);
+        m_IsPassed = PassStatus;
       }
-      else{
-        m_RotateTurnEvent->Raise(this);
+      else
+      {
+        m_RotateTurnEvent->Raise(this, &PlayStatus);
       }
     }
 }
@@ -49,12 +67,15 @@ void Player::AddCard(Card card)
 
 void Player::Render(const AssetManager& assets) const
 {
-  if (m_State->Get() != State::PLAYING_CARD){
+  auto state = m_State->Get();
+  if (state != State::PLAYING_CARD &&
+      state != State::SCARECROW){
     return;
   }
   
  const float SCREEN_WIDTH  = GetScreenWidth();
  const float SCREEN_HEIGHT = GetScreenHeight();
+
  const float SCALE = CARD_SCALE * SCREEN_HEIGHT * SCREEN_WIDTH / (CARD_HEIGHT * CARD_WIDTH * 12);
  const float THICKNESS = SCALE  * (CARD_HEIGHT + 50);
  const float HORIZONTAL_SPACING = SCALE * (9.0 * CARD_WIDTH / 2 + CARD_WIDTH); 
@@ -85,7 +106,7 @@ void Player::Render(const AssetManager& assets) const
   case Position::BOTTOM_LEFT:
     DrawRectangle(SCALE * (CARD_HEIGHT * 2 + 50) , SCREEN_HEIGHT - THICKNESS , HORIZONTAL_SPACING , THICKNESS , GetColor());
     RenderRows (assets , Vector2{ SCREEN_BOTTOM_LEFT.x , SCREEN_BOTTOM_LEFT.y - CARD_HEIGHT * SCALE / 2} , 0, SCALE);
-    //m_PassButton.Render(assets);
+    m_PassButton.Render(assets);
     RenderCards(assets , SCREEN_BOTTOM_LEFT , 0, SCALE);
     break;
     
@@ -132,9 +153,9 @@ void Player::RenderRows(const AssetManager& assets, Vector2 cordinate, float rot
   
   if (m_Position == Position::BOTTOM_LEFT)
   {
-    for (auto c = m_Row.rbegin(); c != m_Row.rend(); ++c)
+    for(const auto& c : m_Row)
     {
-      DrawTextureEx(c->GetAsset(assets), cordinate, rotation, ratio, WHITE);
+      DrawTextureEx(c.GetAsset(assets), cordinate, rotation, ratio, WHITE);
       cordinate.x += CARD_WIDTH / 2.0 * SCALE;
     }
   }
@@ -234,27 +255,29 @@ void Player::RenderCards(const AssetManager& assets, Vector2 cordinate, float ro
 bool Player::PlayCard(){
 
   const float scale = CARD_SCALE * GetScreenWidth() * GetScreenHeight() / (CARD_HEIGHT * CARD_WIDTH * 12);
- const float HORIZONTAL_SPACING = scale * (9.0 * CARD_WIDTH / 2 + CARD_WIDTH); 
+  
   if (m_Position == Position::BOTTOM_LEFT)
   {
     size_t index = 0;
     for(auto it = m_Cards.rbegin(); it != m_Cards.rend(); ++it)
     {
-      Rectangle LowerLayer = { (GetScreenWidth() - HORIZONTAL_SPACING) / 4 + CARD_WIDTH / 2.0f * scale * index , GetScreenHeight() - scale * (CARD_HEIGHT + 50), CARD_WIDTH / 2.0f * scale , CARD_HEIGHT * scale};
-      Rectangle UpperLayer = { (GetScreenWidth() - HORIZONTAL_SPACING) / 4 + CARD_WIDTH / 2.0f * scale  * index , GetScreenHeight() - scale * (CARD_HEIGHT + 50), CARD_WIDTH * scale, CARD_HEIGHT * scale};
+      Rectangle LowerLayer = {scale * (CARD_HEIGHT * 2 + 50) + CARD_WIDTH / 2.0f * scale * index , GetScreenHeight() - scale * (CARD_HEIGHT + 50), CARD_WIDTH / 2.0f * scale , CARD_HEIGHT * scale};
+      Rectangle UpperLayer = {scale * (CARD_HEIGHT * 2 + 50) + CARD_WIDTH / 2.0f * scale * index , GetScreenHeight() - scale * (CARD_HEIGHT + 50), CARD_WIDTH * scale , CARD_HEIGHT * scale};
         
       if((CheckCollisionPointRec(GetMousePosition(), LowerLayer) ||
          (CheckCollisionPointRec(GetMousePosition(), UpperLayer) &&
          m_Cards.size() - 1 == index )) && 
           IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
-        {
-          PickCard(index);
-          return true;
-        }
-      // else if (m_PassButton.Pressed()){
-      //   m_IsPassed = true;  
-      //   return true;
-      // }
+      {
+        bool status = PickCard(index);
+        return status;
+      }
+        
+      else if (m_PassButton.Pressed())
+      {
+        m_IsPassed = true;  
+        return true;
+      }
       index++;
     }
   }
@@ -264,84 +287,100 @@ int Player::GetAge() const {
   return m_Age;
 }
 
-void Player::PickCard(const size_t& index){
+bool Player::PickCard(const size_t& index){
           auto card = m_Cards[index].GetType();
           if (card == Card::MERCENARY_1) {
             m_Cards.erase(m_Cards.begin() + index);
             m_Row.emplace_back(1);
+            return true;
           }
           
           else if (card == Card::MERCENARY_2) {
             m_Cards.erase(m_Cards.begin() + index);
             m_Row.emplace_back(2);
+            return true;
           }
           
           else if (card == Card::MERCENARY_3) {
             m_Cards.erase(m_Cards.begin() + index);
             m_Row.emplace_back(3);
+            return true;
           }
           
           else if (card == Card::MERCENARY_4) {
             m_Cards.erase(m_Cards.begin() + index);
             m_Row.emplace_back(4);
+            return true;
           }
           
           else if (card == Card::MERCENARY_5) {
             m_Cards.erase(m_Cards.begin() + index);
             m_Row.emplace_back(5);
+            return true;
           }
           
           else if (card == Card::MERCENARY_6) {
             m_Cards.erase(m_Cards.begin() + index);
             m_Row.emplace_back(6);
+            return true;
           }
           
           else if (card == Card::MERCENARY_10) {
             m_Cards.erase(m_Cards.begin() + index);
             m_Row.emplace_back(10);
+            return true;
           }
           
           // TODO : does something with gameflow
           else if (card == Card::BISHOP) {
             m_Cards.erase(m_Cards.begin() + index);
-            // TODO: use event
+            m_Bishop++;
+            return true;
           }
           
           else if (card == Card::DRUMMER) {
             m_Cards.erase(m_Cards.begin() + index);
-            if (!m_s.count("DRUMMER")) m_s.insert({"DRUMMER" , 1});
+            m_Drummer = true;
+            return true;
           }
           
           else if (card == Card::HEROINE) {
             m_Cards.erase(m_Cards.begin() + index);
-            // TODO int Heroine++;
+            m_Heroine++;
+            return true;
           }
           
           else if (card == Card::SCARECROW) {
+            if(m_Row.empty()) return false;
             m_Cards.erase((m_Cards.begin() + index));
-            //TODO : SCARECROW();
+            m_State->Set(State::SCARECROW);
+            return true; 
           }
+          
           else if (card == Card::SPRING) {
             m_Cards.erase(m_Cards.begin() + index);
-            //TODO : Set(Season::SPRING);
+            m_State->Set(State::SPRING);
+            return true;
           }
           
           else if (card == Card::SPY) {
             m_Cards.erase(m_Cards.begin() + index);
-            //TODO : int Spy++;
-            
+            m_Spy++;
+            return true;
           }
           
           else if (card == Card::TURNCOAT) {
             m_Cards.erase(m_Cards.begin() + index);
-            // TODO : EndGame();
+            m_RestartBattle->Raise(this, nullptr);
+            return true;
           }
           
           else if (card == Card::WINTER) {
             m_Cards.erase(m_Cards.begin() + index);
-            // TODO : Set(Season::WINTER);
+            m_State->Set(State::WINTER);
+            return true;
           }
-          
+          return false;
 }
 
 void Player::SetPosition(const Position& position){
@@ -360,8 +399,39 @@ Position Player::GetPosition() const{
   return m_Position;
 }
 
+bool Player::RetrieveCard(){
+
+  const float scale = CARD_SCALE * GetScreenWidth() * GetScreenHeight() / (CARD_HEIGHT * CARD_WIDTH * 12);
+  const float SPACING = CARD_HEIGHT * scale / 2.0;
+   
+  if (m_Position == Position::BOTTOM_LEFT)
+  {
+    size_t index = 0;
+    for(auto it = m_Row.rbegin(); it != m_Row.rend(); ++it)
+    {
+      Rectangle LowerLayer = {scale * (CARD_HEIGHT * 2 + 50) + CARD_WIDTH / 2.0f * scale * index , GetScreenHeight() - scale * (CARD_HEIGHT + 50) - SPACING , CARD_WIDTH / 2.0f * scale , SPACING};
+      Rectangle UpperLayer = {scale * (CARD_HEIGHT * 2 + 50)+ CARD_WIDTH / 2.0f * scale * index , GetScreenHeight() - scale * (CARD_HEIGHT + 50) - SPACING , CARD_WIDTH * scale , SPACING};
+        
+      if((CheckCollisionPointRec(GetMousePosition(), LowerLayer) ||
+         (CheckCollisionPointRec(GetMousePosition(), UpperLayer) &&
+         m_Row.size() - 1 == index )) && 
+          IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
+      {
+        Add(index);
+        m_State->Set(State::PLAYING_CARD);
+        return true;
+      }
+      index++;
+    }
+  }
+  
+  return false;
+}
+
 void Player::Add(size_t index){
   size_t power = m_Row[index].GetPower();
+  m_Row.erase(m_Row.begin() + index);
+
   if (power == 1) {
     m_Cards.push_back(Card::MERCENARY_1);
   }
@@ -395,13 +465,35 @@ Color Player::GetColor() const{
   return m_Color;
 }
 
-void Player::SetContext(State* state, Event* rotateTurnEvent)
+void Player::SetContext(State* state, Event* rotateTurnEvent, Event* restartBattleEvent)
 {
   m_State = state;
   m_RotateTurnEvent = rotateTurnEvent;
+  m_RestartBattle = restartBattleEvent;
 }
 
 const std::string& Player::GetName() const
 {
   return m_Name;
+}
+
+void Player::DeleteCard(int BNum)
+{
+  for (size_t index = 0; index < m_Row.size(); ++index)
+  {
+    if (m_Row[index].GetPower() == BNum)
+    {
+      m_Row.erase(m_Row.begin() + index);
+    }
+  }
+}
+
+int Player::GetBishop() const
+{
+  return m_Bishop;
+}
+
+int Player::GetSpy() const
+{
+  return m_Spy;
 }

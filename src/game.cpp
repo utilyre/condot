@@ -1,3 +1,6 @@
+#include <any>
+#include <cstddef>
+#include <cstdlib>
 #include <iostream>
 #include <algorithm>
 #include <climits>
@@ -22,7 +25,8 @@ Game::Game()
 {
   m_StopEvent.Register([this](auto, auto) { Stop(); });
   m_InitiateBattleEvent.Register([this](auto, auto) { InitiateBattle(); });
-  m_RotateTurnEvent.Register([this](auto, auto) { RotateTurn(); });
+  m_RotateTurnEvent.Register([this](auto,auto data) { RotateTurn(std::any_cast<bool*>(data)); });
+  m_RestartBattle.Register([this](auto , auto) { RestartBattle(); });
   m_AddPlayerEvent.Register([this](auto, std::any data) {
     Player* player = std::any_cast<Player*>(data);
     player->SetContext(&m_State, &m_RotateTurnEvent);
@@ -50,7 +54,6 @@ void Game::Start()
   while (!m_Stopped && !WindowShouldClose())
   {
     Update();
-
     BeginDrawing();
       Render();
     EndDrawing();
@@ -75,8 +78,6 @@ void Game::Update()
   {
     if (m_Players[m_Turn] != p) p->Update();
   }
-
-  m_Map.Update();
 }
 
 void Game::Render() const
@@ -85,21 +86,26 @@ void Game::Render() const
 
   m_MainMenu.Render(m_Assets);
   m_CustomizationMenu.Render(m_Assets);
+  m_Map.Render(m_Assets);
 
   for (const Player* p : m_Players)
   {
     p->Render(m_Assets);
   }
-
-  m_Map.Render(m_Assets);
-
-  DrawText(TextFormat("(%d, %d)", GetMouseX(), GetMouseY()), 10, 10, 30, BLACK);
+  
+ DrawText(TextFormat("(%d,%d)",GetMouseX(),GetMouseY()), 10, 10, 30, WHITE);
 }
 
 void Game::ResetCards()
 {
   m_Deck.clear();
+  m_State.Set(State::NONE);
 
+  for(Player* p : m_Players)
+  {
+    p->Reset();
+  }
+  
   m_Deck.insert(m_Deck.end(), 10, Card::MERCENARY_1);
   m_Deck.insert(m_Deck.end(), 8, Card::MERCENARY_2);
   m_Deck.insert(m_Deck.end(), 8, Card::MERCENARY_3);
@@ -160,19 +166,32 @@ size_t Game::FindBattleInstigatorIndex() const
 void Game::InitiateBattle()
 {
   m_Turn = FindBattleInstigatorIndex();
+  FixPosition();
   ResetCards();
   DealCards();
 }
 
-void Game::RotateTurn(){
+void Game::RotateTurn(bool* Status){
+  
   size_t StartPos = (m_Turn);
-  for(size_t i{},passed{1}; i < m_Players.size(); ++i){
-    
+  for(size_t i{},passed{1}; i < m_Players.size(); ++i)
+  {
     size_t EndPos = (StartPos + passed) % m_Players.size();
     while(m_Players[EndPos]->IsPassed()){
       passed++;
       EndPos = ( StartPos + passed ) % m_Players.size();
       i++;
+    }
+
+    if (passed == m_Players.size() && !(*Status))
+    {
+      RestartBattle();
+      *Status = false;
+      return;
+    }
+    else
+    {
+      *Status = true;
     }
     
     m_Players[StartPos]->SetPosition(m_Players[EndPos]->GetPosition());
@@ -181,10 +200,113 @@ void Game::RotateTurn(){
       m_Turn = StartPos;
       m_Players[m_Turn]->SetPosition(Position::BOTTOM_LEFT);
     }
-    std::cout << StartPos << " " << EndPos << " " << i << std::endl;
     StartPos = EndPos;
     passed = 1;
+  } 
+}
+
+void Game::FindRegionConquerer()
+{
+  int SpyNum = 0;
+  int BishopNum = 0;
+  int BiggestNum = 0;
+  int max_strength = 0;
+  std::vector<size_t> potentialWinners;
+
+  for (size_t index = 0; index < m_Players.size(); ++index)
+  {
+    int Num = m_Players[index].GetSpy();
+    if (SpyNum < Num)
+    {
+      SpyNum = Num;
+      potentialWinners.clear();
+      potentialWinners.push_back(index);
+    }
+    
+    else if (Num == SpyNum)
+    {
+     potentialWinners.push_back(index); 
+    }
   }
-  std::cout << std::endl;
-  std::cout << m_Players[m_Turn]->GetAge()<< std::endl;
+  
+  if (potentialWinners.size() == 1) 
+  {
+    m_Map.GetBattleMarker()->SetRuler(&m_Players[potentialWinners[0]]);
+    m_State.Set(State::PLACING_BATTLE_MARKER);
+    return;
+  }
+
+  for (auto p : m_Players)
+  {
+    BishopNum += p.GetBishop();
+  }
+
+  for (int counter = 0; counter < BishopNum; ++counter)
+  {
+    for (const auto& p : m_Players)
+    {
+      if (BiggestNum < p.GetBiggestNum()){
+        BiggestNum = p.GetBiggestNum();
+      }
+    }
+
+    for (auto& p : m_Players)
+    {
+      p.DeleteCard(BiggestNum);
+    }
+    BiggestNum = 0;
+  }
+  
+  for (const auto& p : m_Players)
+  {
+    if (BiggestNum < p.GetBiggestNum()){
+      BiggestNum = p.GetBiggestNum();
+    }
+  }
+   
+  for (size_t i = 0; i < m_Players.size(); i++)
+  {
+    int strength = m_Players[i].CalculateScore(BiggestNum);
+    
+    if (strength > max_strength)
+    {
+      max_strength = strength;
+      potentialWinners.clear();
+      potentialWinners.push_back(i);
+    }
+    else if (strength == max_strength) 
+    {
+      potentialWinners.push_back(i);
+    }
+  }
+
+  if (potentialWinners.size() == 1) {
+    m_Map.GetBattleMarker()->SetRuler(&m_Players[potentialWinners[0]]);
+  }
+  else
+  {
+    m_Map.ResetBattleMarker();
+  }
+
+  std::mt19937 mt(m_RandDev());
+  std::uniform_int_distribution<size_t> dist(0, potentialWinners.size() - 1);
+  m_Turn = potentialWinners[dist(mt)];
+  
+  m_State.Set(State::PLACING_BATTLE_MARKER);
+}
+
+void Game::FixPosition()
+{
+  for(size_t i = 0; i < m_Players.size(); ++i)
+  {
+    m_Players[(m_Turn + i) % m_Players.size()].SetPosition(static_cast<Position>(i));
+  }
+}
+
+void Game::RestartBattle()
+{
+  FindRegionConquerer();
+  ResetCards();
+  FixPosition();
+  DealCards();
 }
