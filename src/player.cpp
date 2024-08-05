@@ -74,9 +74,13 @@ void Player::Render(const AssetManager& assets) const
     return;
   }
   
- const float SCREEN_WIDTH  = GetScreenWidth();
- const float SCREEN_HEIGHT = GetScreenHeight();
-
+ float SCREEN_WIDTH  = GetScreenWidth();
+ float SCREEN_HEIGHT = GetScreenHeight();
+ if (SCREEN_HEIGHT > 1080 || SCREEN_WIDTH > 1920)
+ {
+   SCREEN_HEIGHT = 1080;
+   SCREEN_WIDTH = 1920;
+ }
  const float SCALE = CARD_SCALE * SCREEN_HEIGHT * SCREEN_WIDTH / (CARD_HEIGHT * CARD_WIDTH * 12);
  const float THICKNESS = SCALE  * (CARD_HEIGHT + 50);
  const float HORIZONTAL_SPACING = SCALE * (9.0 * CARD_WIDTH / 2 + CARD_WIDTH); 
