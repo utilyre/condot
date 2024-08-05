@@ -43,6 +43,7 @@ public:
   int GetBishop() const;
   int GetSpy() const;
   Color GetColor() const;
+
 private:
   bool PlayCard();
   void RenderCards(const AssetManager& assets, Vector2 cordinate, float rotation, float ratio) const;
@@ -51,10 +52,12 @@ private:
   void Add(size_t index);
   bool RetrieveCard();
   bool PickCard(const size_t& index);
+
 private:
   State* m_State;
   Event* m_RotateTurnEvent;
-  Event* m_RestartBattle;
+  Event* m_RestartBattleEvent;
+
   std::string m_Name;
   Color m_Color;
   int m_Age;
@@ -67,5 +70,4 @@ private:
   bool m_Drummer;
   unsigned int m_Bishop;
   Button m_PassButton;
-  
 };

@@ -371,7 +371,7 @@ bool Player::PickCard(const size_t& index){
           
           else if (card == Card::TURNCOAT) {
             m_Cards.erase(m_Cards.begin() + index);
-            m_RestartBattle->Notify(this, nullptr);
+            m_RestartBattleEvent->Notify(this, nullptr);
             return true;
           }
           
@@ -469,7 +469,7 @@ void Player::SetContext(State* state, Event* rotateTurnEvent, Event* restartBatt
 {
   m_State = state;
   m_RotateTurnEvent = rotateTurnEvent;
-  m_RestartBattle = restartBattleEvent;
+  m_RestartBattleEvent = restartBattleEvent;
 }
 
 const std::string& Player::GetName() const

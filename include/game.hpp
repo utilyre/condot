@@ -37,18 +37,22 @@ private:
 
 private:
   bool m_Stopped;
-  size_t m_Turn;
+
   mutable std::random_device m_RandDev;
   AssetManager m_Assets;
+
   State m_State;
   Event m_StopEvent;
   Event m_InitiateBattleEvent;
   Event m_RotateTurnEvent;
   Event m_AddPlayerEvent;
-  Event m_RestartBattle;
+  Event m_RestartBattleEvent;
+
   MainMenu m_MainMenu;
   CustomizationMenu m_CustomizationMenu;
   Map m_Map;
   std::vector<Player*> m_Players;
   std::vector<Card> m_Deck;
+
+  size_t m_Turn;
 };

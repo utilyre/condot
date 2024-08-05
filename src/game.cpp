@@ -26,10 +26,10 @@ Game::Game()
   m_StopEvent.Subscribe([this](auto, auto) { Stop(); });
   m_InitiateBattleEvent.Subscribe([this](auto, auto) { InitiateBattle(); });
   m_RotateTurnEvent.Subscribe([this](auto,auto data) { RotateTurn(std::any_cast<bool*>(data)); });
-  m_RestartBattle.Subscribe([this](auto , auto) { RestartBattle(); });
+  m_RestartBattleEvent.Subscribe([this](auto , auto) { RestartBattle(); });
   m_AddPlayerEvent.Subscribe([this](auto, std::any data) {
     Player* player = std::any_cast<Player*>(data);
-    player->SetContext(&m_State, &m_RotateTurnEvent, &m_RestartBattle);
+    player->SetContext(&m_State, &m_RotateTurnEvent, &m_RestartBattleEvent);
     m_Players.push_back(player);
 
     std::clog << "INFO: Player \"" << player->GetName() << "\" added.\n";
