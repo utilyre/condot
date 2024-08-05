@@ -314,6 +314,12 @@ void Game::FixPosition()
 void Game::RestartBattle()
 {
   FindRegionConquerer();
+  auto winner = m_Map.FindWinners();
+  if(!winner.empty())
+  {
+    std::clog << "INFO: Winner is " << winner[0]->GetName() << '\n';
+    exit(1);
+  }
   ResetCards();
   FixPosition();
   DealCards();
