@@ -8,7 +8,7 @@
 #include <player.hpp>
 #include <customization_menu.hpp>
 
-#define DEBUG
+// #define DEBUG
 
 static const float MENU_WIDTH = 1600.0f;
 static const float MENU_HEIGHT = 900.0f;
@@ -255,10 +255,32 @@ void CustomizationMenu::Continue()
       m_ErrorMsg = "Please fill out all name inputs.";
       return;
     }
+    
+    if (name.size() > 30)
+    {
+      m_ErrorMsg = "Please choose shorter name.";
+      return;
+    }
+    
     if (names.count(name))
     {
       m_ErrorMsg = "Please avoid duplicated names.";
       return;
+    }
+     
+    for (const int c : name) 
+    {
+      if(c >= 48 && c <= 57)
+      {
+        m_ErrorMsg = "Name should not contain digits.";
+        return;
+      }
+      else if (!(c >= 65 && c <= 90) &&
+               !(c >= 97 && c <= 122)) 
+      {
+        m_ErrorMsg = "Invalid Name.";
+        return;
+      }
     }
     names.insert(name);
 
