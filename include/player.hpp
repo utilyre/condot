@@ -2,7 +2,6 @@
 
 #include <string>
 #include <raylib.h>
-#include <unordered_map>
 #include <vector>
 
 #include <asset_manager.hpp>

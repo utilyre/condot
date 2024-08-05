@@ -50,12 +50,12 @@ void Player::Update()
       if(IsPassed())
       {
         m_IsPassed = PassStatus;
-        m_RotateTurnEvent->Raise(this, &PassStatus);
+        m_RotateTurnEvent->Notify(this, &PassStatus);
         m_IsPassed = PassStatus;
       }
       else
       {
-        m_RotateTurnEvent->Raise(this, &PlayStatus);
+        m_RotateTurnEvent->Notify(this, &PlayStatus);
       }
     }
 }
@@ -371,7 +371,7 @@ bool Player::PickCard(const size_t& index){
           
           else if (card == Card::TURNCOAT) {
             m_Cards.erase(m_Cards.begin() + index);
-            m_RestartBattle->Raise(this, nullptr);
+            m_RestartBattle->Notify(this, nullptr);
             return true;
           }
           
