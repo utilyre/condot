@@ -55,9 +55,11 @@ Map::Map(State* state)
 
 void Map::Update()
 {
-  if (
-    m_State->Get() != State::PLACING_BATTLE_MARKER
-    && m_State->Get() != State::PLACING_FAVOR_MARKER)
+  auto state = m_State->Get();
+  if (state != State::PLACING_BATTLE_MARKER &&
+      state != State::PLACING_FAVOR_MARKER &&
+      state != State::PLAYING_CARD &&
+      state != State::SCARECROW)
   {
     return;
   }
@@ -65,14 +67,9 @@ void Map::Update()
   int width = GetScreenWidth();
   int height = GetScreenHeight();
 
-  auto currentState = m_State->Get();
-  if (
-    IsMouseButtonPressed(MOUSE_BUTTON_LEFT)
-    && (
-      currentState == State::PLACING_BATTLE_MARKER
-      || currentState == State::PLACING_FAVOR_MARKER
-    )
-  )
+  if ((state == State::PLACING_BATTLE_MARKER ||
+       state == State::PLACING_FAVOR_MARKER) &&
+      IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
   {
     float scaleFactor = MAP_SCALE * height / MAP_HEIGHT;
 
@@ -86,7 +83,7 @@ void Map::Update()
     {
       if (r.CollidesWith(mouse))
       {
-        switch (currentState)
+        switch (state)
         {
         case State::PLACING_BATTLE_MARKER:
           m_BattleMarker = &r;
@@ -110,9 +107,11 @@ void Map::Update()
 
 void Map::Render(const AssetManager& assets) const
 {
-  if (
-    m_State->Get() != State::PLACING_BATTLE_MARKER
-    && m_State->Get() != State::PLACING_FAVOR_MARKER)
+  auto state = m_State->Get();
+  if (state != State::PLACING_BATTLE_MARKER &&
+      state != State::PLACING_FAVOR_MARKER &&
+      state != State::PLAYING_CARD &&
+      state != State::SCARECROW)
   {
     return;
   }
@@ -124,24 +123,17 @@ void Map::Render(const AssetManager& assets) const
   float MapPosX = (width - scaleFactor * MAP_WIDTH) / 2.0f;
   float MapPosY = (height - scaleFactor * MAP_HEIGHT) / 2.0f;
 
-  if (m_State->Get() == State::PLACING_BATTLE_MARKER
-      || m_State->Get() == State::PLACING_FAVOR_MARKER
-      || m_State->Get() == State::PLAYING_CARD
-      || m_State->Get() == State::SCARECROW)
-  
-  {
-    DrawTextureEx(
-      assets.Map,
-      Vector2{
-        MapPosX,
-        MapPosY,
-      },
-      0.0f,
-      scaleFactor,
-      WHITE
-    );
-  }
-  
+  DrawTextureEx(
+    assets.Map,
+    Vector2{
+      MapPosX,
+      MapPosY,
+    },
+    0.0f,
+    scaleFactor,
+    WHITE
+  );
+
   if(m_BattleMarker)
   {
     DrawCircle(
@@ -172,8 +164,8 @@ void Map::Render(const AssetManager& assets) const
     }
   }
   
-  if (m_State->Get() == State::PLACING_BATTLE_MARKER
-      || m_State->Get() == State::PLACING_FAVOR_MARKER)
+  if (state == State::PLACING_BATTLE_MARKER ||
+      state == State::PLACING_FAVOR_MARKER)
   {
     const float fontSize = 80.0f;
     const std::string text = "Pick a region";
