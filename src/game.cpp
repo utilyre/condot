@@ -69,6 +69,7 @@ void Game::Update()
 {
   m_MainMenu.Update();
   m_CustomizationMenu.Update();
+  m_Map.Update();
 
   if (m_Players.size() > m_Turn)
   {
