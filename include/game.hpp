@@ -11,6 +11,7 @@
 #include <card.hpp>
 #include <main_menu.hpp>
 #include <customization_menu.hpp>
+#include <season.hpp>
 
 class Game
 {
@@ -42,6 +43,9 @@ private:
   AssetManager m_Assets;
 
   State m_State;
+  size_t m_Turn;
+  Season m_Season;
+
   Event m_StopEvent;
   Event m_InitiateBattleEvent;
   Event m_RotateTurnEvent;
@@ -53,6 +57,4 @@ private:
   Map m_Map;
   std::vector<Player*> m_Players;
   std::vector<Card> m_Deck;
-
-  size_t m_Turn;
 };

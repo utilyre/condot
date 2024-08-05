@@ -31,7 +31,12 @@ Game::Game()
   m_RestartBattleEvent.Subscribe([this](auto , auto) { RestartBattle(); });
   m_AddPlayerEvent.Subscribe([this](auto, std::any data) {
     Player* player = std::any_cast<Player*>(data);
-    player->SetContext(&m_State, &m_RotateTurnEvent, &m_RestartBattleEvent);
+    player->SetContext(
+      &m_State,
+      &m_Season,
+      &m_RotateTurnEvent,
+      &m_RestartBattleEvent
+    );
     m_Players.push_back(player);
 
     std::clog << "INFO: Player \"" << player->GetName() << "\" added.\n";
@@ -102,7 +107,7 @@ void Game::Render() const
 void Game::ResetCards()
 {
   m_Deck.clear();
-  m_State.Set(State::NONE);
+  m_Season = Season::NONE;
 
   for(Player* p : m_Players)
   {

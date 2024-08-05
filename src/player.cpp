@@ -7,6 +7,7 @@
 #include <card.hpp>
 #include <mercenary.hpp>
 #include <button.hpp>
+#include <season.hpp>
 
 static const int CARD_WIDTH = 164;
 static const int CARD_HEIGHT = 255;
@@ -359,7 +360,7 @@ bool Player::PickCard(const size_t& index){
           
           else if (card == Card::SPRING) {
             m_Cards.erase(m_Cards.begin() + index);
-            m_State->Set(State::SPRING);
+            *m_Season = Season::SPRING;
             return true;
           }
           
@@ -377,7 +378,7 @@ bool Player::PickCard(const size_t& index){
           
           else if (card == Card::WINTER) {
             m_Cards.erase(m_Cards.begin() + index);
-            m_State->Set(State::WINTER);
+            *m_Season = Season::WINTER;
             return true;
           }
           return false;
@@ -465,9 +466,15 @@ Color Player::GetColor() const{
   return m_Color;
 }
 
-void Player::SetContext(State* state, Event* rotateTurnEvent, Event* restartBattleEvent)
+void Player::SetContext(
+  State* state,
+  Season* season,
+  Event* rotateTurnEvent,
+  Event* restartBattleEvent
+)
 {
   m_State = state;
+  m_Season = season;
   m_RotateTurnEvent = rotateTurnEvent;
   m_RestartBattleEvent = restartBattleEvent;
 }
@@ -535,7 +542,7 @@ int Player::CalculateScore(int C) const
     score += c.GetPower();
   }
 
-  if (m_State->GetSeason() == State::Season::WINTER)
+  if (*m_Season == Season::WINTER)
   {
     score = m_Row.size();
   }
@@ -545,7 +552,7 @@ int Player::CalculateScore(int C) const
     score *= 2;
   }
 
-  if (m_State->GetSeason() == State::Season::SPRING)
+  if (*m_Season == Season::SPRING)
   {
      score += BNum * 3;
   }

@@ -11,6 +11,7 @@
 #include <card.hpp>
 #include <mercenary.hpp>
 #include <button.hpp>
+#include <season.hpp>
 
 enum class Position {
   BOTTOM_LEFT,
@@ -26,10 +27,16 @@ class Player : public Entity
 public:
   Player(const std::string& name, int age, Color color, Position position);
 
+  void SetContext(
+    State* state,
+    Season* season,
+    Event* rotateTurnEvent,
+    Event* restartBattleEvent
+  );
+
   void Update() override;
   void Render(const AssetManager& assets) const override;
 
-  void SetContext(State* state, Event* rotateTurnEvent, Event* restartBattleEvent);
   const std::string& GetName() const;
   int GetAge() const;
   void AddCard(Card card);
@@ -55,6 +62,8 @@ private:
 
 private:
   State* m_State;
+  Season* m_Season;
+
   Event* m_RotateTurnEvent;
   Event* m_RestartBattleEvent;
 
