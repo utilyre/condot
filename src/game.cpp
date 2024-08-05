@@ -29,7 +29,7 @@ Game::Game()
   m_RestartBattle.Register([this](auto , auto) { RestartBattle(); });
   m_AddPlayerEvent.Register([this](auto, std::any data) {
     Player* player = std::any_cast<Player*>(data);
-    player->SetContext(&m_State, &m_RotateTurnEvent);
+    player->SetContext(&m_State, &m_RotateTurnEvent, &m_RestartBattle);
     m_Players.push_back(player);
 
     std::clog << "INFO: Player \"" << player->GetName() << "\" added.\n";
@@ -215,7 +215,7 @@ void Game::FindRegionConquerer()
 
   for (size_t index = 0; index < m_Players.size(); ++index)
   {
-    int Num = m_Players[index].GetSpy();
+    int Num = m_Players[index]->GetSpy();
     if (SpyNum < Num)
     {
       SpyNum = Num;
@@ -231,42 +231,42 @@ void Game::FindRegionConquerer()
   
   if (potentialWinners.size() == 1) 
   {
-    m_Map.GetBattleMarker()->SetRuler(&m_Players[potentialWinners[0]]);
+    m_Map.GetBattleMarker()->SetRuler(m_Players[potentialWinners[0]]);
     m_State.Set(State::PLACING_BATTLE_MARKER);
     return;
   }
 
   for (auto p : m_Players)
   {
-    BishopNum += p.GetBishop();
+    BishopNum += p->GetBishop();
   }
 
   for (int counter = 0; counter < BishopNum; ++counter)
   {
     for (const auto& p : m_Players)
     {
-      if (BiggestNum < p.GetBiggestNum()){
-        BiggestNum = p.GetBiggestNum();
+      if (BiggestNum < p->GetBiggestNum()){
+        BiggestNum = p->GetBiggestNum();
       }
     }
 
     for (auto& p : m_Players)
     {
-      p.DeleteCard(BiggestNum);
+      p->DeleteCard(BiggestNum);
     }
     BiggestNum = 0;
   }
   
   for (const auto& p : m_Players)
   {
-    if (BiggestNum < p.GetBiggestNum()){
-      BiggestNum = p.GetBiggestNum();
+    if (BiggestNum < p->GetBiggestNum()){
+      BiggestNum = p->GetBiggestNum();
     }
   }
    
   for (size_t i = 0; i < m_Players.size(); i++)
   {
-    int strength = m_Players[i].CalculateScore(BiggestNum);
+    int strength = m_Players[i]->CalculateScore(BiggestNum);
     
     if (strength > max_strength)
     {
@@ -281,7 +281,7 @@ void Game::FindRegionConquerer()
   }
 
   if (potentialWinners.size() == 1) {
-    m_Map.GetBattleMarker()->SetRuler(&m_Players[potentialWinners[0]]);
+    m_Map.GetBattleMarker()->SetRuler(m_Players[potentialWinners[0]]);
   }
   else
   {
@@ -299,7 +299,7 @@ void Game::FixPosition()
 {
   for(size_t i = 0; i < m_Players.size(); ++i)
   {
-    m_Players[(m_Turn + i) % m_Players.size()].SetPosition(static_cast<Position>(i));
+    m_Players[(m_Turn + i) % m_Players.size()]->SetPosition(static_cast<Position>(i));
   }
 }
 

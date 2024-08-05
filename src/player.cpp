@@ -497,3 +497,60 @@ int Player::GetSpy() const
 {
   return m_Spy;
 }
+
+int Player::GetBiggestNum() const
+{
+  int BNum{};
+  for(const auto& c : m_Row)
+  {
+    if (BNum < c.GetPower())
+    {
+      BNum  = c.GetPower();
+    }
+  }
+  return BNum;
+}
+
+void Player::Reset()
+{
+  m_Cards.clear();
+  m_Row.clear();
+  m_Heroine = 0;
+  m_Spy = 0;
+  m_Drummer = false;
+  m_IsPassed = false;
+}
+
+int Player::CalculateScore(int C) const
+{
+  int score{};
+  int BNum{};
+
+  for(const auto& c : m_Row)
+  {
+    if (C == c.GetPower())
+    {
+      BNum++;
+    }
+    score += c.GetPower();
+  }
+
+  if (m_State->GetSeason() == State::Season::WINTER)
+  {
+    score = m_Row.size();
+  }
+
+  if (m_Drummer == true)
+  {
+    score *= 2;
+  }
+
+  if (m_State->GetSeason() == State::Season::SPRING)
+  {
+     score += BNum * 3;
+  }
+  score += m_Heroine * 10;
+  score += m_Spy;
+  
+  return score;
+}
