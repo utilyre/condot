@@ -256,7 +256,7 @@ void CustomizationMenu::Continue()
       return;
     }
     
-    if (name.size() > 30)
+    if (name.size() > 40)
     {
       m_ErrorMsg = "Please choose shorter name.";
       return;
@@ -276,7 +276,8 @@ void CustomizationMenu::Continue()
         return;
       }
       else if (!(c >= 65 && c <= 90) &&
-               !(c >= 97 && c <= 122)) 
+               !(c >= 97 && c <= 122) &&
+               !(c == 32)) 
       {
         m_ErrorMsg = "Invalid Name.";
         return;
@@ -294,9 +295,14 @@ void CustomizationMenu::Continue()
     try
     {
       int age = std::stoi(ageStr);
-      if (age < 0)
+      if (age <= 0)
       {
-        m_ErrorMsg = "Please enter a non-negative age.";
+        m_ErrorMsg = "Please enter a positive age.";
+        return;
+      }
+      else if (age > 100) 
+      {
+        m_ErrorMsg = "Please enter an age below 100.";
         return;
       }
 
