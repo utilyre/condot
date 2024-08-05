@@ -289,99 +289,99 @@ int Player::GetAge() const {
 }
 
 bool Player::PickCard(const size_t& index){
-          auto card = m_Cards[index].GetType();
-          if (card == Card::MERCENARY_1) {
-            m_Cards.erase(m_Cards.begin() + index);
-            m_Row.emplace_back(1);
-            return true;
-          }
-          
-          else if (card == Card::MERCENARY_2) {
-            m_Cards.erase(m_Cards.begin() + index);
-            m_Row.emplace_back(2);
-            return true;
-          }
-          
-          else if (card == Card::MERCENARY_3) {
-            m_Cards.erase(m_Cards.begin() + index);
-            m_Row.emplace_back(3);
-            return true;
-          }
-          
-          else if (card == Card::MERCENARY_4) {
-            m_Cards.erase(m_Cards.begin() + index);
-            m_Row.emplace_back(4);
-            return true;
-          }
-          
-          else if (card == Card::MERCENARY_5) {
-            m_Cards.erase(m_Cards.begin() + index);
-            m_Row.emplace_back(5);
-            return true;
-          }
-          
-          else if (card == Card::MERCENARY_6) {
-            m_Cards.erase(m_Cards.begin() + index);
-            m_Row.emplace_back(6);
-            return true;
-          }
-          
-          else if (card == Card::MERCENARY_10) {
-            m_Cards.erase(m_Cards.begin() + index);
-            m_Row.emplace_back(10);
-            return true;
-          }
-          
-          // TODO : does something with gameflow
-          else if (card == Card::BISHOP) {
-            m_Cards.erase(m_Cards.begin() + index);
-            m_Bishop++;
-            return true;
-          }
-          
-          else if (card == Card::DRUMMER) {
-            m_Cards.erase(m_Cards.begin() + index);
-            m_Drummer = true;
-            return true;
-          }
-          
-          else if (card == Card::HEROINE) {
-            m_Cards.erase(m_Cards.begin() + index);
-            m_Heroine++;
-            return true;
-          }
-          
-          else if (card == Card::SCARECROW) {
-            if(m_Row.empty()) return false;
-            m_Cards.erase((m_Cards.begin() + index));
-            m_State->Set(State::SCARECROW);
-            return true; 
-          }
-          
-          else if (card == Card::SPRING) {
-            m_Cards.erase(m_Cards.begin() + index);
-            *m_Season = Season::SPRING;
-            return true;
-          }
-          
-          else if (card == Card::SPY) {
-            m_Cards.erase(m_Cards.begin() + index);
-            m_Spy++;
-            return true;
-          }
-          
-          else if (card == Card::TURNCOAT) {
-            m_Cards.erase(m_Cards.begin() + index);
-            m_RestartBattleEvent->Notify(this, nullptr);
-            return true;
-          }
-          
-          else if (card == Card::WINTER) {
-            m_Cards.erase(m_Cards.begin() + index);
-            *m_Season = Season::WINTER;
-            return true;
-          }
-          return false;
+  auto card = m_Cards[index].GetType();
+  if (card == Card::MERCENARY_1) {
+    m_Cards.erase(m_Cards.begin() + index);
+    m_Row.emplace_back(1);
+    return true;
+  }
+  
+  else if (card == Card::MERCENARY_2) {
+    m_Cards.erase(m_Cards.begin() + index);
+    m_Row.emplace_back(2);
+    return true;
+  }
+  
+  else if (card == Card::MERCENARY_3) {
+    m_Cards.erase(m_Cards.begin() + index);
+    m_Row.emplace_back(3);
+    return true;
+  }
+  
+  else if (card == Card::MERCENARY_4) {
+    m_Cards.erase(m_Cards.begin() + index);
+    m_Row.emplace_back(4);
+    return true;
+  }
+  
+  else if (card == Card::MERCENARY_5) {
+    m_Cards.erase(m_Cards.begin() + index);
+    m_Row.emplace_back(5);
+    return true;
+  }
+  
+  else if (card == Card::MERCENARY_6) {
+    m_Cards.erase(m_Cards.begin() + index);
+    m_Row.emplace_back(6);
+    return true;
+  }
+  
+  else if (card == Card::MERCENARY_10) {
+    m_Cards.erase(m_Cards.begin() + index);
+    m_Row.emplace_back(10);
+    return true;
+  }
+  
+  // TODO : does something with gameflow
+  else if (card == Card::BISHOP) {
+    m_Cards.erase(m_Cards.begin() + index);
+    m_Bishop++;
+    return true;
+  }
+  
+  else if (card == Card::DRUMMER) {
+    m_Cards.erase(m_Cards.begin() + index);
+    m_Drummer = true;
+    return true;
+  }
+  
+  else if (card == Card::HEROINE) {
+    m_Cards.erase(m_Cards.begin() + index);
+    m_Heroine++;
+    return true;
+  }
+  
+  else if (card == Card::SCARECROW) {
+    if(m_Row.empty()) return false;
+    m_Cards.erase((m_Cards.begin() + index));
+    m_State->Set(State::SCARECROW);
+    return true; 
+  }
+  
+  else if (card == Card::SPRING) {
+    m_Cards.erase(m_Cards.begin() + index);
+    *m_Season = Season::SPRING;
+    return true;
+  }
+  
+  else if (card == Card::SPY) {
+    m_Cards.erase(m_Cards.begin() + index);
+    m_Spy++;
+    return true;
+  }
+  
+  else if (card == Card::TURNCOAT) {
+    m_Cards.erase(m_Cards.begin() + index);
+    m_RestartBattleEvent->Notify(this, nullptr);
+    return true;
+  }
+  
+  else if (card == Card::WINTER) {
+    m_Cards.erase(m_Cards.begin() + index);
+    *m_Season = Season::WINTER;
+    return true;
+  }
+  return false;
 }
 
 void Player::SetPosition(const Position& position){
