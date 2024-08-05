@@ -17,6 +17,8 @@
 #include <main_menu.hpp>
 #include <customization_menu.hpp>
 
+#define DEBUG
+
 Game::Game()
 : m_Stopped(false),
   m_MainMenu(&m_State, &m_StopEvent),
@@ -92,7 +94,9 @@ void Game::Render() const
     if (m_Players[m_Turn] != p) p->Render(m_Assets);
   }
   
- DrawText(TextFormat("(%d,%d)",GetMouseX(),GetMouseY()), 10, 10, 30, WHITE);
+#ifdef DEBUG
+  DrawText(TextFormat("(%d,%d)", GetMouseX(), GetMouseY()), 10, 10, 30, WHITE);
+#endif
 }
 
 void Game::ResetCards()
