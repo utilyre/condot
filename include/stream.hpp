@@ -43,7 +43,8 @@ public:
     {
       return WriteData((const char*)&v[0], v.size() * sizeof(T));
     }
-    else {
+    else
+    {
       for (const T& x : v)
       {
         if (!WriteObject(x))
