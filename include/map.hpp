@@ -7,6 +7,7 @@
 #include <state.hpp>
 #include <entity.hpp>
 #include <region.hpp>
+#include <stream.hpp>
 
 class Map : public Entity
 {
@@ -21,6 +22,9 @@ public:
   const Region* GetFavorMarker() const;
   Region* GetFavorMarker();
   void ResetBattleMarker();
+
+  static bool Serialize(StreamWriter& w, const Map& map);
+  static bool Deserialize(StreamReader& r, Map& map);
 
 private:
   bool AreNeighbors(size_t i, size_t j) const;

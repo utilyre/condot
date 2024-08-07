@@ -36,3 +36,15 @@ Rectangle Region::GetRec() const
 {
   return m_Collision;
 }
+
+bool Region::Serialize(StreamWriter&, const Region&)
+{
+  // TODO
+  return false;
+}
+
+bool Region::Deserialize(StreamReader&, Region&)
+{
+  // TODO
+  return false;
+}

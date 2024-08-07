@@ -4,6 +4,7 @@
 #include <raylib.h>
 
 #include <player.hpp>
+#include <stream.hpp>
 
 class Region
 {
@@ -15,6 +16,10 @@ public:
   void SetRuler(Player* ruler);
   bool CollidesWith(Vector2 v) const;
   Rectangle GetRec() const;
+
+  static bool Serialize(StreamWriter& w, const Region& region);
+  static bool Deserialize(StreamReader& r, Region& region);
+
 private:
   std::string m_Name;
   Rectangle m_Collision;
