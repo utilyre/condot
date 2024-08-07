@@ -18,7 +18,6 @@ class Game
 {
 public:
   Game();
-  ~Game();
 
   void Start();
   void Stop();
@@ -59,6 +58,6 @@ private:
   MainMenu m_MainMenu;
   CustomizationMenu m_CustomizationMenu;
   Map m_Map;
-  std::vector<Player*> m_Players;
+  std::vector<Player> m_Players;
   std::vector<Card> m_Deck;
 };

@@ -109,12 +109,12 @@ void CustomizationMenu::Update()
   }
 
 #ifdef DEBUG
-  m_AddPlayerEvent->Notify(this, new Player("Jane", 1, COLORS[0], POSITIONS[0]));
-  m_AddPlayerEvent->Notify(this, new Player("Aria", 2, COLORS[1], POSITIONS[1]));
-  m_AddPlayerEvent->Notify(this, new Player("Theo", 3, COLORS[2], POSITIONS[2]));
-  m_AddPlayerEvent->Notify(this, new Player("Milo", 4, COLORS[3], POSITIONS[3]));
-  m_AddPlayerEvent->Notify(this, new Player("Alex", 5, COLORS[4], POSITIONS[4]));
-  m_AddPlayerEvent->Notify(this, new Player("John", 6, COLORS[5], POSITIONS[5]));
+  m_AddPlayerEvent->Notify(this, Player("Jane", 1, COLORS[0], POSITIONS[0]));
+  m_AddPlayerEvent->Notify(this, Player("Aria", 2, COLORS[1], POSITIONS[1]));
+  m_AddPlayerEvent->Notify(this, Player("Theo", 3, COLORS[2], POSITIONS[2]));
+  m_AddPlayerEvent->Notify(this, Player("Milo", 4, COLORS[3], POSITIONS[3]));
+  m_AddPlayerEvent->Notify(this, Player("Alex", 5, COLORS[4], POSITIONS[4]));
+  m_AddPlayerEvent->Notify(this, Player("John", 6, COLORS[5], POSITIONS[5]));
 
   m_InitiateBattleEvent->Notify(this);
   m_State->Set(State::PLACING_BATTLE_MARKER);
@@ -212,38 +212,9 @@ void CustomizationMenu::Render(const AssetManager& assets) const
   }
 }
 
-template <typename T>
-class OwnedVector
-{
-public:
-  OwnedVector() {}
-  OwnedVector(std::vector<T*>&& v) : m_Vector(std::move(v)) {}
-
-  ~OwnedVector()
-  {
-    for (T* x : m_Vector)
-    {
-      delete x;
-    }
-  }
-
-  std::vector<T*>& operator*()
-  {
-    return m_Vector;
-  }
-
-  std::vector<T*>* operator->()
-  {
-    return &m_Vector;
-  }
-
-private:
-  std::vector<T*> m_Vector;
-};
-
 void CustomizationMenu::Continue()
 {
-  OwnedVector<Player> players;
+  std::vector<Player> players;
 
   std::set<std::string> names;
 
@@ -306,12 +277,12 @@ void CustomizationMenu::Continue()
         return;
       }
 
-      players->push_back(new Player(
+      players.emplace_back(
         name,
         age,
-        COLORS[players->size()],
-        POSITIONS[players->size()]
-      ));
+        COLORS[players.size()],
+        POSITIONS[players.size()]
+      );
     }
     catch (const std::invalid_argument&)
     {
@@ -320,11 +291,10 @@ void CustomizationMenu::Continue()
     }
   }
 
-  size_t numPlayers = players->size();
+  size_t numPlayers = players.size();
   for (size_t i = 0; i < numPlayers; i++)
   {
-    m_AddPlayerEvent->Notify(this, (*players)[i]);
-    (*players)[i] = nullptr;
+    m_AddPlayerEvent->Notify(this, players[i]);
   }
   m_InitiateBattleEvent->Notify(this);
   m_State->Set(State::PLACING_BATTLE_MARKER);

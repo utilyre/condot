@@ -30,8 +30,8 @@ Game::Game()
   m_RotateTurnEvent.Subscribe([this](auto,auto data) { RotateTurn(std::any_cast<bool*>(data)); });
   m_RestartBattleEvent.Subscribe([this](auto , auto) { RestartBattle(); });
   m_AddPlayerEvent.Subscribe([this](auto, std::any data) {
-    Player* player = std::any_cast<Player*>(data);
-    player->SetContext(
+    Player player = std::any_cast<Player>(data);
+    player.SetContext(
       &m_State,
       &m_Season,
       &m_RotateTurnEvent,
@@ -39,16 +39,8 @@ Game::Game()
     );
     m_Players.push_back(player);
 
-    std::clog << "INFO: Player \"" << player->GetName() << "\" added.\n";
+    std::clog << "INFO: Player \"" << player.GetName() << "\" added.\n";
   });
-}
-
-Game::~Game()
-{
-  for (Player* p : m_Players)
-  {
-    delete p;
-  }
 }
 
 void Game::Start()
@@ -102,10 +94,10 @@ void Game::Update()
   m_CustomizationMenu.Update();
 
   m_Map.Update();
-  if (m_Players.size() > m_Turn) m_Players[m_Turn]->Update();
-  for (Player* p : m_Players)
+  if (m_Players.size() > m_Turn) m_Players[m_Turn].Update();
+  for (size_t i = 0; i < m_Players.size(); i++)
   {
-    if (m_Players[m_Turn] != p) p->Update();
+    if (i != m_Turn) m_Players[i].Update();
   }
 }
 
@@ -117,10 +109,10 @@ void Game::Render() const
   m_CustomizationMenu.Render(m_Assets);
 
   m_Map.Render(m_Assets);
-  if (m_Players.size() > m_Turn) m_Players[m_Turn]->Render(m_Assets);
-  for (const Player* p : m_Players)
+  if (m_Players.size() > m_Turn) m_Players[m_Turn].Render(m_Assets);
+  for (size_t i = 0; i < m_Players.size(); i++)
   {
-    if (m_Players[m_Turn] != p) p->Render(m_Assets);
+    if (i != m_Turn) m_Players[i].Render(m_Assets);
   }
   
 #ifdef DEBUG
@@ -133,9 +125,9 @@ void Game::ResetCards()
   m_Deck.clear();
   m_Season = Season::NONE;
 
-  for(Player* p : m_Players)
+  for(Player& p : m_Players)
   {
-    p->Reset();
+    p.Reset();
   }
   
   m_Deck.insert(m_Deck.end(), 10, Card::MERCENARY_1);
@@ -161,11 +153,11 @@ void Game::ResetCards()
 
 void Game::DealCards()
 {
-  for (Player* player : m_Players)
+  for (Player& player : m_Players)
   {
     for (int i = 0; i < 10; i++)
     {
-      player->AddCard(m_Deck.back());
+      player.AddCard(m_Deck.back());
       m_Deck.pop_back();
     }
   }
@@ -177,7 +169,7 @@ size_t Game::FindBattleInstigatorIndex() const
   std::vector<size_t> candidateIndices;
   for (size_t i = 0; i < m_Players.size(); i++)
   {
-    int age = m_Players[i]->GetAge();
+    int age = m_Players[i].GetAge();
     if (age < min)
     {
       min = age;
@@ -209,7 +201,7 @@ void Game::RotateTurn(bool* Status){
   for(size_t i{},passed{1}; i < m_Players.size(); ++i)
   {
     size_t EndPos = (StartPos + passed) % m_Players.size();
-    while(m_Players[EndPos]->IsPassed()){
+    while(m_Players[EndPos].IsPassed()){
       passed++;
       EndPos = ( StartPos + passed ) % m_Players.size();
       i++;
@@ -226,11 +218,11 @@ void Game::RotateTurn(bool* Status){
       *Status = true;
     }
     
-    m_Players[StartPos]->SetPosition(m_Players[EndPos]->GetPosition());
+    m_Players[StartPos].SetPosition(m_Players[EndPos].GetPosition());
     
     if(i == m_Players.size() - 1){
       m_Turn = StartPos;
-      m_Players[m_Turn]->SetPosition(Position::BOTTOM_LEFT);
+      m_Players[m_Turn].SetPosition(Position::BOTTOM_LEFT);
     }
     StartPos = EndPos;
     passed = 1;
@@ -247,7 +239,7 @@ void Game::FindRegionConquerer()
 
   for (size_t index = 0; index < m_Players.size(); ++index)
   {
-    int Num = m_Players[index]->GetSpy();
+    int Num = m_Players[index].GetSpy();
     if (SpyNum < Num)
     {
       SpyNum = Num;
@@ -263,42 +255,42 @@ void Game::FindRegionConquerer()
   
   if (potentialWinners.size() == 1) 
   {
-    m_Map.GetBattleMarker()->SetRuler(m_Players[potentialWinners[0]]);
+    m_Map.GetBattleMarker()->SetRuler(&m_Players[potentialWinners[0]]);
     m_State.Set(State::PLACING_BATTLE_MARKER);
     return;
   }
 
   for (auto p : m_Players)
   {
-    BishopNum += p->GetBishop();
+    BishopNum += p.GetBishop();
   }
 
   for (int counter = 0; counter < BishopNum; ++counter)
   {
     for (const auto& p : m_Players)
     {
-      if (BiggestNum < p->GetBiggestNum()){
-        BiggestNum = p->GetBiggestNum();
+      if (BiggestNum < p.GetBiggestNum()){
+        BiggestNum = p.GetBiggestNum();
       }
     }
 
     for (auto& p : m_Players)
     {
-      p->DeleteCard(BiggestNum);
+      p.DeleteCard(BiggestNum);
     }
     BiggestNum = 0;
   }
   
   for (const auto& p : m_Players)
   {
-    if (BiggestNum < p->GetBiggestNum()){
-      BiggestNum = p->GetBiggestNum();
+    if (BiggestNum < p.GetBiggestNum()){
+      BiggestNum = p.GetBiggestNum();
     }
   }
    
   for (size_t i = 0; i < m_Players.size(); i++)
   {
-    int strength = m_Players[i]->CalculateScore(BiggestNum);
+    int strength = m_Players[i].CalculateScore(BiggestNum);
     
     if (strength > max_strength)
     {
@@ -313,7 +305,7 @@ void Game::FindRegionConquerer()
   }
 
   if (potentialWinners.size() == 1) {
-    m_Map.GetBattleMarker()->SetRuler(m_Players[potentialWinners[0]]);
+    m_Map.GetBattleMarker()->SetRuler(&m_Players[potentialWinners[0]]);
   }
   else
   {
@@ -331,7 +323,7 @@ void Game::FixPosition()
 {
   for(size_t i = 0; i < m_Players.size(); ++i)
   {
-    m_Players[(m_Turn + i) % m_Players.size()]->SetPosition(static_cast<Position>(i));
+    m_Players[(m_Turn + i) % m_Players.size()].SetPosition(static_cast<Position>(i));
   }
 }
 
