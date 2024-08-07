@@ -80,3 +80,29 @@ private:
   unsigned int m_Bishop;
   Button m_PassButton;
 };
+
+struct PlayerLite
+{
+  PlayerLite(const Player& player)
+  : name(player.GetName()),
+    color(player.GetColor())
+  {
+  }
+
+  bool operator==(const PlayerLite& other) const
+  {
+    return name == other.name;
+  }
+
+  std::string name;
+  Color color;
+};
+
+template<>
+struct std::hash<PlayerLite>
+{
+  size_t operator()(const PlayerLite& player) const
+  {
+    return std::hash<std::string>()(player.name);
+  }
+};

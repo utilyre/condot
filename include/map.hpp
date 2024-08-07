@@ -16,7 +16,7 @@ public:
 
   void Update() override;
   void Render(const AssetManager& assets) const override;
-  std::vector<const Player*> FindWinners() const;
+  std::vector<PlayerLite> FindWinners() const;
   const Region* GetBattleMarker() const;
   Region* GetBattleMarker();
   const Region* GetFavorMarker() const;

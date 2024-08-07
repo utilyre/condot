@@ -255,7 +255,7 @@ void Game::FindRegionConquerer()
   
   if (potentialWinners.size() == 1) 
   {
-    m_Map.GetBattleMarker()->SetRuler(&m_Players[potentialWinners[0]]);
+    m_Map.GetBattleMarker()->SetRuler(m_Players[potentialWinners[0]]);
     m_State.Set(State::PLACING_BATTLE_MARKER);
     return;
   }
@@ -305,7 +305,7 @@ void Game::FindRegionConquerer()
   }
 
   if (potentialWinners.size() == 1) {
-    m_Map.GetBattleMarker()->SetRuler(&m_Players[potentialWinners[0]]);
+    m_Map.GetBattleMarker()->SetRuler(m_Players[potentialWinners[0]]);
   }
   else
   {

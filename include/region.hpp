@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <optional>
 #include <raylib.h>
 
 #include <player.hpp>
@@ -12,8 +13,8 @@ public:
   explicit Region(const std::string& name, Rectangle collision);
 
   const std::string& GetName() const;
-  const Player* GetRuler() const;
-  void SetRuler(Player* ruler);
+  std::optional<PlayerLite> GetRuler() const;
+  void SetRuler(PlayerLite ruler);
   bool CollidesWith(Vector2 v) const;
   Rectangle GetRec() const;
 
@@ -23,5 +24,5 @@ public:
 private:
   std::string m_Name;
   Rectangle m_Collision;
-  Player* m_Ruler;
+  std::optional<PlayerLite> m_Ruler;
 };

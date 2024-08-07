@@ -156,13 +156,14 @@ void Map::Render(const AssetManager& assets) const
   
   for (auto& r : m_Regions)
   {
-    if(r.GetRuler())
+    if(r.GetRuler().has_value())
     {
       DrawCircle(
-        MapPosX + (r.GetRec().x + r.GetRec().width / 2.0f) * scaleFactor ,
-        MapPosY + (r.GetRec().y + r.GetRec().height / 2.0f) * scaleFactor ,
+        MapPosX + (r.GetRec().x + r.GetRec().width / 2.0f) * scaleFactor,
+        MapPosY + (r.GetRec().y + r.GetRec().height / 2.0f) * scaleFactor,
         30 * scaleFactor,
-        r.GetRuler()->GetColor()); 
+        r.GetRuler().value().color
+      );
     }
   }
   
@@ -186,25 +187,25 @@ void Map::Render(const AssetManager& assets) const
   }
 }
 
-std::vector<const Player*> Map::FindWinners() const
+std::vector<PlayerLite> Map::FindWinners() const
 {
   // TEST: this method is NOT tested (at all)
   bool allConquered = true;
-  std::unordered_map<const Player*, std::vector<size_t>> regionIndices;
+  std::unordered_map<PlayerLite, std::vector<size_t>> regionIndices;
   for (size_t i = 0; i < m_Regions.size(); i++)
   {
-    const Player* ruler = m_Regions[i].GetRuler();
-    allConquered = allConquered && ruler;
-    if (ruler)
+    auto ruler = m_Regions[i].GetRuler();
+    allConquered = allConquered && ruler.has_value();
+    if (ruler.has_value())
     {
-      regionIndices[ruler].push_back(i);
+      regionIndices[ruler.value()].push_back(i);
     }
   }
 
   if (allConquered)
   {
     size_t max = 0;
-    std::vector<const Player*> winners;
+    std::vector<PlayerLite> winners;
     for (const auto& [player, indices] : regionIndices)
     {
       size_t numIndices = indices.size();

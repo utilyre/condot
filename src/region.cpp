@@ -1,3 +1,4 @@
+#include <optional>
 #include <string>
 #include <raylib.h>
 
@@ -6,8 +7,7 @@
 
 Region::Region(const std::string& name, Rectangle collision)
 : m_Name(name),
-  m_Collision(collision),
-  m_Ruler(nullptr)
+  m_Collision(collision)
 {
 }
 
@@ -16,15 +16,15 @@ const std::string& Region::GetName() const
   return m_Name;
 }
 
-const Player* Region::GetRuler() const
+std::optional<PlayerLite> Region::GetRuler() const
 {
   return m_Ruler;
 }
 
-void Region::SetRuler(Player* p)
+void Region::SetRuler(PlayerLite ruler)
 {
-  m_Ruler = p;
-  std::clog << "INFO: " << GetName() << " is conquered by " << GetRuler()->GetName() << '\n';
+  m_Ruler = ruler;
+  std::clog << "INFO: " << GetName() << " is conquered by " << ruler.name << '\n';
 }
 
 bool Region::CollidesWith(Vector2 v) const
