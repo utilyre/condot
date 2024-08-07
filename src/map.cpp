@@ -48,8 +48,8 @@ Map::Map(State* state)
     /* 12. Atela   */ 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0,
     /* 13. Lia     */ 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0,
   }),
-  m_BattleMarker(nullptr),
-  m_FavorMarker(nullptr)
+  m_BattleMarkerIndex(-1),
+  m_FavorMarkerIndex(-1)
 {
 }
 
@@ -79,17 +79,17 @@ void Map::Update()
     mouse.x /= scaleFactor;
     mouse.y /= scaleFactor;
 
-    for (Region& r : m_Regions)
+    for (size_t i = 0; i < m_Regions.size(); i++)
     {
-      if (r.CollidesWith(mouse))
+      if (m_Regions[i].CollidesWith(mouse))
       {
         switch (state)
         {
         case State::PLACING_BATTLE_MARKER:
-          m_BattleMarker = &r;
+          m_BattleMarkerIndex = i;
           break;
         case State::PLACING_FAVOR_MARKER:
-          m_FavorMarker = &r;
+          m_FavorMarkerIndex = i;
           break;
         default:
           break;
@@ -98,10 +98,10 @@ void Map::Update()
       }
     }
 
-    if (m_BattleMarker)
-      std::clog << "INFO: battle marker was set to " << m_BattleMarker->GetName() << '\n';
-    if (m_FavorMarker)
-      std::clog << "INFO: favor marker was set to " << m_FavorMarker->GetName() << '\n';
+    if (const Region* bm = GetBattleMarker())
+      std::clog << "INFO: battle marker was set to " << bm->GetName() << '\n';
+    if (const Region* fm = GetFavorMarker())
+      std::clog << "INFO: favor marker was set to " << fm->GetName() << '\n';
   }
 }
 
@@ -134,22 +134,24 @@ void Map::Render(const AssetManager& assets) const
     WHITE
   );
 
-  if(m_BattleMarker)
+  if (const Region* bm = GetBattleMarker())
   {
     DrawCircle(
-      MapPosX + (m_BattleMarker->GetRec().x + m_BattleMarker->GetRec().width / 2.0f) * scaleFactor ,
-      MapPosY + (m_BattleMarker->GetRec().y + m_BattleMarker->GetRec().height / 2.0f) * scaleFactor ,
+      MapPosX + (bm->GetRec().x + bm->GetRec().width / 2.0f) * scaleFactor,
+      MapPosY + (bm->GetRec().y + bm->GetRec().height / 2.0f) * scaleFactor,
       30 * scaleFactor,
-      BLACK); 
+      BLACK
+    ); 
   }
   
-  if(m_FavorMarker)
+  if (const Region* fm =GetFavorMarker())
   {
     DrawCircle(
-      MapPosX + (m_FavorMarker->GetRec().x + m_FavorMarker->GetRec().width / 2.0f) * scaleFactor ,
-      MapPosY + (m_FavorMarker->GetRec().y + m_FavorMarker->GetRec().height / 2.0f) * scaleFactor ,
+      MapPosX + (fm->GetRec().x + fm->GetRec().width / 2.0f) * scaleFactor,
+      MapPosY + (fm->GetRec().y + fm->GetRec().height / 2.0f) * scaleFactor,
       30 * scaleFactor,
-      WHITE); 
+      WHITE
+    ); 
   }
   
   for (auto& r : m_Regions)
@@ -257,12 +259,47 @@ bool Map::AreNeighbors(size_t i, size_t j, size_t k) const
   return AreNeighbors(i, j) && AreNeighbors(i, k) && AreNeighbors(j, k);
 }
 
+const Region* Map::GetBattleMarker() const
+{
+  if (m_BattleMarkerIndex < 0)
+  {
+    return nullptr;
+  }
+
+  return &m_Regions[m_BattleMarkerIndex];
+}
+
 Region* Map::GetBattleMarker()
 {
-  return m_BattleMarker;
+  if (m_BattleMarkerIndex < 0)
+  {
+    return nullptr;
+  }
+
+  return &m_Regions[m_BattleMarkerIndex];
+}
+
+const Region* Map::GetFavorMarker() const
+{
+  if (m_FavorMarkerIndex < 0)
+  {
+    return nullptr;
+  }
+
+  return &m_Regions[m_FavorMarkerIndex];
+}
+
+Region* Map::GetFavorMarker()
+{
+  if (m_FavorMarkerIndex < 0)
+  {
+    return nullptr;
+  }
+
+  return &m_Regions[m_FavorMarkerIndex];
 }
 
 void Map::ResetBattleMarker()
 {
-  m_BattleMarker = nullptr;
+  m_BattleMarkerIndex = -1;
 }

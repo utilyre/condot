@@ -16,7 +16,10 @@ public:
   void Update() override;
   void Render(const AssetManager& assets) const override;
   std::vector<const Player*> FindWinners() const;
+  const Region* GetBattleMarker() const;
   Region* GetBattleMarker();
+  const Region* GetFavorMarker() const;
+  Region* GetFavorMarker();
   void ResetBattleMarker();
 
 private:
@@ -27,6 +30,6 @@ private:
   State* m_State;
   std::vector<Region> m_Regions;
   std::vector<bool> m_Adjacency;
-  Region* m_BattleMarker;
-  Region* m_FavorMarker;
+  ssize_t m_BattleMarkerIndex;
+  ssize_t m_FavorMarkerIndex;
 };
