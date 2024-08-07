@@ -49,8 +49,9 @@ public:
   void DeleteCard(int BNum);
   int GetBishop() const;
   int GetSpy() const;
+  int GetHeroine() const;
+  int GetDrummer() const;
   Color GetColor() const;
-
 private:
   bool PlayCard();
   void RenderCards(const AssetManager& assets, Vector2 cordinate, float rotation, float ratio) const;

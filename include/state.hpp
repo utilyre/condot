@@ -14,6 +14,7 @@ public:
     PLACING_BATTLE_MARKER,
     PLACING_FAVOR_MARKER,
     PLAYING_CARD,
+    StatusBar,
     SCARECROW,
   };
 

@@ -12,6 +12,7 @@
 #include <main_menu.hpp>
 #include <customization_menu.hpp>
 #include <season.hpp>
+#include <status_bar.hpp>
 
 class Game
 {
@@ -56,5 +57,6 @@ private:
   CustomizationMenu m_CustomizationMenu;
   Map m_Map;
   std::vector<Player*> m_Players;
+  StatusBar m_StatusBar;
   std::vector<Card> m_Deck;
 };

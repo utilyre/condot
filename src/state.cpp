@@ -52,6 +52,10 @@ std::ostream& operator<<(std::ostream& out, State::Variant v)
     break;
   case State::SCARECROW:
     out << "SCARECROW";
+    break;
+  case State::StatusBar:
+    out << "StatusBar";
+    break;
   }
 
   return out;

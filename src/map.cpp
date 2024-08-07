@@ -59,7 +59,8 @@ void Map::Update()
   if (state != State::PLACING_BATTLE_MARKER &&
       state != State::PLACING_FAVOR_MARKER &&
       state != State::PLAYING_CARD &&
-      state != State::SCARECROW)
+      state != State::SCARECROW &&
+      state != State::StatusBar)
   {
     return;
   }
@@ -113,7 +114,8 @@ void Map::Render(const AssetManager& assets) const
   if (state != State::PLACING_BATTLE_MARKER &&
       state != State::PLACING_FAVOR_MARKER &&
       state != State::PLAYING_CARD &&
-      state != State::SCARECROW)
+      state != State::SCARECROW &&
+      state != State::StatusBar)
   {
     return;
   }

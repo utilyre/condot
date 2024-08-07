@@ -16,14 +16,16 @@
 #include <mercenary.hpp>
 #include <main_menu.hpp>
 #include <customization_menu.hpp>
+#include <status_bar.hpp>
 
-#define DEBUG
+// #define DEBUG
 
 Game::Game()
 : m_Stopped(false),
   m_MainMenu(&m_State, &m_StopEvent),
   m_CustomizationMenu(&m_State, &m_InitiateBattleEvent, &m_AddPlayerEvent),
-  m_Map(&m_State)
+  m_Map(&m_State),
+  m_StatusBar(&m_State, &m_Season)
 {
   m_StopEvent.Subscribe([this](auto, auto) { Stop(); });
   m_InitiateBattleEvent.Subscribe([this](auto, auto) { InitiateBattle(); });
@@ -41,6 +43,7 @@ Game::Game()
 
     std::clog << "INFO: Player \"" << player->GetName() << "\" added.\n";
   });
+  m_StatusBar.Set(&m_Players);
 }
 
 Game::~Game()
@@ -76,7 +79,8 @@ void Game::Update()
 {
   m_MainMenu.Update();
   m_CustomizationMenu.Update();
-
+  m_StatusBar.Update();
+  
   m_Map.Update();
   if (m_Players.size() > m_Turn) m_Players[m_Turn]->Update();
   for (Player* p : m_Players)
@@ -91,14 +95,15 @@ void Game::Render() const
 
   m_MainMenu.Render(m_Assets);
   m_CustomizationMenu.Render(m_Assets);
-
   m_Map.Render(m_Assets);
+
   if (m_Players.size() > m_Turn) m_Players[m_Turn]->Render(m_Assets);
   for (const Player* p : m_Players)
   {
     if (m_Players[m_Turn] != p) p->Render(m_Assets);
   }
-  
+
+  m_StatusBar.Render(m_Assets);
 #ifdef DEBUG
   DrawText(TextFormat("(%d,%d)", GetMouseX(), GetMouseY()), 10, 10, 30, WHITE);
 #endif

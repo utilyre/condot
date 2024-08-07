@@ -26,7 +26,7 @@ Player::Player(const std::string& name, int age, Color color, Position position)
   m_Heroine(0),
   m_Drummer(false),
   m_Bishop(0),
-  m_PassButton ("SURRENDER",Rectangle(0,GetScreenHeight() - 100 , 170 , 100))
+  m_PassButton ("SURRENDER",Rectangle(10,GetScreenHeight() - 100 , 170 , 90))
 {
 }
 
@@ -35,7 +35,8 @@ void Player::Update()
   auto state = m_State->Get();
 
   if (state != State::PLAYING_CARD &&
-      state != State::SCARECROW){
+      state != State::SCARECROW &&
+      state != State::StatusBar){
     return;
   }
     bool RotateStatus = false;
@@ -46,7 +47,6 @@ void Player::Update()
     else if (m_State->Get() == State::SCARECROW)
       RotateStatus = RetrieveCard();
     
-    //else if (m_State->Get() == BISHOP)
     if(RotateStatus == true && m_State->Get() == State::PLAYING_CARD)
     {
       bool PassStatus = false;
@@ -73,7 +73,8 @@ void Player::Render(const AssetManager& assets) const
 {
   auto state = m_State->Get();
   if (state != State::PLAYING_CARD &&
-      state != State::SCARECROW){
+      state != State::SCARECROW &&
+      state != State::StatusBar){
     return;
   }
   
@@ -512,16 +513,6 @@ void Player::DeleteCard(int BNum)
   }
 }
 
-int Player::GetBishop() const
-{
-  return m_Bishop;
-}
-
-int Player::GetSpy() const
-{
-  return m_Spy;
-}
-
 int Player::GetBiggestNum() const
 {
   int BNum{};
@@ -578,3 +569,24 @@ int Player::CalculateScore(int C) const
   
   return score;
 }
+
+int Player::GetDrummer() const
+{
+  return m_Drummer;
+}
+
+int Player::GetHeroine() const
+{
+  return m_Heroine;
+}
+
+int Player::GetBishop() const
+{
+  return m_Bishop;
+}
+
+int Player::GetSpy() const
+{
+  return m_Spy;
+}
+
