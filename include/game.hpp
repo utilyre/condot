@@ -12,6 +12,7 @@
 #include <main_menu.hpp>
 #include <customization_menu.hpp>
 #include <season.hpp>
+#include <stream.hpp>
 
 class Game
 {
@@ -21,6 +22,9 @@ public:
 
   void Start();
   void Stop();
+
+  static bool Serialize(StreamWriter& w, const Game& game);
+  static bool Deserialize(StreamReader& r, Game& game);
 
 private:
   void Update();
