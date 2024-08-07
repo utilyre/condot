@@ -32,9 +32,9 @@ public:
   }
 
   template<typename T>
-  bool WriteVector(const std::vector<T>& v)
+  bool WriteVector(const std::vector<T>& v, bool writeSize = true)
   {
-    if (!WriteRaw((uint64_t)v.size()))
+    if (writeSize && !WriteRaw((uint64_t)v.size()))
     {
       return false;
     }
@@ -87,16 +87,8 @@ public:
   }
 
   template<typename T>
-  bool ReadVector(std::vector<T>& v)
+  bool ReadVectorInPlace(std::vector<T>& v)
   {
-    uint64_t size;
-    if (!ReadRaw(size))
-    {
-      return false;
-    }
-
-    v.resize(size);
-
     if constexpr (std::is_trivial<T>())
     {
       return ReadData((char*)&v[0], v.size() * sizeof(T));
@@ -113,5 +105,19 @@ public:
 
       return true;
     }
+  }
+
+  template<typename T>
+  bool ReadVector(std::vector<T>& v)
+  {
+    uint64_t size;
+    if (!ReadRaw(size))
+    {
+      return false;
+    }
+
+    v.resize(size);
+
+    return ReadVectorInPlace(v);
   }
 };
