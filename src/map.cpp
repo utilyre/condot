@@ -83,16 +83,18 @@ void Map::Update()
     {
       if (r.CollidesWith(mouse))
       {
-        switch (state)
+        if  (&r == m_FavorMarker)
         {
-        case State::PLACING_BATTLE_MARKER:
-          m_BattleMarker = &r;
-          break;
-        case State::PLACING_FAVOR_MARKER:
+          return;
+        }
+        
+        if (m_State->Get() == State::PLACING_FAVOR_MARKER)
+        {
           m_FavorMarker = &r;
-          break;
-        default:
-          break;
+        }
+        else if (m_State->Get() == State::PLACING_BATTLE_MARKER)
+        {
+          m_BattleMarker = &r;
         }
         m_State->Set(State::PLAYING_CARD);
       }
