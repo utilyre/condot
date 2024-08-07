@@ -29,6 +29,7 @@ public:
   };
 
 public:
+  Card() = default;
   Card(Type type);
 
   Type GetType() const;
