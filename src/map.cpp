@@ -247,7 +247,7 @@ std::vector<PlayerLite> Map::FindWinners() const
     }
   }
 
-  return std::vector<const Player*>();
+  return std::vector<PlayerLite>();
 }
 
 bool Map::AreNeighbors(size_t i, size_t j) const

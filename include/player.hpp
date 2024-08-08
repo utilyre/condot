@@ -25,13 +25,14 @@ enum class Position {
 class Player : public Entity
 {
 public:
-  Player(const std::string& name, int age, Color color, Position position);
-
-  void SetContext(
+  Player(
     State* state,
     Season* season,
     Event* rotateTurnEvent,
-    Event* restartBattleEvent
+    Event* restartBattleEvent,
+    const std::string& name,
+    int age,
+    Color color
   );
 
   void Update() override;
@@ -83,18 +84,13 @@ private:
 
 struct PlayerLite
 {
-  PlayerLite(const Player& player)
-  : name(player.GetName()),
-    color(player.GetColor())
-  {
-  }
+  PlayerLite(const std::string& name, int age, Color color);
+  PlayerLite(const Player& player);
 
-  bool operator==(const PlayerLite& other) const
-  {
-    return name == other.name;
-  }
+  bool operator==(const PlayerLite& other) const;
 
   std::string name;
+  int age;
   Color color;
 };
 

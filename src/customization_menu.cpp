@@ -33,14 +33,6 @@ static const size_t MIN_PLAYERS = 3;
 static const size_t MAX_PLAYERS = 6;
 
 static const Color COLORS[6] = {RED, GREEN, BLUE, MAGENTA, GRAY, YELLOW};
-static const Position POSITIONS[6] = {
-  Position::TOP_LEFT,
-  Position::TOP_RIGHT,
-  Position::LEFT,
-  Position::RIGHT,
-  Position::BOTTOM_LEFT,
-  Position::BOTTOM_RIGHT,
-};
 
 CustomizationMenu::CustomizationMenu(
   State* state,
@@ -109,12 +101,12 @@ void CustomizationMenu::Update()
   }
 
 #ifdef DEBUG
-  m_AddPlayerEvent->Notify(this, Player("Jane", 1, COLORS[0], POSITIONS[0]));
-  m_AddPlayerEvent->Notify(this, Player("Aria", 2, COLORS[1], POSITIONS[1]));
-  m_AddPlayerEvent->Notify(this, Player("Theo", 3, COLORS[2], POSITIONS[2]));
-  m_AddPlayerEvent->Notify(this, Player("Milo", 4, COLORS[3], POSITIONS[3]));
-  m_AddPlayerEvent->Notify(this, Player("Alex", 5, COLORS[4], POSITIONS[4]));
-  m_AddPlayerEvent->Notify(this, Player("John", 6, COLORS[5], POSITIONS[5]));
+  m_AddPlayerEvent->Notify(this, PlayerLite("Jane", 1, COLORS[0]));
+  m_AddPlayerEvent->Notify(this, PlayerLite("Aria", 2, COLORS[1]));
+  m_AddPlayerEvent->Notify(this, PlayerLite("Theo", 3, COLORS[2]));
+  m_AddPlayerEvent->Notify(this, PlayerLite("Milo", 4, COLORS[3]));
+  m_AddPlayerEvent->Notify(this, PlayerLite("Alex", 5, COLORS[4]));
+  m_AddPlayerEvent->Notify(this, PlayerLite("John", 6, COLORS[5]));
 
   m_InitiateBattleEvent->Notify(this);
   m_State->Set(State::PLACING_BATTLE_MARKER);
@@ -214,7 +206,7 @@ void CustomizationMenu::Render(const AssetManager& assets) const
 
 void CustomizationMenu::Continue()
 {
-  std::vector<Player> players;
+  std::vector<PlayerLite> players;
 
   std::set<std::string> names;
 
@@ -280,8 +272,7 @@ void CustomizationMenu::Continue()
       players.emplace_back(
         name,
         age,
-        COLORS[players.size()],
-        POSITIONS[players.size()]
+        COLORS[players.size()]
       );
     }
     catch (const std::invalid_argument&)
@@ -291,10 +282,9 @@ void CustomizationMenu::Continue()
     }
   }
 
-  size_t numPlayers = players.size();
-  for (size_t i = 0; i < numPlayers; i++)
+  for (PlayerLite player : players)
   {
-    m_AddPlayerEvent->Notify(this, players[i]);
+    m_AddPlayerEvent->Notify(this, player);
   }
   m_InitiateBattleEvent->Notify(this);
   m_State->Set(State::PLACING_BATTLE_MARKER);

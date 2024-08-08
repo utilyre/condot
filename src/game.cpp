@@ -30,16 +30,18 @@ Game::Game()
   m_RotateTurnEvent.Subscribe([this](auto,auto data) { RotateTurn(std::any_cast<bool*>(data)); });
   m_RestartBattleEvent.Subscribe([this](auto , auto) { RestartBattle(); });
   m_AddPlayerEvent.Subscribe([this](auto, std::any data) {
-    Player player = std::any_cast<Player>(data);
-    player.SetContext(
+    PlayerLite player = std::any_cast<PlayerLite>(data);
+    m_Players.emplace_back(
       &m_State,
       &m_Season,
       &m_RotateTurnEvent,
-      &m_RestartBattleEvent
+      &m_RestartBattleEvent,
+      player.name,
+      player.age,
+      player.color
     );
-    m_Players.push_back(player);
 
-    std::clog << "INFO: Player \"" << player.GetName() << "\" added.\n";
+    std::clog << "INFO: Player \"" << player.name << "\" added.\n";
   });
 }
 
@@ -333,7 +335,7 @@ void Game::RestartBattle()
   auto winner = m_Map.FindWinners();
   if(!winner.empty())
   {
-    std::clog << "INFO: Winner is " << winner[0]->GetName() << '\n';
+    std::clog << "INFO: Winner is " << winner[0].name << '\n';
     exit(1);
   }
   ResetCards();

@@ -1,3 +1,4 @@
+#include <functional>
 #include <raylib.h>
 
 #include <asset_manager.hpp>
@@ -16,11 +17,33 @@ static const int CardWidth = 164;
 static const int CardHeight = 255;
 static const float CardScale = 0.15f;
 
-Player::Player(const std::string& name, int age, Color color, Position position)
-: m_Name(name),
+static size_t positionIndex = 0;
+static const Position POSITIONS[6] = {
+  Position::TOP_LEFT,
+  Position::TOP_RIGHT,
+  Position::LEFT,
+  Position::RIGHT,
+  Position::BOTTOM_LEFT,
+  Position::BOTTOM_RIGHT,
+};
+
+Player::Player(
+  State* state,
+  Season* season,
+  Event* rotateTurnEvent,
+  Event* restartBattleEvent,
+  const std::string& name,
+  int age,
+  Color color
+)
+: m_State(state),
+  m_Season(season),
+  m_RotateTurnEvent(rotateTurnEvent),
+  m_RestartBattleEvent(restartBattleEvent),
+  m_Name(name),
   m_Color(color),
   m_Age(age),
-  m_Position(position),
+  m_Position(POSITIONS[positionIndex++]),
   m_IsPassed(false),
   m_Spy(0),
   m_Heroine(0),
@@ -483,19 +506,6 @@ Color Player::GetColor() const{
   return m_Color;
 }
 
-void Player::SetContext(
-  State* state,
-  Season* season,
-  Event* rotateTurnEvent,
-  Event* restartBattleEvent
-)
-{
-  m_State = state;
-  m_Season = season;
-  m_RotateTurnEvent = rotateTurnEvent;
-  m_RestartBattleEvent = restartBattleEvent;
-}
-
 const std::string& Player::GetName() const
 {
   return m_Name;
@@ -577,4 +587,23 @@ int Player::CalculateScore(int C) const
   score += m_Spy;
   
   return score;
+}
+
+PlayerLite::PlayerLite(const std::string& name, int age, Color color)
+: name(name),
+  age(age),
+  color(color)
+{
+}
+
+PlayerLite::PlayerLite(const Player& player)
+: name(player.GetName()),
+  age(player.GetAge()),
+  color(player.GetColor())
+{
+}
+
+bool PlayerLite::operator==(const PlayerLite& other) const
+{
+  return name == other.name;
 }
