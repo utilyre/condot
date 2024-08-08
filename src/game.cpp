@@ -17,6 +17,8 @@
 #include <main_menu.hpp>
 #include <customization_menu.hpp>
 #include <status_bar.hpp>
+#include <help_menu.hpp>
+#include <pause_menu.hpp>
 
 // #define DEBUG
 
@@ -24,6 +26,7 @@ Game::Game()
 : m_Stopped(false),
   m_MainMenu(&m_State, &m_StopEvent),
   m_CustomizationMenu(&m_State, &m_InitiateBattleEvent, &m_AddPlayerEvent),
+  m_PauseMenu(&m_State, &m_StopEvent),
   m_Map(&m_State),
   m_StatusBar(&m_State, &m_Season)
 {
@@ -80,6 +83,7 @@ void Game::Update()
   m_MainMenu.Update();
   m_CustomizationMenu.Update();
   m_StatusBar.Update();
+  m_PauseMenu.Update();
   
   m_Map.Update();
   if (m_Players.size() > m_Turn) m_Players[m_Turn]->Update();
@@ -95,8 +99,10 @@ void Game::Render() const
 
   m_MainMenu.Render(m_Assets);
   m_CustomizationMenu.Render(m_Assets);
+  m_PauseMenu.Render(m_Assets);
+  
   m_Map.Render(m_Assets);
-
+  
   if (m_Players.size() > m_Turn) m_Players[m_Turn]->Render(m_Assets);
   for (const Player* p : m_Players)
   {

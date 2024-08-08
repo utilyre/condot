@@ -56,6 +56,9 @@ std::ostream& operator<<(std::ostream& out, State::Variant v)
   case State::StatusBar:
     out << "StatusBar";
     break;
+  case State::PAUSE_MENU:
+    out << "PauseMenu";
+    break;
   }
 
   return out;

@@ -8,7 +8,7 @@
 #include <season.hpp>
 
 StatusBar::StatusBar(State* state, Season* season) : 
- m_StatusButton("Status",Rectangle{ 10, 10, 100, 50}),
+ m_StatusButton("Status",Rectangle{ 10, 10, 120, 70}),
  m_State(state),
  m_Season(season)
  {}

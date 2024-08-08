@@ -50,5 +50,5 @@ bool Button::Hovered() const
 
 bool Button::Pressed() const
 {
-  return m_Hovered && IsMouseButtonPressed(MOUSE_BUTTON_LEFT);
+  return m_Hovered && IsMouseButtonReleased(MOUSE_LEFT_BUTTON);
 }

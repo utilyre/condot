@@ -13,6 +13,8 @@
 #include <customization_menu.hpp>
 #include <season.hpp>
 #include <status_bar.hpp>
+#include <help_menu.hpp>
+#include <pause_menu.hpp>
 
 class Game
 {
@@ -55,6 +57,7 @@ private:
 
   MainMenu m_MainMenu;
   CustomizationMenu m_CustomizationMenu;
+  PauseMenu m_PauseMenu;
   Map m_Map;
   std::vector<Player*> m_Players;
   StatusBar m_StatusBar;
