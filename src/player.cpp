@@ -1,4 +1,3 @@
-#include <functional>
 #include <raylib.h>
 
 #include <asset_manager.hpp>
