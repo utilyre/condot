@@ -81,56 +81,82 @@ void Player::Render(const AssetManager& assets) const
  const float Width  = GetScreenWidth();
  const float Height = GetScreenHeight();
  
- const float Scale = MIN((Width / CardWidth), (Height / CardHeight));
- const float THICKNESS = CardScale * Scale * CardHeight * 1.1f;
- const float Spacing = CardScale * Scale * (9 * CardWidth / 2.0f + CardWidth); 
+ const float Scale = MIN((Width / CardWidth), (Height / CardHeight)) * CardScale;
+ const float THICKNESS = Scale * CardHeight * 1.1f;
+ const float Spacing = Scale * (9 * CardWidth / 2.0f + CardWidth); 
 
- const Vector2 BottomLeft  {(Width / 2.0f) - (Spacing * 1.1f), Height - (CardHeight * Scale * CardScale) * 1.1f};
- const Vector2 BottomRight {(Width / 2.0f) * 1.1f, Height - (CardHeight * Scale * CardScale) * 1.1f};
+ const Vector2 BottomLeft  {(Width / 2.0f) - (Spacing * 1.1f), Height - (CardHeight * Scale) * 1.3f};
+ const Vector2 BottomRight {(Width / 2.0f) * 1.1f, Height - (CardHeight * Scale) * 1.3f};
  
- const Vector2 TopLeft {(Width / 2.0f) - (Spacing * 1.1f) + Spacing, (CardHeight * Scale * CardScale) * 1.1f};
- const Vector2 TopRight {(Width / 2.0f) * 1.1f + Spacing, (CardHeight * Scale * CardScale) * 1.1f};
+ const Vector2 TopLeft {(Width / 2.0f) - (Spacing * 1.1f) + Spacing, (CardHeight * Scale) * 1.3f};
+ const Vector2 TopRight {(Width / 2.0f) * 1.1f + Spacing, (CardHeight * Scale) * 1.3f};
  
- const Vector2 Left {(CardHeight * Scale * CardScale) * 1.1f, Height / 2.0f - (Spacing / 2.0f)};
- const Vector2 Right {Width - (CardHeight * Scale * CardScale) * 1.1f, Height / 2.0f + (Spacing / 2.0f)};
+ const Vector2 Left {(CardHeight * Scale) * 1.3f, (Height - Spacing) / 2.0f};
+ const Vector2 Right {Width - (CardHeight * Scale) * 1.3f, (Height + Spacing) / 2.0f};
    
   switch (m_Position)
   {
   case Position::TOP_LEFT:
     DrawRectangle(TopLeft.x - Spacing, 0 , Spacing , THICKNESS , m_Color);
-    RenderRows(assets, Vector2{TopLeft.x , TopLeft.y + CardScale * CardHeight * Scale / 2}, 180, Scale * CardScale);
-    RenderCards(assets, TopLeft ,180, Scale * CardScale);
+    RenderRows(assets, Vector2{TopLeft.x , TopLeft.y + CardHeight * Scale / 2}, 180, Scale);
+    RenderCards(assets, TopLeft ,180, Scale);
+    DrawText(m_Name.c_str(), (TopLeft.x - Spacing) + Spacing / 2.0f * 0.9, 10, 30, BLACK);
     break;
     
   case Position::TOP_RIGHT:
     DrawRectangle(TopRight.x - Spacing, 0 , Spacing , THICKNESS , m_Color);
-    RenderRows(assets,Vector2{TopRight.x , TopRight.y + CardScale * CardHeight * Scale / 2} , 180, Scale * CardScale);
-    RenderCards(assets, TopRight, 180, Scale * CardScale);
+    RenderRows(assets,Vector2{TopRight.x , TopRight.y + CardHeight * Scale / 2} , 180, Scale);
+    RenderCards(assets, TopRight, 180, Scale);
+    DrawText(m_Name.c_str(), (TopRight.x - Spacing) + Spacing / 2.0f * 0.9, 10, 30, BLACK);
     break;
     
   case Position::BOTTOM_LEFT:
     DrawRectangle(BottomLeft.x, Height - THICKNESS , Spacing , THICKNESS , m_Color);
-    RenderRows (assets , Vector2{ BottomLeft.x , BottomLeft.y - CardScale * CardHeight * Scale / 2} , 0, Scale * CardScale);
+    RenderRows (assets , Vector2{ BottomLeft.x , BottomLeft.y - CardHeight * Scale / 2} , 0, Scale);
     m_PassButton.Render(assets);
-    RenderCards(assets , BottomLeft , 0, Scale * CardScale);
+    RenderCards(assets , BottomLeft , 0, Scale);
+    DrawText(m_Name.c_str(), BottomLeft.x + Spacing / 2.0f * 0.9f, BottomLeft.y + CardHeight * Scale, 30, BLACK);
+  
     break;
     
   case Position::BOTTOM_RIGHT:
     DrawRectangle(BottomRight.x, Height - THICKNESS , Spacing , THICKNESS , m_Color);
-    RenderRows (assets , Vector2{ BottomRight.x , BottomRight.y - CardScale * CardHeight * Scale / 2} , 0, Scale * CardScale);
-    RenderCards(assets , BottomRight , 0, Scale * CardScale);
+    RenderRows (assets , Vector2{ BottomRight.x , BottomRight.y - CardHeight * Scale / 2} , 0, Scale);
+    RenderCards(assets , BottomRight , 0, Scale);
+    DrawText(m_Name.c_str(), BottomRight.x + Spacing / 2.0f * 0.9f, BottomLeft.y + CardHeight * Scale, 30, BLACK);
     break;
     
   case Position::RIGHT:
     DrawRectangle(Right.x, Right.y - Spacing , Spacing , Spacing , m_Color);
-    RenderRows (assets , Vector2{ Right.x - CardScale * CardHeight * Scale / 2, Right.y} , 270, Scale * CardScale);
-    RenderCards(assets , Right , 270, Scale * CardScale);
+    RenderRows (assets , Vector2{ Right.x - CardHeight * Scale / 2, Right.y} , 270, Scale);
+    RenderCards(assets , Right , 270, Scale);
+    DrawTextPro(
+      assets.PrimaryFont,
+      m_Name.c_str(),
+      Vector2{Right.x + CardHeight * Scale, GetScreenHeight() / 2.0f + 20}, 
+      Vector2{0,0}, 
+      270, 
+      40, 
+      12,
+      BLACK 
+    );
     break;
     
   case Position::LEFT:
     DrawRectangle(0, Left.y, THICKNESS  , Spacing , m_Color);
-    RenderRows (assets , Vector2{ Left.x + CardScale * CardHeight * Scale / 2 , Left.y} , 90, Scale * CardScale);
-    RenderCards(assets , Left, 90, Scale * CardScale);
+    RenderRows (assets , Vector2{ Left.x + CardHeight * Scale / 2 , Left.y} , 90, Scale);
+    RenderCards(assets , Left, 90, Scale);
+    DrawTextPro(
+      assets.PrimaryFont,
+      m_Name.c_str(),
+      Vector2{Left.x - CardHeight * Scale, GetScreenHeight() / 2.0f - 20}, 
+      Vector2{0,0}, 
+      90, 
+      40, 
+      12,
+      BLACK 
+    );
+
     break;
   }
 }
@@ -270,7 +296,7 @@ bool Player::PlayCard(){
   const float Height = GetScreenHeight();
   const float scale = MIN((Width / CardWidth), (Height / CardHeight)) * CardScale;
   const float Spacing = scale * (9 * CardWidth / 2.0f + CardWidth); 
-  const Vector2 BottomLeft  {(Width / 2.0f) - (Spacing * 1.1f), Height - (CardHeight * scale) * 1.1f};
+  const Vector2 BottomLeft  {(Width / 2.0f) - (Spacing * 1.1f), Height - (CardHeight * scale) * 1.3f};
   
   if (m_Position == Position::BOTTOM_LEFT)
   {
@@ -421,7 +447,7 @@ bool Player::RetrieveCard(){
   const float Height = GetScreenHeight();
   const float scale = MIN((Width / CardWidth), (Height / CardHeight)) * CardScale;
   const float Spacing = scale * (9 * CardWidth / 2.0f + CardWidth); 
-  const Vector2 BottomLeft  {(Width / 2.0f) - (Spacing * 1.1f), Height - (CardHeight * scale) * 1.1f - (scale * (CardHeight / 2.0f))};
+  const Vector2 BottomLeft  {(Width / 2.0f) - (Spacing * 1.1f), Height - (CardHeight * scale) * 1.3f - (scale * (CardHeight / 2.0f))};
   
   if (m_Position == Position::BOTTOM_LEFT)
   {
