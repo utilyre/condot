@@ -1,8 +1,8 @@
 #pragma once
 
 #include <string>
-#include <raylib.h>
 #include <vector>
+#include <raylib.h>
 
 #include <asset_manager.hpp>
 #include <state.hpp>
@@ -12,6 +12,7 @@
 #include <mercenary.hpp>
 #include <button.hpp>
 #include <season.hpp>
+#include <stream.hpp>
 
 enum class Position {
   BOTTOM_LEFT,
@@ -51,6 +52,9 @@ public:
   int GetBishop() const;
   int GetSpy() const;
   Color GetColor() const;
+
+  static bool Serialize(StreamWriter& w, const Player& player);
+  static bool Deserialize(StreamReader& r, Player& player);
 
 private:
   bool PlayCard();
