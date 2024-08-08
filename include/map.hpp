@@ -23,8 +23,8 @@ public:
   Region* GetFavorMarker();
   void ResetBattleMarker();
 
-  static bool Serialize(StreamWriter& w, const Map& map);
-  static bool Deserialize(StreamReader& r, Map& map);
+  static void Serialize(StreamWriter& w, const Map& map);
+  static void Deserialize(StreamReader& r, Map& map);
 
 private:
   bool AreNeighbors(size_t i, size_t j) const;

@@ -22,8 +22,8 @@ public:
   void Start();
   void Stop();
 
-  static bool Serialize(StreamWriter& w, const Game& game);
-  static bool Deserialize(StreamReader& r, Game& game);
+  static void Serialize(StreamWriter& w, const Game& game);
+  static void Deserialize(StreamReader& r, Game& game);
 
 private:
   void Update();

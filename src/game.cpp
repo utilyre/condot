@@ -66,28 +66,24 @@ void Game::Stop()
   m_Stopped = true;
 }
 
-bool Game::Serialize(StreamWriter& w, const Game& game)
+void Game::Serialize(StreamWriter& w, const Game& game)
 {
-  return (
-    w.WriteRaw(game.m_State) &&
-    w.WriteRaw(game.m_Turn) &&
-    w.WriteRaw(game.m_Season) &&
-    w.WriteObject(game.m_Map) &&
-    w.WriteVector(game.m_Players) &&
-    w.WriteVector(game.m_Deck)
-  );
+  w.WriteRaw(game.m_State);
+  w.WriteRaw(game.m_Turn);
+  w.WriteRaw(game.m_Season);
+  w.WriteObject(game.m_Map);
+  w.WriteVector(game.m_Players);
+  w.WriteVector(game.m_Deck);
 }
 
-bool Game::Deserialize(StreamReader& r, Game& game)
+void Game::Deserialize(StreamReader& r, Game& game)
 {
-  return (
-    r.ReadRaw(game.m_State) &&
-    r.ReadRaw(game.m_Turn) &&
-    r.ReadRaw(game.m_Season) &&
-    r.ReadObject(game.m_Map) &&
-    r.ReadVector(game.m_Players) &&
-    r.ReadVector(game.m_Deck)
-  );
+  r.ReadRaw(game.m_State);
+  r.ReadRaw(game.m_Turn);
+  r.ReadRaw(game.m_Season);
+  r.ReadObject(game.m_Map);
+  r.ReadVector(game.m_Players);
+  r.ReadVector(game.m_Deck);
 }
 
 void Game::Update()

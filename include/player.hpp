@@ -53,8 +53,8 @@ public:
   int GetSpy() const;
   Color GetColor() const;
 
-  static bool Serialize(StreamWriter& w, const Player& player);
-  static bool Deserialize(StreamReader& r, Player& player);
+  static void Serialize(StreamWriter& w, const Player& player);
+  static void Deserialize(StreamReader& r, Player& player);
 
 private:
   bool PlayCard();

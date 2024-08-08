@@ -18,8 +18,8 @@ public:
   bool CollidesWith(Vector2 v) const;
   Rectangle GetRec() const;
 
-  static bool Serialize(StreamWriter& w, const Region& region);
-  static bool Deserialize(StreamReader& r, Region& region);
+  static void Serialize(StreamWriter& w, const Region& region);
+  static void Deserialize(StreamReader& r, Region& region);
 
 private:
   std::string m_Name;

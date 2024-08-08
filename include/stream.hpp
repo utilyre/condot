@@ -11,94 +11,70 @@ class StreamWriter
 public:
   virtual ~StreamWriter() {}
 
+  virtual void WriteData(const char* data, uint64_t size) = 0;
   virtual bool IsStreamGood() const = 0;
-  virtual bool WriteData(const char* data, uint64_t size) = 0;
 
   operator bool() const { return IsStreamGood(); }
 
-  bool WriteZeros(size_t size)
+  void WriteZeros(size_t size)
   {
     for (size_t i = 0; i < size; i++)
     {
-      if (!WriteRaw('\0'))
-      {
-        return false;
-      }
+      WriteRaw('\0');
     }
-
-    return true;
   }
 
   template<typename T>
-  bool WriteRaw(const T&  v) { return WriteData((const char*)&v, sizeof(T)); }
+  void WriteRaw(const T&  v) { WriteData((const char*)&v, sizeof(T)); }
 
   template<typename T>
-  bool WriteObject(const T& v) { return T::Serialize(*this, v); }
+  void WriteObject(const T& v) { T::Serialize(*this, v); }
 
-  bool WriteString(const std::string& s)
+  void WriteString(const std::string& s)
   {
-    if (!WriteRaw((uint64_t)s.size()))
-    {
-      return false;
-    }
-
-    return WriteData(s.data(), s.size() * sizeof(char));
+    WriteRaw((uint64_t)s.size());
+    WriteData(s.data(), s.size() * sizeof(char));
   }
 
   template<typename T>
-  bool WriteOptional(const std::optional<T>& o)
+  void WriteOptional(const std::optional<T>& o)
   {
-    if (!WriteRaw(o.has_value()))
-    {
-      return false;
-    }
+    WriteRaw(o.has_value());
 
-    if (!o.has_value() && !WriteZeros(sizeof(T)))
+    if (!o.has_value())
     {
-      return false;
+      WriteZeros(sizeof(T));
+      return;
     }
 
     if constexpr (std::is_trivial<T>())
     {
-      if (!WriteRaw(o.value()))
-      {
-        return false;
-      }
+      WriteRaw(o.value());
     }
     else
     {
-      if (!WriteObject(o.value()))
-      {
-        return false;
-      }
+      WriteObject(o.value());
     }
-
-    return true;
   }
 
   template<typename T>
-  bool WriteVector(const std::vector<T>& v, bool writeSize = true)
+  void WriteVector(const std::vector<T>& v, bool writeSize = true)
   {
-    if (writeSize && !WriteRaw((uint64_t)v.size()))
+    if (writeSize)
     {
-      return false;
+      WriteRaw((uint64_t)v.size());
     }
 
     if constexpr (std::is_trivial<T>())
     {
-      return WriteData((const char*)&v[0], v.size() * sizeof(T));
+      WriteData((const char*)&v[0], v.size() * sizeof(T));
     }
     else
     {
       for (const T& x : v)
       {
-        if (!WriteObject(x))
-        {
-          return false;
-        }
+        WriteObject(x);
       }
-
-      return true;
     }
   }
 };
@@ -108,96 +84,73 @@ class StreamReader
 public:
   virtual ~StreamReader() {}
 
+  virtual void ReadData(char* data, uint64_t size) = 0;
   virtual bool IsStreamGood() const = 0;
-  virtual bool ReadData(char* data, uint64_t size) = 0;
 
   operator bool() const { return IsStreamGood(); }
 
   template<typename T>
-  bool ReadRaw(T&  v) { return ReadData((char*)&v, sizeof(T)); }
+  void ReadRaw(T&  v) { ReadData((char*)&v, sizeof(T)); }
 
   template<typename T>
-  bool ReadObject(T& v) { return T::Deserialize(*this, v); }
+  void ReadObject(T& v) { T::Deserialize(*this, v); }
 
-  bool ReadString(std::string& s)
+  void ReadString(std::string& s)
   {
     uint64_t size;
-    if (!ReadRaw(size))
-    {
-      return false;
-    }
+    ReadRaw(size);
 
     s.resize(size);
-    return ReadData(s.data(), s.size() * sizeof(char));
+    ReadData(s.data(), s.size() * sizeof(char));
   }
 
   template<typename T>
-  bool ReadOptional(std::optional<T>& o)
+  void ReadOptional(std::optional<T>& o)
   {
     bool hasValue;
-    if (!ReadRaw(hasValue))
-    {
-      return false;
-    }
+    ReadRaw(hasValue);
 
     if (!hasValue)
     {
       o = std::nullopt;
-      return true;
+      return;
     }
 
     T value;
     if constexpr (std::is_trivial<T>())
     {
-      if (!ReadRaw(value))
-      {
-        return false;
-      }
+      ReadRaw(value);
     }
     else
     {
-      if (!ReadObject(value))
-      {
-        return false;
-      }
+      ReadObject(value);
     }
-
     o = value;
-    return true;
   }
 
   template<typename T>
-  bool ReadVectorInPlace(std::vector<T>& v)
+  void ReadVectorInPlace(std::vector<T>& v)
   {
     if constexpr (std::is_trivial<T>())
     {
-      return ReadData((char*)&v[0], v.size() * sizeof(T));
+      ReadData((char*)&v[0], v.size() * sizeof(T));
     }
     else
     {
       for (T& x : v)
       {
-        if (!ReadObject(x))
-        {
-          return false;
-        }
+        ReadObject(x);
       }
-
-      return true;
     }
   }
 
   template<typename T>
-  bool ReadVector(std::vector<T>& v)
+  void ReadVector(std::vector<T>& v)
   {
     uint64_t size;
-    if (!ReadRaw(size))
-    {
-      return false;
-    }
+    ReadRaw(size);
 
     v.resize(size);
-
-    return ReadVectorInPlace(v);
+    ReadVectorInPlace(v);
   }
 };

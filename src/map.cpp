@@ -305,20 +305,16 @@ void Map::ResetBattleMarker()
   m_BattleMarkerIndex = -1;
 }
 
-bool Map::Serialize(StreamWriter& w, const Map& map)
+void Map::Serialize(StreamWriter& w, const Map& map)
 {
-  return (
-    w.WriteVector(map.m_Regions, false) &&
-    w.WriteRaw(map.m_BattleMarkerIndex) &&
-    w.WriteRaw(map.m_FavorMarkerIndex)
-  );
+  w.WriteVector(map.m_Regions, false);
+  w.WriteRaw(map.m_BattleMarkerIndex);
+  w.WriteRaw(map.m_FavorMarkerIndex);
 }
 
-bool Map::Deserialize(StreamReader& r, Map& map)
+void Map::Deserialize(StreamReader& r, Map& map)
 {
-  return (
-    r.ReadVectorInPlace(map.m_Regions) &&
-    r.ReadRaw(map.m_BattleMarkerIndex) &&
-    r.ReadRaw(map.m_FavorMarkerIndex)
-  );
+  r.ReadVectorInPlace(map.m_Regions);
+  r.ReadRaw(map.m_BattleMarkerIndex);
+  r.ReadRaw(map.m_FavorMarkerIndex);
 }

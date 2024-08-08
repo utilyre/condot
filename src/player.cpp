@@ -588,36 +588,32 @@ int Player::CalculateScore(int C) const
   return score;
 }
 
-bool Player::Serialize(StreamWriter& w, const Player& player)
+void Player::Serialize(StreamWriter& w, const Player& player)
 {
-  return (
-    w.WriteString(player.m_Name) &&
-    w.WriteRaw(player.m_Age) &&
-    w.WriteRaw(player.m_Color) &&
-    w.WriteVector(player.m_Cards) &&
-    w.WriteVector(player.m_Row) &&
-    w.WriteRaw(player.m_IsPassed) &&
-    w.WriteRaw(player.m_Spy) &&
-    w.WriteRaw(player.m_Heroine) &&
-    w.WriteRaw(player.m_Drummer) &&
-    w.WriteRaw(player.m_Bishop)
-  );
+  w.WriteString(player.m_Name);
+  w.WriteRaw(player.m_Age);
+  w.WriteRaw(player.m_Color);
+  w.WriteVector(player.m_Cards);
+  w.WriteVector(player.m_Row);
+  w.WriteRaw(player.m_IsPassed);
+  w.WriteRaw(player.m_Spy);
+  w.WriteRaw(player.m_Heroine);
+  w.WriteRaw(player.m_Drummer);
+  w.WriteRaw(player.m_Bishop);
 }
 
-bool Player::Deserialize(StreamReader& r, Player& player)
+void Player::Deserialize(StreamReader& r, Player& player)
 {
-  return (
-    r.ReadString(player.m_Name) &&
-    r.ReadRaw(player.m_Age) &&
-    r.ReadRaw(player.m_Color) &&
-    r.ReadVector(player.m_Cards) &&
-    r.ReadVector(player.m_Row) &&
-    r.ReadRaw(player.m_IsPassed) &&
-    r.ReadRaw(player.m_Spy) &&
-    r.ReadRaw(player.m_Heroine) &&
-    r.ReadRaw(player.m_Drummer) &&
-    r.ReadRaw(player.m_Bishop)
-  );
+  r.ReadString(player.m_Name);
+  r.ReadRaw(player.m_Age);
+  r.ReadRaw(player.m_Color);
+  r.ReadVector(player.m_Cards);
+  r.ReadVector(player.m_Row);
+  r.ReadRaw(player.m_IsPassed);
+  r.ReadRaw(player.m_Spy);
+  r.ReadRaw(player.m_Heroine);
+  r.ReadRaw(player.m_Drummer);
+  r.ReadRaw(player.m_Bishop);
 }
 
 PlayerLite::PlayerLite(const std::string& name, int age, Color color)
