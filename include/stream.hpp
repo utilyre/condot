@@ -48,10 +48,32 @@ public:
   template<typename T>
   bool WriteOptional(const std::optional<T>& o)
   {
-    return (
-      WriteRaw(o.has_value()) &&
-      o.has_value() ? WriteRaw(o.value()) : WriteZeros(sizeof(T))
-    );
+    if (!WriteRaw(o.has_value()))
+    {
+      return false;
+    }
+
+    if (!o.has_value() && !WriteZeros(sizeof(T)))
+    {
+      return false;
+    }
+
+    if constexpr (std::is_trivial<T>())
+    {
+      if (!WriteRaw(o.value()))
+      {
+        return false;
+      }
+    }
+    else
+    {
+      if (!WriteObject(o.value()))
+      {
+        return false;
+      }
+    }
+
+    return true;
   }
 
   template<typename T>
@@ -125,9 +147,19 @@ public:
     }
 
     T value;
-    if (!ReadRaw(value))
+    if constexpr (std::is_trivial<T>())
     {
-      return false;
+      if (!ReadRaw(value))
+      {
+        return false;
+      }
+    }
+    else
+    {
+      if (!ReadObject(value))
+      {
+        return false;
+      }
     }
 
     o = value;
