@@ -26,6 +26,7 @@ enum class Position {
 class Player : public Entity
 {
 public:
+  Player();
   Player(
     State* state,
     Season* season,
@@ -88,8 +89,12 @@ private:
 
 struct PlayerLite
 {
+  PlayerLite() = default;
   PlayerLite(const std::string& name, int age, Color color);
   PlayerLite(const Player& player);
+
+  static void Serialize(StreamWriter& w, const PlayerLite& player);
+  static void Deserialize(StreamReader& r, PlayerLite& player);
 
   bool operator==(const PlayerLite& other) const;
 

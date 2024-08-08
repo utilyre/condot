@@ -26,6 +26,12 @@ static const Position POSITIONS[6] = {
   Position::BOTTOM_RIGHT,
 };
 
+// TODO: think about this default constructor
+Player::Player()
+: m_PassButton("yo", Rectangle{})
+{
+}
+
 Player::Player(
   State* state,
   Season* season,
@@ -633,4 +639,18 @@ PlayerLite::PlayerLite(const Player& player)
 bool PlayerLite::operator==(const PlayerLite& other) const
 {
   return name == other.name;
+}
+
+void PlayerLite::Serialize(StreamWriter& w, const PlayerLite& player)
+{
+  w.WriteString(player.name);
+  w.WriteRaw(player.age);
+  w.WriteRaw(player.color);
+}
+
+void PlayerLite::Deserialize(StreamReader& r, PlayerLite& player)
+{
+  r.ReadString(player.name);
+  r.ReadRaw(player.age);
+  r.ReadRaw(player.color);
 }
