@@ -37,14 +37,12 @@ Rectangle Region::GetRec() const
   return m_Collision;
 }
 
-bool Region::Serialize(StreamWriter&, const Region&)
+bool Region::Serialize(StreamWriter& w, const Region& region)
 {
-  // TODO
-  return false;
+  return w.WriteOptional(region.m_Ruler);
 }
 
-bool Region::Deserialize(StreamReader&, Region&)
+bool Region::Deserialize(StreamReader& r, Region& region)
 {
-  // TODO
-  return false;
+  return r.ReadOptional(region.m_Ruler);
 }
