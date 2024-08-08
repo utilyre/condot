@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <type_traits>
 #include <string>
+#include <optional>
 #include <vector>
 
 class StreamWriter
@@ -14,6 +15,19 @@ public:
   virtual bool WriteData(const char* data, uint64_t size) = 0;
 
   operator bool() const { return IsStreamGood(); }
+
+  bool WriteZeros(size_t size)
+  {
+    for (size_t i = 0; i < size; i++)
+    {
+      if (!WriteRaw('\0'))
+      {
+        return false;
+      }
+    }
+
+    return true;
+  }
 
   template<typename T>
   bool WriteRaw(const T&  v) { return WriteData((const char*)&v, sizeof(T)); }
@@ -29,6 +43,15 @@ public:
     }
 
     return WriteData(s.data(), s.size() * sizeof(char));
+  }
+
+  template<typename T>
+  bool WriteOptional(const std::optional<T>& o)
+  {
+    return (
+      WriteRaw(o.has_value()) &&
+      o.has_value() ? WriteRaw(o.value()) : WriteZeros(sizeof(T))
+    );
   }
 
   template<typename T>
@@ -84,6 +107,31 @@ public:
 
     s.resize(size);
     return ReadData(s.data(), s.size() * sizeof(char));
+  }
+
+  template<typename T>
+  bool ReadOptional(std::optional<T>& o)
+  {
+    bool hasValue;
+    if (!ReadRaw(hasValue))
+    {
+      return false;
+    }
+
+    if (!hasValue)
+    {
+      o = std::nullopt;
+      return true;
+    }
+
+    T value;
+    if (!ReadRaw(value))
+    {
+      return false;
+    }
+
+    o = value;
+    return true;
   }
 
   template<typename T>
