@@ -27,7 +27,7 @@ Game::Game()
 : m_Stopped(false),
   m_MainMenu(&m_State, &m_LoadEvent, &m_StopEvent, &m_InitiateBattleEvent),
   m_CustomizationMenu(&m_State, &m_InitiateBattleEvent, &m_AddPlayerEvent),
-  m_PauseMenu(&m_State, &m_StopEvent),
+  m_PauseMenu(&m_State, &m_StopEvent, &m_SaveEvent),
   m_Map(&m_State),
   m_StatusBar(&m_State, &m_Season)
 {

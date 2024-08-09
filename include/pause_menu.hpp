@@ -10,7 +10,7 @@
 class PauseMenu : public Entity
 {
   public:
-    PauseMenu(State*, Event*);
+    PauseMenu(State*, Event*, Event*);
     void Update() override;
     void Render(const AssetManager&) const override;
 
@@ -23,6 +23,7 @@ class PauseMenu : public Entity
     Button m_SaveButton;
     State* m_State;
     Event* m_QuitEvent;
+    Event* m_SaveEvent;
     bool m_ShowHelpMenu;
     HelpMenu m_HelpMenu;
 };
