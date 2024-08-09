@@ -52,6 +52,7 @@ public:
   int GetHeroine() const;
   int GetDrummer() const;
   Color GetColor() const;
+  void DecreaseBishop();
 private:
   bool PlayCard();
   void RenderCards(const AssetManager& assets, Vector2 cordinate, float rotation, float ratio) const;
