@@ -10,10 +10,16 @@ static const int BUTTON_WIDTH = 800;
 static const int BUTTON_HEIGHT = 100;
 static const float SPACING = 20.0f;
 
-MainMenu::MainMenu(State* state, Event* loadEvent, Event* quitEvent)
+MainMenu::MainMenu(
+  State* state,
+  Event* loadEvent,
+  Event* quitEvent,
+  Event* initiateBattleEvent
+)
 : m_State(state),
   m_LoadEvent(loadEvent),
   m_QuitEvent(quitEvent),
+  m_InitiateBattleEvent(initiateBattleEvent),
   m_ButtonContinue("Continue", Rectangle{
     (GetScreenWidth() - BUTTON_WIDTH) / 2.0f,
     (GetScreenHeight() - BUTTON_HEIGHT) / 2.0f - BUTTON_HEIGHT - SPACING,
@@ -53,6 +59,7 @@ void MainMenu::Update()
   if (m_ButtonContinue.Pressed())
   {
     m_LoadEvent->Notify(this);
+    m_InitiateBattleEvent->Notify(this);
     m_State->Set(State::PLACING_BATTLE_MARKER);
   }
   if (m_ButtonStart.Pressed())
