@@ -26,7 +26,6 @@ static const Position POSITIONS[6] = {
   Position::BOTTOM_RIGHT,
 };
 
-// TODO: think about this default constructor
 Player::Player()
 : m_PassButton("yo", Rectangle{})
 {
