@@ -33,19 +33,11 @@ Player::Player()
 }
 
 Player::Player(
-  State* state,
-  Season* season,
-  Event* rotateTurnEvent,
-  Event* restartBattleEvent,
   const std::string& name,
   int age,
   Color color
 )
-: m_State(state),
-  m_Season(season),
-  m_RotateTurnEvent(rotateTurnEvent),
-  m_RestartBattleEvent(restartBattleEvent),
-  m_Name(name),
+: m_Name(name),
   m_Color(color),
   m_Age(age),
   m_Position(POSITIONS[positionIndex++]),
@@ -58,7 +50,7 @@ Player::Player(
 {
 }
 
-void Player::SetContext(
+void Player::Init(
   State* state,
   Season* season,
   Event* rotateTurnEvent,

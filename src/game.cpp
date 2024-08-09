@@ -37,14 +37,12 @@ Game::Game()
   m_RestartBattleEvent.Subscribe([this](auto , auto) { RestartBattle(); });
   m_AddPlayerEvent.Subscribe([this](auto, std::any data) {
     PlayerLite player = std::any_cast<PlayerLite>(data);
-    m_Players.emplace_back(
+    m_Players.emplace_back(player.name, player.age, player.color);
+    m_Players.back().Init(
       &m_State,
       &m_Season,
       &m_RotateTurnEvent,
-      &m_RestartBattleEvent,
-      player.name,
-      player.age,
-      player.color
+      &m_RestartBattleEvent
     );
 
     std::clog << "INFO: Player \"" << player.name << "\" added.\n";
@@ -102,7 +100,7 @@ void Game::Deserialize(StreamReader& r, Game& game)
   r.ReadVector(game.m_Players);
   for (Player& player : game.m_Players)
   {
-    player.SetContext(
+    player.Init(
       &game.m_State,
       &game.m_Season,
       &game.m_RotateTurnEvent,

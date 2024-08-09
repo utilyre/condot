@@ -28,16 +28,12 @@ class Player : public Entity
 public:
   Player();
   Player(
-    State* state,
-    Season* season,
-    Event* rotateTurnEvent,
-    Event* restartBattleEvent,
     const std::string& name,
     int age,
     Color color
   );
 
-  void SetContext(
+  void Init(
     State* state,
     Season* season,
     Event* rotateTurnEvent,
