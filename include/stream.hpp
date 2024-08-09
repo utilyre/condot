@@ -18,25 +18,14 @@ public:
 
   operator bool() const { return IsStreamGood(); }
 
-  void WriteZeros(size_t size)
-  {
-    for (size_t i = 0; i < size; i++)
-    {
-      WriteRaw('\0');
-    }
-  }
+  void WriteZeros(uint64_t size);
+  void WriteString(const std::string& s);
 
   template<typename T>
   void WriteRaw(const T&  v) { WriteData((const char*)&v, sizeof(T)); }
 
   template<typename T>
   void WriteObject(const T& v) { T::Serialize(*this, v); }
-
-  void WriteString(const std::string& s)
-  {
-    WriteRaw((uint64_t)s.size());
-    WriteData(s.data(), s.size() * sizeof(char));
-  }
 
   template<typename T>
   void WriteOptional(const std::optional<T>& o)
@@ -93,20 +82,13 @@ public:
 
   operator bool() const { return IsStreamGood(); }
 
+  void ReadString(std::string& s);
+
   template<typename T>
   void ReadRaw(T&  v) { ReadData((char*)&v, sizeof(T)); }
 
   template<typename T>
   void ReadObject(T& v) { T::Deserialize(*this, v); }
-
-  void ReadString(std::string& s)
-  {
-    uint64_t size;
-    ReadRaw(size);
-
-    s.resize(size);
-    ReadData(s.data(), s.size() * sizeof(char));
-  }
 
   template<typename T>
   void ReadOptional(std::optional<T>& o)
