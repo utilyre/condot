@@ -26,7 +26,7 @@ void StatusBar::Render(const AssetManager& assets) const
   {
     DrawRectangle(0, 0, 400, 400, WHITE);
     float VerticalSpacing = 10;
-    // int BiggestNum = GetScore();
+    int BiggestNum = GetScore();
     for (auto* p : *m_Players)
     {
       float HorizotalSpacing = 40;
@@ -46,7 +46,7 @@ void StatusBar::Render(const AssetManager& assets) const
     
       DrawTextureEx(assets.Drummer,Vector2{HorizotalSpacing,VerticalSpacing}, 0, 0.2, WHITE);
       DrawText(TextFormat(" x %d", p->GetDrummer()), 250, VerticalSpacing + 20, 10, BLACK);
-      // DrawText(TextFormat("Score:%d",p->CalculateScore(BiggestNum)), 290, VerticalSpacing + 20, 20, BLACK);
+      DrawText(TextFormat("Score:%d",p->CalculateScore(BiggestNum)), 290, VerticalSpacing + 20, 20, BLACK);
       VerticalSpacing += assets.BackSide.height * 0.2;
     }
     DrawText("Season :",40, VerticalSpacing + 20 , 25 , BLACK);
@@ -129,19 +129,20 @@ int StatusBar::GetScore() const
     BiggestNum = 0;
   }
 
-  for (const auto& p : *m_Players) 
-  {
-    if(p->GetHeroine() > 0)
-    {
-      return 10;
-    }
-  }
-
   for (const auto& p : *m_Players)
   {
     if (BiggestNum < p->GetBiggestNum()){
       BiggestNum = p->GetBiggestNum();
     }
   }
+  
+  for (const auto& p : *m_Players) 
+  {
+    if(p->GetHeroine() > 0)
+    {
+      BiggestNum = 10;
+    }
+  }
+
   return BiggestNum;
 }

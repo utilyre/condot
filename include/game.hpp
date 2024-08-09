@@ -35,9 +35,10 @@ private:
   void InitiateBattle();
   void RotateTurn(bool* Status);
   void PickCard();
-  void FindRegionConquerer();
+  void FindRegionConquerer(int);
   void FixPosition();
   void RestartBattle();
+  int GetWinnerScore();
 
 private:
   bool m_Stopped;

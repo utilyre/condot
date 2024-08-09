@@ -91,6 +91,7 @@ void Game::Update()
   {
     if (m_Players[m_Turn] != p) p->Update();
   }
+  GetWinnerScore();
 }
 
 void Game::Render() const
@@ -224,54 +225,22 @@ void Game::RotateTurn(bool* Status){
   } 
 }
 
-void Game::FindRegionConquerer()
+void Game::FindRegionConquerer(int num)
 {
-  int SpyNum = 0;
-  int BishopNum = 0;
-  int BiggestNum = 0;
-  int max_strength = 0;
-  std::vector<size_t> potentialWinners;
+  std::vector<int> potentialWinners;
+  int MaxStrength = 0;
+  int SpyNum;
 
-
-  for (auto p : m_Players)
+  for (size_t i = 0; i < m_Players.size(); ++i) 
   {
-    BishopNum += p->GetBishop();
-  }
-
-  for (int counter = 0; counter < BishopNum; ++counter)
-  {
-    for (const auto& p : m_Players)
+    int strength = m_Players[i]->CalculateScore(num);
+    if (MaxStrength < strength)
     {
-      if (BiggestNum < p->GetBiggestNum()){
-        BiggestNum = p->GetBiggestNum();
-      }
-    }
-
-    for (auto& p : m_Players)
-    {
-      p->DeleteCard(BiggestNum);
-    }
-    BiggestNum = 0;
-  }
-  
-  for (const auto& p : m_Players)
-  {
-    if (BiggestNum < p->GetBiggestNum()){
-      BiggestNum = p->GetBiggestNum();
-    }
-  }
-   
-  for (size_t i = 0; i < m_Players.size(); i++)
-  {
-    int strength = m_Players[i]->CalculateScore(BiggestNum);
-    
-    if (strength > max_strength)
-    {
-      max_strength = strength;
+      MaxStrength = strength;
       potentialWinners.clear();
-      potentialWinners.push_back(i);
+      potentialWinners.push_back(i);        
     }
-    else if (strength == max_strength) 
+    else if (MaxStrength == strength)
     {
       potentialWinners.push_back(i);
     }
@@ -328,14 +297,60 @@ void Game::FixPosition()
 
 void Game::RestartBattle()
 {
-  FindRegionConquerer();
+  FindRegionConquerer(GetWinnerScore());
   auto winner = m_Map.FindWinners();
-  if(!winner.empty())
-  {
-    std::clog << "INFO: Winner is " << winner[0]->GetName() << '\n';
-    exit(1);
-  }
   ResetCards();
   FixPosition();
   DealCards();
 }
+
+int Game::GetWinnerScore()
+{
+  int BishopNum = 0;
+  int BiggestNum = 0;
+
+  for (auto& p : m_Players)
+  {
+    if (p->GetBishop() == 1) 
+    {
+      BishopNum++;
+      p->DecreaseBishop();
+      break;
+    }
+  }
+
+  for (int counter = 0; counter < BishopNum; ++counter)
+  {
+    for (const auto& p : m_Players)
+    {
+      if (BiggestNum < p->GetBiggestNum())
+      {
+        BiggestNum = p->GetBiggestNum();
+      }
+    }
+
+    for (auto& p : m_Players)
+    {
+      p->DeleteCard(BiggestNum);
+    }
+    BiggestNum = 0;
+  }
+
+
+  for (const auto& p : m_Players)
+  {
+    if (BiggestNum < p->GetBiggestNum()){
+      BiggestNum = p->GetBiggestNum();
+    }
+  }
+  
+  for (const auto& p : m_Players) 
+  {
+    if(p->GetHeroine() > 0)
+    {
+      BiggestNum = 10;
+    }
+  }
+  return BiggestNum;
+}
+  
