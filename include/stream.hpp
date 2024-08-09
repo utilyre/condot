@@ -11,8 +11,10 @@ class StreamWriter
 public:
   virtual ~StreamWriter() {}
 
-  virtual void WriteData(const char* data, uint64_t size) = 0;
   virtual bool IsStreamGood() const = 0;
+  virtual uint64_t GetStreamPosition() = 0;
+  virtual void SetStreamPosition(uint64_t position) = 0;
+  virtual void WriteData(const char* data, uint64_t size) = 0;
 
   operator bool() const { return IsStreamGood(); }
 
@@ -84,8 +86,10 @@ class StreamReader
 public:
   virtual ~StreamReader() {}
 
-  virtual void ReadData(char* data, uint64_t size) = 0;
   virtual bool IsStreamGood() const = 0;
+  virtual uint64_t GetStreamPosition() = 0;
+  virtual void SetStreamPosition(uint64_t position) = 0;
+  virtual void ReadData(char* data, uint64_t size) = 0;
 
   operator bool() const { return IsStreamGood(); }
 
@@ -112,6 +116,7 @@ public:
 
     if (!hasValue)
     {
+      SetStreamPosition(GetStreamPosition() + sizeof(T));
       o = std::nullopt;
       return;
     }

@@ -15,7 +15,9 @@ public:
   );
   FileStream(const FileStream&) = delete;
 
-  bool IsStreamGood() const override { return m_File.good(); }
+  bool IsStreamGood() const override;
+  uint64_t GetStreamPosition() override;
+  void SetStreamPosition(uint64_t position) override;
   void WriteData(const char* data, uint64_t size) override;
   void ReadData(char* data, uint64_t size) override;
 
