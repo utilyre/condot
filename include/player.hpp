@@ -1,8 +1,8 @@
 #pragma once
 
 #include <string>
-#include <raylib.h>
 #include <vector>
+#include <raylib.h>
 
 #include <asset_manager.hpp>
 #include <state.hpp>
@@ -12,6 +12,7 @@
 #include <mercenary.hpp>
 #include <button.hpp>
 #include <season.hpp>
+#include <stream.hpp>
 
 enum class Position {
   BOTTOM_LEFT,
@@ -25,13 +26,15 @@ enum class Position {
 class Player : public Entity
 {
 public:
-  Player(const std::string& name, int age, Color color, Position position);
-
-  void SetContext(
+  Player();
+  Player(
     State* state,
     Season* season,
     Event* rotateTurnEvent,
-    Event* restartBattleEvent
+    Event* restartBattleEvent,
+    const std::string& name,
+    int age,
+    Color color
   );
 
   void Update() override;
@@ -52,6 +55,10 @@ public:
   int GetHeroine() const;
   int GetDrummer() const;
   Color GetColor() const;
+
+  static void Serialize(StreamWriter& w, const Player& player);
+  static void Deserialize(StreamReader& r, Player& player);
+
 private:
   bool PlayCard();
   void RenderCards(const AssetManager& assets, Vector2 cordinate, float rotation, float ratio) const;
@@ -80,4 +87,29 @@ private:
   bool m_Drummer;
   unsigned int m_Bishop;
   Button m_PassButton;
+};
+
+struct PlayerLite
+{
+  PlayerLite() = default;
+  PlayerLite(const std::string& name, int age, Color color);
+  PlayerLite(const Player& player);
+
+  static void Serialize(StreamWriter& w, const PlayerLite& player);
+  static void Deserialize(StreamReader& r, PlayerLite& player);
+
+  bool operator==(const PlayerLite& other) const;
+
+  std::string name;
+  int age;
+  Color color;
+};
+
+template<>
+struct std::hash<PlayerLite>
+{
+  size_t operator()(const PlayerLite& player) const
+  {
+    return std::hash<std::string>()(player.name);
+  }
 };

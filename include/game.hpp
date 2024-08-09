@@ -15,15 +15,18 @@
 #include <status_bar.hpp>
 #include <help_menu.hpp>
 #include <pause_menu.hpp>
+#include <stream.hpp>
 
 class Game
 {
 public:
   Game();
-  ~Game();
 
   void Start();
   void Stop();
+
+  static void Serialize(StreamWriter& w, const Game& game);
+  static void Deserialize(StreamReader& r, Game& game);
 
 private:
   void Update();
@@ -59,7 +62,7 @@ private:
   CustomizationMenu m_CustomizationMenu;
   PauseMenu m_PauseMenu;
   Map m_Map;
-  std::vector<Player*> m_Players;
+  std::vector<Player> m_Players;
   StatusBar m_StatusBar;
   std::vector<Card> m_Deck;
 };

@@ -7,6 +7,7 @@
 #include <state.hpp>
 #include <entity.hpp>
 #include <region.hpp>
+#include <stream.hpp>
 
 class Map : public Entity
 {
@@ -15,9 +16,15 @@ public:
 
   void Update() override;
   void Render(const AssetManager& assets) const override;
-  std::vector<const Player*> FindWinners() const;
+  std::vector<PlayerLite> FindWinners() const;
+  const Region* GetBattleMarker() const;
   Region* GetBattleMarker();
+  const Region* GetFavorMarker() const;
+  Region* GetFavorMarker();
   void ResetBattleMarker();
+
+  static void Serialize(StreamWriter& w, const Map& map);
+  static void Deserialize(StreamReader& r, Map& map);
 
 private:
   bool AreNeighbors(size_t i, size_t j) const;
@@ -27,6 +34,6 @@ private:
   State* m_State;
   std::vector<Region> m_Regions;
   std::vector<bool> m_Adjacency;
-  Region* m_BattleMarker;
-  Region* m_FavorMarker;
+  ssize_t m_BattleMarkerIndex;
+  ssize_t m_FavorMarkerIndex;
 };

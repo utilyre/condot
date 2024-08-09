@@ -16,11 +16,39 @@ static const int CardWidth = 164;
 static const int CardHeight = 255;
 static const float CardScale = 0.15f;
 
-Player::Player(const std::string& name, int age, Color color, Position position)
-: m_Name(name),
+static size_t positionIndex = 0;
+static const Position POSITIONS[6] = {
+  Position::TOP_LEFT,
+  Position::TOP_RIGHT,
+  Position::LEFT,
+  Position::RIGHT,
+  Position::BOTTOM_LEFT,
+  Position::BOTTOM_RIGHT,
+};
+
+// TODO: think about this default constructor
+Player::Player()
+: m_PassButton("yo", Rectangle{})
+{
+}
+
+Player::Player(
+  State* state,
+  Season* season,
+  Event* rotateTurnEvent,
+  Event* restartBattleEvent,
+  const std::string& name,
+  int age,
+  Color color
+)
+: m_State(state),
+  m_Season(season),
+  m_RotateTurnEvent(rotateTurnEvent),
+  m_RestartBattleEvent(restartBattleEvent),
+  m_Name(name),
   m_Color(color),
   m_Age(age),
-  m_Position(position),
+  m_Position(POSITIONS[positionIndex++]),
   m_IsPassed(false),
   m_Spy(0),
   m_Heroine(0),
@@ -510,19 +538,6 @@ Color Player::GetColor() const{
   return m_Color;
 }
 
-void Player::SetContext(
-  State* state,
-  Season* season,
-  Event* rotateTurnEvent,
-  Event* restartBattleEvent
-)
-{
-  m_State = state;
-  m_Season = season;
-  m_RotateTurnEvent = rotateTurnEvent;
-  m_RestartBattleEvent = restartBattleEvent;
-}
-
 const std::string& Player::GetName() const
 {
   return m_Name;
@@ -616,3 +631,63 @@ int Player::GetSpy() const
   return m_Spy;
 }
 
+void Player::Serialize(StreamWriter& w, const Player& player)
+{
+  w.WriteString(player.m_Name);
+  w.WriteRaw(player.m_Age);
+  w.WriteRaw(player.m_Color);
+  w.WriteVector(player.m_Cards);
+  w.WriteVector(player.m_Row);
+  w.WriteRaw(player.m_IsPassed);
+  w.WriteRaw(player.m_Spy);
+  w.WriteRaw(player.m_Heroine);
+  w.WriteRaw(player.m_Drummer);
+  w.WriteRaw(player.m_Bishop);
+}
+
+void Player::Deserialize(StreamReader& r, Player& player)
+{
+  r.ReadString(player.m_Name);
+  r.ReadRaw(player.m_Age);
+  r.ReadRaw(player.m_Color);
+  r.ReadVector(player.m_Cards);
+  r.ReadVector(player.m_Row);
+  r.ReadRaw(player.m_IsPassed);
+  r.ReadRaw(player.m_Spy);
+  r.ReadRaw(player.m_Heroine);
+  r.ReadRaw(player.m_Drummer);
+  r.ReadRaw(player.m_Bishop);
+}
+
+PlayerLite::PlayerLite(const std::string& name, int age, Color color)
+: name(name),
+  age(age),
+  color(color)
+{
+}
+
+PlayerLite::PlayerLite(const Player& player)
+: name(player.GetName()),
+  age(player.GetAge()),
+  color(player.GetColor())
+{
+}
+
+bool PlayerLite::operator==(const PlayerLite& other) const
+{
+  return name == other.name;
+}
+
+void PlayerLite::Serialize(StreamWriter& w, const PlayerLite& player)
+{
+  w.WriteString(player.name);
+  w.WriteRaw(player.age);
+  w.WriteRaw(player.color);
+}
+
+void PlayerLite::Deserialize(StreamReader& r, PlayerLite& player)
+{
+  r.ReadString(player.name);
+  r.ReadRaw(player.age);
+  r.ReadRaw(player.color);
+}

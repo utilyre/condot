@@ -48,8 +48,8 @@ Map::Map(State* state)
     /* 12. Atela   */ 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0,
     /* 13. Lia     */ 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0,
   }),
-  m_BattleMarker(nullptr),
-  m_FavorMarker(nullptr)
+  m_BattleMarkerIndex(-1),
+  m_FavorMarkerIndex(-1)
 {
 }
 
@@ -80,31 +80,34 @@ void Map::Update()
     mouse.x /= scaleFactor;
     mouse.y /= scaleFactor;
 
-    for (Region& r : m_Regions)
+    for (size_t i = 0; i < m_Regions.size(); i++)
     {
-      if (r.CollidesWith(mouse))
+      if (m_Regions[i].CollidesWith(mouse))
       {
-        if  (&r == m_FavorMarker)
+        if  ((ssize_t)i == m_FavorMarkerIndex)
         {
           return;
         }
         
-        if (m_State->Get() == State::PLACING_FAVOR_MARKER)
+        switch (m_State->Get())
         {
-          m_FavorMarker = &r;
-        }
-        else if (m_State->Get() == State::PLACING_BATTLE_MARKER)
-        {
-          m_BattleMarker = &r;
+        case State::PLACING_BATTLE_MARKER:
+          m_BattleMarkerIndex = i;
+          break;
+        case State::PLACING_FAVOR_MARKER:
+          m_FavorMarkerIndex = i;
+          break;
+        default:
+          break;
         }
         m_State->Set(State::PLAYING_CARD);
       }
     }
 
-    if (m_BattleMarker)
-      std::clog << "INFO: battle marker was set to " << m_BattleMarker->GetName() << '\n';
-    if (m_FavorMarker)
-      std::clog << "INFO: favor marker was set to " << m_FavorMarker->GetName() << '\n';
+    if (const Region* bm = GetBattleMarker())
+      std::clog << "INFO: battle marker was set to " << bm->GetName() << '\n';
+    if (const Region* fm = GetFavorMarker())
+      std::clog << "INFO: favor marker was set to " << fm->GetName() << '\n';
   }
 }
 
@@ -138,33 +141,36 @@ void Map::Render(const AssetManager& assets) const
     WHITE
   );
 
-  if(m_BattleMarker)
+  if (const Region* bm = GetBattleMarker())
   {
     DrawCircle(
-      MapPosX + (m_BattleMarker->GetRec().x + m_BattleMarker->GetRec().width / 2.0f) * scaleFactor ,
-      MapPosY + (m_BattleMarker->GetRec().y + m_BattleMarker->GetRec().height / 2.0f) * scaleFactor ,
+      MapPosX + (bm->GetRec().x + bm->GetRec().width / 2.0f) * scaleFactor,
+      MapPosY + (bm->GetRec().y + bm->GetRec().height / 2.0f) * scaleFactor,
       30 * scaleFactor,
-      BLACK); 
+      BLACK
+    ); 
   }
   
-  if(m_FavorMarker)
+  if (const Region* fm =GetFavorMarker())
   {
     DrawCircle(
-      MapPosX + (m_FavorMarker->GetRec().x + m_FavorMarker->GetRec().width / 2.0f) * scaleFactor ,
-      MapPosY + (m_FavorMarker->GetRec().y + m_FavorMarker->GetRec().height / 2.0f) * scaleFactor ,
+      MapPosX + (fm->GetRec().x + fm->GetRec().width / 2.0f) * scaleFactor,
+      MapPosY + (fm->GetRec().y + fm->GetRec().height / 2.0f) * scaleFactor,
       30 * scaleFactor,
-      WHITE); 
+      WHITE
+    ); 
   }
   
   for (auto& r : m_Regions)
   {
-    if(r.GetRuler())
+    if(r.GetRuler().has_value())
     {
       DrawCircle(
-        MapPosX + (r.GetRec().x + r.GetRec().width / 2.0f) * scaleFactor ,
-        MapPosY + (r.GetRec().y + r.GetRec().height / 2.0f) * scaleFactor ,
+        MapPosX + (r.GetRec().x + r.GetRec().width / 2.0f) * scaleFactor,
+        MapPosY + (r.GetRec().y + r.GetRec().height / 2.0f) * scaleFactor,
         30 * scaleFactor,
-        r.GetRuler()->GetColor()); 
+        r.GetRuler().value().color
+      );
     }
   }
   
@@ -188,25 +194,25 @@ void Map::Render(const AssetManager& assets) const
   }
 }
 
-std::vector<const Player*> Map::FindWinners() const
+std::vector<PlayerLite> Map::FindWinners() const
 {
   // TEST: this method is NOT tested (at all)
   bool allConquered = true;
-  std::unordered_map<const Player*, std::vector<size_t>> regionIndices;
+  std::unordered_map<PlayerLite, std::vector<size_t>> regionIndices;
   for (size_t i = 0; i < m_Regions.size(); i++)
   {
-    const Player* ruler = m_Regions[i].GetRuler();
-    allConquered = allConquered && ruler;
-    if (ruler)
+    auto ruler = m_Regions[i].GetRuler();
+    allConquered = allConquered && ruler.has_value();
+    if (ruler.has_value())
     {
-      regionIndices[ruler].push_back(i);
+      regionIndices[ruler.value()].push_back(i);
     }
   }
 
   if (allConquered)
   {
     size_t max = 0;
-    std::vector<const Player*> winners;
+    std::vector<PlayerLite> winners;
     for (const auto& [player, indices] : regionIndices)
     {
       size_t numIndices = indices.size();
@@ -248,7 +254,7 @@ std::vector<const Player*> Map::FindWinners() const
     }
   }
 
-  return std::vector<const Player*>();
+  return std::vector<PlayerLite>();
 }
 
 bool Map::AreNeighbors(size_t i, size_t j) const
@@ -261,12 +267,61 @@ bool Map::AreNeighbors(size_t i, size_t j, size_t k) const
   return AreNeighbors(i, j) && AreNeighbors(i, k) && AreNeighbors(j, k);
 }
 
+const Region* Map::GetBattleMarker() const
+{
+  if (m_BattleMarkerIndex < 0)
+  {
+    return nullptr;
+  }
+
+  return &m_Regions[m_BattleMarkerIndex];
+}
+
 Region* Map::GetBattleMarker()
 {
-  return m_BattleMarker;
+  if (m_BattleMarkerIndex < 0)
+  {
+    return nullptr;
+  }
+
+  return &m_Regions[m_BattleMarkerIndex];
+}
+
+const Region* Map::GetFavorMarker() const
+{
+  if (m_FavorMarkerIndex < 0)
+  {
+    return nullptr;
+  }
+
+  return &m_Regions[m_FavorMarkerIndex];
+}
+
+Region* Map::GetFavorMarker()
+{
+  if (m_FavorMarkerIndex < 0)
+  {
+    return nullptr;
+  }
+
+  return &m_Regions[m_FavorMarkerIndex];
 }
 
 void Map::ResetBattleMarker()
 {
-  m_BattleMarker = nullptr;
+  m_BattleMarkerIndex = -1;
+}
+
+void Map::Serialize(StreamWriter& w, const Map& map)
+{
+  w.WriteVector(map.m_Regions, false);
+  w.WriteRaw(map.m_BattleMarkerIndex);
+  w.WriteRaw(map.m_FavorMarkerIndex);
+}
+
+void Map::Deserialize(StreamReader& r, Map& map)
+{
+  r.ReadVectorInPlace(map.m_Regions);
+  r.ReadRaw(map.m_BattleMarkerIndex);
+  r.ReadRaw(map.m_FavorMarkerIndex);
 }
