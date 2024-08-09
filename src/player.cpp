@@ -16,16 +16,6 @@ static const int CardWidth = 164;
 static const int CardHeight = 255;
 static const float CardScale = 0.15f;
 
-static size_t positionIndex = 0;
-static const Position POSITIONS[6] = {
-  Position::TOP_LEFT,
-  Position::TOP_RIGHT,
-  Position::LEFT,
-  Position::RIGHT,
-  Position::BOTTOM_LEFT,
-  Position::BOTTOM_RIGHT,
-};
-
 Player::Player()
 : m_PassButton("yo", Rectangle{})
 {
@@ -34,12 +24,13 @@ Player::Player()
 Player::Player(
   const std::string& name,
   int age,
-  Color color
+  Color color,
+  Position position
 )
 : m_Name(name),
   m_Color(color),
   m_Age(age),
-  m_Position(POSITIONS[positionIndex++]),
+  m_Position(position),
   m_IsPassed(false),
   m_Spy(0),
   m_Heroine(0),
@@ -640,6 +631,7 @@ void Player::Serialize(StreamWriter& w, const Player& player)
   w.WriteString(player.m_Name);
   w.WriteRaw(player.m_Age);
   w.WriteRaw(player.m_Color);
+  w.WriteRaw(player.m_Position);
   w.WriteVector(player.m_Cards);
   w.WriteVector(player.m_Row);
   w.WriteRaw(player.m_IsPassed);
@@ -654,6 +646,7 @@ void Player::Deserialize(StreamReader& r, Player& player)
   r.ReadString(player.m_Name);
   r.ReadRaw(player.m_Age);
   r.ReadRaw(player.m_Color);
+  r.ReadRaw(player.m_Position);
   r.ReadVector(player.m_Cards);
   r.ReadVector(player.m_Row);
   r.ReadRaw(player.m_IsPassed);
@@ -663,17 +656,24 @@ void Player::Deserialize(StreamReader& r, Player& player)
   r.ReadRaw(player.m_Bishop);
 }
 
-PlayerInfo::PlayerInfo(const std::string& name, int age, Color color)
+PlayerInfo::PlayerInfo(
+  const std::string& name,
+  int age,
+  Color color,
+  Position position
+)
 : name(name),
   age(age),
-  color(color)
+  color(color),
+  position(position)
 {
 }
 
 PlayerInfo::PlayerInfo(const Player& player)
 : name(player.GetName()),
   age(player.GetAge()),
-  color(player.GetColor())
+  color(player.GetColor()),
+  position(player.GetPosition())
 {
 }
 
@@ -687,6 +687,7 @@ void PlayerInfo::Serialize(StreamWriter& w, const PlayerInfo& player)
   w.WriteString(player.name);
   w.WriteRaw(player.age);
   w.WriteRaw(player.color);
+  w.WriteRaw(player.position);
 }
 
 void PlayerInfo::Deserialize(StreamReader& r, PlayerInfo& player)
@@ -694,4 +695,5 @@ void PlayerInfo::Deserialize(StreamReader& r, PlayerInfo& player)
   r.ReadString(player.name);
   r.ReadRaw(player.age);
   r.ReadRaw(player.color);
+  r.ReadRaw(player.position);
 }

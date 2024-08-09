@@ -30,7 +30,8 @@ public:
   Player(
     const std::string& name,
     int age,
-    Color color
+    Color color,
+    Position position
   );
 
   void Init(
@@ -95,7 +96,7 @@ private:
 struct PlayerInfo
 {
   PlayerInfo() = default;
-  PlayerInfo(const std::string& name, int age, Color color);
+  PlayerInfo(const std::string& name, int age, Color color, Position position);
   PlayerInfo(const Player& player);
 
   static void Serialize(StreamWriter& w, const PlayerInfo& player);
@@ -106,6 +107,7 @@ struct PlayerInfo
   std::string name;
   int age;
   Color color;
+  Position position;
 };
 
 template<>

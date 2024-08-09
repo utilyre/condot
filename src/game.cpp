@@ -36,8 +36,8 @@ Game::Game()
   m_RotateTurnEvent.Subscribe([this](auto,auto data) { RotateTurn(std::any_cast<bool*>(data)); });
   m_RestartBattleEvent.Subscribe([this](auto , auto) { RestartBattle(); });
   m_AddPlayerEvent.Subscribe([this](auto, std::any data) {
-    PlayerInfo player = std::any_cast<PlayerInfo>(data);
-    m_Players.emplace_back(player.name, player.age, player.color);
+    PlayerInfo p = std::any_cast<PlayerInfo>(data);
+    m_Players.emplace_back(p.name, p.age, p.color, p.position);
     m_Players.back().Init(
       &m_State,
       &m_Season,
@@ -45,7 +45,7 @@ Game::Game()
       &m_RestartBattleEvent
     );
 
-    std::clog << "INFO: Player \"" << player.name << "\" added.\n";
+    std::clog << "INFO: Player \"" << p.name << "\" added.\n";
   });
   m_SaveEvent.Subscribe([this](auto, auto) {
     FileStream stream("save.dat", std::ios::out | std::ios::binary);

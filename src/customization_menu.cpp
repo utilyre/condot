@@ -33,6 +33,14 @@ static const size_t MIN_PLAYERS = 3;
 static const size_t MAX_PLAYERS = 6;
 
 static const Color COLORS[6] = {RED, GREEN, BLUE, MAGENTA, GRAY, YELLOW};
+static const Position POSITIONS[6] = {
+  Position::TOP_LEFT,
+  Position::TOP_RIGHT,
+  Position::LEFT,
+  Position::RIGHT,
+  Position::BOTTOM_LEFT,
+  Position::BOTTOM_RIGHT,
+};
 
 CustomizationMenu::CustomizationMenu(
   State* state,
@@ -101,12 +109,12 @@ void CustomizationMenu::Update()
   }
 
 #ifdef DEBUG
-  m_AddPlayerEvent->Notify(this, PlayerInfo("Jane", 1, COLORS[0]));
-  m_AddPlayerEvent->Notify(this, PlayerInfo("Aria", 2, COLORS[1]));
-  m_AddPlayerEvent->Notify(this, PlayerInfo("Theo", 3, COLORS[2]));
-  m_AddPlayerEvent->Notify(this, PlayerInfo("Milo", 4, COLORS[3]));
-  m_AddPlayerEvent->Notify(this, PlayerInfo("Alex", 5, COLORS[4]));
-  m_AddPlayerEvent->Notify(this, PlayerInfo("John", 6, COLORS[5]));
+  m_AddPlayerEvent->Notify(this, PlayerInfo("Jane", 1, COLORS[0], POSITIONS[0]));
+  m_AddPlayerEvent->Notify(this, PlayerInfo("Aria", 2, COLORS[1], POSITIONS[1]));
+  m_AddPlayerEvent->Notify(this, PlayerInfo("Theo", 3, COLORS[2], POSITIONS[2]));
+  m_AddPlayerEvent->Notify(this, PlayerInfo("Milo", 4, COLORS[3], POSITIONS[3]));
+  m_AddPlayerEvent->Notify(this, PlayerInfo("Alex", 5, COLORS[4], POSITIONS[4]));
+  m_AddPlayerEvent->Notify(this, PlayerInfo("John", 6, COLORS[5], POSITIONS[5]));
 
   m_InitiateBattleEvent->Notify(this);
   m_State->Set(State::PLACING_BATTLE_MARKER);
@@ -272,7 +280,8 @@ void CustomizationMenu::Continue()
       players.emplace_back(
         name,
         age,
-        COLORS[players.size()]
+        COLORS[players.size()],
+        POSITIONS[players.size()]
       );
     }
     catch (const std::invalid_argument&)
