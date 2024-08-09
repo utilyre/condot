@@ -17,7 +17,7 @@ static const int CardHeight = 255;
 static const float CardScale = 0.15f;
 
 Player::Player()
-: m_PassButton("yo", Rectangle{})
+: m_PassButton ("SURRENDER",Rectangle(10,GetScreenHeight() - 100 , 170 , 90))
 {
 }
 
