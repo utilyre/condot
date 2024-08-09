@@ -58,6 +58,19 @@ Player::Player(
 {
 }
 
+void Player::SetContext(
+  State* state,
+  Season* season,
+  Event* rotateTurnEvent,
+  Event* restartBattleEvent
+)
+{
+  m_State = state;
+  m_Season = season;
+  m_RotateTurnEvent = rotateTurnEvent;
+  m_RestartBattleEvent = restartBattleEvent;
+}
+
 void Player::Update()
 {
   auto state = m_State->Get();

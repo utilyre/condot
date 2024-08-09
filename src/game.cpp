@@ -98,7 +98,18 @@ void Game::Deserialize(StreamReader& r, Game& game)
   r.ReadRaw(game.m_Turn);
   r.ReadRaw(game.m_Season);
   r.ReadObject(game.m_Map);
+
   r.ReadVector(game.m_Players);
+  for (Player& player : game.m_Players)
+  {
+    player.SetContext(
+      &game.m_State,
+      &game.m_Season,
+      &game.m_RotateTurnEvent,
+      &game.m_RestartBattleEvent
+    );
+  }
+
   r.ReadVector(game.m_Deck);
 }
 

@@ -59,8 +59,6 @@ void MainMenu::Update()
   if (m_ButtonContinue.Pressed())
   {
     m_LoadEvent->Notify(this);
-    m_InitiateBattleEvent->Notify(this);
-    m_State->Set(State::PLACING_BATTLE_MARKER);
   }
   if (m_ButtonStart.Pressed())
   {

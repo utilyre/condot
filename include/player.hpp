@@ -37,6 +37,13 @@ public:
     Color color
   );
 
+  void SetContext(
+    State* state,
+    Season* season,
+    Event* rotateTurnEvent,
+    Event* restartBattleEvent
+  );
+
   void Update() override;
   void Render(const AssetManager& assets) const override;
 
