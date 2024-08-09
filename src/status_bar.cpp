@@ -24,9 +24,8 @@ void StatusBar::Render(const AssetManager& assets) const
   m_StatusButton.Render(assets);
   if (m_State->Get() == State::StatusBar)
   {
-    DrawRectangle(0, 0, 400, 400, WHITE);
+    DrawRectangle(0, 0, 300, 400, WHITE);
     float VerticalSpacing = 10;
-    // int BiggestNum = GetScore();
     for (auto* p : *m_Players)
     {
       float HorizotalSpacing = 40;
@@ -46,7 +45,6 @@ void StatusBar::Render(const AssetManager& assets) const
     
       DrawTextureEx(assets.Drummer,Vector2{HorizotalSpacing,VerticalSpacing}, 0, 0.2, WHITE);
       DrawText(TextFormat(" x %d", p->GetDrummer()), 250, VerticalSpacing + 20, 10, BLACK);
-      // DrawText(TextFormat("Score:%d",p->CalculateScore(BiggestNum)), 290, VerticalSpacing + 20, 20, BLACK);
       VerticalSpacing += assets.BackSide.height * 0.2;
     }
     DrawText("Season :",40, VerticalSpacing + 20 , 25 , BLACK);
@@ -95,53 +93,4 @@ void StatusBar::Update()
 void StatusBar::Set(std::vector<Player*>* players)
 {
   m_Players = players;
-}
-
-int StatusBar::GetScore() const
-{
-  int BishopNum = 0;
-  int BiggestNum = 0;
-
-  for (auto& p : *m_Players)
-  {
-    if (p->GetBishop() == 1) 
-    {
-      BishopNum++;
-      p->DecreaseBishop();
-      break;
-    }
-  }
-
-  for (int counter = 0; counter < BishopNum; ++counter)
-  {
-    for (const auto& p : *m_Players)
-    {
-      if (BiggestNum < p->GetBiggestNum())
-      {
-        BiggestNum = p->GetBiggestNum();
-      }
-    }
-
-    for (auto& p : *m_Players)
-    {
-      p->DeleteCard(BiggestNum);
-    }
-    BiggestNum = 0;
-  }
-
-  for (const auto& p : *m_Players) 
-  {
-    if(p->GetHeroine() > 0)
-    {
-      return 10;
-    }
-  }
-
-  for (const auto& p : *m_Players)
-  {
-    if (BiggestNum < p->GetBiggestNum()){
-      BiggestNum = p->GetBiggestNum();
-    }
-  }
-  return BiggestNum;
 }

@@ -568,9 +568,9 @@ int Player::CalculateScore(int C) const
 {
   int score{};
   int BNum{};
-  
+
   for(const auto& c : m_Row)
-  { 
+  {
     if (C == c.GetPower())
     {
       BNum++;
@@ -595,8 +595,7 @@ int Player::CalculateScore(int C) const
 
   if (*m_Season == Season::SPRING)
   {
-    score += BNum * 3;
-    score += m_Heroine * 3;
+     score += BNum * 3;
   }
   score += m_Heroine * 10;
   score += m_Spy;
@@ -624,7 +623,3 @@ int Player::GetSpy() const
   return m_Spy;
 }
 
-void Player::DecreaseBishop()
-{
-  m_Bishop--;
-}

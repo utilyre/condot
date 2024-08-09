@@ -232,6 +232,28 @@ void Game::FindRegionConquerer()
   int max_strength = 0;
   std::vector<size_t> potentialWinners;
 
+  for (size_t index = 0; index < m_Players.size(); ++index)
+  {
+    int Num = m_Players[index]->GetSpy();
+    if (SpyNum < Num)
+    {
+      SpyNum = Num;
+      potentialWinners.clear();
+      potentialWinners.push_back(index);
+    }
+    
+    else if (Num == SpyNum)
+    {
+     potentialWinners.push_back(index); 
+    }
+  }
+  
+  if (potentialWinners.size() == 1) 
+  {
+    m_Map.GetBattleMarker()->SetRuler(m_Players[potentialWinners[0]]);
+    m_State.Set(State::PLACING_BATTLE_MARKER);
+    return;
+  }
 
   for (auto p : m_Players)
   {
@@ -276,44 +298,18 @@ void Game::FindRegionConquerer()
       potentialWinners.push_back(i);
     }
   }
-  
-  std::mt19937 mt(m_RandDev());
-  std::uniform_int_distribution<size_t> dist(0, potentialWinners.size() - 1);
-    
-  if (potentialWinners.size() == 1) 
-  {
+
+  if (potentialWinners.size() == 1) {
     m_Map.GetBattleMarker()->SetRuler(m_Players[potentialWinners[0]]);
-    m_Turn = potentialWinners[0];
   }
   else
   {
-    m_Turn = potentialWinners[dist(mt)];
     m_Map.ResetBattleMarker();
   }
-  
-  potentialWinners.clear();
-  
-  for (size_t index = 0; index < m_Players.size(); ++index)
-  {
-    int Num = m_Players[index]->GetSpy();
-    if (SpyNum < Num)
-    {
-      SpyNum = Num;
-      potentialWinners.clear();
-      potentialWinners.push_back(index);
-    }
-    
-    else if (Num == SpyNum)
-    {
-      potentialWinners.push_back(index); 
-    }
-  }
-  
-  if (potentialWinners.size() == 1) 
-  {
-    m_Turn = potentialWinners[0];
-  }
 
+  std::mt19937 mt(m_RandDev());
+  std::uniform_int_distribution<size_t> dist(0, potentialWinners.size() - 1);
+  m_Turn = potentialWinners[dist(mt)];
   
   m_State.Set(State::PLACING_BATTLE_MARKER);
 }
