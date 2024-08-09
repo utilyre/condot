@@ -58,6 +58,7 @@ private:
   Event m_AddPlayerEvent;
   Event m_RestartBattleEvent;
   Event m_SaveEvent;
+  Event m_LoadEvent;
 
   MainMenu m_MainMenu;
   CustomizationMenu m_CustomizationMenu;

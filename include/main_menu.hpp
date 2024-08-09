@@ -9,13 +9,14 @@
 class MainMenu : public Entity
 {
 public:
-  MainMenu(State* state, Event* quitEvent);
+  MainMenu(State* state, Event* loadEvent, Event* quitEvent);
 
   void Update() override;
   void Render(const AssetManager& assets) const override;
 
 private:
   State* m_State;
+  Event* m_LoadEvent;
   Event* m_QuitEvent;
 
   Button m_ButtonContinue;
