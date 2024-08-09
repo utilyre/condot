@@ -590,6 +590,7 @@ int Player::CalculateScore(int C) const
   if (m_Drummer > 0)
   {
     score *= pow(1.5,m_Drummer);
+    score = floor(score);
   }
 
   if (*m_Season == Season::SPRING)
