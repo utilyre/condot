@@ -14,9 +14,9 @@ class StatusBar : public Entity
     StatusBar(State*, Season*);
     void Update() override;
     void Render(const AssetManager&) const override;
-    void Set(std::vector<Player*>*);
+    void Set(std::vector<Player>*);
   private:
-    std::vector<Player*>* m_Players;
+    std::vector<Player>* m_Players;
     Button m_StatusButton;
     State* m_State;
     Season* m_Season;

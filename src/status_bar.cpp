@@ -2,7 +2,6 @@
 
 #include <asset_manager.hpp>
 #include <player.hpp>
-#include <span>
 #include <status_bar.hpp>
 #include <state.hpp>
 #include <season.hpp>
@@ -26,25 +25,25 @@ void StatusBar::Render(const AssetManager& assets) const
   {
     DrawRectangle(0, 0, 300, 400, WHITE);
     float VerticalSpacing = 10;
-    for (auto* p : *m_Players)
+    for (auto& p : *m_Players)
     {
       float HorizotalSpacing = 40;
-      DrawRectangle(10, VerticalSpacing, 20, 20, p->GetColor());
+      DrawRectangle(10, VerticalSpacing, 20, 20, p.GetColor());
   
       DrawTextureEx(assets.Bishop,Vector2{HorizotalSpacing,VerticalSpacing}, 0, 0.2, WHITE);
-      DrawText(TextFormat(" x %d", p->GetBishop()), 70, VerticalSpacing + 20, 10, BLACK);
+      DrawText(TextFormat(" x %d", p.GetBishop()), 70, VerticalSpacing + 20, 10, BLACK);
       HorizotalSpacing += 60;
     
       DrawTextureEx(assets.Spy,Vector2{HorizotalSpacing,VerticalSpacing}, 0, 0.2, WHITE);
-      DrawText(TextFormat(" x %d", p->GetSpy()), 130, VerticalSpacing + 20, 10, BLACK);
+      DrawText(TextFormat(" x %d", p.GetSpy()), 130, VerticalSpacing + 20, 10, BLACK);
       HorizotalSpacing += 60;
     
       DrawTextureEx(assets.Heroine,Vector2{HorizotalSpacing,VerticalSpacing}, 0, 0.2, WHITE);
-      DrawText(TextFormat(" x %d", p->GetHeroine()), 190, VerticalSpacing + 20, 10, BLACK);
+      DrawText(TextFormat(" x %d", p.GetHeroine()), 190, VerticalSpacing + 20, 10, BLACK);
       HorizotalSpacing += 60;
     
       DrawTextureEx(assets.Drummer,Vector2{HorizotalSpacing,VerticalSpacing}, 0, 0.2, WHITE);
-      DrawText(TextFormat(" x %d", p->GetDrummer()), 250, VerticalSpacing + 20, 10, BLACK);
+      DrawText(TextFormat(" x %d", p.GetDrummer()), 250, VerticalSpacing + 20, 10, BLACK);
       VerticalSpacing += assets.BackSide.height * 0.2;
     }
     DrawText("Season :",40, VerticalSpacing + 20 , 25 , BLACK);
@@ -90,7 +89,7 @@ void StatusBar::Update()
   }
 }
 
-void StatusBar::Set(std::vector<Player*>* players)
+void StatusBar::Set(std::vector<Player>* players)
 {
   m_Players = players;
 }
