@@ -77,7 +77,7 @@ private:
   bool m_IsPassed;
   unsigned int m_Spy;
   unsigned int m_Heroine;
-  bool m_Drummer;
+  unsigned int m_Drummer;
   unsigned int m_Bishop;
   Button m_PassButton;
 };

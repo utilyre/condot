@@ -384,7 +384,7 @@ bool Player::PickCard(const size_t& index){
   
   else if (card == Card::DRUMMER) {
     m_Cards.erase(m_Cards.begin() + index);
-    m_Drummer = true;
+    m_Drummer++;
     return true;
   }
   
@@ -587,9 +587,9 @@ int Player::CalculateScore(int C) const
     }
   }
 
-  if (m_Drummer == true)
+  if (m_Drummer > 0)
   {
-    score *= 2;
+    score *= pow(1.5,m_Drummer);
   }
 
   if (*m_Season == Season::SPRING)
