@@ -1,5 +1,7 @@
+#include <cmath>
 #include <raylib.h>
 
+#include <math.h>
 #include <asset_manager.hpp>
 #include <state.hpp>
 #include <event.hpp>
@@ -578,7 +580,11 @@ int Player::CalculateScore(int C) const
 
   if (*m_Season == Season::WINTER)
   {
-    score = m_Row.size();
+    score = 0;
+    for (auto& c : m_Row) 
+    {
+      score += floor(c.GetPower() / 2);
+    }
   }
 
   if (m_Drummer == true)
