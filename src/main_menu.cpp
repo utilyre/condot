@@ -1,3 +1,4 @@
+#include <filesystem>
 #include <raylib.h>
 
 #include <state.hpp>
@@ -31,6 +32,10 @@ MainMenu::MainMenu(State* state, Event* quitEvent)
     BUTTON_HEIGHT
   })
 {
+  if (!std::filesystem::exists("save.dat"))
+  {
+    m_ButtonContinue.Disable();
+  }
 }
 
 void MainMenu::Update()
