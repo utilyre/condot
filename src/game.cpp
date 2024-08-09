@@ -328,7 +328,10 @@ void Game::RestartBattle()
   auto winner = m_Map.FindWinners();
   if(!winner.empty())
   {
-    std::clog << "INFO: Winner is " << winner[0]->GetName() << '\n';
+    for (auto& p : winner)
+    {
+      std::clog << "INFO: Winner is " << p->GetName() << '\n';
+    }
     exit(1);
   }
   ResetCards();
