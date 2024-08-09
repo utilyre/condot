@@ -19,6 +19,7 @@
 #include <status_bar.hpp>
 #include <help_menu.hpp>
 #include <pause_menu.hpp>
+#include <file_stream.hpp>
 
 // #define DEBUG
 
@@ -48,6 +49,11 @@ Game::Game()
 
     std::clog << "INFO: Player \"" << player.name << "\" added.\n";
   });
+  m_SaveEvent.Subscribe([this](auto, auto) {
+    FileStream stream("save.dat", std::ios::out | std::ios::binary);
+    stream.WriteObject(*this);
+  });
+
   m_StatusBar.Set(&m_Players);
 }
 

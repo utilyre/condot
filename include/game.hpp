@@ -57,6 +57,7 @@ private:
   Event m_RotateTurnEvent;
   Event m_AddPlayerEvent;
   Event m_RestartBattleEvent;
+  Event m_SaveEvent;
 
   MainMenu m_MainMenu;
   CustomizationMenu m_CustomizationMenu;
