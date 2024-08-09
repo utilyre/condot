@@ -18,6 +18,7 @@ private:
   State* m_State;
   Event* m_QuitEvent;
 
+  Button m_ButtonContinue;
   Button m_ButtonStart;
   Button m_ButtonExit;
 };
