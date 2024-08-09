@@ -36,7 +36,7 @@ Game::Game()
   m_RotateTurnEvent.Subscribe([this](auto,auto data) { RotateTurn(std::any_cast<bool*>(data)); });
   m_RestartBattleEvent.Subscribe([this](auto , auto) { RestartBattle(); });
   m_AddPlayerEvent.Subscribe([this](auto, std::any data) {
-    PlayerLite player = std::any_cast<PlayerLite>(data);
+    PlayerInfo player = std::any_cast<PlayerInfo>(data);
     m_Players.emplace_back(player.name, player.age, player.color);
     m_Players.back().Init(
       &m_State,
