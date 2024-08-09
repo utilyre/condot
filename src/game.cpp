@@ -23,8 +23,11 @@
 
 // #define DEBUG
 
+static const float AUTOSAVE_INTERVAL = 30.0f;
+
 Game::Game()
 : m_Stopped(false),
+  m_AutoSaveTimer(AUTOSAVE_INTERVAL, true),
   m_MainMenu(&m_State, &m_LoadEvent, &m_StopEvent, &m_InitiateBattleEvent),
   m_CustomizationMenu(&m_State, &m_InitiateBattleEvent, &m_AddPlayerEvent),
   m_PauseMenu(&m_State, &m_StopEvent, &m_SaveEvent),
@@ -47,14 +50,8 @@ Game::Game()
 
     std::clog << "INFO: Player \"" << p.name << "\" added.\n";
   });
-  m_SaveEvent.Subscribe([this](auto, auto) {
-    FileStream stream("save.dat", std::ios::out | std::ios::binary);
-    stream.WriteObject(*this);
-  });
-  m_LoadEvent.Subscribe([this](auto, auto) {
-    FileStream stream("save.dat", std::ios::in | std::ios::binary);
-    stream.ReadObject(*this);
-  });
+  m_SaveEvent.Subscribe([this](auto, auto) { Save(); });
+  m_LoadEvent.Subscribe([this](auto, auto) { Load(); });
 
   m_StatusBar.Set(&m_Players);
 }
@@ -113,6 +110,17 @@ void Game::Deserialize(StreamReader& r, Game& game)
 
 void Game::Update()
 {
+  float dt = GetFrameTime();
+
+  if (m_State.Get() == State::PLAYING_CARD)
+  {
+    m_AutoSaveTimer.Tick(dt);
+    if (m_AutoSaveTimer.Finished())
+    {
+      Save();
+    }
+  }
+
   m_MainMenu.Update();
   m_CustomizationMenu.Update();
   m_StatusBar.Update();
@@ -366,4 +374,18 @@ void Game::RestartBattle()
   ResetCards();
   FixPosition();
   DealCards();
+}
+
+void Game::Save()
+{
+  FileStream stream("save.dat", std::ios::out | std::ios::binary);
+  stream.WriteObject(*this);
+  std::clog << "INFO: Saved game to 'save.dat' file\n";
+}
+
+void Game::Load()
+{
+  FileStream stream("save.dat", std::ios::in | std::ios::binary);
+  stream.ReadObject(*this);
+  std::clog << "INFO: Loaded game from 'save.dat' file\n";
 }

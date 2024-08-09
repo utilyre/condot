@@ -16,6 +16,7 @@
 #include <help_menu.hpp>
 #include <pause_menu.hpp>
 #include <stream.hpp>
+#include <timer.hpp>
 
 class Game
 {
@@ -42,6 +43,9 @@ private:
   void FixPosition();
   void RestartBattle();
 
+  void Save();
+  void Load();
+
 private:
   bool m_Stopped;
 
@@ -59,6 +63,8 @@ private:
   Event m_RestartBattleEvent;
   Event m_SaveEvent;
   Event m_LoadEvent;
+
+  Timer m_AutoSaveTimer;
 
   MainMenu m_MainMenu;
   CustomizationMenu m_CustomizationMenu;
