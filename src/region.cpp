@@ -16,12 +16,12 @@ const std::string& Region::GetName() const
   return m_Name;
 }
 
-std::optional<PlayerInfo> Region::GetRuler() const
+std::optional<PlayerLite> Region::GetRuler() const
 {
   return m_Ruler;
 }
 
-void Region::SetRuler(PlayerInfo ruler)
+void Region::SetRuler(PlayerLite ruler)
 {
   m_Ruler = ruler;
   std::clog << "INFO: " << GetName() << " is conquered by " << ruler.name << '\n';

@@ -13,8 +13,8 @@ public:
   explicit Region(const std::string& name, Rectangle collision);
 
   const std::string& GetName() const;
-  std::optional<PlayerInfo> GetRuler() const;
-  void SetRuler(PlayerInfo ruler);
+  std::optional<PlayerLite> GetRuler() const;
+  void SetRuler(PlayerLite ruler);
   bool CollidesWith(Vector2 v) const;
   Rectangle GetRec() const;
 
@@ -24,5 +24,5 @@ public:
 private:
   std::string m_Name;
   Rectangle m_Collision;
-  std::optional<PlayerInfo> m_Ruler;
+  std::optional<PlayerLite> m_Ruler;
 };
