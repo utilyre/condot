@@ -664,33 +664,33 @@ void Player::Deserialize(StreamReader& r, Player& player)
   r.ReadRaw(player.m_Bishop);
 }
 
-PlayerLite::PlayerLite(const std::string& name, int age, Color color)
+PlayerInfo::PlayerInfo(const std::string& name, int age, Color color)
 : name(name),
   age(age),
   color(color)
 {
 }
 
-PlayerLite::PlayerLite(const Player& player)
+PlayerInfo::PlayerInfo(const Player& player)
 : name(player.GetName()),
   age(player.GetAge()),
   color(player.GetColor())
 {
 }
 
-bool PlayerLite::operator==(const PlayerLite& other) const
+bool PlayerInfo::operator==(const PlayerInfo& other) const
 {
   return name == other.name;
 }
 
-void PlayerLite::Serialize(StreamWriter& w, const PlayerLite& player)
+void PlayerInfo::Serialize(StreamWriter& w, const PlayerInfo& player)
 {
   w.WriteString(player.name);
   w.WriteRaw(player.age);
   w.WriteRaw(player.color);
 }
 
-void PlayerLite::Deserialize(StreamReader& r, PlayerLite& player)
+void PlayerInfo::Deserialize(StreamReader& r, PlayerInfo& player)
 {
   r.ReadString(player.name);
   r.ReadRaw(player.age);

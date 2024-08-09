@@ -92,16 +92,16 @@ private:
   Button m_PassButton;
 };
 
-struct PlayerLite
+struct PlayerInfo
 {
-  PlayerLite() = default;
-  PlayerLite(const std::string& name, int age, Color color);
-  PlayerLite(const Player& player);
+  PlayerInfo() = default;
+  PlayerInfo(const std::string& name, int age, Color color);
+  PlayerInfo(const Player& player);
 
-  static void Serialize(StreamWriter& w, const PlayerLite& player);
-  static void Deserialize(StreamReader& r, PlayerLite& player);
+  static void Serialize(StreamWriter& w, const PlayerInfo& player);
+  static void Deserialize(StreamReader& r, PlayerInfo& player);
 
-  bool operator==(const PlayerLite& other) const;
+  bool operator==(const PlayerInfo& other) const;
 
   std::string name;
   int age;
@@ -109,9 +109,9 @@ struct PlayerLite
 };
 
 template<>
-struct std::hash<PlayerLite>
+struct std::hash<PlayerInfo>
 {
-  size_t operator()(const PlayerLite& player) const
+  size_t operator()(const PlayerInfo& player) const
   {
     return std::hash<std::string>()(player.name);
   }

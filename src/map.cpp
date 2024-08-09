@@ -194,11 +194,11 @@ void Map::Render(const AssetManager& assets) const
   }
 }
 
-std::vector<PlayerLite> Map::FindWinners() const
+std::vector<PlayerInfo> Map::FindWinners() const
 {
   // TEST: this method is NOT tested (at all)
   bool allConquered = true;
-  std::unordered_map<PlayerLite, std::vector<size_t>> regionIndices;
+  std::unordered_map<PlayerInfo, std::vector<size_t>> regionIndices;
   for (size_t i = 0; i < m_Regions.size(); i++)
   {
     auto ruler = m_Regions[i].GetRuler();
@@ -212,7 +212,7 @@ std::vector<PlayerLite> Map::FindWinners() const
   if (allConquered)
   {
     size_t max = 0;
-    std::vector<PlayerLite> winners;
+    std::vector<PlayerInfo> winners;
     for (const auto& [player, indices] : regionIndices)
     {
       size_t numIndices = indices.size();
@@ -254,7 +254,7 @@ std::vector<PlayerLite> Map::FindWinners() const
     }
   }
 
-  return std::vector<PlayerLite>();
+  return std::vector<PlayerInfo>();
 }
 
 bool Map::AreNeighbors(size_t i, size_t j) const
