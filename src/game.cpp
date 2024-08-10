@@ -244,6 +244,7 @@ size_t Game::FindBattleInstigatorIndex() const
 void Game::InitiateBattle()
 {
   m_Turn = FindBattleInstigatorIndex();
+  m_BattleMarkerChooserIndex = m_Turn;
   FixPosition();
   ResetCards();
   DealCards();
@@ -310,7 +311,6 @@ void Game::FindRegionConquerer()
   if (potentialWinners.size() == 1) 
   {
     m_Map.GetBattleMarker()->SetRuler(m_Players[potentialWinners[0]]);
-    m_State.Set(State::PLACING_BATTLE_MARKER);
     return;
   }
 
@@ -369,8 +369,16 @@ void Game::FindRegionConquerer()
   std::mt19937 mt(m_RandDev());
   std::uniform_int_distribution<size_t> dist(0, potentialWinners.size() - 1);
   m_Turn = potentialWinners[dist(mt)];
-  
-  m_State.Set(State::PLACING_BATTLE_MARKER);
+
+  if (auto bm = m_Map.GetBattleMarker())
+  {
+    std::clog
+      << "INFO: "
+      << bm->GetRuler()->name
+      << "conquered "
+      << bm->GetName()
+      << '\n';
+  }
 }
 
 void Game::FixPosition()
@@ -384,6 +392,13 @@ void Game::FixPosition()
 void Game::RestartBattle()
 {
   FindRegionConquerer();
+
+  m_State.Set(
+    m_FavorMarkerChooserIndex < 0
+    ? State::PLACING_BATTLE_MARKER
+    : State::PLACING_FAVOR_MARKER
+  );
+
   auto winner = m_Map.FindWinners();
   if(!winner.empty())
   {

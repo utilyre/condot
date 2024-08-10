@@ -16,8 +16,8 @@ static const float MAP_SCALE = 0.4f;
 Map::Map(
   State* state,
   const std::vector<Player>* players,
-  const ssize_t* battleMarkerChooserIndex,
-  const ssize_t* favorMarkerChooserIndex
+  ssize_t* battleMarkerChooserIndex,
+  ssize_t* favorMarkerChooserIndex
 )
 : m_State(state),
   m_Regions({
@@ -100,17 +100,16 @@ void Map::Update()
         if (state == State::PLACING_BATTLE_MARKER)
         {
           m_BattleMarkerIndex = i;
-          m_State->Set(
-            *m_FavorMarkerChooserIndex < 0
-            ? State::PLAYING_CARD
-            : State::PLACING_FAVOR_MARKER
-          );
+          m_State->Set(State::PLAYING_CARD);
         }
         else if (state == State::PLACING_FAVOR_MARKER)
         {
           m_FavorMarkerIndex = i;
-          m_State->Set(State::PLAYING_CARD);
+          *m_FavorMarkerChooserIndex = -1;
+          m_State->Set(State::PLACING_BATTLE_MARKER);
         }
+
+        break;
       }
     }
 
