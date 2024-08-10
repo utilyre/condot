@@ -10,6 +10,7 @@
 #include <mercenary.hpp>
 #include <button.hpp>
 #include <season.hpp>
+#include <vector>
 
 #define MAX(a, b) ((a)>(b)? (a) : (b))
 #define MIN(a, b) ((a)<(b)? (a) : (b))
@@ -18,7 +19,17 @@ static const int CardWidth = 164;
 static const int CardHeight = 255;
 static const float CardScale = 0.15f;
 
-Player::Player(const std::string& name, int age, Color color, Position position)
+Player::Player()
+: m_PassButton ("SURRENDER",Rectangle(10,GetScreenHeight() - 100 , 170 , 90))
+{
+}
+
+Player::Player(
+  const std::string& name,
+  int age,
+  Color color,
+  Position position
+)
 : m_Name(name),
   m_Color(color),
   m_Age(age),
@@ -32,13 +43,28 @@ Player::Player(const std::string& name, int age, Color color, Position position)
 {
 }
 
+void Player::Init(
+  State* state,
+  Season* season,
+  Event* rotateTurnEvent,
+  Event* restartBattleEvent,
+  Event* takeFavorMarkerEvent
+)
+{
+  m_State = state;
+  m_Season = season;
+  m_RotateTurnEvent = rotateTurnEvent;
+  m_RestartBattleEvent = restartBattleEvent;
+  m_TakeFavorMarkerEvent = takeFavorMarkerEvent;
+}
+
 void Player::Update()
 {
   auto state = m_State->Get();
 
   if (state != State::PLAYING_CARD &&
       state != State::SCARECROW &&
-      state != State::StatusBar){
+      state != State::STATUS_BAR){
     return;
   }
     bool RotateStatus = false;
@@ -76,7 +102,7 @@ void Player::Render(const AssetManager& assets) const
   auto state = m_State->Get();
   if (state != State::PLAYING_CARD &&
       state != State::SCARECROW &&
-      state != State::StatusBar){
+      state != State::STATUS_BAR){
     return;
   }
   
@@ -375,10 +401,10 @@ bool Player::PickCard(const size_t& index){
     return true;
   }
   
-  // TODO : does something with gameflow
   else if (card == Card::BISHOP) {
     m_Cards.erase(m_Cards.begin() + index);
     m_Bishop++;
+    m_TakeFavorMarkerEvent->Notify(this);
     return true;
   }
   
@@ -512,19 +538,6 @@ Color Player::GetColor() const{
   return m_Color;
 }
 
-void Player::SetContext(
-  State* state,
-  Season* season,
-  Event* rotateTurnEvent,
-  Event* restartBattleEvent
-)
-{
-  m_State = state;
-  m_Season = season;
-  m_RotateTurnEvent = rotateTurnEvent;
-  m_RestartBattleEvent = restartBattleEvent;
-}
-
 const std::string& Player::GetName() const
 {
   return m_Name;
@@ -562,6 +575,7 @@ void Player::Reset()
   m_Spy = 0;
   m_Drummer = false;
   m_IsPassed = false;
+  m_Bishop = 0;
 }
 
 int Player::CalculateScore(int C) const
@@ -598,6 +612,8 @@ int Player::CalculateScore(int C) const
     score += BNum * 3;
     score += m_Heroine * 3;
   }
+
+  
   score += m_Heroine * 10;
   score += m_Spy;
   
@@ -627,4 +643,80 @@ int Player::GetSpy() const
 void Player::DecreaseBishop()
 {
   m_Bishop--;
+}
+void Player::Serialize(StreamWriter& w, const Player& player)
+{
+  w.WriteString(player.m_Name);
+  w.WriteRaw(player.m_Age);
+  w.WriteRaw(player.m_Color);
+  w.WriteRaw(player.m_Position);
+  w.WriteVector(player.m_Cards);
+  w.WriteVector(player.m_Row);
+  w.WriteRaw(player.m_IsPassed);
+  w.WriteRaw(player.m_Spy);
+  w.WriteRaw(player.m_Heroine);
+  w.WriteRaw(player.m_Drummer);
+  w.WriteRaw(player.m_Bishop);
+}
+
+void Player::Deserialize(StreamReader& r, Player& player)
+{
+  r.ReadString(player.m_Name);
+  r.ReadRaw(player.m_Age);
+  r.ReadRaw(player.m_Color);
+  r.ReadRaw(player.m_Position);
+  r.ReadVector(player.m_Cards);
+  r.ReadVector(player.m_Row);
+  r.ReadRaw(player.m_IsPassed);
+  r.ReadRaw(player.m_Spy);
+  r.ReadRaw(player.m_Heroine);
+  r.ReadRaw(player.m_Drummer);
+  r.ReadRaw(player.m_Bishop);
+}
+
+PlayerInfo::PlayerInfo(
+  const std::string& name,
+  int age,
+  Color color,
+  Position position
+)
+: name(name),
+  age(age),
+  color(color),
+  position(position)
+{
+}
+
+PlayerInfo::PlayerInfo(const Player& player)
+: name(player.GetName()),
+  age(player.GetAge()),
+  color(player.GetColor()),
+  position(player.GetPosition())
+{
+}
+
+bool PlayerInfo::operator==(const PlayerInfo& other) const
+{
+  return name == other.name;
+}
+
+void PlayerInfo::Serialize(StreamWriter& w, const PlayerInfo& player)
+{
+  w.WriteString(player.name);
+  w.WriteRaw(player.age);
+  w.WriteRaw(player.color);
+  w.WriteRaw(player.position);
+}
+
+void PlayerInfo::Deserialize(StreamReader& r, PlayerInfo& player)
+{
+  r.ReadString(player.name);
+  r.ReadRaw(player.age);
+  r.ReadRaw(player.color);
+  r.ReadRaw(player.position);
+}
+
+const std::vector<Mercenary>& Player::GetRow() const
+{
+  return m_Row;
 }

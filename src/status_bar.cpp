@@ -1,8 +1,9 @@
+#include <algorithm>
+#include <cstddef>
 #include <raylib.h>
 
 #include <asset_manager.hpp>
 #include <player.hpp>
-#include <span>
 #include <status_bar.hpp>
 #include <state.hpp>
 #include <season.hpp>
@@ -16,37 +17,38 @@ StatusBar::StatusBar(State* state, Season* season) :
 void StatusBar::Render(const AssetManager& assets) const
 {
   if (m_State->Get() != State::PLAYING_CARD &&
-      m_State->Get() != State::StatusBar &&
+      m_State->Get() != State::STATUS_BAR &&
       m_State->Get() != State::SCARECROW)
   {
     return;
   }
   m_StatusButton.Render(assets);
-  if (m_State->Get() == State::StatusBar)
+  if (m_State->Get() == State::STATUS_BAR)
   {
     DrawRectangle(0, 0, 400, 400, WHITE);
     float VerticalSpacing = 10;
-    int BiggestNum = GetScore();
-    for (auto* p : *m_Players)
+
+    for (auto& p : *m_Players)
     {
       float HorizotalSpacing = 40;
-      DrawRectangle(10, VerticalSpacing, 20, 20, p->GetColor());
+      DrawRectangle(10, VerticalSpacing, 20, 20, p.GetColor());
   
       DrawTextureEx(assets.Bishop,Vector2{HorizotalSpacing,VerticalSpacing}, 0, 0.2, WHITE);
-      DrawText(TextFormat(" x %d", p->GetBishop()), 70, VerticalSpacing + 20, 10, BLACK);
+      DrawText(TextFormat(" x %d", p.GetBishop()), 70, VerticalSpacing + 20, 10, BLACK);
       HorizotalSpacing += 60;
     
       DrawTextureEx(assets.Spy,Vector2{HorizotalSpacing,VerticalSpacing}, 0, 0.2, WHITE);
-      DrawText(TextFormat(" x %d", p->GetSpy()), 130, VerticalSpacing + 20, 10, BLACK);
+      DrawText(TextFormat(" x %d", p.GetSpy()), 130, VerticalSpacing + 20, 10, BLACK);
       HorizotalSpacing += 60;
     
       DrawTextureEx(assets.Heroine,Vector2{HorizotalSpacing,VerticalSpacing}, 0, 0.2, WHITE);
-      DrawText(TextFormat(" x %d", p->GetHeroine()), 190, VerticalSpacing + 20, 10, BLACK);
+      DrawText(TextFormat(" x %d", p.GetHeroine()), 190, VerticalSpacing + 20, 10, BLACK);
       HorizotalSpacing += 60;
     
       DrawTextureEx(assets.Drummer,Vector2{HorizotalSpacing,VerticalSpacing}, 0, 0.2, WHITE);
-      DrawText(TextFormat(" x %d", p->GetDrummer()), 250, VerticalSpacing + 20, 10, BLACK);
-      DrawText(TextFormat("Score:%d",p->CalculateScore(BiggestNum)), 290, VerticalSpacing + 20, 20, BLACK);
+      DrawText(TextFormat("Score:%d",p.CalculateScore(GetScore())), 290, VerticalSpacing + 20, 20, BLACK);
+      DrawText(TextFormat(" x %d", p.GetDrummer()), 250, VerticalSpacing + 20, 10, BLACK);
+
       VerticalSpacing += assets.BackSide.height * 0.2;
     }
     DrawText("Season :",40, VerticalSpacing + 20 , 25 , BLACK);
@@ -69,7 +71,7 @@ void StatusBar::Update()
 {
   auto State = m_State->Get();
   if (State != State::PLAYING_CARD &&
-      State != State::StatusBar &&
+      State != State::STATUS_BAR &&
       State != State::SCARECROW)
   {
     return;
@@ -78,7 +80,7 @@ void StatusBar::Update()
   
   if (m_StatusButton.Hovered())
   {
-    m_State->Set(State::StatusBar);
+    m_State->Set(State::STATUS_BAR);
   }
   
   else if (m_State->GetPrev() == State::PLAYING_CARD) 
@@ -92,7 +94,7 @@ void StatusBar::Update()
   }
 }
 
-void StatusBar::Set(std::vector<Player*>* players)
+void StatusBar::Set(std::vector<Player>* players)
 {
   m_Players = players;
 }
@@ -101,13 +103,21 @@ int StatusBar::GetScore() const
 {
   int BishopNum = 0;
   int BiggestNum = 0;
+  
+  for (const auto& p : *m_Players) 
+  {
+    if(p.GetHeroine() > 0)
+    {
+      return 10;
+    }
+  }
 
   for (auto& p : *m_Players)
   {
-    if (p->GetBishop() == 1) 
+    if (p.GetBishop() == 1) 
     {
       BishopNum++;
-      p->DecreaseBishop();
+      p.DecreaseBishop();
       break;
     }
   }
@@ -116,33 +126,27 @@ int StatusBar::GetScore() const
   {
     for (const auto& p : *m_Players)
     {
-      if (BiggestNum < p->GetBiggestNum())
+      if (BiggestNum < p.GetBiggestNum())
       {
-        BiggestNum = p->GetBiggestNum();
+        BiggestNum = p.GetBiggestNum();
       }
     }
 
     for (auto& p : *m_Players)
     {
-      p->DeleteCard(BiggestNum);
+      p.DeleteCard(BiggestNum);
     }
     BiggestNum = 0;
   }
 
   for (const auto& p : *m_Players)
   {
-    if (BiggestNum < p->GetBiggestNum()){
-      BiggestNum = p->GetBiggestNum();
+    if (BiggestNum < p.GetBiggestNum()){
+      BiggestNum = p.GetBiggestNum();
     }
   }
   
-  for (const auto& p : *m_Players) 
-  {
-    if(p->GetHeroine() > 0)
-    {
-      BiggestNum = 10;
-    }
-  }
 
   return BiggestNum;
 }
+

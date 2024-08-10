@@ -11,13 +11,15 @@ static const Color BUTTON_HOVER_COLOR = {25, 25, 25, 255};
 Button::Button(const std::string& text, Rectangle dimensions)
 : m_Text(text),
   m_Dimensions(dimensions),
+  m_Enabled(true),
   m_Hovered(false)
 {
 }
 
 void Button::Update()
 {
-  m_Hovered = CheckCollisionPointRec(GetMousePosition(), m_Dimensions);
+  m_Hovered = m_Enabled &&
+    CheckCollisionPointRec(GetMousePosition(), m_Dimensions);
 }
 
 void Button::Render(const AssetManager& assets) const
@@ -26,7 +28,7 @@ void Button::Render(const AssetManager& assets) const
     m_Dimensions,
     BUTTON_ROUNDNESS,
     0,
-    m_Hovered ? BUTTON_HOVER_COLOR : BLACK
+    m_Enabled ? (m_Hovered ? BUTTON_HOVER_COLOR : BLACK) : Color{20, 20, 20, 180}
   );
 
   const float textWidth = 0.3f * BUTTON_FONT_SIZE * m_Text.size();
@@ -39,7 +41,7 @@ void Button::Render(const AssetManager& assets) const
     },
     BUTTON_FONT_SIZE,
     1,
-    WHITE
+    m_Enabled ? WHITE : Color{255, 255, 255, 180}
   );
 }
 
@@ -51,4 +53,14 @@ bool Button::Hovered() const
 bool Button::Pressed() const
 {
   return m_Hovered && IsMouseButtonReleased(MOUSE_LEFT_BUTTON);
+}
+
+void Button::Disable()
+{
+  m_Enabled = false;
+}
+
+void Button::Enable()
+{
+  m_Enabled = true;
 }

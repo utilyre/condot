@@ -10,7 +10,7 @@
 static const float BUTTON_WIDTH = 800;
 static const float BUTTON_HEIGHT = 100;
 
-PauseMenu::PauseMenu(State* state, Event* quit) : 
+PauseMenu::PauseMenu(State* state, Event* quit, Event* save) : 
   m_PauseMenuButton("Pause",Rectangle{GetScreenWidth() - 120.0f, 10, 120, 70}),
   m_ContinueButton("Continue", Rectangle{
     (GetScreenWidth() - BUTTON_WIDTH) / 2.0f,
@@ -24,7 +24,7 @@ PauseMenu::PauseMenu(State* state, Event* quit) :
     BUTTON_WIDTH,
     BUTTON_HEIGHT
   }),
-  m_ExitButton("Exit", Rectangle{
+  m_ExitButton("Save & Exit", Rectangle{
     (GetScreenWidth() - BUTTON_WIDTH) / 2.0f,
     (GetScreenHeight() - BUTTON_HEIGHT) / 2.0f + 120,
     BUTTON_WIDTH,
@@ -38,6 +38,7 @@ PauseMenu::PauseMenu(State* state, Event* quit) :
     }),
   m_State(state),
   m_QuitEvent(quit),
+  m_SaveEvent(save),
   m_ShowHelpMenu(false)
   {}
   
@@ -96,7 +97,7 @@ void PauseMenu::Update()
   }
 
   m_HelpButton.Update();
-
+  
 
   if (m_PauseMenuButton.Pressed()) 
   {
@@ -124,9 +125,10 @@ void PauseMenu::Update()
   else if (m_ExitButton.Pressed() &&
            m_State->Get() == State::PAUSE_MENU)
   {
-   m_QuitEvent->Notify(this);   
+    m_SaveEvent->Notify(this);
+    m_QuitEvent->Notify(this);   
   }
-
+  
   if (!m_HelpMenu.IsGettingDetail()) 
   {
     m_BackButton.Update();

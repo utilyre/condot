@@ -1,3 +1,4 @@
+#include <optional>
 #include <string>
 #include <raylib.h>
 
@@ -6,8 +7,7 @@
 
 Region::Region(const std::string& name, Rectangle collision)
 : m_Name(name),
-  m_Collision(collision),
-  m_Ruler(nullptr)
+  m_Collision(collision)
 {
 }
 
@@ -16,15 +16,15 @@ const std::string& Region::GetName() const
   return m_Name;
 }
 
-const Player* Region::GetRuler() const
+std::optional<PlayerInfo> Region::GetRuler() const
 {
   return m_Ruler;
 }
 
-void Region::SetRuler(Player* p)
+void Region::SetRuler(PlayerInfo ruler)
 {
-  m_Ruler = p;
-  std::clog << "INFO: " << GetName() << " is conquered by " << GetRuler()->GetName() << '\n';
+  m_Ruler = ruler;
+  std::clog << "INFO: " << GetName() << " is conquered by " << ruler.name << '\n';
 }
 
 bool Region::CollidesWith(Vector2 v) const
@@ -35,4 +35,14 @@ bool Region::CollidesWith(Vector2 v) const
 Rectangle Region::GetRec() const
 {
   return m_Collision;
+}
+
+void Region::Serialize(StreamWriter& w, const Region& region)
+{
+  w.WriteOptional(region.m_Ruler);
+}
+
+void Region::Deserialize(StreamReader& r, Region& region)
+{
+  r.ReadOptional(region.m_Ruler);
 }

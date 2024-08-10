@@ -1,8 +1,8 @@
 #pragma once
 
 #include <string>
-#include <raylib.h>
 #include <vector>
+#include <raylib.h>
 
 #include <asset_manager.hpp>
 #include <state.hpp>
@@ -12,6 +12,7 @@
 #include <mercenary.hpp>
 #include <button.hpp>
 #include <season.hpp>
+#include <stream.hpp>
 
 enum class Position {
   BOTTOM_LEFT,
@@ -25,13 +26,20 @@ enum class Position {
 class Player : public Entity
 {
 public:
-  Player(const std::string& name, int age, Color color, Position position);
+  Player();
+  Player(
+    const std::string& name,
+    int age,
+    Color color,
+    Position position
+  );
 
-  void SetContext(
+  void Init(
     State* state,
     Season* season,
     Event* rotateTurnEvent,
-    Event* restartBattleEvent
+    Event* restartBattleEvent,
+    Event* takeFavorMarkerEvent
   );
 
   void Update() override;
@@ -53,6 +61,10 @@ public:
   int GetDrummer() const;
   Color GetColor() const;
   void DecreaseBishop();
+  const std::vector<Mercenary>& GetRow() const;
+  static void Serialize(StreamWriter& w, const Player& player);
+  static void Deserialize(StreamReader& r, Player& player);
+
 private:
   bool PlayCard();
   void RenderCards(const AssetManager& assets, Vector2 cordinate, float rotation, float ratio) const;
@@ -68,6 +80,7 @@ private:
 
   Event* m_RotateTurnEvent;
   Event* m_RestartBattleEvent;
+  Event* m_TakeFavorMarkerEvent;
 
   std::string m_Name;
   Color m_Color;
@@ -81,4 +94,30 @@ private:
   unsigned int m_Drummer;
   unsigned int m_Bishop;
   Button m_PassButton;
+};
+
+struct PlayerInfo
+{
+  PlayerInfo() = default;
+  PlayerInfo(const std::string& name, int age, Color color, Position position);
+  PlayerInfo(const Player& player);
+
+  static void Serialize(StreamWriter& w, const PlayerInfo& player);
+  static void Deserialize(StreamReader& r, PlayerInfo& player);
+
+  bool operator==(const PlayerInfo& other) const;
+
+  std::string name;
+  int age;
+  Color color;
+  Position position;
+};
+
+template<>
+struct std::hash<PlayerInfo>
+{
+  size_t operator()(const PlayerInfo& player) const
+  {
+    return std::hash<std::string>()(player.name);
+  }
 };

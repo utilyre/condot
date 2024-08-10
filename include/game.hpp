@@ -15,15 +15,19 @@
 #include <status_bar.hpp>
 #include <help_menu.hpp>
 #include <pause_menu.hpp>
+#include <stream.hpp>
+#include <timer.hpp>
 
 class Game
 {
 public:
   Game();
-  ~Game();
 
   void Start();
   void Stop();
+
+  static void Serialize(StreamWriter& w, const Game& game);
+  static void Deserialize(StreamReader& r, Game& game);
 
 private:
   void Update();
@@ -39,6 +43,8 @@ private:
   void FixPosition();
   void RestartBattle();
   int GetWinnerScore();
+  void Save();
+  void Load();
 
 private:
   bool m_Stopped;
@@ -48,6 +54,8 @@ private:
 
   State m_State;
   size_t m_Turn;
+  ssize_t m_BattleMarkerChooserIndex;
+  ssize_t m_FavorMarkerChooserIndex;
   Season m_Season;
 
   Event m_StopEvent;
@@ -55,12 +63,17 @@ private:
   Event m_RotateTurnEvent;
   Event m_AddPlayerEvent;
   Event m_RestartBattleEvent;
+  Event m_SaveEvent;
+  Event m_LoadEvent;
+  Event m_TakeFavorMarkerEvent;
+
+  Timer m_AutoSaveTimer;
 
   MainMenu m_MainMenu;
   CustomizationMenu m_CustomizationMenu;
   PauseMenu m_PauseMenu;
   Map m_Map;
-  std::vector<Player*> m_Players;
+  std::vector<Player> m_Players;
   StatusBar m_StatusBar;
   std::vector<Card> m_Deck;
 };

@@ -53,7 +53,7 @@ std::ostream& operator<<(std::ostream& out, State::Variant v)
   case State::SCARECROW:
     out << "SCARECROW";
     break;
-  case State::StatusBar:
+  case State::STATUS_BAR:
     out << "StatusBar";
     break;
   case State::PAUSE_MENU:

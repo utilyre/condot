@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <type_traits>
 #include <string>
+#include <optional>
 #include <vector>
 
 class StreamWriter
@@ -11,48 +12,60 @@ public:
   virtual ~StreamWriter() {}
 
   virtual bool IsStreamGood() const = 0;
-  virtual bool WriteData(const char* data, uint64_t size) = 0;
+  virtual uint64_t GetStreamPosition() = 0;
+  virtual void SetStreamPosition(uint64_t position) = 0;
+  virtual void WriteData(const char* data, uint64_t size) = 0;
 
   operator bool() const { return IsStreamGood(); }
 
-  template<typename T>
-  bool WriteRaw(const T&  v) { return WriteData((const char*)&v, sizeof(T)); }
+  void WriteZeros(uint64_t size);
+  void WriteString(const std::string& s);
 
   template<typename T>
-  bool WriteObject(const T& v) { return T::Serialize(*this, v); }
+  void WriteRaw(const T&  v) { WriteData((const char*)&v, sizeof(T)); }
 
-  bool WriteString(const std::string& s)
+  template<typename T>
+  void WriteObject(const T& v) { T::Serialize(*this, v); }
+
+  template<typename T>
+  void WriteOptional(const std::optional<T>& o)
   {
-    if (!WriteRaw((uint64_t)s.size()))
-    {
-      return false;
-    }
+    WriteRaw(o.has_value());
 
-    return WriteData(s.data(), s.size() * sizeof(char));
-  }
-
-  template<typename T>
-  bool WriteVector(const std::vector<T>& v)
-  {
-    if (!WriteRaw((uint64_t)v.size()))
+    if (!o.has_value())
     {
-      return false;
+      WriteZeros(sizeof(T));
+      return;
     }
 
     if constexpr (std::is_trivial<T>())
     {
-      return WriteData((const char*)&v[0], v.size() * sizeof(T));
+      WriteRaw(o.value());
     }
-    else {
+    else
+    {
+      WriteObject(o.value());
+    }
+  }
+
+  template<typename T>
+  void WriteVector(const std::vector<T>& v, bool writeSize = true)
+  {
+    if (writeSize)
+    {
+      WriteRaw((uint64_t)v.size());
+    }
+
+    if constexpr (std::is_trivial<T>())
+    {
+      WriteData((const char*)&v[0], v.size() * sizeof(T));
+    }
+    else
+    {
       for (const T& x : v)
       {
-        if (!WriteObject(x))
-        {
-          return false;
-        }
+        WriteObject(x);
       }
-
-      return true;
     }
   }
 };
@@ -63,54 +76,68 @@ public:
   virtual ~StreamReader() {}
 
   virtual bool IsStreamGood() const = 0;
-  virtual bool ReadData(char* data, uint64_t size) = 0;
+  virtual uint64_t GetStreamPosition() = 0;
+  virtual void SetStreamPosition(uint64_t position) = 0;
+  virtual void ReadData(char* data, uint64_t size) = 0;
 
   operator bool() const { return IsStreamGood(); }
 
-  template<typename T>
-  bool ReadRaw(T&  v) { return ReadData((char*)&v, sizeof(T)); }
+  void ReadString(std::string& s);
 
   template<typename T>
-  bool ReadObject(T& v) { return T::Deserialize(*this, v); }
+  void ReadRaw(T&  v) { ReadData((char*)&v, sizeof(T)); }
 
-  bool ReadString(std::string& s)
+  template<typename T>
+  void ReadObject(T& v) { T::Deserialize(*this, v); }
+
+  template<typename T>
+  void ReadOptional(std::optional<T>& o)
   {
-    uint64_t size;
-    if (!ReadRaw(size))
+    bool hasValue;
+    ReadRaw(hasValue);
+
+    if (!hasValue)
     {
-      return false;
+      SetStreamPosition(GetStreamPosition() + sizeof(T));
+      o = std::nullopt;
+      return;
     }
 
-    s.resize(size);
-    return ReadData(s.data(), s.size() * sizeof(char));
+    T value;
+    if constexpr (std::is_trivial<T>())
+    {
+      ReadRaw(value);
+    }
+    else
+    {
+      ReadObject(value);
+    }
+    o = value;
   }
 
   template<typename T>
-  bool ReadVector(std::vector<T>& v)
+  void ReadVectorInPlace(std::vector<T>& v)
   {
-    uint64_t size;
-    if (!ReadRaw(size))
-    {
-      return false;
-    }
-
-    v.resize(size);
-
     if constexpr (std::is_trivial<T>())
     {
-      return ReadData((char*)&v[0], v.size() * sizeof(T));
+      ReadData((char*)&v[0], v.size() * sizeof(T));
     }
     else
     {
       for (T& x : v)
       {
-        if (!ReadObject(x))
-        {
-          return false;
-        }
+        ReadObject(x);
       }
-
-      return true;
     }
+  }
+
+  template<typename T>
+  void ReadVector(std::vector<T>& v)
+  {
+    uint64_t size;
+    ReadRaw(size);
+
+    v.resize(size);
+    ReadVectorInPlace(v);
   }
 };

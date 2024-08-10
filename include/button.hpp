@@ -17,9 +17,13 @@ public:
   bool Hovered() const;
   bool Pressed() const;
 
+  void Disable();
+  void Enable();
+
 private:
   std::string m_Text;
   Rectangle m_Dimensions;
 
+  bool m_Enabled;
   bool m_Hovered;
 };

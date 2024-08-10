@@ -19,15 +19,22 @@
 #include <status_bar.hpp>
 #include <help_menu.hpp>
 #include <pause_menu.hpp>
+#include <file_stream.hpp>
+#include <vector>
 
 // #define DEBUG
 
+static const float AUTOSAVE_INTERVAL = 30.0f;
+
 Game::Game()
 : m_Stopped(false),
-  m_MainMenu(&m_State, &m_StopEvent),
+  m_BattleMarkerChooserIndex(-1),
+  m_FavorMarkerChooserIndex(-1),
+  m_AutoSaveTimer(AUTOSAVE_INTERVAL, true),
+  m_MainMenu(&m_State, &m_LoadEvent, &m_StopEvent, &m_InitiateBattleEvent),
   m_CustomizationMenu(&m_State, &m_InitiateBattleEvent, &m_AddPlayerEvent),
-  m_PauseMenu(&m_State, &m_StopEvent),
-  m_Map(&m_State),
+  m_PauseMenu(&m_State, &m_StopEvent, &m_SaveEvent),
+  m_Map(&m_State, &m_Players, &m_BattleMarkerChooserIndex, &m_FavorMarkerChooserIndex),
   m_StatusBar(&m_State, &m_Season)
 {
   m_StopEvent.Subscribe([this](auto, auto) { Stop(); });
@@ -35,26 +42,33 @@ Game::Game()
   m_RotateTurnEvent.Subscribe([this](auto,auto data) { RotateTurn(std::any_cast<bool*>(data)); });
   m_RestartBattleEvent.Subscribe([this](auto , auto) { RestartBattle(); });
   m_AddPlayerEvent.Subscribe([this](auto, std::any data) {
-    Player* player = std::any_cast<Player*>(data);
-    player->SetContext(
+    PlayerInfo p = std::any_cast<PlayerInfo>(data);
+    m_Players.emplace_back(p.name, p.age, p.color, p.position);
+    m_Players.back().Init(
       &m_State,
       &m_Season,
       &m_RotateTurnEvent,
-      &m_RestartBattleEvent
+      &m_RestartBattleEvent,
+      &m_TakeFavorMarkerEvent
     );
-    m_Players.push_back(player);
 
-    std::clog << "INFO: Player \"" << player->GetName() << "\" added.\n";
+    std::clog << "INFO: Player \"" << p.name << "\" added.\n";
   });
-  m_StatusBar.Set(&m_Players);
-}
+  m_SaveEvent.Subscribe([this](auto, auto) { Save(); });
+  m_LoadEvent.Subscribe([this](auto, auto) { Load(); });
+  m_TakeFavorMarkerEvent.Subscribe([this](Entity* sender, auto) {
+    Player* chooser = dynamic_cast<Player*>(sender);
+    for (size_t i = 0; i < m_Players.size(); i++)
+    {
+      if (&m_Players[i] == chooser)
+      {
+        m_FavorMarkerChooserIndex = i;
+        break;
+      }
+    }
+  });
 
-Game::~Game()
-{
-  for (Player* p : m_Players)
-  {
-    delete p;
-  }
+  m_StatusBar.Set(&m_Players);
 }
 
 void Game::Start()
@@ -78,18 +92,65 @@ void Game::Stop()
   m_Stopped = true;
 }
 
+void Game::Serialize(StreamWriter& w, const Game& game)
+{
+  w.WriteRaw(game.m_State);
+  w.WriteRaw(game.m_Turn);
+  w.WriteRaw(game.m_BattleMarkerChooserIndex);
+  w.WriteRaw(game.m_FavorMarkerChooserIndex);
+  w.WriteRaw(game.m_Season);
+  w.WriteObject(game.m_Map);
+  w.WriteVector(game.m_Players);
+  w.WriteVector(game.m_Deck);
+}
+
+void Game::Deserialize(StreamReader& r, Game& game)
+{
+  r.ReadRaw(game.m_State);
+  r.ReadRaw(game.m_Turn);
+  r.ReadRaw(game.m_BattleMarkerChooserIndex);
+  r.ReadRaw(game.m_FavorMarkerChooserIndex);
+  r.ReadRaw(game.m_Season);
+  r.ReadObject(game.m_Map);
+
+  r.ReadVector(game.m_Players);
+  for (Player& player : game.m_Players)
+  {
+    player.Init(
+      &game.m_State,
+      &game.m_Season,
+      &game.m_RotateTurnEvent,
+      &game.m_RestartBattleEvent,
+      &game.m_TakeFavorMarkerEvent
+    );
+  }
+
+  r.ReadVector(game.m_Deck);
+}
+
 void Game::Update()
 {
+  float dt = GetFrameTime();
+
+  if (m_State.Get() == State::PLAYING_CARD)
+  {
+    m_AutoSaveTimer.Tick(dt);
+    if (m_AutoSaveTimer.Finished())
+    {
+      Save();
+    }
+  }
+
   m_MainMenu.Update();
   m_CustomizationMenu.Update();
   m_StatusBar.Update();
   m_PauseMenu.Update();
   
   m_Map.Update();
-  if (m_Players.size() > m_Turn) m_Players[m_Turn]->Update();
-  for (Player* p : m_Players)
+  if (m_Players.size() > m_Turn) m_Players[m_Turn].Update();
+  for (size_t i = 0; i < m_Players.size(); i++)
   {
-    if (m_Players[m_Turn] != p) p->Update();
+    if (i != m_Turn) m_Players[i].Update();
   }
   GetWinnerScore();
 }
@@ -103,11 +164,10 @@ void Game::Render() const
   m_PauseMenu.Render(m_Assets);
   
   m_Map.Render(m_Assets);
-  
-  if (m_Players.size() > m_Turn) m_Players[m_Turn]->Render(m_Assets);
-  for (const Player* p : m_Players)
+  if (m_Players.size() > m_Turn) m_Players[m_Turn].Render(m_Assets);
+  for (size_t i = 0; i < m_Players.size(); i++)
   {
-    if (m_Players[m_Turn] != p) p->Render(m_Assets);
+    if (i != m_Turn) m_Players[i].Render(m_Assets);
   }
 
   m_StatusBar.Render(m_Assets);
@@ -121,9 +181,9 @@ void Game::ResetCards()
   m_Deck.clear();
   m_Season = Season::NONE;
 
-  for(Player* p : m_Players)
+  for(Player& p : m_Players)
   {
-    p->Reset();
+    p.Reset();
   }
   
   m_Deck.insert(m_Deck.end(), 10, Card::MERCENARY_1);
@@ -149,11 +209,11 @@ void Game::ResetCards()
 
 void Game::DealCards()
 {
-  for (Player* player : m_Players)
+  for (Player& player : m_Players)
   {
     for (int i = 0; i < 10; i++)
     {
-      player->AddCard(m_Deck.back());
+      player.AddCard(m_Deck.back());
       m_Deck.pop_back();
     }
   }
@@ -165,7 +225,7 @@ size_t Game::FindBattleInstigatorIndex() const
   std::vector<size_t> candidateIndices;
   for (size_t i = 0; i < m_Players.size(); i++)
   {
-    int age = m_Players[i]->GetAge();
+    int age = m_Players[i].GetAge();
     if (age < min)
     {
       min = age;
@@ -186,6 +246,7 @@ size_t Game::FindBattleInstigatorIndex() const
 void Game::InitiateBattle()
 {
   m_Turn = FindBattleInstigatorIndex();
+  m_BattleMarkerChooserIndex = m_Turn;
   FixPosition();
   ResetCards();
   DealCards();
@@ -197,7 +258,7 @@ void Game::RotateTurn(bool* Status){
   for(size_t i{},passed{1}; i < m_Players.size(); ++i)
   {
     size_t EndPos = (StartPos + passed) % m_Players.size();
-    while(m_Players[EndPos]->IsPassed()){
+    while(m_Players[EndPos].IsPassed()){
       passed++;
       EndPos = ( StartPos + passed ) % m_Players.size();
       i++;
@@ -214,11 +275,11 @@ void Game::RotateTurn(bool* Status){
       *Status = true;
     }
     
-    m_Players[StartPos]->SetPosition(m_Players[EndPos]->GetPosition());
+    m_Players[StartPos].SetPosition(m_Players[EndPos].GetPosition());
     
     if(i == m_Players.size() - 1){
       m_Turn = StartPos;
-      m_Players[m_Turn]->SetPosition(Position::BOTTOM_LEFT);
+      m_Players[m_Turn].SetPosition(Position::BOTTOM_LEFT);
     }
     StartPos = EndPos;
     passed = 1;
@@ -233,7 +294,7 @@ void Game::FindRegionConquerer(int num)
 
   for (size_t i = 0; i < m_Players.size(); ++i) 
   {
-    int strength = m_Players[i]->CalculateScore(num);
+    int strength = m_Players[i].CalculateScore(num);
     if (MaxStrength < strength)
     {
       MaxStrength = strength;
@@ -261,10 +322,20 @@ void Game::FindRegionConquerer(int num)
   }
   
   potentialWinners.clear();
-  
+
+  if (auto bm = m_Map.GetBattleMarker())
+  {
+    std::clog
+      << "INFO: "
+      << bm->GetRuler()->name
+      << "conquered "
+      << bm->GetName()
+      << '\n';
+  }
+
   for (size_t index = 0; index < m_Players.size(); ++index)
   {
-    int Num = m_Players[index]->GetSpy();
+    int Num = m_Players[index].GetSpy();
     if (SpyNum < Num)
     {
       SpyNum = Num;
@@ -282,7 +353,6 @@ void Game::FindRegionConquerer(int num)
   {
     m_Turn = potentialWinners[0];
   }
-
   
   m_State.Set(State::PLACING_BATTLE_MARKER);
 }
@@ -291,14 +361,26 @@ void Game::FixPosition()
 {
   for(size_t i = 0; i < m_Players.size(); ++i)
   {
-    m_Players[(m_Turn + i) % m_Players.size()]->SetPosition(static_cast<Position>(i));
+    m_Players[(m_Turn + i) % m_Players.size()].SetPosition(static_cast<Position>(i));
   }
 }
 
 void Game::RestartBattle()
 {
   FindRegionConquerer(GetWinnerScore());
+
+  m_State.Set(
+    m_FavorMarkerChooserIndex < 0
+    ? State::PLACING_BATTLE_MARKER
+    : State::PLACING_FAVOR_MARKER
+  );
+
   auto winner = m_Map.FindWinners();
+  if(!winner.empty())
+  {
+    std::clog << "INFO: Winner is " << winner[0].name << '\n';
+    exit(1);
+  }
   ResetCards();
   FixPosition();
   DealCards();
@@ -311,10 +393,10 @@ int Game::GetWinnerScore()
 
   for (auto& p : m_Players)
   {
-    if (p->GetBishop() == 1) 
+    if (p.GetBishop() == 1) 
     {
       BishopNum++;
-      p->DecreaseBishop();
+      p.DecreaseBishop();
       break;
     }
   }
@@ -323,15 +405,15 @@ int Game::GetWinnerScore()
   {
     for (const auto& p : m_Players)
     {
-      if (BiggestNum < p->GetBiggestNum())
+      if (BiggestNum < p.GetBiggestNum())
       {
-        BiggestNum = p->GetBiggestNum();
+        BiggestNum = p.GetBiggestNum();
       }
     }
 
     for (auto& p : m_Players)
     {
-      p->DeleteCard(BiggestNum);
+      p.DeleteCard(BiggestNum);
     }
     BiggestNum = 0;
   }
@@ -339,14 +421,14 @@ int Game::GetWinnerScore()
 
   for (const auto& p : m_Players)
   {
-    if (BiggestNum < p->GetBiggestNum()){
-      BiggestNum = p->GetBiggestNum();
+    if (BiggestNum < p.GetBiggestNum()){
+      BiggestNum = p.GetBiggestNum();
     }
   }
   
   for (const auto& p : m_Players) 
   {
-    if(p->GetHeroine() > 0)
+    if(p.GetHeroine() > 0)
     {
       BiggestNum = 10;
     }
@@ -354,3 +436,16 @@ int Game::GetWinnerScore()
   return BiggestNum;
 }
   
+void Game::Save()
+{
+  FileStream stream("save.dat", std::ios::out | std::ios::binary);
+  stream.WriteObject(*this);
+  std::clog << "INFO: Saved game to 'save.dat' file\n";
+}
+
+void Game::Load()
+{
+  FileStream stream("save.dat", std::ios::in | std::ios::binary);
+  stream.ReadObject(*this);
+  std::clog << "INFO: Loaded game from 'save.dat' file\n";
+}

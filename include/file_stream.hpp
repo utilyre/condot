@@ -15,11 +15,13 @@ public:
   );
   FileStream(const FileStream&) = delete;
 
-  operator bool() const { return IsStreamGood(); }
+  bool IsStreamGood() const override;
+  uint64_t GetStreamPosition() override;
+  void SetStreamPosition(uint64_t position) override;
+  void WriteData(const char* data, uint64_t size) override;
+  void ReadData(char* data, uint64_t size) override;
 
-  bool IsStreamGood() const override { return m_File.good(); }
-  bool WriteData(const char* data, uint64_t size) override;
-  bool ReadData(char* data, uint64_t size) override;
+  operator bool() const { return IsStreamGood(); }
 
 private:
   std::filesystem::path m_Path;

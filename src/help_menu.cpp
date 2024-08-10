@@ -4,7 +4,6 @@
 #include <help_menu.hpp>
 #include <asset_manager.hpp>
 #include <button.hpp>
-#include <unordered_map>
 #include <card.hpp>
 
 static const float BUTTON_WIDTH = 800;
