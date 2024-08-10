@@ -5,7 +5,6 @@
 #include <pause_menu.hpp>
 #include <state.hpp>
 #include <event.hpp>
-#include <unordered_map>
 
 static const float BUTTON_WIDTH = 800;
 static const float BUTTON_HEIGHT = 100;

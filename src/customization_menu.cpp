@@ -29,8 +29,11 @@ static const float INPUT_NAME_HEIGHT = 100.0f;
 static const float INPUT_AGE_WIDTH = 200.0f;
 static const float INPUT_AGE_HEIGHT = 100.0f;
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-const-variable"
 static const size_t MIN_PLAYERS = 3;
 static const size_t MAX_PLAYERS = 6;
+#pragma clang diagnostic pop
 
 static const Color COLORS[6] = {RED, GREEN, BLUE, MAGENTA, GRAY, YELLOW};
 static const Position POSITIONS[6] = {
