@@ -96,11 +96,12 @@ void Player::Update()
     {
       bool PassStatus = false;
       bool PlayStatus = true;
-      if(IsPassed())
+      if(m_PassButton.Pressed())
       {
         m_IsPassed = PassStatus;
         m_RotateTurnEvent->Notify(this, &PassStatus);
         m_IsPassed = PassStatus;
+        *m_HideCards = true;
       }
       else
       {
