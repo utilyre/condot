@@ -13,7 +13,12 @@ static const int MAP_WIDTH = 1057;
 static const int MAP_HEIGHT = 831;
 static const float MAP_SCALE = 0.4f;
 
-Map::Map(State* state)
+Map::Map(
+  State* state,
+  std::vector<Player>* players,
+  ssize_t* battleMarkerChooserIndex,
+  ssize_t* favorMarkerChooserIndex
+)
 : m_State(state),
   m_Regions({
     Region("Elinia", Rectangle{34, 24, 127, 259}),
@@ -49,7 +54,10 @@ Map::Map(State* state)
     /* 13. Lia     */ 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0,
   }),
   m_BattleMarkerIndex(-1),
-  m_FavorMarkerIndex(-1)
+  m_FavorMarkerIndex(-1),
+  m_Players(players),
+  m_BattleMarkerChooserIndex(battleMarkerChooserIndex),
+  m_FavorMarkerChooserIndex(favorMarkerChooserIndex)
 {
 }
 
@@ -89,18 +97,20 @@ void Map::Update()
           return;
         }
         
-        switch (m_State->Get())
+        if (state == State::PLACING_BATTLE_MARKER)
         {
-        case State::PLACING_BATTLE_MARKER:
           m_BattleMarkerIndex = i;
-          break;
-        case State::PLACING_FAVOR_MARKER:
-          m_FavorMarkerIndex = i;
-          break;
-        default:
-          break;
+          m_State->Set(
+            *m_FavorMarkerChooserIndex < 0
+            ? State::PLAYING_CARD
+            : State::PLACING_FAVOR_MARKER
+          );
         }
-        m_State->Set(State::PLAYING_CARD);
+        else if (state == State::PLACING_FAVOR_MARKER)
+        {
+          m_FavorMarkerIndex = i;
+          m_State->Set(State::PLAYING_CARD);
+        }
       }
     }
 

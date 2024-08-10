@@ -54,6 +54,8 @@ private:
 
   State m_State;
   size_t m_Turn;
+  ssize_t m_BattleMarkerChooserIndex;
+  ssize_t m_FavorMarkerChooserIndex;
   Season m_Season;
 
   Event m_StopEvent;
@@ -63,6 +65,7 @@ private:
   Event m_RestartBattleEvent;
   Event m_SaveEvent;
   Event m_LoadEvent;
+  Event m_TakeFavorMarkerEvent;
 
   Timer m_AutoSaveTimer;
 

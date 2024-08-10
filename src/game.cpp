@@ -27,11 +27,13 @@ static const float AUTOSAVE_INTERVAL = 30.0f;
 
 Game::Game()
 : m_Stopped(false),
+  m_BattleMarkerChooserIndex(-1),
+  m_FavorMarkerChooserIndex(-1),
   m_AutoSaveTimer(AUTOSAVE_INTERVAL, true),
   m_MainMenu(&m_State, &m_LoadEvent, &m_StopEvent, &m_InitiateBattleEvent),
   m_CustomizationMenu(&m_State, &m_InitiateBattleEvent, &m_AddPlayerEvent),
   m_PauseMenu(&m_State, &m_StopEvent, &m_SaveEvent),
-  m_Map(&m_State),
+  m_Map(&m_State, &m_Players, &m_BattleMarkerChooserIndex, &m_FavorMarkerChooserIndex),
   m_StatusBar(&m_State, &m_Season)
 {
   m_StopEvent.Subscribe([this](auto, auto) { Stop(); });
@@ -45,13 +47,25 @@ Game::Game()
       &m_State,
       &m_Season,
       &m_RotateTurnEvent,
-      &m_RestartBattleEvent
+      &m_RestartBattleEvent,
+      &m_TakeFavorMarkerEvent
     );
 
     std::clog << "INFO: Player \"" << p.name << "\" added.\n";
   });
   m_SaveEvent.Subscribe([this](auto, auto) { Save(); });
   m_LoadEvent.Subscribe([this](auto, auto) { Load(); });
+  m_TakeFavorMarkerEvent.Subscribe([this](Entity* sender, auto) {
+    Player* chooser = dynamic_cast<Player*>(sender);
+    for (size_t i = 0; i < m_Players.size(); i++)
+    {
+      if (&m_Players[i] == chooser)
+      {
+        m_FavorMarkerChooserIndex = i;
+        break;
+      }
+    }
+  });
 
   m_StatusBar.Set(&m_Players);
 }
@@ -81,6 +95,8 @@ void Game::Serialize(StreamWriter& w, const Game& game)
 {
   w.WriteRaw(game.m_State);
   w.WriteRaw(game.m_Turn);
+  w.WriteRaw(game.m_BattleMarkerChooserIndex);
+  w.WriteRaw(game.m_FavorMarkerChooserIndex);
   w.WriteRaw(game.m_Season);
   w.WriteObject(game.m_Map);
   w.WriteVector(game.m_Players);
@@ -91,6 +107,8 @@ void Game::Deserialize(StreamReader& r, Game& game)
 {
   r.ReadRaw(game.m_State);
   r.ReadRaw(game.m_Turn);
+  r.ReadRaw(game.m_BattleMarkerChooserIndex);
+  r.ReadRaw(game.m_FavorMarkerChooserIndex);
   r.ReadRaw(game.m_Season);
   r.ReadObject(game.m_Map);
 
@@ -101,7 +119,8 @@ void Game::Deserialize(StreamReader& r, Game& game)
       &game.m_State,
       &game.m_Season,
       &game.m_RotateTurnEvent,
-      &game.m_RestartBattleEvent
+      &game.m_RestartBattleEvent,
+      &game.m_TakeFavorMarkerEvent
     );
   }
 

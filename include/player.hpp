@@ -38,7 +38,8 @@ public:
     State* state,
     Season* season,
     Event* rotateTurnEvent,
-    Event* restartBattleEvent
+    Event* restartBattleEvent,
+    Event* takeFavorMarkerEvent
   );
 
   void Update() override;
@@ -78,6 +79,7 @@ private:
 
   Event* m_RotateTurnEvent;
   Event* m_RestartBattleEvent;
+  Event* m_TakeFavorMarkerEvent;
 
   std::string m_Name;
   Color m_Color;

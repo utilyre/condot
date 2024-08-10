@@ -12,7 +12,12 @@
 class Map : public Entity
 {
 public:
-  Map(State* state);
+  Map(
+    State* state,
+    std::vector<Player>* players,
+    ssize_t* battleMarkerChooserIndex,
+    ssize_t* favorMarkerChooserIndex
+  );
 
   void Update() override;
   void Render(const AssetManager& assets) const override;
@@ -36,4 +41,8 @@ private:
   std::vector<bool> m_Adjacency;
   ssize_t m_BattleMarkerIndex;
   ssize_t m_FavorMarkerIndex;
+
+  std::vector<Player>* m_Players;
+  ssize_t* m_BattleMarkerChooserIndex;
+  ssize_t* m_FavorMarkerChooserIndex;
 };

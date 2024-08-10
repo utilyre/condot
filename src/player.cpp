@@ -44,13 +44,15 @@ void Player::Init(
   State* state,
   Season* season,
   Event* rotateTurnEvent,
-  Event* restartBattleEvent
+  Event* restartBattleEvent,
+  Event* takeFavorMarkerEvent
 )
 {
   m_State = state;
   m_Season = season;
   m_RotateTurnEvent = rotateTurnEvent;
   m_RestartBattleEvent = restartBattleEvent;
+  m_TakeFavorMarkerEvent = takeFavorMarkerEvent;
 }
 
 void Player::Update()
@@ -396,10 +398,10 @@ bool Player::PickCard(const size_t& index){
     return true;
   }
   
-  // TODO : does something with gameflow
   else if (card == Card::BISHOP) {
     m_Cards.erase(m_Cards.begin() + index);
     m_Bishop++;
+    m_TakeFavorMarkerEvent->Notify(this);
     return true;
   }
   
