@@ -15,7 +15,6 @@ public:
     PLACING_FAVOR_MARKER,
     PLAYING_CARD,
     PAUSE_MENU,
-    STATUS_BAR,
     SCARECROW,
   };
 
