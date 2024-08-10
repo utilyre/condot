@@ -14,7 +14,7 @@ PauseMenu::PauseMenu(State* state, Event* quit, Event* save) :
   m_PauseMenuButton("Pause",Rectangle{GetScreenWidth() - 120.0f, 10, 120, 70}),
   m_ContinueButton("Continue", Rectangle{
     (GetScreenWidth() - BUTTON_WIDTH) / 2.0f,
-    (GetScreenHeight() - BUTTON_HEIGHT) / 2.0f - 240,
+    (GetScreenHeight() - BUTTON_HEIGHT) / 2.0f - 120,
     BUTTON_WIDTH,
     BUTTON_HEIGHT
   }),
@@ -24,7 +24,7 @@ PauseMenu::PauseMenu(State* state, Event* quit, Event* save) :
     BUTTON_WIDTH,
     BUTTON_HEIGHT
   }),
-  m_ExitButton("Exit", Rectangle{
+  m_ExitButton("Save & Exit", Rectangle{
     (GetScreenWidth() - BUTTON_WIDTH) / 2.0f,
     (GetScreenHeight() - BUTTON_HEIGHT) / 2.0f + 120,
     BUTTON_WIDTH,
@@ -33,12 +33,6 @@ PauseMenu::PauseMenu(State* state, Event* quit, Event* save) :
   m_BackButton("Back", Rectangle{
     (GetScreenWidth() - BUTTON_WIDTH) / 2.0f,
     GetScreenHeight() - 120.0f,
-    BUTTON_WIDTH,
-    BUTTON_HEIGHT,
-    }),
-  m_SaveButton("Save", Rectangle{
-    (GetScreenWidth() - BUTTON_WIDTH) / 2.0f,
-    (GetScreenHeight() - BUTTON_HEIGHT) / 2.0f - 120.0f,
     BUTTON_WIDTH,
     BUTTON_HEIGHT,
     }),
@@ -69,7 +63,6 @@ void PauseMenu::Render(const AssetManager& assets) const
       m_ContinueButton.Render(assets);
       m_HelpButton.Render(assets);
       m_ExitButton.Render(assets);
-      m_SaveButton.Render(assets);
     }
   }
   else 
@@ -97,7 +90,6 @@ void PauseMenu::Update()
     m_PauseMenuButton.Update();
     m_ContinueButton.Update();
     m_ExitButton.Update();
-    m_SaveButton.Update();
   }
   else 
   {
@@ -133,14 +125,10 @@ void PauseMenu::Update()
   else if (m_ExitButton.Pressed() &&
            m_State->Get() == State::PAUSE_MENU)
   {
-   m_QuitEvent->Notify(this);   
-  }
-
-  else if (m_SaveButton.Pressed()) 
-  {
     m_SaveEvent->Notify(this);
+    m_QuitEvent->Notify(this);   
   }
-
+  
   if (!m_HelpMenu.IsGettingDetail()) 
   {
     m_BackButton.Update();

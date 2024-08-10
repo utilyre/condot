@@ -20,7 +20,6 @@ class PauseMenu : public Entity
     Button m_HelpButton;
     Button m_ExitButton;
     Button m_BackButton;
-    Button m_SaveButton;
     State* m_State;
     Event* m_QuitEvent;
     Event* m_SaveEvent;
