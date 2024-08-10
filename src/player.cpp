@@ -8,6 +8,7 @@
 #include <mercenary.hpp>
 #include <button.hpp>
 #include <season.hpp>
+#include <vector>
 
 #define MAX(a, b) ((a)>(b)? (a) : (b))
 #define MIN(a, b) ((a)<(b)? (a) : (b))
@@ -602,6 +603,8 @@ int Player::CalculateScore(int C) const
   {
      score += BNum * 3;
   }
+
+  
   score += m_Heroine * 10;
   score += m_Spy;
   
@@ -698,4 +701,9 @@ void PlayerInfo::Deserialize(StreamReader& r, PlayerInfo& player)
   r.ReadRaw(player.age);
   r.ReadRaw(player.color);
   r.ReadRaw(player.position);
+}
+
+const std::vector<Mercenary>& Player::GetRow() const
+{
+  return m_Row;
 }

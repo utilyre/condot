@@ -20,6 +20,7 @@
 #include <help_menu.hpp>
 #include <pause_menu.hpp>
 #include <file_stream.hpp>
+#include <vector>
 
 // #define DEBUG
 

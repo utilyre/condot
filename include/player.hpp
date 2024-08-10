@@ -60,7 +60,7 @@ public:
   int GetHeroine() const;
   int GetDrummer() const;
   Color GetColor() const;
-
+  const std::vector<Mercenary>& GetRow() const;
   static void Serialize(StreamWriter& w, const Player& player);
   static void Deserialize(StreamReader& r, Player& player);
 

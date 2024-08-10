@@ -1,3 +1,5 @@
+#include <algorithm>
+#include <cstddef>
 #include <raylib.h>
 
 #include <asset_manager.hpp>
@@ -23,7 +25,7 @@ void StatusBar::Render(const AssetManager& assets) const
   m_StatusButton.Render(assets);
   if (m_State->Get() == State::StatusBar)
   {
-    DrawRectangle(0, 0, 300, 400, WHITE);
+    DrawRectangle(0, 0, 400, 400, WHITE);
     float VerticalSpacing = 10;
     for (auto& p : *m_Players)
     {
@@ -44,6 +46,8 @@ void StatusBar::Render(const AssetManager& assets) const
     
       DrawTextureEx(assets.Drummer,Vector2{HorizotalSpacing,VerticalSpacing}, 0, 0.2, WHITE);
       DrawText(TextFormat(" x %d", p.GetDrummer()), 250, VerticalSpacing + 20, 10, BLACK);
+
+      DrawText(TextFormat("Score: %d",CalculateScore(p, GetBiggestNum())),290,VerticalSpacing + 20 , 20, BLACK);
       VerticalSpacing += assets.BackSide.height * 0.2;
     }
     DrawText("Season :",40, VerticalSpacing + 20 , 25 , BLACK);
@@ -92,4 +96,73 @@ void StatusBar::Update()
 void StatusBar::Set(std::vector<Player>* players)
 {
   m_Players = players;
+}
+
+int StatusBar::GetBiggestNum() const
+{
+  size_t BiggestNum = 0;
+  size_t BishopNum = 0;
+  std::vector<int> Cards;
+  
+  for (const auto& p : *m_Players) 
+  {
+    BishopNum += p.GetBishop();
+    for (auto& c : p.GetRow()) 
+    {
+      int bn = c.GetPower();
+      if(bn != 0 && std::count(Cards.begin(), Cards.end(), bn) == 0)
+      {
+        Cards.push_back(bn);
+      }    
+    }
+      
+  }
+  if (!Cards.empty()) 
+  {
+    std::sort(Cards.begin(), Cards.end());
+    BiggestNum = Cards[Cards.size() - BishopNum - 1];
+  }
+  return BiggestNum;
+}
+
+int StatusBar::CalculateScore(Player& p, int C) const
+{
+  int score{};
+  int BNum{};
+
+  for(const auto& c : p.GetRow())
+  {
+    int bn = c.GetPower();
+    if (C == bn)
+    {
+      BNum++;
+    }
+    else if (bn > C) 
+    {
+      continue;
+    }
+    score += bn;
+  }
+
+  if (*m_Season == Season::WINTER)
+  {
+    score = p.GetRow().size();
+  }
+
+  if (p.GetDrummer() == true)
+  {
+    score *= 2;
+  }
+
+  if (*m_Season == Season::SPRING)
+  {
+     score += BNum * 3;
+  }
+
+  
+  score += p.GetHeroine() * 10;
+  score += p.GetSpy();
+  
+  return score;
+  
 }

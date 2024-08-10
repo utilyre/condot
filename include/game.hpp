@@ -42,7 +42,6 @@ private:
   void FindRegionConquerer();
   void FixPosition();
   void RestartBattle();
-
   void Save();
   void Load();
 
