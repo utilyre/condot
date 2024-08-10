@@ -14,9 +14,9 @@ class Map : public Entity
 public:
   Map(
     State* state,
-    std::vector<Player>* players,
-    ssize_t* battleMarkerChooserIndex,
-    ssize_t* favorMarkerChooserIndex
+    const std::vector<Player>* players,
+    const ssize_t* battleMarkerChooserIndex,
+    const ssize_t* favorMarkerChooserIndex
   );
 
   void Update() override;
@@ -42,7 +42,7 @@ private:
   ssize_t m_BattleMarkerIndex;
   ssize_t m_FavorMarkerIndex;
 
-  std::vector<Player>* m_Players;
-  ssize_t* m_BattleMarkerChooserIndex;
-  ssize_t* m_FavorMarkerChooserIndex;
+  const std::vector<Player>* m_Players;
+  const ssize_t* m_BattleMarkerChooserIndex;
+  const ssize_t* m_FavorMarkerChooserIndex;
 };

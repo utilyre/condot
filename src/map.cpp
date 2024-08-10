@@ -15,9 +15,9 @@ static const float MAP_SCALE = 0.4f;
 
 Map::Map(
   State* state,
-  std::vector<Player>* players,
-  ssize_t* battleMarkerChooserIndex,
-  ssize_t* favorMarkerChooserIndex
+  const std::vector<Player>* players,
+  const ssize_t* battleMarkerChooserIndex,
+  const ssize_t* favorMarkerChooserIndex
 )
 : m_State(state),
   m_Regions({
@@ -188,7 +188,16 @@ void Map::Render(const AssetManager& assets) const
       state == State::PLACING_FAVOR_MARKER)
   {
     const float fontSize = 80.0f;
-    const std::string text = "Pick a region";
+    std::string text;
+    if (state == State::PLACING_BATTLE_MARKER)
+    {
+      text = "TODO";
+    }
+    else
+    {
+      auto chooser = m_Players->at(*m_FavorMarkerChooserIndex);
+      text = chooser.GetName() + " places favor marker";
+    }
 
     DrawTextEx(
       assets.PrimaryFont,
