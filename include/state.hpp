@@ -16,6 +16,7 @@ public:
     PLAYING_CARD,
     PAUSE_MENU,
     SCARECROW,
+    SHOW_WINNER_PLAYER,
   };
 
 public:

@@ -25,7 +25,8 @@
 // #define DEBUG
 
 static const float AUTOSAVE_INTERVAL = 30.0f;
-
+static const float BUTTON_WIDTH = 300;
+static const float BUTTON_HEIGHT = 100;
 Game::Game()
 : m_Stopped(false),
   m_FavorMarkerChooserIndex(-1),
@@ -35,7 +36,13 @@ Game::Game()
   m_CustomizationMenu(&m_State, &m_InitiateBattleEvent, &m_AddPlayerEvent),
   m_PauseMenu(&m_State, &m_StopEvent, &m_SaveEvent),
   m_Map(&m_State, &m_Players, &m_Turn, &m_FavorMarkerChooserIndex),
-  m_StatusBar(&m_State, &m_Season)
+  m_StatusBar(&m_State, &m_Season),
+  m_ExitButton("Exit",Rectangle{
+    (GetScreenWidth() - BUTTON_WIDTH) / 2.0f,
+    (GetScreenHeight() - 2 * BUTTON_HEIGHT),
+    BUTTON_WIDTH,
+    BUTTON_HEIGHT,
+  })
 {
   m_StopEvent.Subscribe([this](auto, auto) { Stop(); });
   m_InitiateBattleEvent.Subscribe([this](auto, auto) { InitiateBattle(); });
@@ -130,6 +137,17 @@ void Game::Deserialize(StreamReader& r, Game& game)
 
 void Game::Update()
 {
+  if (m_State.Get() == State::SHOW_WINNER_PLAYER) 
+  {
+    m_ExitButton.Update();
+    if (m_ExitButton.Pressed()) 
+    {
+      m_Stopped = true;
+      remove("save.dat");
+    }
+    return;
+  }
+
   float dt = GetFrameTime();
 
   if (m_State.Get() == State::PLAYING_CARD)
@@ -158,7 +176,8 @@ void Game::Update()
 void Game::Render() const
 {
   DrawTexture(m_Assets.Background, 0, 0, WHITE);
-
+if (m_State.Get() != State::SHOW_WINNER_PLAYER) 
+{
   m_MainMenu.Render(m_Assets);
   m_CustomizationMenu.Render(m_Assets);
   m_PauseMenu.Render(m_Assets);
@@ -174,6 +193,24 @@ void Game::Render() const
 #ifdef DEBUG
   DrawText(TextFormat("(%d,%d)", GetMouseX(), GetMouseY()), 10, 10, 30, WHITE);
 #endif
+}
+else
+{
+  int Width = (GetScreenWidth() - BUTTON_WIDTH) / 2.0f + 20;
+  int Height = (GetScreenHeight()) / 2.0f;
+  
+  for(auto& w : m_Winners)
+  {
+    DrawText(
+      TextFormat("%s wins", w.name.c_str()),
+      Width,
+      Height,
+      50,
+      BLACK);
+      Height += 30;
+  }
+  m_ExitButton.Render(m_Assets);
+}
 }
 
 void Game::ResetCards()
@@ -374,11 +411,11 @@ void Game::RestartBattle()
     : State::PLACING_FAVOR_MARKER
   );
 
-  auto winner = m_Map.FindWinners();
-  if(!winner.empty())
+  m_Winners = m_Map.FindWinners();
+  if(!m_Winners.empty())
   {
-    std::clog << "INFO: Winner is " << winner[0].name << '\n';
-    exit(1);
+    m_State.Set(State::SHOW_WINNER_PLAYER);
+    return;
   }
   ResetCards();
   FixPosition();

@@ -17,6 +17,7 @@
 #include <pause_menu.hpp>
 #include <stream.hpp>
 #include <timer.hpp>
+#include <button.hpp>
 
 class Game
 {
@@ -76,4 +77,6 @@ private:
   std::vector<Player> m_Players;
   StatusBar m_StatusBar;
   std::vector<Card> m_Deck;
+  std::vector<PlayerInfo> m_Winners;
+  Button m_ExitButton;
 };
