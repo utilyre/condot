@@ -17,13 +17,13 @@ StatusBar::StatusBar(State* state, Season* season) :
 void StatusBar::Render(const AssetManager& assets) const
 {
   if (m_State->Get() != State::PLAYING_CARD &&
-      m_State->Get() != State::STATUS_BAR &&
       m_State->Get() != State::SCARECROW)
   {
     return;
   }
+
   m_StatusButton.Render(assets);
-  if (m_State->Get() == State::STATUS_BAR)
+  if (m_StatusButton.Hovered())
   {
     DrawRectangle(0, 0, 400, 400, WHITE);
     float VerticalSpacing = 10;
@@ -71,27 +71,12 @@ void StatusBar::Update()
 {
   auto State = m_State->Get();
   if (State != State::PLAYING_CARD &&
-      State != State::STATUS_BAR &&
       State != State::SCARECROW)
   {
     return;
   }
-  m_StatusButton.Update();
-  
-  if (m_StatusButton.Hovered())
-  {
-    m_State->Set(State::STATUS_BAR);
-  }
-  
-  else if (m_State->GetPrev() == State::PLAYING_CARD) 
-  {
-    m_State->Set(State::PLAYING_CARD);
-  }
 
-  else if (m_State->GetPrev() == State::SCARECROW)
-  {
-    m_State->Set(State::SCARECROW);
-  }
+  m_StatusButton.Update();
 }
 
 void StatusBar::Set(std::vector<Player>* players)

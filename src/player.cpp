@@ -63,8 +63,7 @@ void Player::Update()
   auto state = m_State->Get();
 
   if (state != State::PLAYING_CARD &&
-      state != State::SCARECROW &&
-      state != State::STATUS_BAR){
+      state != State::SCARECROW){
     return;
   }
     bool RotateStatus = false;
@@ -101,8 +100,7 @@ void Player::Render(const AssetManager& assets) const
 {
   auto state = m_State->Get();
   if (state != State::PLAYING_CARD &&
-      state != State::SCARECROW &&
-      state != State::STATUS_BAR){
+      state != State::SCARECROW){
     return;
   }
   
