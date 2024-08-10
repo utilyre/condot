@@ -572,6 +572,7 @@ void Player::Reset()
   m_Spy = 0;
   m_Drummer = false;
   m_IsPassed = false;
+  m_Bishop = 0;
 }
 
 int Player::CalculateScore(int C) const
