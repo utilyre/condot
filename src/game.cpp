@@ -20,6 +20,7 @@
 #include <help_menu.hpp>
 #include <pause_menu.hpp>
 #include <file_stream.hpp>
+#include <vector>
 
 // #define DEBUG
 
@@ -292,28 +293,6 @@ void Game::FindRegionConquerer()
   int max_strength = 0;
   std::vector<size_t> potentialWinners;
 
-  for (size_t index = 0; index < m_Players.size(); ++index)
-  {
-    int Num = m_Players[index].GetSpy();
-    if (SpyNum < Num)
-    {
-      SpyNum = Num;
-      potentialWinners.clear();
-      potentialWinners.push_back(index);
-    }
-    
-    else if (Num == SpyNum)
-    {
-     potentialWinners.push_back(index); 
-    }
-  }
-  
-  if (potentialWinners.size() == 1) 
-  {
-    m_Map.GetBattleMarker()->SetRuler(m_Players[potentialWinners[0]]);
-    return;
-  }
-
   for (auto p : m_Players)
   {
     BishopNum += p.GetBishop();
@@ -358,8 +337,10 @@ void Game::FindRegionConquerer()
     }
   }
 
-  if (potentialWinners.size() == 1) {
+  if (potentialWinners.size() == 1) 
+  {
     m_Map.GetBattleMarker()->SetRuler(m_Players[potentialWinners[0]]);
+    m_Turn = potentialWinners[0];
   }
   else
   {
@@ -379,6 +360,30 @@ void Game::FindRegionConquerer()
       << bm->GetName()
       << '\n';
   }
+  potentialWinners.clear();
+
+  for (size_t index = 0; index < m_Players.size(); ++index)
+  {
+    int Num = m_Players[index].GetSpy();
+    if (SpyNum < Num)
+    {
+      SpyNum = Num;
+      potentialWinners.clear();
+      potentialWinners.push_back(index);
+    }
+    
+    else if (Num == SpyNum)
+    {
+     potentialWinners.push_back(index); 
+    }
+  }
+  
+  if (potentialWinners.size() == 1) 
+  {
+    m_Turn = potentialWinners[0];
+  }
+  
+  m_State.Set(State::PLACING_BATTLE_MARKER);
 }
 
 void Game::FixPosition()
