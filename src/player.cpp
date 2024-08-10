@@ -156,10 +156,13 @@ void Player::Render(const AssetManager& assets) const
     DrawRectangle(BottomLeft.x, Height - THICKNESS , Spacing , THICKNESS , m_Color);
     RenderRows (assets , Vector2{ BottomLeft.x , BottomLeft.y - CardHeight * Scale / 2} , 0, Scale);
 
-    m_PassButton.Render(assets);
     if (*m_HideCards)
     {
       m_RevealCardsButton.Render(assets);
+    }
+    else
+    {
+      m_PassButton.Render(assets);
     }
 
     RenderCards(assets , BottomLeft , 0, Scale);
