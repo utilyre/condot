@@ -16,7 +16,7 @@ static const float MAP_SCALE = 0.4f;
 Map::Map(
   State* state,
   const std::vector<Player>* players,
-  ssize_t* battleMarkerChooserIndex,
+  size_t* turn,
   ssize_t* favorMarkerChooserIndex
 )
 : m_State(state),
@@ -56,7 +56,7 @@ Map::Map(
   m_BattleMarkerIndex(-1),
   m_FavorMarkerIndex(-1),
   m_Players(players),
-  m_BattleMarkerChooserIndex(battleMarkerChooserIndex),
+  m_Turn(turn),
   m_FavorMarkerChooserIndex(favorMarkerChooserIndex)
 {
 }
@@ -190,7 +190,8 @@ void Map::Render(const AssetManager& assets) const
     std::string text;
     if (state == State::PLACING_BATTLE_MARKER)
     {
-      text = "TODO";
+      auto chooser = m_Players->at(*m_Turn);
+      text = chooser.GetName() + " places battle marker";
     }
     else
     {
