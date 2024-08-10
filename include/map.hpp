@@ -15,7 +15,7 @@ public:
   Map(
     State* state,
     const std::vector<Player>* players,
-    ssize_t* battleMarkerChooserIndex,
+    size_t* turn,
     ssize_t* favorMarkerChooserIndex
   );
 
@@ -43,6 +43,6 @@ private:
   ssize_t m_FavorMarkerIndex;
 
   const std::vector<Player>* m_Players;
-  ssize_t* m_BattleMarkerChooserIndex;
+  size_t* m_Turn;
   ssize_t* m_FavorMarkerChooserIndex;
 };

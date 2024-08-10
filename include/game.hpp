@@ -54,7 +54,6 @@ private:
 
   State m_State;
   size_t m_Turn;
-  ssize_t m_BattleMarkerChooserIndex;
   ssize_t m_FavorMarkerChooserIndex;
   Season m_Season;
 
