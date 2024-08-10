@@ -56,6 +56,9 @@ std::ostream& operator<<(std::ostream& out, State::Variant v)
   case State::PAUSE_MENU:
     out << "PauseMenu";
     break;
+  case State::SHOW_WINNER_PLAYER:
+    out << "showing winners";
+    break;
   }
 
   return out;
