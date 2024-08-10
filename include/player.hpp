@@ -37,6 +37,7 @@ public:
   void Init(
     State* state,
     Season* season,
+    bool* hideCards,
     Event* rotateTurnEvent,
     Event* restartBattleEvent,
     Event* takeFavorMarkerEvent
@@ -78,6 +79,8 @@ private:
   State* m_State;
   Season* m_Season;
 
+  bool* m_HideCards;
+
   Event* m_RotateTurnEvent;
   Event* m_RestartBattleEvent;
   Event* m_TakeFavorMarkerEvent;
@@ -94,6 +97,7 @@ private:
   unsigned int m_Drummer;
   unsigned int m_Bishop;
   Button m_PassButton;
+  Button m_RevealCardsButton;
 };
 
 struct PlayerInfo

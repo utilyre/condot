@@ -29,6 +29,7 @@ static const float AUTOSAVE_INTERVAL = 30.0f;
 Game::Game()
 : m_Stopped(false),
   m_FavorMarkerChooserIndex(-1),
+  m_HideCards(true),
   m_AutoSaveTimer(AUTOSAVE_INTERVAL, true),
   m_MainMenu(&m_State, &m_LoadEvent, &m_StopEvent, &m_InitiateBattleEvent),
   m_CustomizationMenu(&m_State, &m_InitiateBattleEvent, &m_AddPlayerEvent),
@@ -46,6 +47,7 @@ Game::Game()
     m_Players.back().Init(
       &m_State,
       &m_Season,
+      &m_HideCards,
       &m_RotateTurnEvent,
       &m_RestartBattleEvent,
       &m_TakeFavorMarkerEvent
@@ -116,6 +118,7 @@ void Game::Deserialize(StreamReader& r, Game& game)
     player.Init(
       &game.m_State,
       &game.m_Season,
+      &game.m_HideCards,
       &game.m_RotateTurnEvent,
       &game.m_RestartBattleEvent,
       &game.m_TakeFavorMarkerEvent

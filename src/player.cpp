@@ -20,7 +20,8 @@ static const int CardHeight = 255;
 static const float CardScale = 0.15f;
 
 Player::Player()
-: m_PassButton ("SURRENDER",Rectangle(10,GetScreenHeight() - 100 , 170 , 90))
+: m_PassButton ("SURRENDER",Rectangle(10,GetScreenHeight() - 100 , 170 , 90)),
+  m_RevealCardsButton("Reveal", Rectangle{10, GetScreenHeight() - 200.0f, 170, 90})
 {
 }
 
@@ -39,13 +40,15 @@ Player::Player(
   m_Heroine(0),
   m_Drummer(false),
   m_Bishop(0),
-  m_PassButton ("SURRENDER",Rectangle(10,GetScreenHeight() - 100 , 170 , 90))
+  m_PassButton ("SURRENDER",Rectangle(10,GetScreenHeight() - 100 , 170 , 90)),
+  m_RevealCardsButton("Reveal", Rectangle{10, GetScreenHeight() - 200.0f, 170, 90})
 {
 }
 
 void Player::Init(
   State* state,
   Season* season,
+  bool* hideCards,
   Event* rotateTurnEvent,
   Event* restartBattleEvent,
   Event* takeFavorMarkerEvent
@@ -53,6 +56,7 @@ void Player::Init(
 {
   m_State = state;
   m_Season = season;
+  m_HideCards = hideCards;
   m_RotateTurnEvent = rotateTurnEvent;
   m_RestartBattleEvent = restartBattleEvent;
   m_TakeFavorMarkerEvent = takeFavorMarkerEvent;
@@ -67,7 +71,21 @@ void Player::Update()
     return;
   }
     bool RotateStatus = false;
+
+  if (m_Position == Position::BOTTOM_LEFT)
+  {
     m_PassButton.Update();  
+
+    if (*m_HideCards)
+    {
+      m_RevealCardsButton.Update();
+      if (m_RevealCardsButton.Pressed())
+      {
+        *m_HideCards = false;
+      }
+    }
+  }
+
     if(state == State::PLAYING_CARD)
       RotateStatus = PlayCard();
     
@@ -139,7 +157,13 @@ void Player::Render(const AssetManager& assets) const
   case Position::BOTTOM_LEFT:
     DrawRectangle(BottomLeft.x, Height - THICKNESS , Spacing , THICKNESS , m_Color);
     RenderRows (assets , Vector2{ BottomLeft.x , BottomLeft.y - CardHeight * Scale / 2} , 0, Scale);
+
     m_PassButton.Render(assets);
+    if (*m_HideCards)
+    {
+      m_RevealCardsButton.Render(assets);
+    }
+
     RenderCards(assets , BottomLeft , 0, Scale);
     DrawText(m_Name.c_str(), BottomLeft.x + Spacing / 2.0f * 0.9f, BottomLeft.y + CardHeight * Scale, 30, BLACK);
   
@@ -281,7 +305,13 @@ void Player::RenderCards(const AssetManager& assets, Vector2 cordinate, float ro
   {
     for (const auto& c : m_Cards)
     {
-      DrawTextureEx(c.GetAsset(assets), cordinate, rotation, ratio, WHITE);
+      DrawTextureEx(
+        *m_HideCards ? card.GetAsset(assets) : c.GetAsset(assets),
+        cordinate,
+        rotation,
+        ratio,
+        WHITE
+      );
       cordinate.x += CardWidth / 2.0 * Scale;
     }
     
@@ -338,6 +368,7 @@ bool Player::PlayCard(){
           IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
       {
         bool status = PickCard(index);
+        if (status) *m_HideCards = true;
         return status;
       }
         
