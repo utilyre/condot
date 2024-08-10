@@ -55,6 +55,7 @@ private:
   size_t m_Turn;
   ssize_t m_FavorMarkerChooserIndex;
   Season m_Season;
+  bool m_HideCards;
 
   Event m_StopEvent;
   Event m_InitiateBattleEvent;
