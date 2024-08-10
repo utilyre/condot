@@ -92,33 +92,32 @@ void Map::Update()
 
     for (size_t i = 0; i < m_Regions.size(); i++)
     {
-      if (m_Regions[i].CollidesWith(mouse))
+      if (!m_Regions[i].CollidesWith(mouse) ||
+          m_Regions[i].GetRuler().has_value() ||
+          ssize_t(i) == m_FavorMarkerIndex)
       {
-        if  ((ssize_t)i == m_FavorMarkerIndex)
-        {
-          return;
-        }
-        
-        if (state == State::PLACING_BATTLE_MARKER)
-        {
-          m_BattleMarkerIndex = i;
-          m_State->Set(State::PLAYING_CARD);
-        }
-        else if (state == State::PLACING_FAVOR_MARKER)
-        {
-          m_FavorMarkerIndex = i;
-          *m_FavorMarkerChooserIndex = -1;
-          m_State->Set(State::PLACING_BATTLE_MARKER);
-        }
-
-        break;
+        continue;
       }
-    }
 
-    if (const Region* bm = GetBattleMarker())
-      std::clog << "INFO: battle marker was set to " << bm->GetName() << '\n';
-    if (const Region* fm = GetFavorMarker())
-      std::clog << "INFO: favor marker was set to " << fm->GetName() << '\n';
+      if (state == State::PLACING_BATTLE_MARKER)
+      {
+        m_BattleMarkerIndex = i;
+        m_State->Set(State::PLAYING_CARD);
+      }
+      else if (state == State::PLACING_FAVOR_MARKER)
+      {
+        m_FavorMarkerIndex = i;
+        *m_FavorMarkerChooserIndex = -1;
+        m_State->Set(State::PLACING_BATTLE_MARKER);
+      }
+
+      if (const Region* bm = GetBattleMarker())
+        std::clog << "INFO: battle marker was set to " << bm->GetName() << '\n';
+      if (const Region* fm = GetFavorMarker())
+        std::clog << "INFO: favor marker was set to " << fm->GetName() << '\n';
+
+      break;
+    }
   }
 }
 
