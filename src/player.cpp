@@ -352,7 +352,7 @@ bool Player::PlayCard(){
   const float Spacing = scale * (9 * CardWidth / 2.0f + CardWidth); 
   const Vector2 BottomLeft  {(Width / 2.0f) - (Spacing * 1.1f), Height - (CardHeight * scale) * 1.3f};
   
-  if (m_Position == Position::BOTTOM_LEFT)
+  if (!*m_HideCards && m_Position == Position::BOTTOM_LEFT)
   {
     size_t index = 0;
     for(auto it = m_Cards.rbegin(); it != m_Cards.rend(); ++it)
