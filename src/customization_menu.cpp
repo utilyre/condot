@@ -8,7 +8,7 @@
 #include <player.hpp>
 #include <customization_menu.hpp>
 
-#define DEBUG
+// #define DEBUG
 
 static const float MENU_WIDTH = 1600.0f;
 static const float MENU_HEIGHT = 900.0f;
