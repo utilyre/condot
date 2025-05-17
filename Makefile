@@ -2,14 +2,14 @@
 MAKEFLAGS+=-j
 
 CXX=g++
-CXXFLAGS=-std=c++20 -g -Wall -Wextra
+override CXXFLAGS+=-std=c++20 -Wall -Wextra
 LDFLAGS=-L./lib
 LDLIBS=-lraylib
 
 INCDIR=./include
 SRCDIR=./src
 OBJDIR=./obj
-BINDIR=.
+BINDIR=./build
 
 INC=$(wildcard $(INCDIR)/*.hpp) $(wildcard $(INCDIR)/*.h)
 SRC=$(wildcard $(SRCDIR)/*.cpp)
@@ -27,4 +27,4 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.cpp $(INC)
 	$(CXX) $(CXXFLAGS) -I$(INCDIR) -o $@ -c $<
 
 clean:
-	rm -f $(OBJ) $(BIN)
+	rm -rf $(OBJDIR) $(BINDIR)
