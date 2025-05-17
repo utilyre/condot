@@ -1,8 +1,8 @@
 .PHONY: all clean
 MAKEFLAGS+=-j
 
-CC=g++
-CFLAGS=-std=c++20 -g -Wall -Wextra
+CXX=g++
+CXXFLAGS=-std=c++20 -g -Wall -Wextra
 LDFLAGS=-L./lib
 LDLIBS=-lraylib
 
@@ -20,11 +20,11 @@ all: $(BIN)
 
 $(BIN): $(OBJ)
 	@mkdir -p $(BINDIR)
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^ $(LDLIBS)
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o $@ $^ $(LDLIBS)
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.cpp $(INC)
 	@mkdir -p $(OBJDIR)
-	$(CC) $(CFLAGS) -I$(INCDIR) -o $@ -c $<
+	$(CXX) $(CXXFLAGS) -I$(INCDIR) -o $@ -c $<
 
 clean:
 	rm -f $(OBJ) $(BIN)
