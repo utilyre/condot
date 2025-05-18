@@ -14,6 +14,8 @@ condot is an implementation of
 [Condottiere](https://boardgamegeek.com/boardgame/112/condottiere) written in
 C++ with [Raylib](https://raylib.com).
 
+![board](./gallery/board.png)
+
 ## Documents
 
 You can find the full document at [rules.pdf](./docs/rules.pdf).
