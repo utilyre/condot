@@ -24,7 +24,7 @@ C++ with [Raylib](https://raylib.com) and [OOP design](./docs/v2.pdf).
 To build the project for **Linux x86_64** targets, follow the steps below:
 
 1. Install the [development dependencies required by
-   raylib](https://github.com/raysan5/raylib/wiki/Working-on-GNU-Linux#dependencies).
+   Raylib](https://github.com/raysan5/raylib/wiki/Working-on-GNU-Linux#dependencies).
 
 2. Run the build with:
 
@@ -50,7 +50,7 @@ To build the project for **Linux x86_64** targets, follow the steps below:
 To build the project for **WASM** targets, follow the steps below:
 
 1. Install the [development dependencies required by
-   raylib](https://github.com/raysan5/raylib/wiki/Working-on-GNU-Linux#dependencies).
+   Raylib](https://github.com/raysan5/raylib/wiki/Working-on-GNU-Linux#dependencies).
 
 2. [Download and activate Emscripten on your
    system](https://emscripten.org/docs/getting_started/downloads.html).
