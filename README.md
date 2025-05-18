@@ -21,4 +21,5 @@ You can find the full document at [rules.pdf](./docs/rules.pdf).
 
 ## License
 
-This project is license under the [MIT license](./LICENSE).
+This project is licensed under the [MIT license](./LICENSE), except for
+[docs/rules.pdf](./docs/rules.pdf) which has its own licensing.
