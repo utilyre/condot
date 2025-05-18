@@ -21,7 +21,7 @@ C++ with [Raylib](https://raylib.com) and [OOP design](./docs/v2.pdf).
 
 ### Linux x86_64
 
-To build the project, follow the steps below:
+To build the project for Linux x86_64 targets, follow the steps below:
 
 1. Install the [development dependencies required by raylib](https://github.com/raysan5/raylib/wiki/Working-on-GNU-Linux#dependencies).
 
@@ -30,6 +30,10 @@ To build the project, follow the steps below:
    ```bash
    make
    ```
+
+   Make sure all dependencies are correctly installed before running `make`. The
+   build system will compile the source files and place the output binary in the
+   `./build/` directory.
 
 3. Launch the game:
 
