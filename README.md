@@ -45,7 +45,7 @@ To build the project for Linux x86_64 targets, follow the steps below:
 ### WASM (Experimental)
 
 > [!CAUTION]
-> Window dimensions and the **save** feature _DO NOT_ work in the WASM build.
+> Window dimensions and the **save** feature _won't_ work in the WASM build.
 
 To build the project for WASM targets, follow the steps below:
 
