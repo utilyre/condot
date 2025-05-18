@@ -44,10 +44,10 @@ To build the project for Linux x86_64 targets, follow the steps below:
 
 ### WASM (Experimental)
 
-> [!WARNING]
-> Many of the game features such as "save" and window dimensions may not work properly.
+> [!CAUTION]
+> Window dimensions and the **save** feature _DO NOT_ work in the WASM build.
 
-To build the project for WebAssembly targets, follow the steps below:
+To build the project for WASM targets, follow the steps below:
 
 1. Install the [development dependencies required by
    raylib](https://github.com/raysan5/raylib/wiki/Working-on-GNU-Linux#dependencies).
