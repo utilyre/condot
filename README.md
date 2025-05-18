@@ -12,7 +12,7 @@ generations to come.
 
 condot is an implementation of
 [Condottiere](https://boardgamegeek.com/boardgame/112/condottiere) written in
-C++ with [Raylib](https://raylib.com).
+C++ with [Raylib](https://raylib.com) with [OOP design](./docs/v2.pdf).
 
 ![board](./gallery/board.png)
 
