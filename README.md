@@ -17,7 +17,7 @@ C++ with [Raylib](https://raylib.com) and [OOP design](./docs/v2.pdf).
 ![board](./gallery/board.png)
 > _View the [full gallery](./gallery)_
 
-## Build
+## How to Build
 
 ### Linux x86_64
 
