@@ -23,7 +23,8 @@ C++ with [Raylib](https://raylib.com) and [OOP design](./docs/v2.pdf).
 
 To build the project for Linux x86_64 targets, follow the steps below:
 
-1. Install the [development dependencies required by raylib](https://github.com/raysan5/raylib/wiki/Working-on-GNU-Linux#dependencies).
+1. Install the [development dependencies required by
+   raylib](https://github.com/raysan5/raylib/wiki/Working-on-GNU-Linux#dependencies).
 
 2. Run the build with:
 
@@ -42,6 +43,39 @@ To build the project for Linux x86_64 targets, follow the steps below:
    ```
 
 ### WASM (Experimental)
+
+> [!WARNING]
+> Many of the game features such as "save" and window dimensions may not work properly.
+
+To build the project for WebAssembly targets, follow the steps below:
+
+1. Install the [development dependencies required by
+   raylib](https://github.com/raysan5/raylib/wiki/Working-on-GNU-Linux#dependencies).
+
+2. Modify [src/main.cpp](./src/main.cpp) and initialize the window with a fixed
+   size such as 1920x1080 based on your display size and HiDPI scaling:
+
+   ```diff
+   -int m = GetCurrentMonitor();
+   -InitWindow(GetMonitorWidth(m), GetMonitorHeight(m), "Condottiere");
+   +InitWindow(1920, 1080, "Condottiere");
+   ```
+
+3. Run the build with:
+
+   ```bash
+   ./scripts/build-wasm.sh
+   ```
+
+   This will generate the essential files at `./build` for running the game in a browser.
+
+4. Serve the build files using a tool like Python's http module:
+
+   ```bash
+   python3 -m http.server 8080
+   ```
+
+5. Head over to [localhost:8080/build/condot.html](http://localhost:8080/build/condot.html) and play!
 
 ## How to Play
 
