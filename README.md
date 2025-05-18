@@ -15,7 +15,7 @@ condot is an implementation of
 C++ with [Raylib](https://raylib.com) with [OOP design](./docs/v2.pdf).
 
 ![board](./gallery/board.png)
-*View [full gallery](./gallery)*
+> _View the [full gallery](./gallery)_
 
 ## Documents
 
