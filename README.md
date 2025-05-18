@@ -12,15 +12,30 @@ generations to come.
 
 condot is an implementation of
 [Condottiere](https://boardgamegeek.com/boardgame/112/condottiere) written in
-C++ with [Raylib](https://raylib.com) with [OOP design](./docs/v2.pdf).
+C++ with [Raylib](https://raylib.com) and [OOP design](./docs/v2.pdf).
 
 ![board](./gallery/board.png)
 > _View the [full gallery](./gallery)_
 
-## Documents
+## Build
 
-You can find the full document at [rules.pdf](./docs/rules.pdf).
-<!-- TODO: Report doc: link -->
+### Linux x86_64
+
+To build condot on Linux, you will need to install
+[Raylib's dependencies](https://github.com/raysan5/raylib/wiki/Working-on-GNU-Linux#dependencies)
+for your specific distribution.
+
+Then simply run `make` while you are at the root of this project and run the game like so:
+
+```bash
+./build/condot
+```
+
+### WASM (Experimental)
+
+## How to Play
+
+See [docs/rules.pdf](./docs/rules.pdf).
 
 ## License
 
