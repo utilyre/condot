@@ -74,13 +74,16 @@ To build the project for **WASM** targets, follow the steps below:
    The script will compile the source files using `em++` and place the output
    WASM files in the `./build/` directory.
 
-5. Serve the build files using a tool like Python's http module:
+5. Serve the project files on port `8080` using Python's build-in HTTP module
+   with the following command:
 
    ```bash
    python3 -m http.server 8080
    ```
 
-6. Head over to [localhost:8080/build/condot.html](http://localhost:8080/build/condot.html) and play!
+6. Head over to
+   [localhost:8080/build/condot.html](http://localhost:8080/build/condot.html)
+   and play!
 
 ## How to Play
 
