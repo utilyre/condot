@@ -56,8 +56,8 @@ To build the project for **WASM** targets, follow the steps below:
    Emscripten](https://emscripten.org/docs/getting_started/downloads.html) on
    your system.
 
-3. Modify [src/main.cpp](./src/main.cpp) and initialize the window with a
-   _fixed size_ such as 1920x1080 based on your display size and HiDPI scaling:
+3. Modify [src/main.cpp](./src/main.cpp) and initialize the window with _fixed
+   dimensions_ such as 1920x1080 based on your display size and HiDPI scaling:
 
    ```diff
    -int m = GetCurrentMonitor();
