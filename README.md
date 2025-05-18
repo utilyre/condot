@@ -1,9 +1,10 @@
 # condot
 
-> [!INFO]
+> [!NOTE]
 > Play the live demo at
-> [utilyre.github.io/condot](https://utilyre.github.io/condot) (zoom in or zoom
-> out your browser if its too small or too large).
+> [utilyre.github.io/condot](https://utilyre.github.io/condot).
+>
+> Make sure to zoom out your browser if the game appears too large.
 
 During the Renaissance Era, Italy was divided into numerous independent
 city-states. While bursting with trade and wealth, the city-states' growing
