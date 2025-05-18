@@ -52,9 +52,9 @@ To build the project for **WASM** targets, follow the steps below:
 1. Install the [development dependencies required by
    Raylib](https://github.com/raysan5/raylib/wiki/Working-on-GNU-Linux#dependencies).
 
-2. [Download and activate
-   Emscripten](https://emscripten.org/docs/getting_started/downloads.html) on
-   your system.
+2. [Download and activate Emscripten
+   ](https://emscripten.org/docs/getting_started/downloads.html#download-and-install)
+   on your system.
 
 3. Modify [src/main.cpp](./src/main.cpp) and initialize the window with _fixed
    dimensions_, such as 1920x1080, based on your display size and HiDPI scaling:
