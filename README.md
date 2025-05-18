@@ -60,9 +60,9 @@ To build the project for **WASM** targets, follow the steps below:
    dimensions_, such as 1920x1080, based on your display size and HiDPI scaling:
 
    ```diff
-   -int m = GetCurrentMonitor();
-   -InitWindow(GetMonitorWidth(m), GetMonitorHeight(m), "Condottiere");
-   +InitWindow(1920, 1080, "Condottiere");
+   -  int m = GetCurrentMonitor();
+   -  InitWindow(GetMonitorWidth(m), GetMonitorHeight(m), "Condottiere");
+   +  InitWindow(1920, 1080, "Condottiere");
    ```
 
 4. Run the build with:
