@@ -21,15 +21,21 @@ C++ with [Raylib](https://raylib.com) and [OOP design](./docs/v2.pdf).
 
 ### Linux x86_64
 
-To build condot on Linux, you will need to install
-[Raylib's dependencies](https://github.com/raysan5/raylib/wiki/Working-on-GNU-Linux#dependencies)
-for your specific distribution.
+To build the project, follow the steps below:
 
-Then simply run `make` while you are at the root of this project and run the game like so:
+1. Install the [development dependencies required by raylib](https://github.com/raysan5/raylib/wiki/Working-on-GNU-Linux#dependencies).
 
-```bash
-./build/condot
-```
+2. Run the build with:
+
+   ```bash
+   make
+   ```
+
+3. Launch the game:
+
+   ```bash
+   ./build/condot
+   ```
 
 ### WASM (Experimental)
 
