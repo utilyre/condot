@@ -45,7 +45,7 @@ To build the project for Linux x86_64 targets, follow the steps below:
 ### WASM (Experimental)
 
 > [!CAUTION]
-> Window dimensions and the **save** feature _won't_ work in the WASM build.
+> The **save** feature _doesn't_ work in the WASM build.
 
 To build the project for WASM targets, follow the steps below:
 
@@ -67,7 +67,8 @@ To build the project for WASM targets, follow the steps below:
    ./scripts/build-wasm.sh
    ```
 
-   This will generate the essential files at `./build` for running the game in a browser.
+   This will generate the essential for running the game in a browser files in
+   the `./build/` directory.
 
 4. Serve the build files using a tool like Python's http module:
 
