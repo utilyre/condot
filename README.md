@@ -57,7 +57,7 @@ To build the project for **WASM** targets, follow the steps below:
    your system.
 
 3. Modify [src/main.cpp](./src/main.cpp) and initialize the window with _fixed
-   dimensions_ such as 1920x1080 based on your display size and HiDPI scaling:
+   dimensions_, such as 1920x1080, based on your display size and HiDPI scaling:
 
    ```diff
    -int m = GetCurrentMonitor();
