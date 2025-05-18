@@ -21,7 +21,7 @@ C++ with [Raylib](https://raylib.com) and [OOP design](./docs/v2.pdf).
 
 ### Linux x86_64
 
-To build the project for Linux x86_64 targets, follow the steps below:
+To build the project for **Linux x86_64** targets, follow the steps below:
 
 1. Install the [development dependencies required by
    raylib](https://github.com/raysan5/raylib/wiki/Working-on-GNU-Linux#dependencies).
@@ -47,13 +47,16 @@ To build the project for Linux x86_64 targets, follow the steps below:
 > [!CAUTION]
 > The **save** feature _doesn't_ work in the WASM build.
 
-To build the project for WASM targets, follow the steps below:
+To build the project for **WASM** targets, follow the steps below:
 
 1. Install the [development dependencies required by
    raylib](https://github.com/raysan5/raylib/wiki/Working-on-GNU-Linux#dependencies).
 
-2. Modify [src/main.cpp](./src/main.cpp) and initialize the window with a fixed
-   size such as 1920x1080 based on your display size and HiDPI scaling:
+2. [Download and activate Emscripten on your
+   system](https://emscripten.org/docs/getting_started/downloads.html).
+
+3. Modify [src/main.cpp](./src/main.cpp) and initialize the window with a
+   _fixed size_ such as 1920x1080 based on your display size and HiDPI scaling:
 
    ```diff
    -int m = GetCurrentMonitor();
@@ -61,22 +64,22 @@ To build the project for WASM targets, follow the steps below:
    +InitWindow(1920, 1080, "Condottiere");
    ```
 
-3. Run the build with:
+4. Run the build with:
 
    ```bash
    ./scripts/build-wasm.sh
    ```
 
-   This will generate the essential for running the game in a browser files in
-   the `./build/` directory.
+   The script will compile the source files using `em++` and place the output
+   WASM files in the `./build/` directory.
 
-4. Serve the build files using a tool like Python's http module:
+5. Serve the build files using a tool like Python's http module:
 
    ```bash
    python3 -m http.server 8080
    ```
 
-5. Head over to [localhost:8080/build/condot.html](http://localhost:8080/build/condot.html) and play!
+6. Head over to [localhost:8080/build/condot.html](http://localhost:8080/build/condot.html) and play!
 
 ## How to Play
 
