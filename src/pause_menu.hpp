@@ -1,20 +1,20 @@
-#pragma once 
+#pragma once
 
 #include <asset_manager.hpp>
-#include <entity.hpp>
 #include <button.hpp>
-#include <state.hpp>
+#include <entity.hpp>
 #include <event.hpp>
 #include <help_menu.hpp>
+#include <state.hpp>
 
 class PauseMenu : public Entity
 {
-  public:
+public:
     PauseMenu(State*, Event*, Event*);
     void Update() override;
     void Render(const AssetManager&) const override;
 
-  private:
+private:
     Button m_PauseMenuButton;
     Button m_ContinueButton;
     Button m_HelpButton;

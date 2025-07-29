@@ -4,13 +4,13 @@
 
 int main()
 {
-  int m = GetCurrentMonitor();
-  InitWindow(GetMonitorWidth(m), GetMonitorHeight(m), "Condottiere");
+    int m = GetCurrentMonitor();
+    InitWindow(GetMonitorWidth(m), GetMonitorHeight(m), "Condottiere");
 
-  {
-    Game game;
-    game.Start();
-  }
+    {
+        Game game;
+        game.Start();
+    }
 
-  CloseWindow();
+    CloseWindow();
 }

@@ -9,21 +9,22 @@
 class FileStream : public StreamWriter, public StreamReader
 {
 public:
-  explicit FileStream(
-    const std::filesystem::path& path,
-    std::ios::openmode mode = std::ios::out | std::ios::in | std::ios::binary
-  );
-  FileStream(const FileStream&) = delete;
+    explicit FileStream(const std::filesystem::path& path,
+                        std::ios::openmode mode = std::ios::out | std::ios::in | std::ios::binary);
+    FileStream(const FileStream&) = delete;
 
-  bool IsStreamGood() const override;
-  uint64_t GetStreamPosition() override;
-  void SetStreamPosition(uint64_t position) override;
-  void WriteData(const char* data, uint64_t size) override;
-  void ReadData(char* data, uint64_t size) override;
+    bool IsStreamGood() const override;
+    uint64_t GetStreamPosition() override;
+    void SetStreamPosition(uint64_t position) override;
+    void WriteData(const char* data, uint64_t size) override;
+    void ReadData(char* data, uint64_t size) override;
 
-  operator bool() const { return IsStreamGood(); }
+    operator bool() const
+    {
+        return IsStreamGood();
+    }
 
 private:
-  std::filesystem::path m_Path;
-  std::fstream m_File;
+    std::filesystem::path m_Path;
+    std::fstream m_File;
 };

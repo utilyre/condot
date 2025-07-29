@@ -7,12 +7,12 @@
 class Mercenary
 {
 public:
-  Mercenary() = default;
-  Mercenary(int power);
+    Mercenary() = default;
+    Mercenary(int power);
 
-  Texture2D GetAsset(const AssetManager& assets) const;
-  int GetPower() const;
+    Texture2D GetAsset(const AssetManager& assets) const;
+    int GetPower() const;
 
 private:
-  int m_Power;
+    int m_Power;
 };

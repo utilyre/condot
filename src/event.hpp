@@ -1,29 +1,31 @@
 #pragma once
 
 #include <any>
-#include <vector>
-#include <memory>
 #include <functional>
+#include <memory>
+#include <vector>
 
 #include <entity.hpp>
 
 class Observer
 {
 public:
-  virtual ~Observer() {}
-  virtual void OnNotified(Entity* sender, std::any data) = 0;
+    virtual ~Observer()
+    {
+    }
+    virtual void OnNotified(Entity* sender, std::any data) = 0;
 };
 
-using ObserverFunc = std::function<void (Entity* sender, std::any data)>;
+using ObserverFunc = std::function<void(Entity* sender, std::any data)>;
 
 class Event
 {
 public:
-  void Subscribe(std::unique_ptr<Observer>&& observer);
-  void Subscribe(ObserverFunc observer);
+    void Subscribe(std::unique_ptr<Observer>&& observer);
+    void Subscribe(ObserverFunc observer);
 
-  void Notify(Entity* sender, std::any data = nullptr);
+    void Notify(Entity* sender, std::any data = nullptr);
 
 private:
-  std::vector<std::unique_ptr<Observer>> m_Observers;
+    std::vector<std::unique_ptr<Observer>> m_Observers;
 };

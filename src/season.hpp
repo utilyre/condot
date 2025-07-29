@@ -1,7 +1,8 @@
 #pragma once
 
-enum class Season {
-  NONE,
-  SPRING,
-  WINTER,
+enum class Season
+{
+    NONE,
+    SPRING,
+    WINTER,
 };
