@@ -6,11 +6,13 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 add_library(${PROJECT_NAME}_compiler_flags INTERFACE)
 target_compile_features(${PROJECT_NAME}_compiler_flags INTERFACE cxx_std_20)
 
-if (MSVC)
-  add_compile_options(/W4 /WX)
-else()
-  add_compile_options(-Wall -Wextra -Wpedantic)
-endif()
+set(gcc_like_cxx $<COMPILE_LANG_AND_ID:CXX,ARMClang,AppleClang,Clang,GNU,LCC>)
+set(msvc_cxx $<COMPILE_LANG_AND_ID:CXX,MSVC>)
+
+target_compile_options(${PROJECT_NAME}_compiler_flags INTERFACE
+  "$<${gcc_like_cxx}:$<BUILD_INTERFACE:-Wall;-Wextra;-Wpedantic>>"
+  "$<${msvc_cxx}:$<BUILD_INTERFACE:/W4;/WX>>"
+)
 
 set(source_dir ${PROJECT_SOURCE_DIR}/src)
 
