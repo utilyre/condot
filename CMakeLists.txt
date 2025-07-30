@@ -3,6 +3,10 @@ project(condot)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+include(FetchContent)
+
+set(RAYLIB_VERSION 5.0)
+
 add_library(${PROJECT_NAME}_compiler_flags INTERFACE)
 target_compile_features(${PROJECT_NAME}_compiler_flags INTERFACE cxx_std_20)
 
@@ -13,6 +17,14 @@ target_compile_options(${PROJECT_NAME}_compiler_flags INTERFACE
   "$<${gcc_like_cxx}:$<BUILD_INTERFACE:-Wall;-Wextra;-Wpedantic>>"
   "$<${msvc_cxx}:$<BUILD_INTERFACE:/W4;/WX>>"
 )
+
+FetchContent_Declare(
+  raylib
+  DOWNLOAD_EXTRACT_TIMESTAMP OFF
+  URL https://github.com/raysan5/raylib/archive/refs/tags/${RAYLIB_VERSION}.tar.gz
+  FIND_PACKAGE_ARGS
+)
+FetchContent_MakeAvailable(raylib)
 
 set(source_dir ${PROJECT_SOURCE_DIR}/src)
 
@@ -82,9 +94,6 @@ add_executable(${PROJECT_NAME}
 )
 target_link_libraries(${PROJECT_NAME}
   PUBLIC ${PROJECT_NAME}_compiler_flags
-  PRIVATE ${PROJECT_SOURCE_DIR}/lib/libraylib.a
+  PRIVATE raylib
 )
-target_include_directories(${PROJECT_NAME} PRIVATE
-  ${PROJECT_SOURCE_DIR}/lib
-  ${PROJECT_SOURCE_DIR}/src
-)
+target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/src)
