@@ -2,8 +2,9 @@ cmake_minimum_required(VERSION 3.10)
 project(condot)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED True)
+
+add_library(${PROJECT_NAME}_compiler_flags INTERFACE)
+target_compile_features(${PROJECT_NAME}_compiler_flags INTERFACE cxx_std_20)
 
 if (MSVC)
   add_compile_options(/W4 /WX)
@@ -77,8 +78,10 @@ add_executable(${PROJECT_NAME}
   ${source_dir}/timer.hpp
   ${source_dir}/timer.cpp
 )
-
-target_link_libraries(${PROJECT_NAME} ${PROJECT_SOURCE_DIR}/lib/libraylib.a)
+target_link_libraries(${PROJECT_NAME}
+  PUBLIC ${PROJECT_NAME}_compiler_flags
+  PRIVATE ${PROJECT_SOURCE_DIR}/lib/libraylib.a
+)
 target_include_directories(${PROJECT_NAME} PRIVATE
   ${PROJECT_SOURCE_DIR}/lib
   ${PROJECT_SOURCE_DIR}/src
