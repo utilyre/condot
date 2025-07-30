@@ -1,64 +1,64 @@
 target_sources(${PROJECT_NAME} PRIVATE
-  ./main.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
 
-  ./asset_manager.hpp
-  ./asset_manager.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/asset_manager.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/asset_manager.cpp
 
-  ./button.hpp
-  ./button.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/button.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/button.cpp
 
-  ./card.hpp
-  ./card.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/card.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/card.cpp
 
-  ./customization_menu.hpp
-  ./customization_menu.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/customization_menu.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/customization_menu.cpp
 
-  ./entity.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/entity.hpp
 
-  ./event.hpp
-  ./event.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/event.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/event.cpp
 
-  ./file_stream.hpp
-  ./file_stream.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/file_stream.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/file_stream.cpp
 
-  ./game.hpp
-  ./game.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/game.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/game.cpp
 
-  ./help_menu.hpp
-  ./help_menu.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/help_menu.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/help_menu.cpp
 
-  ./input.hpp
-  ./input.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/input.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/input.cpp
 
-  ./main_menu.hpp
-  ./main_menu.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/main_menu.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/main_menu.cpp
 
-  ./map.hpp
-  ./map.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/map.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/map.cpp
 
-  ./mercenary.hpp
-  ./mercenary.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/mercenary.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/mercenary.cpp
 
-  ./pause_menu.hpp
-  ./pause_menu.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/pause_menu.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/pause_menu.cpp
 
-  ./player.hpp
-  ./player.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/player.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/player.cpp
 
-  ./region.hpp
-  ./region.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/region.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/region.cpp
 
-  ./season.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/season.hpp
 
-  ./state.hpp
-  ./state.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/state.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/state.cpp
 
-  ./status_bar.hpp
-  ./status_bar.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/status_bar.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/status_bar.cpp
 
-  ./stream.hpp
-  ./stream.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/stream.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/stream.cpp
 
-  ./timer.hpp
-  ./timer.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/timer.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/timer.cpp
 )
